@@ -1,0 +1,41 @@
+{
+  "name": "next-i18next",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "repository": "git@github.com:isaachinman/next-i18next.git",
+  "author": "Isaac Hinman <isaac@isaachinman.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=9"
+  },
+  "scripts": {
+    "start": "babel-node ./src/index.js",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "build": "babel src --out-dir dist"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint"
+    }
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.6",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.1.6",
+    "babel-plugin-module-resolver": "^3.1.1",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "husky": "^1.1.4"
+  },
+  "dependencies": {
+    "detect-node": "^2.0.4",
+    "i18next": "^12.0.0",
+    "i18next-browser-languagedetector": "^2.2.4",
+    "i18next-express-middleware": "^1.5.0",
+    "i18next-node-fs-backend": "^2.1.0",
+    "i18next-xhr-backend": "^1.5.1"
+  }
+}
