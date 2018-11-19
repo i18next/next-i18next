@@ -1,14 +1,17 @@
 import createConfig from 'config/create-config'
 import createI18NextClient from 'create-i18next-client'
 
-let i18n = null
-let config = null
-const setupI18Next = (userConfig) => {
-  config = createConfig(userConfig)
-  i18n = createI18NextClient(config)
-}
+import { appWithTranslation, withNamespaces } from 'hocs'
+import { nextI18NextMiddleware } from 'middlewares'
 
-export {
-  i18n,
-  setupI18Next,
+export default class NextI18Next {
+
+  constructor(userConfig) {
+    this.config = createConfig(userConfig)
+    this.i18n = createI18NextClient(this.config)
+    this.appWithTranslation = appWithTranslation.bind(this)
+    this.nextI18NextMiddleware = nextI18NextMiddleware.bind(this)
+    this.withNamespaces = withNamespaces.bind(this)
+  }
+
 }

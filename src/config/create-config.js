@@ -8,8 +8,8 @@ export default (userConfig) => {
     ...userConfig,
   }
 
-  if (isNode) {
-    const fs = require('fs')
+  if (isNode && !process.browser) {
+    const fs = eval("require('fs')") // eslint-disable-line
     const path = require('path')
 
     const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace('.json', ''))

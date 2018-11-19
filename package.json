@@ -23,19 +23,28 @@
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.6",
     "@babel/node": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.1.6",
+    "@babel/preset-react": "^7.0.0",
     "babel-plugin-module-resolver": "^3.1.1",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
     "eslint": "^5.9.0",
-    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
     "husky": "^1.1.4"
   },
   "dependencies": {
     "detect-node": "^2.0.4",
+    "eslint-plugin-react": "^7.11.1",
+    "hoist-non-react-statics": "^3.1.0",
     "i18next": "^12.0.0",
     "i18next-browser-languagedetector": "^2.2.4",
     "i18next-express-middleware": "^1.5.0",
     "i18next-node-fs-backend": "^2.1.0",
-    "i18next-xhr-backend": "^1.5.1"
+    "i18next-xhr-backend": "^1.5.1",
+    "prop-types": "^15.6.2",
+    "react": "^16.6.3",
+    "react-i18next": "^8.3.8"
   }
 }

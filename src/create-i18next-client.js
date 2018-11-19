@@ -7,7 +7,7 @@ const i18n = i18next.default ? i18next.default : i18next
 i18n.nsFromReactTree = []
 
 if (isNode) {
-  const i18nextNodeBackend = require('i18next-node-fs-backend')
+  const i18nextNodeBackend = eval("require('i18next-node-fs-backend')") // eslint-disable-line
   const i18nextMiddleware = require('i18next-express-middleware')
   i18n.use(i18nextNodeBackend).use(i18nextMiddleware.LanguageDetector)
 } else {
@@ -15,6 +15,8 @@ if (isNode) {
 }
 
 export default (config) => {
-  i18n.init(config)
+  if (!i18n.isInitialized) {
+    i18n.init(config)
+  }
   return i18n
 }

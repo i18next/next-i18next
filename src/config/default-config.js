@@ -28,4 +28,7 @@ export default {
     loadPath: `/${LOCALE_PATH}/${LOCALE_STRUCTURE}.json`,
     addPath: `/${LOCALE_PATH}/${LOCALE_STRUCTURE}.missing.json`,
   },
+  react: {
+    wait: true,
+  },
 }
