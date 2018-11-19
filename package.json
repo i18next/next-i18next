@@ -12,7 +12,8 @@
     "start": "babel-node ./src/index.js",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "build": "babel src --out-dir dist"
+    "build": "babel src --out-dir dist",
+    "run-example": "yarn build && cd example && yarn && yarn dev"
   },
   "husky": {
     "hooks": {

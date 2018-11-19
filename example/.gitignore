@@ -3,7 +3,6 @@ node_modules
 
 # Dist
 dist
-.next
 
 # OS
 .DS_Store
