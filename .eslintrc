@@ -1,5 +1,8 @@
 {
   "extends": "eslint-config-airbnb",
+  "env": {
+    "browser": true
+  },
   "rules": {
     "semi": [
       2,
@@ -13,6 +16,8 @@
     "import/no-unresolved": 0,
     "import/extensions": 0,
     "import/no-mutable-exports": 0,
-    "react/jsx-filename-extension": 0
+    "react/jsx-filename-extension": 0,
+    "react/prefer-stateless-function": 0,
+    "no-restricted-syntax": 0
   }
 }

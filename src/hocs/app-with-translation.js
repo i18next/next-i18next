@@ -1,11 +1,31 @@
 import React from 'react'
+import Router from 'next/router'
+
 import { I18nextProvider } from 'react-i18next'
+import { lngPathCorrector } from 'utils'
+
 
 // import hoistNonReactStatic from 'hoist-non-react-statics'
 
 export default function (WrappedComponent) {
-  const { i18n } = this
+  const { config, i18n } = this
   return class extends React.Component {
+
+    constructor() {
+      super()
+      if (config.localeSubpaths) {
+        i18n.on('languageChanged', (lng) => {
+          if (process.browser) {
+            const originalRoute = window.location.pathname
+            const [href, as] = lngPathCorrector(config, i18n, originalRoute, lng)
+            if (as !== originalRoute) {
+              Router.replace(href, as, { shallow: true })
+            }
+          }
+        })
+      }
+    }
+
     static async getInitialProps({ Component, ctx }) {
       // Recompile pre-existing pageProps
       let pageProps = {}
