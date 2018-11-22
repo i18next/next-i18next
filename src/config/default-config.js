@@ -3,7 +3,7 @@ const OTHER_LANGUAGES = ['de']
 const DEFAULT_NAMESPACE = 'common'
 const LOCALE_PATH = 'static/locales'
 const LOCALE_STRUCTURE = '{{lng}}/{{ns}}'
-const LOCALE_SUBPATHS = true
+const LOCALE_SUBPATHS = false
 
 export default {
   allLanguages: OTHER_LANGUAGES.concat([DEFAULT_LANGUAGE]),
