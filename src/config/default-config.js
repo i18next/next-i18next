@@ -1,13 +1,13 @@
 const DEFAULT_LANGUAGE = 'en'
-const OTHER_LANGUAGES = ['de']
+const OTHER_LANGUAGES = []
 const DEFAULT_NAMESPACE = 'common'
 const LOCALE_PATH = 'static/locales'
 const LOCALE_STRUCTURE = '{{lng}}/{{ns}}'
 const LOCALE_SUBPATHS = false
 
 export default {
-  allLanguages: OTHER_LANGUAGES.concat([DEFAULT_LANGUAGE]),
   defaultLanguage: DEFAULT_LANGUAGE,
+  otherLanguages: OTHER_LANGUAGES,
   fallbackLng: process.env.NODE_ENV === 'production' ? DEFAULT_LANGUAGE : null,
   load: 'languageOnly',
   localePath: LOCALE_PATH,

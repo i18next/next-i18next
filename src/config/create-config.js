@@ -8,6 +8,9 @@ export default (userConfig) => {
     ...userConfig,
   }
 
+  combinedConfig.allLanguages = combinedConfig.otherLanguages
+    .concat([combinedConfig.defaultLanguage])
+
   if (isNode && !process.browser) {
     const fs = eval("require('fs')") // eslint-disable-line
     const path = require('path')
