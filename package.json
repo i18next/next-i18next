@@ -13,6 +13,7 @@
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "build": "babel src --out-dir dist",
+    "prepare": "yarn build",
     "run-example": "yarn build && cd example && yarn && yarn dev"
   },
   "husky": {
