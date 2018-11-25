@@ -8,6 +8,8 @@
   "engines": {
     "node": ">=9"
   },
+  "description": "The easiest way to translate your NextJs apps.",
+  "keywords": ["react", "i18next", "nextjs", "next", "translation", "localisation", "localization", "locale"],
   "scripts": {
     "start": "babel-node ./src/index.js",
     "lint": "eslint src",
