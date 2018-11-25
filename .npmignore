@@ -1,0 +1,18 @@
+# Untranspiled source and examples
+src
+example
+
+# Dependencies
+node_modules
+
+# NextJs
+.next
+
+# OS
+.DS_Store
+
+# Development Environment
+.vscode
+
+# Logs
+runtime.log
