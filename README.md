@@ -14,7 +14,13 @@ While `next-i18next` uses [i18next](https://www.i18next.com/) and [react-i18next
 
 ## Setup
 
-### 1. Translation content
+### 1. Installation
+
+```jsx
+yarn add next-i18next
+```
+
+### 2. Translation content
 
 By default, `next-i18next` expects your translations to be organised as such:
 ```
@@ -30,7 +36,7 @@ This structure can also be seen in the [example directory](./example).
 
 If you want to structure your translations/namespaces in a custom way, you will need to pass modified `localePath` and `localeStructure` values into the initialisation config.
 
-### 2. Project setup
+### 3. Project setup
 
 The default export of `next-i18next` is a class constructor, into which you pass your config options. The resulting class has all the methods you will need to translate your app:
 
