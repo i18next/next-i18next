@@ -4,11 +4,10 @@ import Router from 'next/router'
 import { I18nextProvider } from 'react-i18next'
 import { lngPathCorrector } from 'utils'
 
-
-// import hoistNonReactStatic from 'hoist-non-react-statics'
-
 export default function (WrappedComponent) {
+
   const { config, i18n } = this
+
   return class extends React.Component {
 
     constructor() {
@@ -27,17 +26,12 @@ export default function (WrappedComponent) {
     }
 
     static async getInitialProps({ Component, ctx }) {
-      // Recompile pre-existing pageProps
+
+      // Recompile pre-existing getInitialProps
       let pageProps = {}
       if (Component.getInitialProps) {
         pageProps = await Component.getInitialProps(ctx)
       }
-      // if (WrappedComponent.getInitialProps) {
-      //   pageProps = {
-      //     ...pageProps,
-      //     ...await WrappedComponent.getInitialProps(ctx),
-      //   }
-      // }
 
       // Initiate vars to return
       const { req } = ctx
@@ -74,8 +68,6 @@ export default function (WrappedComponent) {
     }
 
     render() {
-      // ... and renders the wrapped component with the fresh data!
-      // Notice that we pass through any additional props
       let { initialLanguage, initialI18nStore } = this.props
       if (!process.browser) {
         initialLanguage = i18n.language
