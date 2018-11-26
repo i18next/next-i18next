@@ -9,7 +9,16 @@
     "node": ">=9"
   },
   "description": "The easiest way to translate your NextJs apps.",
-  "keywords": ["react", "i18next", "nextjs", "next", "translation", "localisation", "localization", "locale"],
+  "keywords": [
+    "react",
+    "i18next",
+    "nextjs",
+    "next",
+    "translation",
+    "localisation",
+    "localization",
+    "locale"
+  ],
   "scripts": {
     "start": "babel-node ./src/index.js",
     "lint": "eslint src",
@@ -36,11 +45,11 @@
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
     "husky": "^1.1.4"
   },
   "dependencies": {
     "detect-node": "^2.0.4",
-    "eslint-plugin-react": "^7.11.1",
     "hoist-non-react-statics": "^3.1.0",
     "i18next": "^12.0.0",
     "i18next-browser-languagedetector": "^2.2.4",
