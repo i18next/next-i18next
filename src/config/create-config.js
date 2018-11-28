@@ -18,12 +18,12 @@ export default (userConfig) => {
 
     const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace('.json', ''))
     const {
-      allLanguages, defaultLanguage, localePath, localeStructure, load
+      allLanguages, defaultLanguage, localePath, localeStructure, load,
     } = combinedConfig
 
     combinedConfig = {
       ...combinedConfig,
-      load: load,
+      load,
       preload: allLanguages,
       ns: getAllNamespaces(path.join(process.cwd(), `${localePath}/${defaultLanguage}`)),
       backend: {
