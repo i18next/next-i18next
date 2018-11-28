@@ -8,7 +8,7 @@ const LOCALE_SUBPATHS = false
 export default {
   defaultLanguage: DEFAULT_LANGUAGE,
   otherLanguages: OTHER_LANGUAGES,
-  fallbackLng: DEFAULT_LANGUAGE,
+  fallbackLng: process.env.NODE_ENV === 'production' ? DEFAULT_LANGUAGE : null,
   load: 'languageOnly',
   localePath: LOCALE_PATH,
   localeStructure: LOCALE_STRUCTURE,

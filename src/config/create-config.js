@@ -12,19 +12,21 @@ export default (userConfig) => {
     .concat([combinedConfig.defaultLanguage])
   combinedConfig.load = combinedConfig.load || 'languageOnly'
 
+
   if (isNode && !process.browser) {
     const fs = eval("require('fs')") // eslint-disable-line
     const path = require('path')
 
     const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace('.json', ''))
     const {
-      allLanguages, defaultLanguage, localePath, localeStructure, load,
+      allLanguages, defaultLanguage, localePath, localeStructure, load, fallbackLng
     } = combinedConfig
 
     combinedConfig = {
       ...combinedConfig,
       load,
       preload: allLanguages,
+      fallbackLng,
       ns: getAllNamespaces(path.join(process.cwd(), `${localePath}/${defaultLanguage}`)),
       backend: {
         loadPath: path.join(process.cwd(), `${localePath}/${localeStructure}.json`),
