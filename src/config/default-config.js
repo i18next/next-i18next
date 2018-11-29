@@ -21,6 +21,8 @@ export default {
     format: (value, format) => (format === 'uppercase' ? value.toUpperCase() : value),
   },
   detection: {
+    serverDetectors: [],
+    browserDetectors: [],
     order: ['cookie', 'header', 'querystring'],
     caches: ['cookie'],
   },
