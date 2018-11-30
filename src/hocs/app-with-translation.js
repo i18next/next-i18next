@@ -3,6 +3,7 @@ import Router from 'next/router'
 
 import { I18nextProvider } from 'react-i18next'
 import { lngPathCorrector } from 'utils'
+import { NextStaticProvider } from 'components'
 
 export default function (WrappedComponent) {
 
@@ -48,7 +49,7 @@ export default function (WrappedComponent) {
             initialI18nStore[l][ns] = (req.i18n.services.resourceStore.data[l] || {})[ns] || {}
           })
         })
-      } else {
+      } else if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
         // Load newly-required translations if changing route clientside
         await Promise.all(
           i18n.nsFromReactTree
@@ -79,7 +80,9 @@ export default function (WrappedComponent) {
           initialLanguage={initialLanguage}
           initialI18nStore={initialI18nStore}
         >
-          <WrappedComponent {...this.props} />
+          <NextStaticProvider>
+            <WrappedComponent {...this.props} />
+          </NextStaticProvider>
         </I18nextProvider>
       )
     }

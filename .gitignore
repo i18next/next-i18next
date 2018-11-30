@@ -4,6 +4,7 @@ node_modules
 # Dist
 dist
 .next
+out
 
 # OS
 .DS_Store
