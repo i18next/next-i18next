@@ -63,7 +63,7 @@ export default function (WrappedComponent) {
       return {
         initialI18nStore,
         initialLanguage,
-        ...pageProps,
+        pageProps,
       }
     }
 
