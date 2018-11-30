@@ -133,6 +133,11 @@ class SomeLink extends React.Component {
 | `localeSubpaths` | `false`  |
 | `defaultNS` | `'common'`  |
 
+## Notes
+
+- [`next export` will result in a _clientside only_ React application.](https://github.com/isaachinman/next-i18next/issues/10)
+- [We cannot support koa until a 1:1 replacement for `i18next-express-middleware` exists](https://github.com/isaachinman/next-i18next/issues/9).
+
 ## Contributing
 
 Please do! All PRs and issues will be thoroughly reviewed.
