@@ -6,7 +6,7 @@
   "author": "Isaac Hinman <isaac@isaachinman.com>",
   "license": "MIT",
   "engines": {
-    "node": ">=9"
+    "node": ">=8"
   },
   "description": "The easiest way to translate your NextJs apps.",
   "keywords": [

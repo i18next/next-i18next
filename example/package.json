@@ -4,7 +4,7 @@
   "main": "./dist/index.js",
   "license": "MIT",
   "engines": {
-    "node": ">=9"
+    "node": ">=8"
   },
   "scripts": {
     "dev": "node server.js",
