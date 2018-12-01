@@ -3458,6 +3458,13 @@ hoist-non-react-statics@3.0.1:
   dependencies:
     react-is "^16.3.2"
 
+hoist-non-react-statics@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.2.0.tgz#d21b9fc72b50fdc38c5d88f6e2c52f2c2dbe5ee2"
+  integrity sha512-3IascCRfaEkbmHjJnUxWSspIUE1okLPjGTMVXW8zraUo1t3yg1BadKAxAGILHwgoBzmMnzrgeeaDGBvpuPz6dA==
+  dependencies:
+    react-is "^16.3.2"
+
 home-or-tmp@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/home-or-tmp/-/home-or-tmp-2.0.0.tgz#e36c3f2d2cae7d746a857e38d18d5f32a7882db8"
@@ -4473,9 +4480,10 @@ neo-async@^2.5.0:
   integrity sha512-MFh0d/Wa7vkKO3Y3LlacqAEeHK0mckVqzDieUKTT+KGxi+zIpeVsFxymkIiRpbpDziHc290Xr9A1O4Om7otoRA==
 
 next-i18next@../:
-  version "0.3.1"
+  version "0.5.0"
   dependencies:
     detect-node "^2.0.4"
+    hoist-non-react-statics "^3.2.0"
     i18next "^12.0.0"
     i18next-browser-languagedetector "^2.2.4"
     i18next-express-middleware "^1.5.0"

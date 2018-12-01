@@ -5,11 +5,13 @@ import { I18nextProvider } from 'react-i18next'
 import { lngPathCorrector } from 'utils'
 import { NextStaticProvider } from 'components'
 
+import hoistNonReactStatics from 'hoist-non-react-statics'
+
 export default function (WrappedComponent) {
 
   const { config, i18n } = this
 
-  return class extends React.Component {
+  class AppWithTranslation extends React.Component {
 
     constructor() {
       super()
@@ -87,4 +89,7 @@ export default function (WrappedComponent) {
       )
     }
   }
+
+  return hoistNonReactStatics(AppWithTranslation, WrappedComponent, { getInitialProps: true })
+
 }

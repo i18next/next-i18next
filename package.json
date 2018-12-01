@@ -50,6 +50,7 @@
   },
   "dependencies": {
     "detect-node": "^2.0.4",
+    "hoist-non-react-statics": "^3.2.0",
     "i18next": "^12.0.0",
     "i18next-browser-languagedetector": "^2.2.4",
     "i18next-express-middleware": "^1.5.0",
