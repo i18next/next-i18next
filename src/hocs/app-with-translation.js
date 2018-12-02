@@ -30,10 +30,22 @@ export default function (WrappedComponent) {
 
     static async getInitialProps({ Component, ctx }) {
 
-      // Recompile pre-existing getInitialProps
       let pageProps = {}
+      let regularProps = {}
+
       if (Component.getInitialProps) {
         pageProps = await Component.getInitialProps(ctx)
+      }
+
+      // Run getInitialProps on wrapped _app
+      if (WrappedComponent.getInitialProps) {
+        const { pageProps: wrappedPageProps, ...rest } = await WrappedComponent
+          .getInitialProps({ Component, ctx })
+        pageProps = {
+          ...pageProps,
+          ...wrappedPageProps,
+        }
+        regularProps = rest
       }
 
       // Initiate vars to return
@@ -67,6 +79,7 @@ export default function (WrappedComponent) {
         initialI18nStore,
         initialLanguage,
         pageProps,
+        ...regularProps,
       }
     }
 
