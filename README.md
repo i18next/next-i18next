@@ -137,6 +137,7 @@ class SomeLink extends React.Component {
 | `localeStructure` | `'{{lng}}/{{ns}}'`  |
 | `localeSubpaths` | `false`  |
 | `defaultNS` | `'common'`  |
+| `use` (for plugins) | `[]`  |
 
 ## Notes
 
