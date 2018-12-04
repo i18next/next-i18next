@@ -1,6 +1,5 @@
 export default (config, i18n, currentRoute, currentLanguage = i18n.languages[0]) => {
-
-  const { defaultLanguage, allLanguages } = config
+  const { defaultLanguage, allLanguages, defaultLocaleSubpath } = config
 
   if (!allLanguages.includes(currentLanguage)) {
     return currentRoute
@@ -16,7 +15,7 @@ export default (config, i18n, currentRoute, currentLanguage = i18n.languages[0])
     }
   }
 
-  if (currentLanguage !== defaultLanguage) {
+  if (currentLanguage !== defaultLanguage || defaultLocaleSubpath) {
     as = `/${currentLanguage}${href}`
     href += `?lng=${currentLanguage}`
   } else {

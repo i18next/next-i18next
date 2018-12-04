@@ -21,18 +21,17 @@ import PropTypes from 'prop-types'
 import NextLink from 'next/link'
 
 export default function () {
-
   const { config, i18n } = this
 
   class Link extends React.Component {
     render() {
-      const { defaultLanguage, localeSubpaths } = config
+      const { defaultLanguage, localeSubpaths, defaultLocaleSubpath } = config
       const { children, href } = this.props
       let lng = null
       if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
         [lng] = i18n.languages
       }
-      if (localeSubpaths && lng && lng !== defaultLanguage) {
+      if (localeSubpaths && lng && (lng !== defaultLanguage || defaultLocaleSubpath)) {
         return (
           <NextLink href={`${href}?lng=${lng}`} as={`/${lng}${href}`}>
             {children}
@@ -53,5 +52,4 @@ export default function () {
     force `Link` to rerender on language change
   */
   return this.withNamespaces()(Link)
-
 }

@@ -1,7 +1,7 @@
 export default (req, res, next) => {
   if (req.i18n) {
     const language = req.i18n.languages[0]
-    const { allLanguages, defaultLanguage } = req.i18n.options
+    const { allLanguages, defaultLanguage, defaultLocaleSubpath } = req.i18n.options
     /*
       If a user has hit a subpath which does not
       match their language, give preference to
@@ -23,9 +23,13 @@ export default (req, res, next) => {
     }
     /*
       If a user has a default language prefix
-      in their URL, strip it.
+      in their URL, strip it. Except it has defaultLocaleSubpath to true
     */
-    if (language === defaultLanguage && req.url.startsWith(`/${defaultLanguage}/`)) {
+    if (
+      language === defaultLanguage
+      && req.url.startsWith(`/${defaultLanguage}/`)
+      && !defaultLocaleSubpath
+    ) {
       res.redirect(301, req.url.replace(`/${defaultLanguage}/`, '/'))
     }
   }
