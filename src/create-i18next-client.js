@@ -16,6 +16,7 @@ if (isNode) {
 
 export default (config) => {
   if (!i18n.isInitialized) {
+    config.use.forEach(x => i18n.use(x))
     i18n.init(config)
   }
   return i18n
