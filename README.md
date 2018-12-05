@@ -139,6 +139,8 @@ class SomeLink extends React.Component {
 | `defaultNS` | `'common'`  |
 | `use` (for plugins) | `[]`  |
 
+_This table contains options which are specific to next-i18next. All other i18next options can be passed in as well._
+
 ## Notes
 
 - [`next export` will result in a _clientside only_ React application.](https://github.com/isaachinman/next-i18next/issues/10)
