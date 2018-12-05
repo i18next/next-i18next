@@ -14,6 +14,7 @@ export default {
   localeStructure: LOCALE_STRUCTURE,
   localeSubpaths: LOCALE_SUBPATHS,
   ns: [DEFAULT_NAMESPACE],
+  use: [],
   defaultNS: DEFAULT_NAMESPACE,
   interpolation: {
     escapeValue: false,

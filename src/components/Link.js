@@ -28,8 +28,11 @@ export default function () {
     render() {
       const { defaultLanguage, localeSubpaths } = config
       const { children, href } = this.props
-      const lng = i18n.languages[0]
-      if (localeSubpaths && lng !== defaultLanguage) {
+      let lng = null
+      if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
+        [lng] = i18n.languages
+      }
+      if (localeSubpaths && lng && lng !== defaultLanguage) {
         return (
           <NextLink href={`${href}?lng=${lng}`} as={`/${lng}${href}`}>
             {children}

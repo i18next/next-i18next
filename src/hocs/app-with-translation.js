@@ -3,12 +3,15 @@ import Router from 'next/router'
 
 import { I18nextProvider } from 'react-i18next'
 import { lngPathCorrector } from 'utils'
+import { NextStaticProvider } from 'components'
+
+import hoistNonReactStatics from 'hoist-non-react-statics'
 
 export default function (WrappedComponent) {
 
   const { config, i18n } = this
 
-  return class extends React.Component {
+  class AppWithTranslation extends React.Component {
 
     constructor() {
       super()
@@ -27,10 +30,22 @@ export default function (WrappedComponent) {
 
     static async getInitialProps({ Component, ctx }) {
 
-      // Recompile pre-existing getInitialProps
       let pageProps = {}
+      let regularProps = {}
+
       if (Component.getInitialProps) {
         pageProps = await Component.getInitialProps(ctx)
+      }
+
+      // Run getInitialProps on wrapped _app
+      if (WrappedComponent.getInitialProps) {
+        const { pageProps: wrappedPageProps, ...rest } = await WrappedComponent
+          .getInitialProps({ Component, ctx })
+        pageProps = {
+          ...pageProps,
+          ...wrappedPageProps,
+        }
+        regularProps = rest
       }
 
       // Initiate vars to return
@@ -48,7 +63,7 @@ export default function (WrappedComponent) {
             initialI18nStore[l][ns] = (req.i18n.services.resourceStore.data[l] || {})[ns] || {}
           })
         })
-      } else {
+      } else if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
         // Load newly-required translations if changing route clientside
         await Promise.all(
           i18n.nsFromReactTree
@@ -63,7 +78,8 @@ export default function (WrappedComponent) {
       return {
         initialI18nStore,
         initialLanguage,
-        ...pageProps,
+        pageProps,
+        ...regularProps,
       }
     }
 
@@ -79,9 +95,14 @@ export default function (WrappedComponent) {
           initialLanguage={initialLanguage}
           initialI18nStore={initialI18nStore}
         >
-          <WrappedComponent {...this.props} />
+          <NextStaticProvider>
+            <WrappedComponent {...this.props} />
+          </NextStaticProvider>
         </I18nextProvider>
       )
     }
   }
+
+  return hoistNonReactStatics(AppWithTranslation, WrappedComponent, { getInitialProps: true })
+
 }
