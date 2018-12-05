@@ -137,6 +137,7 @@ class SomeLink extends React.Component {
 | `localeStructure` | `'{{lng}}/{{ns}}'`  |
 | `localeSubpaths` | `false`  |
 | `defaultNS` | `'common'`  |
+| `load` | `'languageOnly'`  |
 | `use` (for plugins) | `[]`  |
 
 _This table contains options which are specific to next-i18next. All other [i18next options](https://www.i18next.com/overview/configuration-options) can be passed in as well._

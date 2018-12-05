@@ -10,7 +10,7 @@ export default (userConfig) => {
 
   combinedConfig.allLanguages = combinedConfig.otherLanguages
     .concat([combinedConfig.defaultLanguage])
-  combinedConfig.load = combinedConfig.load || 'languageOnly'
+  combinedConfig.load = combinedConfig.load
 
 
   if (isNode && !process.browser) {
@@ -19,7 +19,7 @@ export default (userConfig) => {
 
     const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace('.json', ''))
     const {
-      allLanguages, defaultLanguage, localePath, localeStructure, load, fallbackLng
+      allLanguages, defaultLanguage, fallbackLng, localePath, localeStructure, load,
     } = combinedConfig
 
     combinedConfig = {
