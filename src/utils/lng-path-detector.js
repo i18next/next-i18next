@@ -22,8 +22,8 @@ export default (req, res, next) => {
       req.i18n.changeLanguage(defaultLanguage)
     }
     /*
-      If a user has a default language prefix
-      in their URL, strip it. Except it has defaultLocaleSubpath to true
+      If a user has a default language prefix in their URL
+      and defaultLocaleSubpath set to false, strip it.
     */
     if (
       language === defaultLanguage
