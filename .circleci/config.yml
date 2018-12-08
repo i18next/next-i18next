@@ -12,6 +12,11 @@ jobs:
           - v1-dependencies-{{ checksum "package.json" }}
           - v1-dependencies-
 
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "example/package.json" }}
+          - v1-dependencies-
+
       - run:
           name: Install dependencies
           command: yarn install
