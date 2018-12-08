@@ -16,6 +16,19 @@ jobs:
           name: Install dependencies
           command: yarn install
 
+      - run:
+          name: Build source
+          command: yarn build
+
+      - run:
+          name: Build example
+          command: cd example && yarn && yarn build
+
+      - save_cache:
+          paths:
+            - example/node_modules
+          key: v1-dependencies-{{ checksum "example/package.json" }}
+
       - save_cache:
           paths:
             - node_modules
