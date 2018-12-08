@@ -25,7 +25,8 @@
     "lint:fix": "eslint src --fix",
     "build": "babel src --out-dir dist",
     "prepare": "yarn build",
-    "run-example": "yarn build && cd example && yarn && yarn dev"
+    "run-example": "yarn build && cd example && rm -rf node_modules && yarn && yarn dev",
+    "run-example:prod": "yarn build && cd example && rm -rf node_modules && yarn && yarn build && yarn start"
   },
   "husky": {
     "hooks": {
