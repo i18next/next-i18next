@@ -8,7 +8,7 @@ i18n.nsFromReactTree = []
 
 if (isNode) {
   const i18nextNodeBackend = eval("require('i18next-node-fs-backend')") // eslint-disable-line
-  const i18nextMiddleware = require('i18next-express-middleware')
+  const i18nextMiddleware = eval("require('i18next-express-middleware')")
   i18n.use(i18nextNodeBackend).use(i18nextMiddleware.LanguageDetector)
 } else {
   i18n.use(i18nextXHRBackend).use(i18nextBrowserLanguageDetector)

@@ -1,9 +1,9 @@
 import i18nextMiddleware from 'i18next-express-middleware'
 import { forceTrailingSlash, lngPathDetector } from 'utils'
 
-export default function (app, server) {
+export default function (nexti18next, app, server) {
 
-  const { config, i18n } = this
+  const { config, i18n } = nexti18next
   const { allLanguages, localeSubpaths } = config
 
   server.use(i18nextMiddleware.handle(i18n))
