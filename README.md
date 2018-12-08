@@ -55,7 +55,7 @@ It's recommended to export this `NextI18Next` instance from a single file in you
 After creating and exporting your `NextI18Next` instance, you need to take the following steps to get things working:
 
 1. Create an `_app.js` file inside your `pages` directory, and wrap it with the `NextI18Next.appWithTranslation` higher order component (HOC). You can see this approach in the [example/pages/_app.js](./example/pages/_app.js). 
-2. Create a `server.js` file inside your root directory, initialise an [express](https://www.npmjs.com/package/express) server, and pass both the express server and NextJs app into `NextI18Next.nextI18NextMiddleware`. You can see this approach in the [example/server.js](./example/server.js). For more info, see [the NextJs section on custom servers](https://github.com/zeit/next.js#custom-server-and-routing).
+2. Create a `server.js` file inside your root directory, initialise an [express](https://www.npmjs.com/package/express) server, and pass (a) your NextI18Next instance, (b) express server and (c) NextJs app into `NextI18Next.nextI18NextMiddleware`. You can see this approach in the [example/server.js](./example/server.js). For more info, see [the NextJs section on custom servers](https://github.com/zeit/next.js#custom-server-and-routing).
 
 That's it! Your app is ready to go. You can now use the `NextI18Next.withNamespaces` HOC to make your components or pages translatable, based on namespaces:
 
