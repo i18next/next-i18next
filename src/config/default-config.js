@@ -21,6 +21,7 @@ export default {
     formatSeparator: ',',
     format: (value, format) => (format === 'uppercase' ? value.toUpperCase() : value),
   },
+  browserLanguageDetection: true,
   detection: {
     order: ['cookie', 'header', 'querystring'],
     caches: ['cookie'],
