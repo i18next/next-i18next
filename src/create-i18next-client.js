@@ -9,7 +9,7 @@ export default (config) => {
   if (!i18n.isInitialized) {
 
     if (isNode) {
-      const i18nextNodeBackend = eval("require('i18next-node-fs-backend')") // eslint-disable-line
+      const i18nextNodeBackend = eval("require('i18next-node-fs-backend')")
       const i18nextMiddleware = eval("require('i18next-express-middleware')")
       i18n.use(i18nextNodeBackend).use(i18nextMiddleware.LanguageDetector)
     } else {
