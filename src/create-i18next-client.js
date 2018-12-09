@@ -1,6 +1,7 @@
 import isNode from 'detect-node'
 import i18next from 'i18next'
 import i18nextXHRBackend from 'i18next-xhr-backend'
+import i18nextBrowserLanguageDetector from 'i18next-browser-languagedetector'
 
 const i18n = i18next.default ? i18next.default : i18next
 i18n.nsFromReactTree = []
@@ -15,7 +16,6 @@ export default (config) => {
     } else {
       i18n.use(i18nextXHRBackend)
       if (config.browserLanguageDetection) {
-        const i18nextBrowserLanguageDetector = eval("require('i18next-browser-languagedetector')")
         i18n.use(i18nextBrowserLanguageDetector)
       }
     }
