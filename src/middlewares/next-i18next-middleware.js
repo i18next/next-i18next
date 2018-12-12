@@ -1,5 +1,6 @@
 import i18nextMiddleware from 'i18next-express-middleware'
 import { forceTrailingSlash, lngPathDetector } from 'utils'
+import { parse } from 'url'
 
 export default function (nexti18next, app, server) {
 
@@ -13,7 +14,8 @@ export default function (nexti18next, app, server) {
     server.get(/^\/(?!_next|static).*$/, lngPathDetector)
     server.get(`/:lng(${allLanguages.join('|')})/*`, (req, res) => {
       const { lng } = req.params
-      app.render(req, res, req.url.replace(`/${lng}`, ''), { lng })
+      const url = parse(req.url).pathname
+      app.render(req, res, url.replace(`/${lng}`, ''), { lng })
     })
   }
 }
