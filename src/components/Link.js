@@ -35,9 +35,7 @@ export default function () {
         const hrefWithLang = href.includes('?') ? `${href}&lng=${lng}` : `${href}?lng=${lng}`
 
         return (
-          <NextLink href={hrefWithLang} as={`/${lng}${as || href}`}>
-            {children}
-          </NextLink>
+          <NextLink href={hrefWithLang} as={`/${lng}${as || href}`}>{children}</NextLink>
         )
       }
 
@@ -51,9 +49,7 @@ export default function () {
     href: PropTypes.string.isRequired,
   }
 
-  Link.defaultProps = {
-    as: null,
-  }
+  Link.defaultProps = { as: null }
 
   /*
     Usage of `withNamespaces` here is just to
