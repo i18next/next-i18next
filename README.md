@@ -26,11 +26,12 @@ yarn add next-i18next
 By default, `next-i18next` expects your translations to be organised as such:
 ```
 .
-├── static
-    ├── en
-    |   └── common.json
-    └── de
-        └── common.json
+└── static
+    └── locales
+        ├── en
+        |   └── common.json
+        └── de
+            └── common.json
 ```
 
 This structure can also be seen in the [example directory](./example).
