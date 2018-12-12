@@ -19,6 +19,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import NextLink from 'next/link'
+import Url from 'url-parse'
 
 export default function () {
 
@@ -27,25 +28,32 @@ export default function () {
   class Link extends React.Component {
     render() {
       const { defaultLanguage, localeSubpaths } = config
-      const { children, href } = this.props
+      const { as, children, href } = this.props
       let lng = null
       if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
         [lng] = i18n.languages
       }
       if (localeSubpaths && lng && lng !== defaultLanguage) {
+        const url = new Url(href, true)
+        url.set('query', { ...url.query, lng })
+
         return (
-          <NextLink href={`${href}?lng=${lng}`} as={`/${lng}${href}`}>
-            {children}
-          </NextLink>
+          <NextLink href={url.href} as={`/${lng}${as || href}`}>{children}</NextLink>
         )
       }
-      return <NextLink href={href}>{children}</NextLink>
+
+      return <NextLink href={href} as={as}>{children}</NextLink>
     }
   }
 
   Link.propTypes = {
+    as: PropTypes.string,
     children: PropTypes.node.isRequired,
     href: PropTypes.string.isRequired,
+  }
+
+  Link.defaultProps = {
+    as: undefined,
   }
 
   /*
