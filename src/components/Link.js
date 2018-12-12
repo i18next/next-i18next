@@ -19,6 +19,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import NextLink from 'next/link'
+import Url from 'url-parse'
 
 export default function () {
 
@@ -33,10 +34,11 @@ export default function () {
         [lng] = i18n.languages
       }
       if (localeSubpaths && lng && lng !== defaultLanguage) {
-        const hrefWithLang = href.includes('?') ? `${href}&lng=${lng}` : `${href}?lng=${lng}`
+        const url = new Url(href, true)
+        url.set('query', { ...url.query, lng })
 
         return (
-          <NextLink href={hrefWithLang} as={`/${lng}${as || href}`}>{children}</NextLink>
+          <NextLink href={url.href} as={`/${lng}${as || href}`}>{children}</NextLink>
         )
       }
 
@@ -50,7 +52,9 @@ export default function () {
     href: PropTypes.string.isRequired,
   }
 
-  Link.defaultProps = { as: null }
+  Link.defaultProps = {
+    as: undefined,
+  }
 
   /*
     Usage of `withNamespaces` here is just to
