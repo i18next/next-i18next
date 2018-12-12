@@ -21,31 +21,38 @@ import PropTypes from 'prop-types'
 import NextLink from 'next/link'
 
 export default function () {
-
   const { config, i18n } = this
 
   class Link extends React.Component {
     render() {
       const { defaultLanguage, localeSubpaths } = config
-      const { children, href } = this.props
+      const { as, children, href } = this.props
       let lng = null
       if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
         [lng] = i18n.languages
       }
       if (localeSubpaths && lng && lng !== defaultLanguage) {
+        const hrefWithLang = href.includes('?') ? `${href}&lng=${lng}` : `${href}?lng=${lng}`
+
         return (
-          <NextLink href={`${href}?lng=${lng}`} as={`/${lng}${href}`}>
+          <NextLink href={hrefWithLang} as={`/${lng}${as || href}`}>
             {children}
           </NextLink>
         )
       }
-      return <NextLink href={href}>{children}</NextLink>
+
+      return <NextLink href={href} as={as}>{children}</NextLink>
     }
   }
 
   Link.propTypes = {
+    as: PropTypes.string,
     children: PropTypes.node.isRequired,
     href: PropTypes.string.isRequired,
+  }
+
+  Link.defaultProps = {
+    as: null,
   }
 
   /*

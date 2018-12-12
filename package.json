@@ -21,12 +21,13 @@
   ],
   "scripts": {
     "start": "babel-node ./src/index.js",
-    "lint": "eslint src",
-    "lint:fix": "eslint src --fix",
+    "lint": "eslint src __tests__",
+    "lint:fix": "eslint src __tests__ --fix",
     "build": "babel src --out-dir dist",
     "prepare": "yarn build",
     "run-example": "yarn build && cd example && rm -rf node_modules && yarn && yarn dev",
-    "run-example:prod": "yarn build && cd example && rm -rf node_modules && yarn && yarn build && yarn start"
+    "run-example:prod": "yarn build && cd example && rm -rf node_modules && yarn && yarn build && yarn start",
+    "test": "NODE_ENV=test jest"
   },
   "husky": {
     "hooks": {
@@ -40,15 +41,21 @@
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^23.6.0",
     "babel-plugin-add-module-exports": "^1.0.0",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.7.1",
     "eslint": "^5.9.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
-    "husky": "^1.1.4"
+    "husky": "^1.1.4",
+    "jest": "^23.6.0",
+    "next": "^7.0.2",
+    "react-dom": "^16.6.3"
   },
   "dependencies": {
     "detect-node": "^2.0.4",
