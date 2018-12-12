@@ -1,6 +1,8 @@
 import React from 'react'
 import Router from 'next/router'
 
+import reactTreeWalker from 'react-tree-walker'
+
 import { I18nextProvider } from 'react-i18next'
 import { lngPathCorrector } from 'utils'
 import { NextStaticProvider } from 'components'
@@ -53,25 +55,56 @@ export default function (WrappedComponent) {
       let initialI18nStore = {}
       let initialLanguage = null
 
-      // Load translations to serialize if we're serverside
+      // Step 1: Determine initial language
       if (req && req.i18n) {
+
+        // First language in array is current lang
         [initialLanguage] = req.i18n.languages
+
+        // Perform a lang change in case we're not on the right lang
         await i18n.changeLanguage(initialLanguage)
-        req.i18n.languages.forEach((l) => {
-          initialI18nStore[l] = {}
-          i18n.nsFromReactTree.forEach((ns) => {
-            initialI18nStore[l][ns] = (req.i18n.services.resourceStore.data[l] || {})[ns] || {}
-          })
-        })
+
       } else if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
+        initialLanguage = i18n.language
+      }
+
+      // Step 2: Determine namespace dependencies
+
+      // Create stripped-down version of incoming tree to
+      // walk and check props for NamespacesConsumer
+      const tree = (<I18nextProvider i18n={i18n}><Component {...this.props} /></I18nextProvider>)
+      let nsFromTree = []
+
+      // Walk tree and determine namespaces necessary to
+      // render this specific component tree
+      await reactTreeWalker(tree, (element, instance) => {
+        if (instance && instance.props && instance.props.ns) {
+          nsFromTree = [...new Set(nsFromTree.concat(instance.props.ns))]
+        }
+      })
+
+      // Step 3: Perform data fetching, depending on environment
+      if (req && req.i18n) {
+
+        // Initialise the store with only the initialLanguage and
+        // necessary namespaces needed to render this specific tree
+        initialI18nStore[initialLanguage] = {}
+        nsFromTree.forEach((ns) => {
+          initialI18nStore[initialLanguage][ns] = (
+            (req.i18n.services.resourceStore.data[initialLanguage] || {})[ns] || {}
+          )
+        })
+
+      } else if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
+
         // Load newly-required translations if changing route clientside
         await Promise.all(
-          i18n.nsFromReactTree
+          nsFromTree
             .filter(ns => !i18n.hasResourceBundle(i18n.languages[0], ns))
             .map(ns => new Promise(resolve => i18n.loadNamespaces(ns, () => resolve()))),
         )
         initialI18nStore = i18n.store.data
-        initialLanguage = i18n.language
+
       }
 
       // `pageProps` will get serialized automatically by NextJs

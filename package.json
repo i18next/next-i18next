@@ -60,6 +60,7 @@
     "i18next-xhr-backend": "^1.5.1",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
-    "react-i18next": "^8.3.8"
+    "react-i18next": "^8.3.8",
+    "react-tree-walker": "^4.3.0"
   }
 }
