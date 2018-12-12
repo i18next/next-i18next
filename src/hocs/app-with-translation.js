@@ -77,11 +77,13 @@ export default function (WrappedComponent) {
 
       // Walk tree and determine namespaces necessary to
       // render this specific component tree
-      await reactTreeWalker(tree, (element, instance) => {
-        if (instance && instance.props && instance.props.ns) {
-          nsFromTree = [...new Set(nsFromTree.concat(instance.props.ns))]
-        }
-      })
+      if (process.env.NODE_ENV === 'production') {
+        await reactTreeWalker(tree, (element, instance) => {
+          if (instance && instance.props && instance.props.ns) {
+            nsFromTree = [...new Set(nsFromTree.concat(instance.props.ns))]
+          }
+        })
+      }
 
       // Step 3: Perform data fetching, depending on environment
       if (req && req.i18n) {
