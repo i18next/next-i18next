@@ -21,6 +21,7 @@ import PropTypes from 'prop-types'
 import NextLink from 'next/link'
 
 export default function () {
+
   const { config, i18n } = this
 
   class Link extends React.Component {
