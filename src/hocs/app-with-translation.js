@@ -28,19 +28,19 @@ export default function (WrappedComponent) {
       }
     }
 
-    static async getInitialProps({ Component, ctx }) {
+    static async getInitialProps({ Component, ctx }, ...additionalContext) {
 
       let pageProps = {}
       let regularProps = {}
 
       if (Component.getInitialProps) {
-        pageProps = await Component.getInitialProps(ctx)
+        pageProps = await Component.getInitialProps(ctx, ...additionalContext)
       }
 
       // Run getInitialProps on wrapped _app
       if (WrappedComponent.getInitialProps) {
         const { pageProps: wrappedPageProps, ...rest } = await WrappedComponent
-          .getInitialProps({ Component, ctx })
+          .getInitialProps({ Component, ctx }, ...additionalContext)
         pageProps = {
           ...pageProps,
           ...wrappedPageProps,
