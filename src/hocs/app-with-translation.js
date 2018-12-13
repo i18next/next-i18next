@@ -82,7 +82,7 @@ export default function (WrappedComponent) {
           if (instance && instance.props && instance.props.ns) {
             nsFromTree = [...new Set(nsFromTree.concat(instance.props.ns))]
           }
-        })
+        }, {})
       }
 
       // Step 3: Perform data fetching, depending on environment
