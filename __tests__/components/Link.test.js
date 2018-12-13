@@ -114,14 +114,14 @@ describe('Link component', () => {
     // without 'as' prop -- no query parameters
     let component = createLinkComponent()
 
-    expect(component.prop('href')).toEqual('http://localhost/foo/bar?lng=de')
+    expect(component.prop('href')).toEqual('/foo/bar?lng=de')
     expect(component.prop('as')).toEqual('/de/foo/bar')
 
     // without 'as' prop -- query parameters
     props.href = '/foo/bar?baz'
     component = createLinkComponent()
 
-    expect(component.prop('href')).toEqual('http://localhost/foo/bar?baz=&lng=de')
+    expect(component.prop('href')).toEqual('/foo/bar?baz&lng=de')
     expect(component.prop('as')).toEqual('/de/foo/bar?baz')
 
     props.href = '/foo/bar'
@@ -130,7 +130,7 @@ describe('Link component', () => {
     props.as = '/foo?bar'
     component = createLinkComponent()
 
-    expect(component.prop('href')).toEqual('http://localhost/foo/bar?lng=de')
+    expect(component.prop('href')).toEqual('/foo/bar?lng=de')
     expect(component.prop('as')).toEqual('/de/foo?bar')
   })
 })
