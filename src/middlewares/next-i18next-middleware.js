@@ -14,8 +14,9 @@ export default function (nexti18next, app, server) {
     server.get(/^\/(?!_next|static).*$/, lngPathDetector)
     server.get(`/:lng(${allLanguages.join('|')})/*`, (req, res) => {
       const { lng } = req.params
+      const { query } = req
       const url = parse(req.url).pathname
-      app.render(req, res, url.replace(`/${lng}`, ''), { lng })
+      app.render(req, res, url.replace(`/${lng}`, ''), { lng, ...query })
     })
   }
 }
