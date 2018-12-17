@@ -67,9 +67,11 @@ export default function (WrappedComponent) {
       }
 
       // Step 2: Determine namespace dependencies
-      let namespacesRequired = config.allLanguages
+      let namespacesRequired = config.ns
       if (Array.isArray(pageProps.namespacesRequired)) {
         ({ namespacesRequired } = pageProps)
+      } else if (process.env.NODE_ENV !== 'production') {
+        console.warn(`You have not declared a namespacesRequired array on your page-level component: ${Component.displayName}. This will cause all namespaces to be sent down to the client, possibly negatively impacting the performance of your app. For more info, see: https://github.com/isaachinman/next-i18next#4-declaring-namespace-dependencies`)
       }
 
       // Step 3: Perform data fetching, depending on environment
