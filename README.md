@@ -77,7 +77,13 @@ class Footer extends React.Component {
 export default withNamespaces('footer')(Footer)
 ```
 
-### 3. Locale subpaths
+### 3. Declaring namespace dependencies
+
+By default, `next-i18next` will send _all your namespaces_ down to the client on each initial request. This can be an appropriate approach for smaller apps with less content, but a lot of apps will benefit from splitting namespaces based on route.
+
+To do that, you need to return a `namespacesRequired` array via `getInitialProps` on your page-level component. You can see this approach in [example/pages/index.js](./example/pages/index.js).
+
+### 4. Locale subpaths
 
 One of the main features of this package, besides translation itself, are locale subpaths. It's easiest to explain by example:
 

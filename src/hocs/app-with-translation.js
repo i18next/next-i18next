@@ -1,8 +1,6 @@
 import React from 'react'
 import Router from 'next/router'
 
-import reactTreeWalker from 'react-tree-walker'
-
 import { I18nextProvider } from 'react-i18next'
 import { lngPathCorrector } from 'utils'
 import { NextStaticProvider } from 'components'
@@ -69,20 +67,9 @@ export default function (WrappedComponent) {
       }
 
       // Step 2: Determine namespace dependencies
-
-      // Create stripped-down version of incoming tree to
-      // walk and check props for NamespacesConsumer
-      const tree = (<I18nextProvider i18n={i18n}><Component {...this.props} /></I18nextProvider>)
-      let nsFromTree = []
-
-      // Walk tree and determine namespaces necessary to
-      // render this specific component tree
-      if (process.env.NODE_ENV === 'production') {
-        await reactTreeWalker(tree, (element, instance) => {
-          if (instance && instance.props && instance.props.ns) {
-            nsFromTree = [...new Set(nsFromTree.concat(instance.props.ns))]
-          }
-        }, {})
+      let namespacesRequired = config.allLanguages
+      if (Array.isArray(pageProps.namespacesRequired)) {
+        ({ namespacesRequired } = pageProps)
       }
 
       // Step 3: Perform data fetching, depending on environment
@@ -91,7 +78,7 @@ export default function (WrappedComponent) {
         // Initialise the store with only the initialLanguage and
         // necessary namespaces needed to render this specific tree
         initialI18nStore[initialLanguage] = {}
-        nsFromTree.forEach((ns) => {
+        namespacesRequired.forEach((ns) => {
           initialI18nStore[initialLanguage][ns] = (
             (req.i18n.services.resourceStore.data[initialLanguage] || {})[ns] || {}
           )
@@ -101,7 +88,7 @@ export default function (WrappedComponent) {
 
         // Load newly-required translations if changing route clientside
         await Promise.all(
-          nsFromTree
+          namespacesRequired
             .filter(ns => !i18n.hasResourceBundle(i18n.languages[0], ns))
             .map(ns => new Promise(resolve => i18n.loadNamespaces(ns, () => resolve()))),
         )

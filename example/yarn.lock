@@ -4480,7 +4480,7 @@ neo-async@^2.5.0:
   integrity sha512-MFh0d/Wa7vkKO3Y3LlacqAEeHK0mckVqzDieUKTT+KGxi+zIpeVsFxymkIiRpbpDziHc290Xr9A1O4Om7otoRA==
 
 next-i18next@../:
-  version "0.10.1"
+  version "0.10.3"
   dependencies:
     detect-node "^2.0.4"
     hoist-non-react-statics "^3.2.0"
@@ -4492,7 +4492,6 @@ next-i18next@../:
     prop-types "^15.6.2"
     react "^16.6.3"
     react-i18next "^8.3.8"
-    react-tree-walker "^4.3.0"
     url-parse "^1.4.4"
 
 next@^7.0.2:
@@ -5239,11 +5238,6 @@ react-is@^16.3.2:
   version "16.6.3"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.6.3.tgz#d2d7462fcfcbe6ec0da56ad69047e47e56e7eac0"
   integrity sha512-u7FDWtthB4rWibG/+mFbVd5FvdI20yde86qKGx4lVUTWmPlSWQ4QxbBIrrs+HnXGbxOUlUzTAP/VDmvCwaP2yA==
-
-react-tree-walker@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/react-tree-walker/-/react-tree-walker-4.3.0.tgz#b7cae498cebb490281e9e99a01bdb9c6b4926cd3"
-  integrity sha512-sO/pk+JQ2mbtPGdlKbeeo2aT4qXl5nPkGVO96yYQOdX9jYvRNXSnMWIydniLVEoiPvUbpfoc057blGbAQgMBRg==
 
 react@^16.6.3:
   version "16.6.3"
