@@ -26,11 +26,12 @@ yarn add next-i18next
 By default, `next-i18next` expects your translations to be organised as such:
 ```
 .
-├── static
-    ├── en
-    |   └── common.json
-    └── de
-        └── common.json
+└── static
+    └── locales
+        ├── en
+        |   └── common.json
+        └── de
+            └── common.json
 ```
 
 This structure can also be seen in the [example directory](./example).
@@ -55,7 +56,7 @@ It's recommended to export this `NextI18Next` instance from a single file in you
 After creating and exporting your `NextI18Next` instance, you need to take the following steps to get things working:
 
 1. Create an `_app.js` file inside your `pages` directory, and wrap it with the `NextI18Next.appWithTranslation` higher order component (HOC). You can see this approach in the [example/pages/_app.js](./example/pages/_app.js). 
-2. Create a `server.js` file inside your root directory, initialise an [express](https://www.npmjs.com/package/express) server, and pass both the express server and NextJs app into `NextI18Next.nextI18NextMiddleware`. You can see this approach in the [example/server.js](./example/server.js)
+2. Create a `server.js` file inside your root directory, initialise an [express](https://www.npmjs.com/package/express) server, and pass (a) your NextI18Next instance, (b) express server and (c) NextJs app into `NextI18Next.nextI18NextMiddleware`. You can see this approach in the [example/server.js](./example/server.js). For more info, see [the NextJs section on custom servers](https://github.com/zeit/next.js#custom-server-and-routing).
 
 That's it! Your app is ready to go. You can now use the `NextI18Next.withNamespaces` HOC to make your components or pages translatable, based on namespaces:
 
@@ -76,7 +77,13 @@ class Footer extends React.Component {
 export default withNamespaces('footer')(Footer)
 ```
 
-### 3. Locale subpaths
+### 4. Declaring namespace dependencies
+
+By default, `next-i18next` will send _all your namespaces_ down to the client on each initial request. This can be an appropriate approach for smaller apps with less content, but a lot of apps will benefit from splitting namespaces based on route.
+
+To do that, you need to return a `namespacesRequired` array via `getInitialProps` on your page-level component. You can see this approach in [example/pages/index.js](./example/pages/index.js).
+
+### 5. Locale subpaths
 
 One of the main features of this package, besides translation itself, are locale subpaths. It's easiest to explain by example:
 
@@ -142,15 +149,19 @@ class SomeLink extends React.Component {
 
 ## Options
 
-| Key                    | Default value      |
-| ---------------------- | ------------------ |
-| `defaultLanguage`      | `"en"`             |
-| `otherLanguages`       | `[]`               |
-| `localePath`           | `'static/locales'` |
-| `localeStructure`      | `'{{lng}}/{{ns}}'` |
-| `localeSubpaths`       | `false`            |
-| `defaultLocaleSubpath` | `false`            |
-| `defaultNS`            | `'common'`         |
+| Key                        | Default value      |
+| -------------------------- | ------------------ |
+| `browserLanguageDetection` | `true`             |
+| `defaultNS`                | `'common'`         |
+| `defaultLanguage`          | `'en'`             |
+| `otherLanguages`           | `[]`               |
+| `localePath`               | `'static/locales'` |
+| `localeStructure`          | `'{{lng}}/{{ns}}'` |
+| `localeSubpaths`           | `false`            |
+| `defaultLocaleSubpath`     | `false`            |
+| `use` (for plugins)        | `[]`               |
+
+_This table contains options which are specific to next-i18next. All other [i18next options](https://www.i18next.com/overview/configuration-options) can be passed in as well._
 
 ## Notes
 

@@ -18,6 +18,10 @@
     "import/no-mutable-exports": 0,
     "react/jsx-filename-extension": 0,
     "react/prefer-stateless-function": 0,
-    "no-restricted-syntax": 0
+    "no-restricted-syntax": 0,
+    "no-eval": 0,
+    "no-console": ["error", {
+      "allow": ["warn", "error"]
+    }]
   }
 }

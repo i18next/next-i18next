@@ -53,25 +53,49 @@ export default function (WrappedComponent) {
       let initialI18nStore = {}
       let initialLanguage = null
 
-      // Load translations to serialize if we're serverside
+      // Step 1: Determine initial language
       if (req && req.i18n) {
+
+        // First language in array is current lang
         [initialLanguage] = req.i18n.languages
+
+        // Perform a lang change in case we're not on the right lang
         await i18n.changeLanguage(initialLanguage)
-        req.i18n.languages.forEach((l) => {
-          initialI18nStore[l] = {}
-          i18n.nsFromReactTree.forEach((ns) => {
-            initialI18nStore[l][ns] = (req.i18n.services.resourceStore.data[l] || {})[ns] || {}
-          })
-        })
+
       } else if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
+        initialLanguage = i18n.language
+      }
+
+      // Step 2: Determine namespace dependencies
+      let namespacesRequired = config.ns
+      if (Array.isArray(pageProps.namespacesRequired)) {
+        ({ namespacesRequired } = pageProps)
+      } else if (process.env.NODE_ENV !== 'production') {
+        console.warn(`You have not declared a namespacesRequired array on your page-level component: ${Component.displayName}. This will cause all namespaces to be sent down to the client, possibly negatively impacting the performance of your app. For more info, see: https://github.com/isaachinman/next-i18next#4-declaring-namespace-dependencies`)
+      }
+
+      // Step 3: Perform data fetching, depending on environment
+      if (req && req.i18n) {
+
+        // Initialise the store with only the initialLanguage and
+        // necessary namespaces needed to render this specific tree
+        initialI18nStore[initialLanguage] = {}
+        namespacesRequired.forEach((ns) => {
+          initialI18nStore[initialLanguage][ns] = (
+            (req.i18n.services.resourceStore.data[initialLanguage] || {})[ns] || {}
+          )
+        })
+
+      } else if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
+
         // Load newly-required translations if changing route clientside
         await Promise.all(
-          i18n.nsFromReactTree
+          namespacesRequired
             .filter(ns => !i18n.hasResourceBundle(i18n.languages[0], ns))
             .map(ns => new Promise(resolve => i18n.loadNamespaces(ns, () => resolve()))),
         )
         initialI18nStore = i18n.store.data
-        initialLanguage = i18n.language
+
       }
 
       // `pageProps` will get serialized automatically by NextJs

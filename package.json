@@ -1,6 +1,6 @@
 {
   "name": "next-i18next",
-  "version": "0.7.0",
+  "version": "0.11.2",
   "main": "dist/index.js",
   "repository": "git@github.com:isaachinman/next-i18next.git",
   "author": "Isaac Hinman <isaac@isaachinman.com>",
@@ -25,7 +25,8 @@
     "lint:fix": "eslint src --fix",
     "build": "babel src --out-dir dist",
     "prepare": "yarn build",
-    "run-example": "yarn build && cd example && yarn && yarn dev"
+    "run-example": "yarn build && cd example && rm -rf node_modules && yarn && yarn dev",
+    "run-example:prod": "yarn build && cd example && rm -rf node_modules && yarn && yarn build && yarn start"
   },
   "husky": {
     "hooks": {
@@ -39,6 +40,7 @@
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
+    "babel-plugin-add-module-exports": "^1.0.0",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "eslint": "^5.9.0",
@@ -58,6 +60,7 @@
     "i18next-xhr-backend": "^1.5.1",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
-    "react-i18next": "^8.3.8"
+    "react-i18next": "^8.3.8",
+    "url-parse": "^1.4.4"
   }
 }

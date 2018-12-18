@@ -16,12 +16,14 @@ export default {
   localeSubpaths: LOCALE_SUBPATHS,
   defaultLocaleSubpath: DEFAULT_LOCALE_SUBPATH,
   ns: [DEFAULT_NAMESPACE],
+  use: [],
   defaultNS: DEFAULT_NAMESPACE,
   interpolation: {
     escapeValue: false,
     formatSeparator: ',',
     format: (value, format) => (format === 'uppercase' ? value.toUpperCase() : value),
   },
+  browserLanguageDetection: true,
   detection: {
     order: ['cookie', 'header', 'querystring'],
     caches: ['cookie'],
