@@ -32,7 +32,7 @@ export default function () {
       if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
         [lng] = i18n.languages
       }
-      if (localeSubpaths && lng && lng !== (defaultLanguage || defaultLocaleSubpath)) {
+      if (localeSubpaths && lng && (lng !== defaultLanguage || defaultLocaleSubpath)) {
         const url = new Url(href, true)
         url.set('query', { ...url.query, lng })
 
