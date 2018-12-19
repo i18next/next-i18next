@@ -74,6 +74,14 @@ export default function (WrappedComponent) {
         console.warn(`You have not declared a namespacesRequired array on your page-level component: ${Component.displayName}. This will cause all namespaces to be sent down to the client, possibly negatively impacting the performance of your app. For more info, see: https://github.com/isaachinman/next-i18next#4-declaring-namespace-dependencies`)
       }
 
+      // We must always send down the defaultNS, otherwise
+      // the client will trigger a request for it and issue
+      // the "Did not expect server HTML to contain a <h1> in <div>"
+      // error
+      if (!namespacesRequired.includes(config.defaultNS)) {
+        namespacesRequired.push(config.defaultNS)
+      }
+
       // Step 3: Perform data fetching, depending on environment
       if (req && req.i18n) {
 
