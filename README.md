@@ -83,6 +83,8 @@ By default, `next-i18next` will send _all your namespaces_ down to the client on
 
 To do that, you need to return a `namespacesRequired` array via `getInitialProps` on your page-level component. You can see this approach in [example/pages/index.js](./example/pages/index.js).
 
+Note: `withNamespaces` provides namespaces to the component that it wraps. However, `namespacesRequired` provides the total available namespaces to the entire React tree and belongs on the page level. Both are required (although you can use `Trans` instead of `withNamespaces` if desired).
+
 ### 5. Locale subpaths
 
 One of the main features of this package, besides translation itself, are locale subpaths. It's easiest to explain by example:
