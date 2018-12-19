@@ -28,7 +28,7 @@ export default function (WrappedComponent) {
       }
     }
 
-    static async getInitialProps({ Component, ctx }) {
+    static async getInitialProps({ Component, ctx, ...initObject }) {
 
       let pageProps = {}
       let regularProps = {}
@@ -40,7 +40,7 @@ export default function (WrappedComponent) {
       // Run getInitialProps on wrapped _app
       if (WrappedComponent.getInitialProps) {
         const { pageProps: wrappedPageProps, ...rest } = await WrappedComponent
-          .getInitialProps({ Component, ctx })
+          .getInitialProps({ Component, ctx, ...initObject })
         pageProps = {
           ...pageProps,
           ...wrappedPageProps,
