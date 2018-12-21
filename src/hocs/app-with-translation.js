@@ -6,6 +6,8 @@ import { lngPathCorrector } from 'utils'
 import { NextStaticProvider } from 'components'
 
 import hoistNonReactStatics from 'hoist-non-react-statics'
+import createConsoleMessage from '../utils/console-message'
+
 
 export default function (WrappedComponent) {
 
@@ -71,7 +73,7 @@ export default function (WrappedComponent) {
       if (Array.isArray(pageProps.namespacesRequired)) {
         ({ namespacesRequired } = pageProps)
       } else if (process.env.NODE_ENV !== 'production') {
-        console.warn(`You have not declared a namespacesRequired array on your page-level component: ${Component.displayName}. This will cause all namespaces to be sent down to the client, possibly negatively impacting the performance of your app. For more info, see: https://github.com/isaachinman/next-i18next#4-declaring-namespace-dependencies`)
+        createConsoleMessage('warn', `You have not declared a namespacesRequired array on your page-level component: ${Component.displayName}. This will cause all namespaces to be sent down to the client, possibly negatively impacting the performance of your app. For more info, see: https://github.com/isaachinman/next-i18next#4-declaring-namespace-dependencies`)
       }
 
       // We must always send down the defaultNS, otherwise
