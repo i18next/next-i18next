@@ -70,6 +70,7 @@
     "i18next-express-middleware": "^1.5.0",
     "i18next-node-fs-backend": "^2.1.0",
     "i18next-xhr-backend": "^1.5.1",
+    "pretty-error": "^2.1.1",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-i18next": "^8.4.0",
