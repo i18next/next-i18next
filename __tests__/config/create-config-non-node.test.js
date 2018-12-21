@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import { setUpTest, tearDownTest } from './test-helpers'
+import { userConfig, setUpTest, tearDownTest } from './test-helpers'
 
 import createConfig from '../../src/config/create-config'
 
@@ -46,6 +46,25 @@ describe('create configuration in non-production environment', () => {
     expect(config.preload).toBeUndefined()
 
     expect(config.ns).toEqual(['common'])
+
+    expect(config.backend.loadPath).toEqual('/static/locales/{{lng}}/{{ns}}.json')
+    expect(config.backend.addPath).toEqual('/static/locales/{{lng}}/{{ns}}.missing.json')
+  })
+
+  it('creates custom non-node non-production configuration', () => {
+    const config = createConfig(userConfig)
+
+    expect(config.defaultLanguage).toEqual('de')
+    expect(config.otherLanguages).toEqual(['fr', 'it'])
+    expect(config.fallbackLng).toEqual('it')
+    expect(config.load).toEqual('languageOnly')
+    expect(config.localePath).toEqual('static/translations')
+    expect(config.localeStructure).toEqual('{{ns}}/{{lng}}')
+    expect(config.localeSubpaths).toEqual(true)
+    expect(config.defaultNS).toEqual('universal')
+    expect(config.browserLanguageDetection).toEqual(false)
+
+    expect(config.ns).toEqual(['universal'])
 
     expect(config.backend.loadPath).toEqual('/static/locales/{{lng}}/{{ns}}.json')
     expect(config.backend.addPath).toEqual('/static/locales/{{lng}}/{{ns}}.missing.json')
