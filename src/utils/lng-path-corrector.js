@@ -3,7 +3,7 @@ export default (config, i18n, currentRoute, currentLanguage = i18n.languages[0])
   const { defaultLanguage, allLanguages } = config
 
   if (!allLanguages.includes(currentLanguage)) {
-    return currentRoute
+    throw new Error('Invalid configuration: Current language is not included in all languages array')
   }
 
   let href = currentRoute
