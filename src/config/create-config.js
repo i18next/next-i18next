@@ -10,6 +10,7 @@ export default (userConfig) => {
 
   combinedConfig.allLanguages = combinedConfig.otherLanguages
     .concat([combinedConfig.defaultLanguage])
+  combinedConfig.ns = [combinedConfig.defaultNS]
 
   if (isNode && !process.browser) {
     const fs = eval("require('fs')")
