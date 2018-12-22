@@ -1,0 +1,22 @@
+{
+  "projectName": "next-i18next",
+  "projectOwner": "isaachinman",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "contributors": [
+    {
+      "login": "capellini",
+      "name": "Rob Capellini",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/75311?v=4",
+      "profile": "https://github.com/capellini",
+      "contributions": [
+        "code"
+      ]
+    }
+  ]
+}

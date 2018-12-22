@@ -1,4 +1,5 @@
 # next-i18next
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
 [![npm version](https://badge.fury.io/js/next-i18next.svg)](https://badge.fury.io/js/next-i18next)
 [![CircleCI](https://circleci.com/gh/isaachinman/next-i18next.svg?style=shield)](https://circleci.com/gh/isaachinman/next-i18next)
@@ -160,3 +161,15 @@ _This table contains options which are specific to next-i18next. All other [i18n
 ## Contributing
 
 Please do! All PRs and issues will be thoroughly reviewed.
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+| [<img src="https://avatars3.githubusercontent.com/u/75311?v=4" width="100px;"/><br /><sub><b>Rob Capellini</b></sub>](https://github.com/capellini)<br />[💻](https://github.com/isaachinman/next-i18next/commits?author=capellini "Code") |
+| :---: |
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
