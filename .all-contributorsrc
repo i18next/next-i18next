@@ -18,6 +18,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "kachkaev",
+      "name": "Alexander Kachkaev",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/608862?v=4",
+      "profile": "https://en.kachkaev.ru",
+      "contributions": [
+        "talk"
+      ]
     }
   ]
 }
