@@ -168,7 +168,7 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
-| [<img src="https://avatars3.githubusercontent.com/u/75311?v=4" width="100px;"/><br /><sub><b>Rob Capellini</b></sub>](https://github.com/capellini)<br />[💻](https://github.com/isaachinman/next-i18next/commits?author=capellini "Code") |
+| [<img src="https://avatars3.githubusercontent.com/u/75311?v=4" width="100px;"/><br /><sub><b>Rob Capellini</b></sub>](https://github.com/capellini)<br />[💻](https://github.com/isaachinman/next-i18next/commits?author=capellini "Code") [⚠️](https://github.com/isaachinman/next-i18next/commits?author=capellini "Tests") |
 | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
