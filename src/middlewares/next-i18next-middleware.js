@@ -7,7 +7,9 @@ export default function (nexti18next, app, server) {
   const { config, i18n } = nexti18next
   const { allLanguages, localeSubpaths } = config
 
-  server.use(i18nextMiddleware.handle(i18n))
+  server.use(i18nextMiddleware.handle(i18n, {
+    ignoreRoutes: ['/_next', '/static'],
+  }))
 
   if (localeSubpaths) {
     server.get('*', forceTrailingSlash)
