@@ -48,7 +48,11 @@ describe('next-18next middleware', () => {
     nextI18nextMiddleware(nexti18next, app, server)
 
     expect(server.use).toBeCalled()
-    expect(i18nextMiddleware.handle).toBeCalledWith('i18n')
+    expect(i18nextMiddleware.handle)
+      .toBeCalledWith('i18n',
+        expect.objectContaining({
+          ignoreRoutes: expect.arrayContaining(['/_next', '/static']),
+        }))
 
     expect(server.get).not.toBeCalled()
   })
@@ -57,7 +61,11 @@ describe('next-18next middleware', () => {
     nextI18nextMiddleware(nexti18next, app, server)
 
     expect(server.use).toBeCalled()
-    expect(i18nextMiddleware.handle).toBeCalledWith('i18n')
+    expect(i18nextMiddleware.handle)
+      .toBeCalledWith('i18n',
+        expect.objectContaining({
+          ignoreRoutes: expect.arrayContaining(['/_next', '/static']),
+        }))
 
     expect(server.get).toBeCalledTimes(3)
     expect(server.get).toBeCalledWith('*', 'forceTrailingSlash')
