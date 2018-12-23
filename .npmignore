@@ -17,3 +17,10 @@ out
 
 # Logs
 runtime.log
+
+# Testing
+__tests__
+coverage
+
+# Misc
+.circleci

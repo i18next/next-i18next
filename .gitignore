@@ -15,4 +15,5 @@ out
 # Logs
 runtime.log
 
+# Testing
 coverage/
