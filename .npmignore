@@ -21,6 +21,7 @@ runtime.log
 # Testing
 __tests__
 coverage
+jest.*
 
 # Misc
 .circleci
