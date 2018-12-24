@@ -68,7 +68,7 @@ describe('next-18next middleware', () => {
         }))
 
     expect(server.get).toBeCalledTimes(3)
-    expect(server.get).toBeCalledWith('*', 'forceTrailingSlash')
+    expect(server.get).toBeCalledWith(/^\/(?!_next|static).*$/, 'forceTrailingSlash')
     expect(server.get).toBeCalledWith(/^\/(?!_next|static).*$/, 'lngPathDetector')
 
     expect(server.get.mock.calls[2][0]).toEqual('/:lng(en|de)/*')

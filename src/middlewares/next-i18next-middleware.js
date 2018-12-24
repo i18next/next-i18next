@@ -12,7 +12,7 @@ export default function (nexti18next, app, server) {
   }))
 
   if (localeSubpaths) {
-    server.get('*', forceTrailingSlash)
+    server.get(/^\/(?!_next|static).*$/, forceTrailingSlash)
     server.get(/^\/(?!_next|static).*$/, lngPathDetector)
     server.get(`/:lng(${allLanguages.join('|')})/*`, (req, res) => {
       const { lng } = req.params
