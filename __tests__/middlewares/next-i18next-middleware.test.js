@@ -31,6 +31,7 @@ describe('next-18next middleware', () => {
     nexti18next = {
       config: {
         allLanguages: ['en', 'de'],
+        ignoreRoutes: ['/_next', '/static'],
         localeSubpaths: true,
       },
       i18n: 'i18n',

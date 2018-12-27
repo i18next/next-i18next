@@ -142,6 +142,7 @@ class SomeLink extends React.Component {
 | `browserLanguageDetection`  | `true`  |
 | `defaultNS` | `'common'`  |
 | `defaultLanguage`  | `'en'`  |
+| `ignoreRoutes`  | `['/_next', '/static']`  |
 | `otherLanguages` | `[]`  |
 | `localePath` | `'static/locales'`  |
 | `localeStructure` | `'{{lng}}/{{ns}}'`  |
