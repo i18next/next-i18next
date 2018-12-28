@@ -15,11 +15,16 @@ export default (req, res, next) => {
     /*
       If a user has hit the root path and their
       language is not set to default, give
-      preference to the path and reset their
-      language.
+      preference to the language and redirect
+      their path.
     */
     if (language !== defaultLanguage && !req.url.startsWith(`/${language}/`)) {
-      req.i18n.changeLanguage(defaultLanguage)
+      allLanguages.forEach((lng) => {
+        if (req.url.startsWith(`/${lng}/`)) {
+          req.url = req.url.replace(`/${lng}/`, '/')
+        }
+      })
+      res.redirect(301, req.url.replace('/', `/${language}/`))
     }
     /*
       If a user has a default language prefix
