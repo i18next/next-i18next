@@ -157,10 +157,6 @@ _This table contains options which are specific to next-i18next. All other [i18n
 - [We cannot support koa until a 1:1 replacement for `i18next-express-middleware` exists](https://github.com/isaachinman/next-i18next/issues/9).
 - [To add a `lang` attribute to your top-level html DOM node, you must create a `_document.js` file.](https://github.com/isaachinman/next-i18next/issues/20#issuecomment-443461652)
 
-## Contributing
-
-Please do! All PRs and issues will be thoroughly reviewed.
-
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
