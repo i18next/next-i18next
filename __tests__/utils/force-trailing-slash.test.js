@@ -56,7 +56,7 @@ describe('forceTrailingSlash utility function', () => {
 
     expect(res.redirect).toBeCalledWith(301, '/en/')
 
-    expect(next).toBeCalled()
+    expect(next).not.toBeCalled()
   })
 
   it('redirects if pathname is lang without trailing slash (adds search params)', () => {
@@ -66,6 +66,6 @@ describe('forceTrailingSlash utility function', () => {
 
     expect(res.redirect).toBeCalledWith(301, '/de/?option1=value1')
 
-    expect(next).toBeCalled()
+    expect(next).not.toBeCalled()
   })
 })

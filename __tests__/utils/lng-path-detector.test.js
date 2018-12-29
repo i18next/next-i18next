@@ -49,15 +49,15 @@ describe('lngPathDetector utility function', () => {
     expect(next).toBeCalled()
   })
 
-  it('changes lang to default if url starts with default and language is not the default', () => {
+  it('performs redirect if url starts with default and language is not the default', () => {
     req.i18n.languages = ['de', 'en']
-    req.url = '/en/foo'
+    req.url = '/en/foo?test=123'
 
     lngPathDetector(req, res, next)
 
     expect(req.i18n.changeLanguage).toBeCalledWith('en')
 
-    expect(res.redirect).not.toBeCalled()
+    expect(res.redirect).toBeCalledWith(301, '/de/foo?test=123')
 
     expect(next).toBeCalled()
   })
