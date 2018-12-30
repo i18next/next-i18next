@@ -87,11 +87,20 @@ export default function (WrappedComponent) {
 
         // Initialise the store with only the initialLanguage and
         // necessary namespaces needed to render this specific tree
+        const { fallbackLng } = config
         initialI18nStore[initialLanguage] = {}
+        if (fallbackLng) {
+          initialI18nStore[fallbackLng] = {}
+        }
         namespacesRequired.forEach((ns) => {
           initialI18nStore[initialLanguage][ns] = (
             (req.i18n.services.resourceStore.data[initialLanguage] || {})[ns] || {}
           )
+          if (fallbackLng) {
+            initialI18nStore[fallbackLng][ns] = (
+              (req.i18n.services.resourceStore.data[fallbackLng] || {})[ns] || {}
+            )
+          }
         })
 
       } else if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
