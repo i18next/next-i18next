@@ -4,7 +4,7 @@
 import { createConsoleMessage } from 'utils'
 
 
-describe('console-message info', () => {
+describe('createConsoleMessage utility function', () => {
   const OLD_ENV = process.env
 
   let consoleInfoSpy
