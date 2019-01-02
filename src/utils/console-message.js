@@ -1,12 +1,9 @@
 /* eslint-disable no-console */
-const util = require('util')
-const PrettyError = require('pretty-error')
 
-const pe = new PrettyError()
 
 /**
   * @readonly
-  * @enum {String} A log type
+  * @enum {String} A console.log type
   */
 const messageTypes = {
   warn: 'Warning',
@@ -28,14 +25,28 @@ function setStackTraceLimit(traceLimit = 10) {
 
 
 /**
- * Create a console log with specified type and message
- *
- * Optionally provide a traceLimit variable to increase the stack trace.
+ * Create a console log with specified type, message and options
  * @param {messageTypes} messageType One of: err, warn or info
  * @param {String} message
- * @param {Number} traceLimit
+ * @param {Object} options
  */
-function createConsoleLog(messageType = messageTypes.info, message, traceLimit = 0) {
+function createConsoleLog(
+  messageType = messageTypes.info,
+  message,
+  options = {
+    traceLimit: 0,
+    strictMode: true,
+  }) {
+  const { traceLimit, strictMode } = options
+
+  if (!strictMode) {
+    return
+  }
+  const util = require('util')
+  const PrettyError = require('pretty-error')
+
+  const pe = new PrettyError()
+
   /* Temporarily set the stacktrace to 0 or traceLimit, in order to only display a message */
   Error.stackTraceLimit = traceLimit
   /* Make room for new message */
