@@ -26,7 +26,19 @@ export default function (WrappedComponent) {
               Router.replace(href, as, { shallow: true })
             }
           }
+
         })
+      }
+
+      this.createConsoleMessage = (type, message, traceLimit = 0) => {
+        createConsoleMessage(
+          type,
+          message,
+          {
+            strictMode: config.strictMode,
+            traceLimit,
+          },
+        )
       }
     }
 
@@ -73,7 +85,10 @@ export default function (WrappedComponent) {
       if (Array.isArray(pageProps.namespacesRequired)) {
         ({ namespacesRequired } = pageProps)
       } else if (process.env.NODE_ENV !== 'production') {
-        createConsoleMessage('warn', `You have not declared a namespacesRequired array on your page-level component: ${Component.displayName}. This will cause all namespaces to be sent down to the client, possibly negatively impacting the performance of your app. For more info, see: https://github.com/isaachinman/next-i18next#4-declaring-namespace-dependencies`)
+        this.createConsoleMessage(
+          'warn',
+          `You have not declared a namespacesRequired array on your page-level component: ${Component.displayName}. This will cause all namespaces to be sent down to the client, possibly negatively impacting the performance of your app. For more info, see: https://github.com/isaachinman/next-i18next#4-declaring-namespace-dependencies`,
+        )
       }
 
       // We must always send down the defaultNS, otherwise
