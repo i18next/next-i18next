@@ -2,12 +2,10 @@ import React from 'react'
 import Router from 'next/router'
 
 import { I18nextProvider } from 'react-i18next'
-import { lngPathCorrector } from 'utils'
+import { createConsoleMessage, lngPathCorrector } from 'utils'
 import { NextStaticProvider } from 'components'
 
 import hoistNonReactStatics from 'hoist-non-react-statics'
-import createConsoleMessage from '../utils/console-message'
-
 
 export default function (WrappedComponent) {
 

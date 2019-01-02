@@ -30,7 +30,7 @@ function setStackTraceLimit(traceLimit = 10) {
  * @param {String} message
  * @param {Object} options
  */
-function createConsoleLog(
+export default function createConsoleLog(
   messageType = messageTypes.info,
   message,
   options = {
@@ -38,12 +38,23 @@ function createConsoleLog(
     strictMode: true,
   }) {
   const { traceLimit, strictMode } = options
+  let util
+  let PrettyError
 
   if (!strictMode) {
     return
   }
-  const util = require('util')
-  const PrettyError = require('pretty-error')
+
+  if (process.env.NODE_ENV === 'test jest') {
+    return
+  }
+
+  if (process.env.NODE_ENV !== 'production') {
+    util = require('util')
+    PrettyError = require('pretty-error')
+  } else {
+    return
+  }
 
   const pe = new PrettyError()
 
@@ -96,9 +107,3 @@ function createConsoleLog(
       setStackTraceLimit()
   }
 }
-
-/* Debugging */
-// createConsoleLog('warn', { test: 'object'})
-// createConsoleLog('info', 'Testing info messages')
-
-export default createConsoleLog
