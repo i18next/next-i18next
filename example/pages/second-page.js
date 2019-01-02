@@ -1,5 +1,5 @@
 import React from 'react'
-import { withNamespaces } from '../i18n'
+import { withNamespaces, Link } from '../i18n'
 
 class SecondPage extends React.Component {
   static async getInitialProps() {
@@ -8,9 +8,13 @@ class SecondPage extends React.Component {
     }
   }
   render() {
+    const { t } = this.props
     return (
       <React.Fragment>
-        <h1>{this.props.t('h1')}</h1>
+        <h1>{t('h1')}</h1>
+        <Link href='/'>
+          <a>{t('back-to-home')}</a>
+        </Link>
       </React.Fragment>
     )
   }
