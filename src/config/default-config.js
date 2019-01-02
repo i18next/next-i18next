@@ -5,8 +5,6 @@ const LOCALE_PATH = 'static/locales'
 const LOCALE_STRUCTURE = '{{lng}}/{{ns}}'
 const LOCALE_SUBPATHS = false
 
-const NEXT_I18NEXT_TRACE_LIMIT = parseInt(`${process.env.NEXT_i18NEXT_TRACE_LIMIT}`, 10) || 0
-
 export default {
   defaultLanguage: DEFAULT_LANGUAGE,
   otherLanguages: OTHER_LANGUAGES,
@@ -37,5 +35,5 @@ export default {
     wait: true,
   },
   strictMode: true,
-  traceLimit: NEXT_I18NEXT_TRACE_LIMIT,
+  errorStackTraceLimit: parseInt(`${process.env.NEXT_i18NEXT_TRACE_LIMIT}`, 10) || 0,
 }
