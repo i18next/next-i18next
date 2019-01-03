@@ -13,6 +13,17 @@ export default function (WrappedComponent) {
 
   class AppWithTranslation extends React.Component {
 
+    static createConsoleMessage(type, message) {
+      createConsoleMessage(
+        type,
+        message,
+        {
+          strictMode: config.strictMode,
+          traceLimit: config.errorStackTraceLimit,
+        },
+      )
+    }
+
     constructor() {
       super()
       if (config.localeSubpaths) {
@@ -24,19 +35,7 @@ export default function (WrappedComponent) {
               Router.replace(href, as, { shallow: true })
             }
           }
-
         })
-      }
-
-      this.createConsoleMessage = (type, message, traceLimit = 0) => {
-        createConsoleMessage(
-          type,
-          message,
-          {
-            strictMode: config.strictMode,
-            traceLimit,
-          },
-        )
       }
     }
 
