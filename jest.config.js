@@ -13,6 +13,8 @@ module.exports = {
 
   setupFiles: ['<rootDir>/jest.setup.js'],
 
+  preset: 'jest-puppeteer',
+
 
   testPathIgnorePatterns: [
     '<rootDir>/.next/',
