@@ -30,7 +30,7 @@ describe('createConsoleMessage utility function', () => {
   })
 
   it('Logs error messages', () => {
-    createConsoleMessage('err', 'Testing error message')
+    createConsoleMessage('error', 'Testing error message')
 
     expect(console.error).toHaveBeenCalledTimes(1)
   })
