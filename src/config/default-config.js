@@ -35,5 +35,5 @@ export default {
     wait: true,
   },
   strictMode: true,
-  errorStackTraceLimit: parseInt(`${process.env.NEXT_i18NEXT_TRACE_LIMIT}`, 10) || 0,
+  errorStackTraceLimit: 0,
 }
