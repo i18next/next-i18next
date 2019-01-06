@@ -163,8 +163,8 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
-| [<img src="https://avatars3.githubusercontent.com/u/75311?v=4" width="100px;"/><br /><sub><b>Rob Capellini</b></sub>](https://github.com/capellini)<br />[💻](https://github.com/isaachinman/next-i18next/commits?author=capellini "Code") [⚠️](https://github.com/isaachinman/next-i18next/commits?author=capellini "Tests") | [<img src="https://avatars3.githubusercontent.com/u/608862?v=4" width="100px;"/><br /><sub><b>Alexander Kachkaev</b></sub>](https://en.kachkaev.ru)<br />[📢](#talk-kachkaev "Talks") [💬](#question-kachkaev "Answering Questions") [🤔](#ideas-kachkaev "Ideas, Planning, & Feedback") |
-| :---: | :---: |
+| [<img src="https://avatars3.githubusercontent.com/u/75311?v=4" width="100px;"/><br /><sub><b>Rob Capellini</b></sub>](https://github.com/capellini)<br />[💻](https://github.com/isaachinman/next-i18next/commits?author=capellini "Code") [⚠️](https://github.com/isaachinman/next-i18next/commits?author=capellini "Tests") | [<img src="https://avatars3.githubusercontent.com/u/608862?v=4" width="100px;"/><br /><sub><b>Alexander Kachkaev</b></sub>](https://en.kachkaev.ru)<br />[📢](#talk-kachkaev "Talks") [💬](#question-kachkaev "Answering Questions") [🤔](#ideas-kachkaev "Ideas, Planning, & Feedback") | [<img src="https://avatars1.githubusercontent.com/u/33042011?v=4" width="100px;"/><br /><sub><b>Mathias Wøbbe</b></sub>](https://kandelborg.dk)<br />[💻](https://github.com/isaachinman/next-i18next/commits?author=MathiasKandelborg "Code") |
+| :---: | :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
