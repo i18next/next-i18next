@@ -68,13 +68,6 @@ describe('consoleMessage utility function', () => {
 
   })
 
-  it('Returns undefined if process.NODE_ENV !== test jest', () => {
-    process.env.NODE_ENV = 'test jest'
-    expect(consoleMessage('info', 'Testing test logging')).toBeUndefined()
-
-  })
-
-
   it('Returns undefined if strictMode is false', () => {
     process.env.NODE_ENV = 'production'
     expect(consoleMessage('info', 'Testing production logging', { strictMode: false })).toBeUndefined()

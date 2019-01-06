@@ -67,10 +67,6 @@ export default function createConsoleLog(messageType, message) {
     return
   }
 
-  if (process.env.NODE_ENV === 'test jest') {
-    return
-  }
-
   if (process.env.NODE_ENV !== 'production') {
     util = require('util')
     PrettyError = require('pretty-error')
