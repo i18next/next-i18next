@@ -39,27 +39,14 @@ function logMessage(PrettyError, messageType, message) {
   // Set the new error message
   newLog.message = message
 
-  if (messageType === messageTypes.error) {
-    newLog.name = capitalize(messageTypes.error)
-    console.error(pe.render(newLog))
-  }
-
-  if (messageType === messageTypes.info) {
+  if (Object.values(messageTypes).includes(messageType)) {
+    newLog.name = capitalize(messageTypes[messageType])
+    console[messageType](pe.render(newLog))
+  } else {
     newLog.name = capitalize(messageTypes.info)
     console.info(pe.render(newLog))
   }
 
-  if (messageType === messageTypes.warn) {
-    newLog.name = capitalize(messageTypes.warn)
-    console.warn(pe.render(newLog))
-  }
-
-  if (messageType !== messageTypes.error
-    && messageType !== messageTypes.info
-    && messageType !== messageTypes.warn) {
-    newLog.name = capitalize(messageTypes.info)
-    console.info(pe.render(newLog))
-  }
 }
 
 /**
@@ -68,18 +55,13 @@ function logMessage(PrettyError, messageType, message) {
  * @param {String} message
  * @param {Object} options
  */
-export default function createConsoleLog(
-  messageType,
-  message,
-  options = {
-    errorStackTraceLimit: 0,
-    strictMode: true,
-  }) {
-  const { errorStackTraceLimit, strictMode } = options
+export default function createConsoleLog(messageType, message) {
+
+  const { errorStackTraceLimit, strictMode } = this.config
+
   let util
   let PrettyError
   let pe
-
 
   if (!strictMode) {
     return

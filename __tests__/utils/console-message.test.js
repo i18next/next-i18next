@@ -1,10 +1,16 @@
 /* eslint-disable no-console */
 /* eslint-env jest */
 
-import { createConsoleMessage } from 'utils'
+import { consoleMessage as _consoleMessage } from 'utils'
 
+const consoleMessage = _consoleMessage.bind({
+  config: {
+    strictMode: true,
+    errorStackTraceLimit: 0,
+  },
+})
 
-describe('createConsoleMessage utility function', () => {
+describe('consoleMessage utility function', () => {
   const OLD_ENV = process.env
 
   let consoleInfoSpy
@@ -30,25 +36,25 @@ describe('createConsoleMessage utility function', () => {
   })
 
   it('Logs error messages', () => {
-    createConsoleMessage('error', 'Testing error message')
+    consoleMessage('error', 'Testing error message')
 
     expect(console.error).toHaveBeenCalledTimes(1)
   })
 
   it('Logs info messages', () => {
-    createConsoleMessage('info', 'Testing info message')
+    consoleMessage('info', 'Testing info message')
 
     expect(console.info).toHaveBeenCalledTimes(1)
   })
 
   it('Logs warning messages', () => {
-    createConsoleMessage('warn', 'Testing warning message')
+    consoleMessage('warn', 'Testing warning message')
 
     expect(console.warn).toHaveBeenCalledTimes(1)
   })
 
   it('Logs info messages on all other type options', () => {
-    createConsoleMessage(undefined, 'Testing default info message')
+    consoleMessage(undefined, 'Testing default info message')
 
     expect(consoleInfoSpy).toHaveBeenCalledTimes(1)
     expect(consoleErrSpy).toHaveBeenCalledTimes(0)
@@ -58,26 +64,26 @@ describe('createConsoleMessage utility function', () => {
 
   it('Returns undefined if process.NODE_ENV === production', () => {
     process.env.NODE_ENV = 'production'
-    expect(createConsoleMessage('info', 'Testing production logging')).toBeUndefined()
+    expect(consoleMessage('info', 'Testing production logging')).toBeUndefined()
 
   })
 
   it('Returns undefined if process.NODE_ENV !== test jest', () => {
     process.env.NODE_ENV = 'test jest'
-    expect(createConsoleMessage('info', 'Testing test logging')).toBeUndefined()
+    expect(consoleMessage('info', 'Testing test logging')).toBeUndefined()
 
   })
 
 
   it('Returns undefined if strictMode is false', () => {
     process.env.NODE_ENV = 'production'
-    expect(createConsoleMessage('info', 'Testing production logging', { strictMode: false })).toBeUndefined()
+    expect(consoleMessage('info', 'Testing production logging', { strictMode: false })).toBeUndefined()
 
   })
 
   it('Return errors on non-string messages', () => {
-    expect(createConsoleMessage('info', { message: 'Message in object' })).toBeUndefined()
-    expect(createConsoleMessage('info', ['An', 'array', 'of', 'message'])).toBeUndefined()
-    expect(createConsoleMessage('info', () => 'Function message')).toBeUndefined()
+    expect(consoleMessage('info', { message: 'Message in object' })).toBeUndefined()
+    expect(consoleMessage('info', ['An', 'array', 'of', 'message'])).toBeUndefined()
+    expect(consoleMessage('info', () => 'Function message')).toBeUndefined()
   })
 })
