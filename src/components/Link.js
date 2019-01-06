@@ -34,10 +34,10 @@ export default function () {
         [lng] = i18n.languages
       }
       if (localeSubpaths && lng && lng !== defaultLanguage) {
-        const { query, ...rest } = parseUrl(href, true /* parseQueryString */)
+        const { pathname, query } = parseUrl(href, true /* parseQueryString */)
 
         return (
-          <NextLink href={{ query: { ...query, lng }, ...rest }} as={`/${lng}${as || href}`}>
+          <NextLink href={{ pathname, query: { ...query, lng } }} as={`/${lng}${as || href}`}>
             {children}
           </NextLink>
         )
