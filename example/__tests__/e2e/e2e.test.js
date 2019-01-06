@@ -1,5 +1,6 @@
 /* eslint-env jest */
 const testLanguage = 'en'
+const testLanguageSecondary = 'de'
 
 describe('example project', () => {
   beforeAll(async () => {
@@ -13,9 +14,35 @@ describe('example project', () => {
     await expect(page).toMatch('A simple example')
   })
 
-  it('should navigate to the second page', async () => {
+  it('should navigate to the second page and back', async () => {
     await expect(page).toClick('a', { text: 'To second page' })
     await expect(page).toMatch('A second page')
+
+    await expect(page).toClick('a', { text: 'Back to home' })
+    await expect(page).toMatch('A simple example')
   })
 
+  describe(`changing to ${testLanguageSecondary} locale`, () => {
+    beforeAll(async () => {
+      await expect(page).toClick('button', { text: 'Change locale' })
+    })
+
+    it(`should display h1 in ${testLanguageSecondary} locale`, async () => {
+      await expect(page).toMatch('Ein einfaches Beispiel')
+    })
+
+    it('should navigate to the second page and back', async () => {
+      await expect(page).toClick('a', { text: 'Zur zweiten Seite' })
+      await expect(page).toMatch('Eine zweite Seite')
+
+      await expect(page).toClick('a', { text: 'Zurück zur Hauptseite' })
+      await expect(page).toMatch('Ein einfaches Beispiel')
+    })
+
+    it(`should switch back to ${testLanguage} locale`, async () => {
+      await expect(page).toClick('button', { text: 'Wechseln Locale' })
+
+      await expect(page).toMatch('A simple example')
+    })
+  })
 })
