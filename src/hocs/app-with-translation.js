@@ -2,7 +2,7 @@ import React from 'react'
 import Router from 'next/router'
 
 import { I18nextProvider } from 'react-i18next'
-import { lngPathCorrector } from 'utils'
+import { lngFromReq, lngPathCorrector } from 'utils'
 import { NextStaticProvider } from 'components'
 
 import hoistNonReactStatics from 'hoist-non-react-statics'
@@ -56,8 +56,7 @@ export default function (WrappedComponent) {
       // Step 1: Determine initial language
       if (req && req.i18n) {
 
-        // First language in array is current lang
-        [initialLanguage] = req.i18n.languages
+        initialLanguage = lngFromReq(req)
 
         // Perform a lang change in case we're not on the right lang
         await i18n.changeLanguage(initialLanguage)
