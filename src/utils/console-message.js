@@ -13,16 +13,6 @@ const messageTypes = {
 Object.freeze(messageTypes)
 
 /**
- * Sets the Error.errorStackTraceLimit to default or errorStackTraceLimit
- * https://v8.dev/docs/stack-trace-api
- * @param {number} errorStackTraceLimit
- * @returns
- */
-function setErrorStackTraceLimit(errorStackTraceLimit = 10) {
-  Error.stackTraceLimit = errorStackTraceLimit
-}
-
-/**
  *  Logs a custom message to console
  * @param {PrettyError} PrettyError
  * @param {messageTypes} messageType One of: error, warn or info
@@ -58,6 +48,9 @@ function logMessage(PrettyError, messageType, message) {
 export default function createConsoleLog(messageType, message) {
 
   const { errorStackTraceLimit, strictMode } = this.config
+
+  const prevStackLimit = Error.stackTraceLimit
+  Error.stackTraceLimit = errorStackTraceLimit
 
   let util
   let PrettyError
@@ -104,6 +97,7 @@ export default function createConsoleLog(messageType, message) {
   // Log the message to console
   logMessage(PrettyError, messageType, message)
 
-  // Reset the Error.stackTraceLimit to 10
-  setErrorStackTraceLimit()
+  // Reset stack limit
+  Error.stackTraceLimit = prevStackLimit
+
 }

@@ -69,12 +69,12 @@ export default function (WrappedComponent) {
       let namespacesRequired = config.ns
       if (Array.isArray(pageProps.namespacesRequired)) {
         ({ namespacesRequired } = pageProps)
+      } else {
+        consoleMessage(
+          'warn',
+          `You have not declared a namespacesRequired array on your page-level component: ${Component.displayName}. This will cause all namespaces to be sent down to the client, possibly negatively impacting the performance of your app. For more info, see: https://github.com/isaachinman/next-i18next#4-declaring-namespace-dependencies`,
+        )
       }
-      consoleMessage(
-        'warn',
-        `You have not declared a namespacesRequired array on your page-level component: ${Component.displayName}. This will cause all namespaces to be sent down to the client, possibly negatively impacting the performance of your app. For more info, see: https://github.com/isaachinman/next-i18next#4-declaring-namespace-dependencies`,
-      )
-
 
       // We must always send down the defaultNS, otherwise
       // the client will trigger a request for it and issue
