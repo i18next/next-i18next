@@ -27,7 +27,9 @@
       "contributions": [
         "talk",
         "question",
-        "ideas"
+        "ideas",
+        "code",
+        "test"
       ]
     },
     {
