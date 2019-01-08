@@ -13,6 +13,8 @@
       }
     ],
     "@babel/plugin-transform-runtime",
-    "add-module-exports"
+    ["add-module-exports", {
+      "addDefaultProperty": true
+    }]
   ]
 }
