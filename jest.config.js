@@ -19,6 +19,7 @@ module.exports = {
   testPathIgnorePatterns: [
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
+    '<rootDir>/__tests__/test-config.js',
     '<rootDir>/__tests__/config/test-helpers.js'
   ],
 }

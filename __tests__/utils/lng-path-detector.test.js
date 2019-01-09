@@ -1,22 +1,21 @@
 /* eslint-env jest */
 
-import lngPathDetector from '../../src/utils/lng-path-detector'
+import testConfig from '../test-config'
+
+import lngPathDetectorMiddleware from '../../src/utils/lng-path-detector'
 
 describe('lngPathDetector utility function', () => {
+  const ignoreRegex = /^\/(?!_next|static).*$/
+  let lngPathDetector
   let req
   let res
   let next
 
   beforeEach(() => {
+    lngPathDetector = lngPathDetectorMiddleware(ignoreRegex)
+
     req = {
-      i18n: {
-        changeLanguage: jest.fn(),
-        languages: ['en', 'de'],
-        options: {
-          allLanguages: ['en', 'de'],
-          defaultLanguage: 'en',
-        },
-      },
+      i18n: { ...testConfig },
       url: '/',
     }
 
@@ -30,6 +29,16 @@ describe('lngPathDetector utility function', () => {
 
   it('skips everything if req.i18n is not defined', () => {
     delete req.i18n
+
+    lngPathDetector(req, res, next)
+
+    expect(res.redirect).not.toBeCalled()
+
+    expect(next).toBeCalled()
+  })
+
+  it('skips everything if url is one we should ignore', () => {
+    req.url = '/static'
 
     lngPathDetector(req, res, next)
 

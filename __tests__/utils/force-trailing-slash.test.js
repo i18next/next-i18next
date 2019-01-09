@@ -1,14 +1,18 @@
 /* eslint-env jest */
 
 import { parse } from 'url'
+import testConfig from '../test-config'
 
-import forceTrailingSlash from '../../src/utils/force-trailing-slash'
+import forceTrailingSlashMiddleware from '../../src/utils/force-trailing-slash'
 
 jest.mock('url', () => ({
   parse: jest.fn(),
 }))
 
 describe('forceTrailingSlash utility function', () => {
+  const { allLanguages } = testConfig.options
+  const ignoreRegex = /^\/(?!_next|static).*$/
+  let forceTrailingSlash
   let req
   let res
   let next
@@ -21,10 +25,9 @@ describe('forceTrailingSlash utility function', () => {
   }
 
   beforeEach(() => {
+    forceTrailingSlash = forceTrailingSlashMiddleware(allLanguages, ignoreRegex)
+
     req = {
-      i18n: {
-        options: { allLanguages: ['en', 'de'] },
-      },
       url: '/',
     }
 
@@ -42,6 +45,16 @@ describe('forceTrailingSlash utility function', () => {
 
   it('does not redirect if pathname is not /en or /de', () => {
     mockParse('/')
+
+    forceTrailingSlash(req, res, next)
+
+    expect(res.redirect).not.toBeCalled()
+
+    expect(next).toBeCalled()
+  })
+
+  it('does not redirect if pathname is one we should ignore', () => {
+    req.url = '/static'
 
     forceTrailingSlash(req, res, next)
 

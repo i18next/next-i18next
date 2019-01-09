@@ -7,11 +7,12 @@ import Footer from '../components/Footer'
 class Homepage extends React.Component {
   static async getInitialProps() {
     return {
-      namespacesRequired: ['common', 'footer']
+      namespacesRequired: ['common', 'footer', 'product-page']
     }
   }
   render() {
     const { t } = this.props
+    const products = t('product-page:products', { returnObjects: true })
     return (
       <React.Fragment>
         <Title />
@@ -21,6 +22,19 @@ class Homepage extends React.Component {
         <Link href='/second-page'>
           <a>{t('to-second-page')}</a>
         </Link>
+        {
+          [1, 2, 3].map(
+            productId => <React.Fragment key={productId}>
+              <br />
+              <Link
+                href={`/product-page?id=${productId}`}
+                as={`/products/${productId}`}
+              >
+                <a>{products[productId]}</a>
+              </Link>
+            </React.Fragment>
+          )
+        }
         <Footer />
       </React.Fragment>
     )
