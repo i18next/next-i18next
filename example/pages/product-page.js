@@ -11,14 +11,14 @@ class ProductPage extends React.Component {
   static async getInitialProps({ query: { id } }) {
     return {
       id,
-      namespacesRequired: ['common', 'product-page']
+      namespacesRequired: ['product-page', 'common']
     }
   }
 
   render() {
     const { id, t } = this.props
     const products = t('products', { returnObjects: true });
-
+console.log('id =', id)
     return (
       <React.Fragment>
         <h1>{t('h1')}</h1>
@@ -31,4 +31,4 @@ class ProductPage extends React.Component {
   }
 }
 
-export default withNamespaces('product-page')(ProductPage)
+export default withNamespaces(['product-page', 'common'])(ProductPage)

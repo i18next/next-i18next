@@ -4,7 +4,7 @@ import { withNamespaces, Link } from '../i18n'
 class SecondPage extends React.Component {
   static async getInitialProps() {
     return {
-      namespacesRequired: ['common', 'second-page']
+      namespacesRequired: ['second-page', 'common']
     }
   }
   render() {
@@ -20,4 +20,4 @@ class SecondPage extends React.Component {
   }
 }
 
-export default withNamespaces('second-page')(SecondPage)
+export default withNamespaces(['second-page', 'common'])(SecondPage)

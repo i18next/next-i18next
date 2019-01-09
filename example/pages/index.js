@@ -41,4 +41,4 @@ class Homepage extends React.Component {
   }
 }
 
-export default withNamespaces('common')(Homepage)
+export default withNamespaces(['common', 'footer', 'product-page'])(Homepage)
