@@ -48,4 +48,18 @@ describe('handleLanguageSubpath utility function', () => {
 
     expect(next).toBeCalled()
   })
+
+  it('only removes the first instance of a locale from req.url', () => {
+    req.url = '/de/path/de'
+
+    handleLanguageSubpath(req, res, next)
+
+    expect(req.url).toEqual('/path/de')
+    expect(req.query).toEqual({
+      lng: 'de',
+      option1: 'value1',
+    })
+
+    expect(next).toBeCalled()
+  })
 })

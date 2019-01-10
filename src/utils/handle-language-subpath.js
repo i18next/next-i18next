@@ -10,7 +10,7 @@ export default allLanguages => (req, res, next) => {
   if (params) {
     const { lng } = params
     req.query = { ...req.query, lng }
-    req.url = req.url.replace(`/${lng}`, '')
+    req.url = req.url.slice(lng.length + 1)
   }
 
   next()
