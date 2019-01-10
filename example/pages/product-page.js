@@ -10,7 +10,7 @@ class ProductPage extends React.Component {
 
   static async getInitialProps({ query: { id } }) {
     return {
-      id,
+      id: +id,
       namespacesRequired: ['product-page', 'common']
     }
   }
