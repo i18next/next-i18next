@@ -13,7 +13,7 @@ out
 .vscode
 
 # Logs
-runtime.log
+*.log
 
 # Testing
 coverage/
