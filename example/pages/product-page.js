@@ -18,7 +18,7 @@ class ProductPage extends React.Component {
   render() {
     const { id, t } = this.props
     const products = t('products', { returnObjects: true });
-console.log('id =', id)
+
     return (
       <React.Fragment>
         <h1>{t('h1')}</h1>
