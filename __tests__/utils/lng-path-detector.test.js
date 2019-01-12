@@ -22,6 +22,7 @@ describe('lngPathDetector utility function', () => {
 
     res = {
       redirect: jest.fn(),
+      set: jest.fn(),
     }
 
     next = jest.fn()
