@@ -26,6 +26,7 @@ export default (req, res, next) => {
           req.url = req.url.replace(`/${lng}/`, '/')
         }
       })
+      res.set('Cache-Control', 'no-cache,no-store')
       res.redirect(301, req.url.replace('/', `/${language}/`))
     }
     /*
@@ -33,6 +34,7 @@ export default (req, res, next) => {
       in their URL, strip it.
     */
     if (language === defaultLanguage && req.url.startsWith(`/${defaultLanguage}/`)) {
+      res.set('Cache-Control', 'no-cache,no-store')
       res.redirect(301, req.url.replace(`/${defaultLanguage}/`, '/'))
     }
   }
