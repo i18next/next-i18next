@@ -13,25 +13,25 @@ export default function (nexti18next) {
   const ignoreRoute = route(ignoreRegex)
   const isI18nRoute = url => ignoreRoute(url) !== false
 
-  let middleware = []
+  const middleware = []
 
   if (!config.serverLanguageDetection) {
-    middleware = middleware.concat([(req, res, next) => {
+    middleware.push((req, res, next) => {
       if (isI18nRoute(req.url)) {
         req.lng = config.defaultLanguage
       }
       next()
-    }])
+    })
   }
 
-  middleware = middleware.concat([i18nextMiddleware.handle(i18n, { ignoreRoutes })])
+  middleware.push(i18nextMiddleware.handle(i18n, { ignoreRoutes }))
 
   if (localeSubpaths) {
-    middleware = middleware.concat([
+    middleware.push(
       forceTrailingSlash(allLanguages, ignoreRegex),
       lngPathDetector(ignoreRegex),
       handleLanguageSubpath(allLanguages),
-    ])
+    )
   }
 
   return middleware
