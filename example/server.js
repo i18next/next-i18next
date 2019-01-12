@@ -13,10 +13,6 @@ const handle = app.getRequestHandler();
 
   server.use(nextI18NextMiddleware(nextI18next))
 
-  server.get('/products/:id', (req, res) => {
-    app.render(req, res, '/product-page', { ...req.query, ...req.params })
-  })
-
   server.get('*', (req, res) => handle(req, res))
 
   await server.listen(3000)
