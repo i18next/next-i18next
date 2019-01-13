@@ -16,10 +16,6 @@ jest.mock('utils', () => ({
   lngPathDetector: jest.fn(),
 }))
 
-jest.mock('url', () => ({
-  parse: jest.fn(),
-}))
-
 describe('next-18next middleware', () => {
   let nexti18next
   let req

@@ -1,5 +1,6 @@
 import i18nextMiddleware from 'i18next-express-middleware'
 import { forceTrailingSlash, handleLanguageSubpath, lngPathDetector } from 'utils'
+import { parse } from 'url'
 import pathMatch from 'path-match'
 
 const route = pathMatch()
@@ -13,7 +14,8 @@ export default function (nexti18next) {
   const isNotRouteToIgnore = url => ignoreRoute(url)
 
   const localeRoute = route(`/:lng(${allLanguages.join('|')})/*`)
-  const localeRootRouteWithoutSlash = route(`/:lng(${allLanguages.join('|')})`)
+
+  const isLocaleRootRouteWithoutSlash = pathname => allLanguages.some(lng => pathname === `/${lng}`)
 
   const middleware = []
 
@@ -31,10 +33,10 @@ export default function (nexti18next) {
     (req, res, next) => {
       if (localeSubpaths) {
         if (isNotRouteToIgnore(req.url)) {
-          const localeParams = localeRootRouteWithoutSlash(req.url)
+          const { pathname } = parse(req.url)
 
-          if (localeParams) {
-            forceTrailingSlash(req, res, localeParams.lng)
+          if (isLocaleRootRouteWithoutSlash(pathname)) {
+            forceTrailingSlash(req, res, pathname.slice(1))
 
             return
           }
