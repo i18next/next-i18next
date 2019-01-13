@@ -5,34 +5,49 @@ import pathMatch from 'path-match'
 const route = pathMatch()
 
 export default function (nexti18next) {
-
   const { config, i18n } = nexti18next
   const { allLanguages, ignoreRoutes, localeSubpaths } = config
 
   const ignoreRegex = new RegExp(`^\/(?!${ignoreRoutes.map(x => x.replace('/', '')).join('|')}).*$`)
   const ignoreRoute = route(ignoreRegex)
-  const isI18nRoute = url => ignoreRoute(url) !== false
+  const isNotRouteToIgnore = url => ignoreRoute(url)
+
+  const localeRoute = route(`/:lng(${allLanguages.join('|')})/*`)
 
   const middleware = []
 
   if (!config.serverLanguageDetection) {
     middleware.push((req, res, next) => {
-      if (isI18nRoute(req.url)) {
+      if (isNotRouteToIgnore(req.url)) {
         req.lng = config.defaultLanguage
       }
       next()
     })
   }
 
-  middleware.push(i18nextMiddleware.handle(i18n, { ignoreRoutes }))
+  middleware.push(
+    i18nextMiddleware.handle(i18n, { ignoreRoutes }),
+    (req, res, next) => {
+      if (localeSubpaths) {
+        if (isNotRouteToIgnore(req.url)) {
+          const performedRedirect = forceTrailingSlash(allLanguages, req, res)
+          if (performedRedirect) {
+            return
+          }
 
-  if (localeSubpaths) {
-    middleware.push(
-      forceTrailingSlash(allLanguages, ignoreRegex),
-      lngPathDetector(ignoreRegex),
-      handleLanguageSubpath(allLanguages),
-    )
-  }
+          lngPathDetector(req, res)
+        }
+
+        const params = localeRoute(req.url)
+
+        if (params) {
+          handleLanguageSubpath(req, params.lng)
+        }
+      }
+
+      next()
+    },
+  )
 
   return middleware
 }

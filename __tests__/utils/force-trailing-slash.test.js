@@ -3,7 +3,7 @@
 import { parse } from 'url'
 import testConfig from '../test-config'
 
-import forceTrailingSlashMiddleware from '../../src/utils/force-trailing-slash'
+import forceTrailingSlash from '../../src/utils/force-trailing-slash'
 
 jest.mock('url', () => ({
   parse: jest.fn(),
@@ -11,11 +11,8 @@ jest.mock('url', () => ({
 
 describe('forceTrailingSlash utility function', () => {
   const { allLanguages } = testConfig.options
-  const ignoreRegex = /^\/(?!_next|static).*$/
-  let forceTrailingSlash
   let req
   let res
-  let next
 
   const mockParse = (pathname, search = '') => {
     parse.mockImplementation(() => ({
@@ -25,8 +22,6 @@ describe('forceTrailingSlash utility function', () => {
   }
 
   beforeEach(() => {
-    forceTrailingSlash = forceTrailingSlashMiddleware(allLanguages, ignoreRegex)
-
     req = {
       url: '/',
     }
@@ -35,8 +30,6 @@ describe('forceTrailingSlash utility function', () => {
       redirect: jest.fn(),
       header: jest.fn(),
     }
-
-    next = jest.fn()
   })
 
   afterEach(() => {
@@ -46,40 +39,24 @@ describe('forceTrailingSlash utility function', () => {
   it('does not redirect if pathname is not /en or /de', () => {
     mockParse('/')
 
-    forceTrailingSlash(req, res, next)
+    expect(forceTrailingSlash(allLanguages, req, res)).toEqual(false)
 
     expect(res.redirect).not.toBeCalled()
-
-    expect(next).toBeCalled()
-  })
-
-  it('does not redirect if pathname is one we should ignore', () => {
-    req.url = '/static'
-
-    forceTrailingSlash(req, res, next)
-
-    expect(res.redirect).not.toBeCalled()
-
-    expect(next).toBeCalled()
   })
 
   it('redirects if pathname is lang without trailing slash', () => {
     mockParse('/en')
 
-    forceTrailingSlash(req, res, next)
+    expect(forceTrailingSlash(allLanguages, req, res)).toEqual(true)
 
     expect(res.redirect).toBeCalledWith(302, '/en/')
-
-    expect(next).not.toBeCalled()
   })
 
   it('redirects if pathname is lang without trailing slash (adds search params)', () => {
     mockParse('/de', '?option1=value1')
 
-    forceTrailingSlash(req, res, next)
+    expect(forceTrailingSlash(allLanguages, req, res)).toEqual(true)
 
     expect(res.redirect).toBeCalledWith(302, '/de/?option1=value1')
-
-    expect(next).not.toBeCalled()
   })
 })
