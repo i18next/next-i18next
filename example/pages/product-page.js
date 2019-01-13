@@ -11,7 +11,7 @@ class ProductPage extends React.Component {
   static async getInitialProps({ query: { id } }) {
     return {
       id: parseInt(id, 10),
-      namespacesRequired: ['product-page', 'products', 'common']
+      namespacesRequired: ['product-page', 'common']
     }
   }
 
@@ -21,7 +21,7 @@ class ProductPage extends React.Component {
     return (
       <React.Fragment>
         <h1>{t('h1')}</h1>
-        <h2>{t(`products:product${id}`)}</h2>
+        <h2>{t(`common:product${id}`)}</h2>
         <Link href='/'>
           <a>{t('common:back-to-home')}</a>
         </Link>
@@ -30,4 +30,4 @@ class ProductPage extends React.Component {
   }
 }
 
-export default withNamespaces(['product-page', 'products', 'common'])(ProductPage)
+export default withNamespaces(['product-page', 'common'])(ProductPage)

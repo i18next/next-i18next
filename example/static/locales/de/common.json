@@ -4,5 +4,8 @@
   "change-locale": "Wechseln Locale",
   "to-second-page": "Zur zweiten Seite",
   "error-with-status": "Auf dem Server ist ein Fehler ({{statusCode}}) aufgetreten",
-  "error-without-status": "Auf dem Server ist ein Fehler aufgetreten"
+  "error-without-status": "Auf dem Server ist ein Fehler aufgetreten",
+  "product1": "Produkt #1",
+  "product2": "Produkt #2",
+  "product3": "Produkt #3"
 }

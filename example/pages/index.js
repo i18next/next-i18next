@@ -7,7 +7,7 @@ import Footer from '../components/Footer'
 class Homepage extends React.Component {
   static async getInitialProps() {
     return {
-      namespacesRequired: ['common', 'footer', 'products']
+      namespacesRequired: ['common', 'footer']
     }
   }
 
@@ -31,7 +31,7 @@ class Homepage extends React.Component {
                 href={`/product-page?id=${productId}`}
                 as={`/products/${productId}`}
               >
-                <a>{t(`products:product${productId}`)}</a>
+                <a>{t(`common:product${productId}`)}</a>
               </Link>
             </React.Fragment>
           )
@@ -42,4 +42,4 @@ class Homepage extends React.Component {
   }
 }
 
-export default withNamespaces(['common', 'footer', 'products'])(Homepage)
+export default withNamespaces(['common', 'footer'])(Homepage)
