@@ -13,6 +13,7 @@ export default function (nexti18next) {
   const isNotRouteToIgnore = url => ignoreRoute(url)
 
   const localeRoute = route(`/:lng(${allLanguages.join('|')})/*`)
+  const localeRootRouteWithoutSlash = route(`/:lng(${allLanguages.join('|')})`)
 
   const middleware = []
 
@@ -30,8 +31,11 @@ export default function (nexti18next) {
     (req, res, next) => {
       if (localeSubpaths) {
         if (isNotRouteToIgnore(req.url)) {
-          const performedRedirect = forceTrailingSlash(allLanguages, req, res)
-          if (performedRedirect) {
+          const localeParams = localeRootRouteWithoutSlash(req.url)
+
+          if (localeParams) {
+            forceTrailingSlash(req, res, localeParams.lng)
+
             return
           }
 

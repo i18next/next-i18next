@@ -89,42 +89,39 @@ describe('next-18next middleware', () => {
       expect(next).toBeCalled()
     })
 
-    it('calls only forceTrailingSlash if redirect performed', () => {
-      req.url = '/myapp.com'
-      forceTrailingSlash.mockImplementation(() => true)
+    it('calls forceTrailingSlash if root locale route without slash', () => {
+      req.url = '/de'
 
       const [, middleware] = nextI18nextMiddleware(nexti18next)
       middleware(req, res, next)
 
-      expect(forceTrailingSlash).toBeCalledWith(['en', 'de'], req, res)
+      expect(forceTrailingSlash).toBeCalledWith(req, res, 'de')
       expect(lngPathDetector).not.toBeCalled()
       expect(handleLanguageSubpath).not.toBeCalled()
 
       expect(next).not.toBeCalled()
     })
 
-    it('calls only forceTrailingSlash and lngPathDetector if no redirect and not a localeRoute', () => {
+    it('calls lngPathDetector if not a locale route without slash', () => {
       req.url = '/page/'
-      forceTrailingSlash.mockImplementation(() => false)
 
       const [, middleware] = nextI18nextMiddleware(nexti18next)
       middleware(req, res, next)
 
-      expect(forceTrailingSlash).toBeCalledWith(['en', 'de'], req, res)
+      expect(forceTrailingSlash).not.toBeCalled()
       expect(lngPathDetector).toBeCalledWith(req, res)
       expect(handleLanguageSubpath).not.toBeCalled()
 
       expect(next).toBeCalled()
     })
 
-    it('calls all middleware if a localeRoute', () => {
+    it('calls lngPathDetector and handleLanguageSubpath if a localeRoute', () => {
       req.url = '/de/page/'
-      forceTrailingSlash.mockImplementation(() => false)
 
       const [, middleware] = nextI18nextMiddleware(nexti18next)
       middleware(req, res, next)
 
-      expect(forceTrailingSlash).toBeCalledWith(['en', 'de'], req, res)
+      expect(forceTrailingSlash).not.toBeCalledWith()
       expect(lngPathDetector).toBeCalledWith(req, res)
       expect(handleLanguageSubpath).toBeCalledWith(req, 'de')
 
