@@ -28,7 +28,9 @@ export default function () {
   class Link extends React.Component {
     render() {
       const { defaultLanguage, localeSubpaths } = config
-      const { as, children, href } = this.props
+      const {
+        as, children, href, ...props
+      } = this.props
       let lng = null
       if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
         [lng] = i18n.languages
@@ -37,13 +39,25 @@ export default function () {
         const { pathname, query } = parseUrl(href, true /* parseQueryString */)
 
         return (
-          <NextLink href={{ pathname, query: { ...query, lng } }} as={`/${lng}${as || href}`}>
+          <NextLink
+            href={{ pathname, query: { ...query, lng } }}
+            as={`/${lng}${as || href}`}
+            {...props}
+          >
             {children}
           </NextLink>
         )
       }
 
-      return <NextLink href={href} as={as}>{children}</NextLink>
+      return (
+        <NextLink
+          href={href}
+          as={as}
+          {...props}
+        >
+          {children}
+        </NextLink>
+      )
     }
   }
 
