@@ -11,9 +11,10 @@ export default function (nexti18next) {
 
   const ignoreRegex = new RegExp(`^\/(?!${ignoreRoutes.map(x => x.replace('/', '')).join('|')}).*$`)
   const ignoreRoute = route(ignoreRegex)
-  const isNotRouteToIgnore = url => ignoreRoute(url)
+  const isI18nRoute = url => ignoreRoute(url)
 
-  const localeRoute = route(`/:lng(${allLanguages.join('|')})/*`)
+  const localeSubpathRoute = route(`/:lng(${allLanguages.join('|')})/*`)
+  const isLocaleSubpathRoute = params => params !== false
 
   const isLocaleRootRouteWithoutSlash = pathname => allLanguages.some(lng => pathname === `/${lng}`)
 
@@ -21,7 +22,7 @@ export default function (nexti18next) {
 
   if (!config.serverLanguageDetection) {
     middleware.push((req, res, next) => {
-      if (isNotRouteToIgnore(req.url)) {
+      if (isI18nRoute(req.url)) {
         req.lng = config.defaultLanguage
       }
       next()
@@ -32,7 +33,7 @@ export default function (nexti18next) {
     i18nextMiddleware.handle(i18n, { ignoreRoutes }),
     (req, res, next) => {
       if (localeSubpaths) {
-        if (isNotRouteToIgnore(req.url)) {
+        if (isI18nRoute(req.url)) {
           const { pathname } = parse(req.url)
 
           if (isLocaleRootRouteWithoutSlash(pathname)) {
@@ -44,9 +45,9 @@ export default function (nexti18next) {
           lngPathDetector(req, res)
         }
 
-        const params = localeRoute(req.url)
+        const params = localeSubpathRoute(req.url)
 
-        if (params) {
+        if (isLocaleSubpathRoute(params)) {
           handleLanguageSubpath(req, params.lng)
         }
       }
