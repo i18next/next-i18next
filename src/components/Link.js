@@ -29,7 +29,8 @@ export default function () {
     render() {
       const { defaultLanguage, localeSubpaths } = config
       const {
-        as, children, href, ...props
+        as, children, href, tReady, i18n: i18nProp, t, lng: lngProp,
+        i18nOptions, defaultNS, reportNS, ...props
       } = this.props
       let lng = null
       if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
