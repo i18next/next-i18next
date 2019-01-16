@@ -5,7 +5,7 @@ export default (req, res, next) => {
   let performedRedirect = false
   req.i18n.options.allLanguages.forEach((lng) => {
     if (pathname === `/${lng}`) {
-      res.redirect(301, pathname.replace(`/${lng}`, `/${lng}/`) + (search || ''))
+      res.redirect(302, pathname.replace(`/${lng}`, `/${lng}/`) + (search || ''))
       performedRedirect = true
     }
   })

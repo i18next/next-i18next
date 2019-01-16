@@ -26,14 +26,14 @@ export default (req, res, next) => {
           req.url = req.url.replace(`/${lng}/`, '/')
         }
       })
-      res.redirect(301, req.url.replace('/', `/${language}/`))
+      res.redirect(302, req.url.replace('/', `/${language}/`))
     }
     /*
       If a user has a default language prefix
       in their URL, strip it.
     */
     if (language === defaultLanguage && req.url.startsWith(`/${defaultLanguage}/`)) {
-      res.redirect(301, req.url.replace(`/${defaultLanguage}/`, '/'))
+      res.redirect(302, req.url.replace(`/${defaultLanguage}/`, '/'))
     }
   }
   next()

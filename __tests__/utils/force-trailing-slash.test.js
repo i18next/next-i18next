@@ -54,7 +54,7 @@ describe('forceTrailingSlash utility function', () => {
 
     forceTrailingSlash(req, res, next)
 
-    expect(res.redirect).toBeCalledWith(301, '/en/')
+    expect(res.redirect).toBeCalledWith(302, '/en/')
 
     expect(next).not.toBeCalled()
   })
@@ -64,7 +64,7 @@ describe('forceTrailingSlash utility function', () => {
 
     forceTrailingSlash(req, res, next)
 
-    expect(res.redirect).toBeCalledWith(301, '/de/?option1=value1')
+    expect(res.redirect).toBeCalledWith(302, '/de/?option1=value1')
 
     expect(next).not.toBeCalled()
   })

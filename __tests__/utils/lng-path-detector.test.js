@@ -57,7 +57,7 @@ describe('lngPathDetector utility function', () => {
 
     expect(req.i18n.changeLanguage).toBeCalledWith('en')
 
-    expect(res.redirect).toBeCalledWith(301, '/de/foo?test=123')
+    expect(res.redirect).toBeCalledWith(302, '/de/foo?test=123')
 
     expect(next).toBeCalled()
   })
@@ -69,7 +69,7 @@ describe('lngPathDetector utility function', () => {
 
     expect(req.i18n.changeLanguage).not.toBeCalledWith()
 
-    expect(res.redirect).toBeCalledWith(301, '/foo')
+    expect(res.redirect).toBeCalledWith(302, '/foo')
 
     expect(next).toBeCalled()
   })
