@@ -27,6 +27,7 @@ describe('Link component', () => {
 
     props = {
       href: '/foo/bar',
+      lng: 'de',
     }
   })
 
@@ -51,9 +52,9 @@ describe('Link component', () => {
     expect(component.prop('as')).toEqual('/foo?bar')
   })
 
-  it('renders without lang if !Array.isArray(i18n.languages)', () => {
+  it('renders without lang if props.lng is undefined', () => {
     context.config.localeSubpaths = true
-    context.i18n.languages = null
+    props.lng = undefined
 
     // without 'as' prop
     let component = createLinkComponent()
@@ -69,28 +70,10 @@ describe('Link component', () => {
     expect(component.prop('as')).toEqual('/foo?bar')
   })
 
-  it('renders without lang if i18n.languages.length === 0', () => {
-    context.config.localeSubpaths = true
-    context.i18n.languages = []
-
-    // without 'as' prop
-    let component = createLinkComponent()
-
-    expect(component.prop('href')).toEqual('/foo/bar')
-    expect(component.prop('as')).toBeUndefined()
-
-    // with 'as' prop
-    props.as = '/foo?bar'
-    component = createLinkComponent()
-
-    expect(component.prop('href')).toEqual('/foo/bar')
-    expect(component.prop('as')).toEqual('/foo?bar')
-  })
-
-  it('renders without lang if i18n.languages[0] === defaultLanguage', () => {
+  it('renders without lang if props.lng === defaultLanguage', () => {
     context.config.localeSubpaths = true
     context.config.defaultLanguage = 'en'
-    context.i18n.languages = ['en', 'de']
+    props.lng = 'en'
 
     // without 'as' prop
     let component = createLinkComponent()
@@ -109,7 +92,6 @@ describe('Link component', () => {
   it('renders with lang', () => {
     context.config.localeSubpaths = true
     context.config.defaultLanguage = 'en'
-    context.i18n.languages = ['de', 'en']
 
     // without 'as' prop -- no query parameters
     let component = createLinkComponent()

@@ -35,18 +35,14 @@ const removeWithNamespacesProps = (props) => {
 
 export default function () {
 
-  const { config, i18n } = this
+  const { config } = this
 
   class Link extends React.Component {
     render() {
       const { defaultLanguage, localeSubpaths } = config
       const {
-        as, children, href, ...props
+        as, children, href, lng, ...props
       } = this.props
-      let lng = null
-      if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
-        [lng] = i18n.languages
-      }
       if (localeSubpaths && lng && lng !== defaultLanguage) {
         const { pathname, query } = parseUrl(href, true /* parseQueryString */)
 
