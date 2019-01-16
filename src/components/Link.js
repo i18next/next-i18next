@@ -29,9 +29,10 @@ export default function () {
     render() {
       const { defaultLanguage, localeSubpaths } = config
       const {
-        as, children, href, tReady, i18n: i18nProp, t, lng: lngProp,
-        i18nOptions, defaultNS, reportNS, ...props
+        as, children, href, ...props
       } = this.props
+      const linkProps = Link.getLinkProps(props)
+
       let lng = null
       if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
         [lng] = i18n.languages
@@ -43,7 +44,7 @@ export default function () {
           <NextLink
             href={{ pathname, query: { ...query, lng } }}
             as={`/${lng}${as || href}`}
-            {...props}
+            {...linkProps}
           >
             {children}
           </NextLink>
@@ -54,13 +55,47 @@ export default function () {
         <NextLink
           href={href}
           as={as}
-          {...props}
+          {...linkProps}
         >
           {children}
         </NextLink>
       )
     }
   }
+
+  Link.getLinkProps = (props) => {
+    if (Link.nextLinkProps.length) {
+      return Link.nextLinkProps.reduce((accum, prop) => {
+        if (typeof props[prop] !== 'undefined') {
+          // eslint-disable-next-line no-param-reassign
+          accum[prop] = props[prop]
+        }
+
+        return accum
+      }, {})
+    }
+
+    return props
+  }
+
+  /*
+    Next uses prop-types-exact in development, so we need to be precise
+    with the props that we pass on to NextLink to avoid cluttering devtools
+    with warnings.  If we're in production, propTypes are stripped from
+    NextLink and the warning is supressed, so just return all the props.
+    See: https://github.com/isaachinman/next-i18next/issues/97
+  */
+  Link.getNextLinkProps = () => {
+    /* eslint-disable react/forbid-foreign-prop-types */
+    if (process.browser && NextLink.propTypes) {
+      return Object.keys(NextLink.propTypes)
+    }
+    /* eslint-enable react/forbid-foreign-prop-types */
+
+    return []
+  }
+
+  Link.nextLinkProps = Link.getNextLinkProps()
 
   Link.propTypes = {
     as: PropTypes.string,
