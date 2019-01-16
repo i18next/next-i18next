@@ -21,6 +21,18 @@ import PropTypes from 'prop-types'
 import NextLink from 'next/link'
 import { parse as parseUrl } from 'url'
 
+const removeWithNamespacesProps = (props) => {
+  const strippedProps = Object.assign({}, props)
+  delete strippedProps.defaultNS
+  delete strippedProps.i18n
+  delete strippedProps.i18nOptions
+  delete strippedProps.lng
+  delete strippedProps.reportNS
+  delete strippedProps.t
+  delete strippedProps.tReady
+  return strippedProps
+}
+
 export default function () {
 
   const { config, i18n } = this
@@ -42,7 +54,7 @@ export default function () {
           <NextLink
             href={{ pathname, query: { ...query, lng } }}
             as={`/${lng}${as || href}`}
-            {...props}
+            {...removeWithNamespacesProps(props)}
           >
             {children}
           </NextLink>
@@ -53,7 +65,7 @@ export default function () {
         <NextLink
           href={href}
           as={as}
-          {...props}
+          {...removeWithNamespacesProps(props)}
         >
           {children}
         </NextLink>
