@@ -35,24 +35,26 @@ const removeWithNamespacesProps = (props) => {
 }
 
 class Link extends React.Component {
-  render() {
-    const {
-      as, children, href: hrefProp, lng, nextI18NextConfig, ...props
-    } = this.props
+  localeSubpathRequired(lng) {
+    const { nextI18NextConfig } = this.props
     const { defaultLanguage, localeSubpaths } = nextI18NextConfig.config
 
-    if (localeSubpaths && lng && lng !== defaultLanguage) {
-      let href = hrefProp
-      if (typeof hrefProp !== 'object') {
-        href = parseUrl(href, true /* parseQueryString */)
-      }
+    return localeSubpaths && lng && lng !== defaultLanguage
+  }
 
+  render() {
+    const {
+      as, children, href: hrefProp, lng, ...props
+    } = this.props
+
+    if (this.localeSubpathRequired(lng)) {
+      const href = Link.parseHref(hrefProp)
       const { pathname, query } = href
 
       return (
         <NextLink
           href={{ pathname, query: { ...query, lng } }}
-          as={`/${lng}${as || formatUrl(href, { unicode: true })}`}
+          as={Link.formatAsProp(as, href, lng)}
           {...removeWithNamespacesProps(props)}
         >
           {children}
@@ -70,6 +72,16 @@ class Link extends React.Component {
       </NextLink>
     )
   }
+}
+
+Link.formatAsProp = (as, href, lng) => `/${lng}${as || formatUrl(href, { unicode: true })}`
+
+Link.parseHref = (href) => {
+  if (typeof href !== 'object') {
+    return parseUrl(href, true /* parseQueryString */)
+  }
+
+  return href
 }
 
 Link.propTypes = {
