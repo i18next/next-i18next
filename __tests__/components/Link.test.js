@@ -110,7 +110,7 @@ describe('Link component', () => {
   })
 
   describe('https://github.com/isaachinman/next-i18next/issues/89', () => {
-    describe('href as object', () => {
+    describe('when href is an object, properly parse it', () => {
       beforeEach(() => {
         props.href = {
           pathname: '/foo/bar',
