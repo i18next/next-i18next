@@ -19,10 +19,6 @@ describe('Link component', () => {
       localeSubpaths: false,
     }
 
-    context.i18n = {
-      languages: ['de', 'en'],
-    }
-
     context.withNamespaces = () => Component => Component
 
     props = {
