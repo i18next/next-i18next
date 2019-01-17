@@ -31,10 +31,10 @@ describe('Link component', () => {
     }
   })
 
-  const createLinkComponent = () => {
+  const createLinkComponent = (otherProps = {}) => {
     const Link = linkFunction.apply(context)
 
-    return mount(<Link {...props}>click here</Link>).find('Link').at(1)
+    return mount(<Link {...props} {...otherProps}>click here</Link>).find('Link').at(1)
   }
 
   it('renders without lang if localeSubpaths === false', () => {
@@ -114,5 +114,32 @@ describe('Link component', () => {
 
     expect(component.prop('href')).toEqual({ pathname: '/foo/bar', query: { lng: 'de' } })
     expect(component.prop('as')).toEqual('/de/foo?bar')
+  })
+
+  describe('https://github.com/isaachinman/next-i18next/issues/97', () => {
+    const withNamespacesPropNames = [
+      'defaultNS',
+      'i18n',
+      'i18nOptions',
+      'lng',
+      'reportNS',
+      't',
+      'tReady',
+    ]
+
+    it('strips withNamespaces props before passing props to NextLink', () => {
+      const withNamespacesProps = withNamespacesPropNames.reduce((accum, propName, index) => {
+        // eslint-disable-next-line no-param-reassign
+        accum[propName] = index
+
+        return accum
+      }, {})
+
+      const component = createLinkComponent(withNamespacesProps)
+
+      withNamespacesPropNames.forEach((propName) => {
+        expect(component.prop(propName)).toBeUndefined()
+      })
+    })
   })
 })
