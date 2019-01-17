@@ -22,6 +22,16 @@ import NextLink from 'next/link'
 import { withNamespaces } from 'react-i18next'
 import { format as formatUrl, parse as parseUrl } from 'url'
 
+const formatAsProp = (as, href, lng) => `/${lng}${as || formatUrl(href, { unicode: true })}`
+
+const parseHref = (href) => {
+  if (typeof href !== 'object') {
+    return parseUrl(href, true /* parseQueryString */)
+  }
+
+  return href
+}
+
 const removeWithNamespacesProps = (props) => {
   const strippedProps = Object.assign({}, props)
   delete strippedProps.defaultNS
@@ -48,13 +58,13 @@ class Link extends React.Component {
     } = this.props
 
     if (this.localeSubpathRequired(lng)) {
-      const href = Link.parseHref(hrefProp)
+      const href = parseHref(hrefProp)
       const { pathname, query } = href
 
       return (
         <NextLink
           href={{ pathname, query: { ...query, lng } }}
-          as={Link.formatAsProp(as, href, lng)}
+          as={formatAsProp(as, href, lng)}
           {...removeWithNamespacesProps(props)}
         >
           {children}
@@ -72,16 +82,6 @@ class Link extends React.Component {
       </NextLink>
     )
   }
-}
-
-Link.formatAsProp = (as, href, lng) => `/${lng}${as || formatUrl(href, { unicode: true })}`
-
-Link.parseHref = (href) => {
-  if (typeof href !== 'object') {
-    return parseUrl(href, true /* parseQueryString */)
-  }
-
-  return href
 }
 
 Link.propTypes = {
