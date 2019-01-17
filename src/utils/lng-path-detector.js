@@ -1,4 +1,4 @@
-import { lngFromReq } from 'utils'
+import { lngFromReq, redirectWithoutCache } from 'utils'
 
 export default (req, res, next) => {
   if (req.i18n) {
@@ -26,14 +26,14 @@ export default (req, res, next) => {
           req.url = req.url.replace(`/${lng}/`, '/')
         }
       })
-      res.redirect(302, req.url.replace('/', `/${language}/`))
+      redirectWithoutCache(res, req.url.replace('/', `/${language}/`))
     }
     /*
       If a user has a default language prefix
       in their URL, strip it.
     */
     if (language === defaultLanguage && req.url.startsWith(`/${defaultLanguage}/`)) {
-      res.redirect(302, req.url.replace(`/${defaultLanguage}/`, '/'))
+      redirectWithoutCache(res, req.url.replace(`/${defaultLanguage}/`, '/'))
     }
   }
   next()
