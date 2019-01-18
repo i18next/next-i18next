@@ -19,6 +19,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import NextLink from 'next/link'
+import { withNamespaces } from 'react-i18next'
 import { parse as parseUrl } from 'url'
 
 const removeWithNamespacesProps = (props) => {
@@ -33,59 +34,59 @@ const removeWithNamespacesProps = (props) => {
   return strippedProps
 }
 
-export default function () {
-
-  const { config } = this
-
-  class Link extends React.Component {
-    render() {
-      const { defaultLanguage, localeSubpaths } = config
-      const {
-        as, children, href, lng, ...props
-      } = this.props
-      if (localeSubpaths && lng && lng !== defaultLanguage) {
-        const { pathname, query } = parseUrl(href, true /* parseQueryString */)
-
-        return (
-          <NextLink
-            href={{ pathname, query: { ...query, lng } }}
-            as={`/${lng}${as || href}`}
-            {...removeWithNamespacesProps(props)}
-          >
-            {children}
-          </NextLink>
-        )
-      }
+class Link extends React.Component {
+  render() {
+    const {
+      as, children, href, lng, nextI18NextConfig: config, ...props
+    } = this.props
+    const { defaultLanguage, localeSubpaths } = config
+    if (localeSubpaths && lng && lng !== defaultLanguage) {
+      const { pathname, query } = parseUrl(href, true /* parseQueryString */)
 
       return (
         <NextLink
-          href={href}
-          as={as}
+          href={{ pathname, query: { ...query, lng } }}
+          as={`/${lng}${as || href}`}
           {...removeWithNamespacesProps(props)}
         >
           {children}
         </NextLink>
       )
     }
+
+    return (
+      <NextLink
+        href={href}
+        as={as}
+        {...removeWithNamespacesProps(props)}
+      >
+        {children}
+      </NextLink>
+    )
   }
-
-  Link.propTypes = {
-    as: PropTypes.string,
-    children: PropTypes.node.isRequired,
-    href: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.object,
-    ]).isRequired,
-  }
-
-  Link.defaultProps = {
-    as: undefined,
-  }
-
-  /*
-    Usage of `withNamespaces` here is just to
-    force `Link` to rerender on language change
-  */
-  return this.withNamespaces()(Link)
-
 }
+
+Link.propTypes = {
+  as: PropTypes.string,
+  children: PropTypes.node.isRequired,
+  href: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+  ]).isRequired,
+  lng: PropTypes.string,
+  nextI18NextConfig: PropTypes.shape({
+    defaultLanguage: PropTypes.string.isRequired,
+    localeSubpaths: PropTypes.bool.isRequired,
+  }).isRequired,
+}
+
+Link.defaultProps = {
+  as: undefined,
+  lng: undefined,
+}
+
+/*
+  Usage of `withNamespaces` here is just to
+  force `Link` to rerender on language change
+*/
+export default withNamespaces()(Link)

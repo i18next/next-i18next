@@ -1,7 +1,7 @@
 import createConfig from 'config/create-config'
 import createI18NextClient from 'create-i18next-client'
 
-import { appWithTranslation } from 'hocs'
+import { appWithTranslation, withConfig } from 'hocs'
 import { consoleMessage } from 'utils'
 import { Link, Trans } from 'components'
 import { withNamespaces } from 'react-i18next'
@@ -15,8 +15,8 @@ export default class NextI18Next {
     this.appWithTranslation = appWithTranslation.bind(this)
     this.withNamespaces = withNamespaces
 
-    this.Trans = Trans.apply(this)
-    this.Link = Link.apply(this)
+    this.Trans = Trans
+    this.Link = withConfig(Link, this.config)
   }
 
 }

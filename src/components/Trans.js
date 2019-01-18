@@ -1,16 +1,14 @@
 import React from 'react'
-import { Trans } from 'react-i18next'
+import { Trans, withNamespaces } from 'react-i18next'
 
-export default function () {
+class WrappedTrans extends React.Component {
+  render() {
+    const { i18n } = this.props
 
-  const { i18n } = this
-
-  return class WrappedTrans extends React.Component {
-    render() {
-      return (
-        <Trans {...this.props} i18n={i18n} />
-      )
-    }
+    return (
+      <Trans {...this.props} i18n={i18n} />
+    )
   }
-
 }
+
+export default withNamespaces()(WrappedTrans)
