@@ -1,20 +1,29 @@
 {
   "presets": [
-    "@babel/env",
+    [
+      "@babel/env",
+      {
+        "targets": {
+          "ie": "11"
+        },
+        "useBuiltIns": "usage"
+      }
+    ],
     ["@babel/preset-react"]
   ],
   "plugins": [
     [
       "module-resolver",
       {
-        "root": [
-          "./src"
-        ]
+        "root": ["./src"]
       }
     ],
     "@babel/plugin-transform-runtime",
-    ["add-module-exports", {
-      "addDefaultProperty": true
-    }]
+    [
+      "add-module-exports",
+      {
+        "addDefaultProperty": true
+      }
+    ]
   ]
 }
