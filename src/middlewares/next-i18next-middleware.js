@@ -29,10 +29,11 @@ export default function (nexti18next) {
     })
   }
 
-  middleware.push(
-    i18nextMiddleware.handle(i18n, { ignoreRoutes }),
-    (req, res, next) => {
-      if (localeSubpaths) {
+  middleware.push(i18nextMiddleware.handle(i18n, { ignoreRoutes }))
+
+  if (localeSubpaths) {
+    middleware.push(
+      (req, res, next) => {
         if (isI18nRoute(req.url)) {
           const { pathname } = parse(req.url)
 
@@ -43,18 +44,18 @@ export default function (nexti18next) {
           }
 
           lngPathDetector(req, res)
+
+          const params = localeSubpathRoute(req.url)
+
+          if (isLocaleSubpathRoute(params)) {
+            handleLanguageSubpath(req, params.lng)
+          }
         }
 
-        const params = localeSubpathRoute(req.url)
-
-        if (isLocaleSubpathRoute(params)) {
-          handleLanguageSubpath(req, params.lng)
-        }
-      }
-
-      next()
-    },
-  )
+        next()
+      },
+    )
+  }
 
   return middleware
 }
