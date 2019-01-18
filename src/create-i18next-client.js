@@ -1,7 +1,7 @@
 import isNode from 'detect-node'
 import i18next from 'i18next'
 import i18nextXHRBackend from 'i18next-xhr-backend'
-import i18nextBrowserLanguageDetector from 'i18next-browser-languagedetector'
+import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector'
 
 const i18n = i18next.default ? i18next.default : i18next
 i18n.nsFromReactTree = []
@@ -14,12 +14,16 @@ export default (config) => {
       const i18nextMiddleware = eval("require('i18next-express-middleware')")
       i18n.use(i18nextNodeBackend)
       if (config.serverLanguageDetection) {
-        i18n.use(i18nextMiddleware.LanguageDetector)
+        const serverDetectors = new i18nextMiddleware.LanguageDetector()
+        config.customDetectors.forEach(detector => serverDetectors.addDetector(detector))
+        i18n.use(serverDetectors)
       }
     } else {
       i18n.use(i18nextXHRBackend)
       if (config.browserLanguageDetection) {
-        i18n.use(i18nextBrowserLanguageDetector)
+        const browserDetectors = new I18nextBrowserLanguageDetector()
+        config.customDetectors.forEach(detector => browserDetectors.addDetector(detector))
+        i18n.use(browserDetectors)
       }
     }
 
