@@ -7,9 +7,16 @@ export default function (nexti18next, app, server) {
   const { config, i18n } = nexti18next
   const { allLanguages, ignoreRoutes, localeSubpaths } = config
 
-  server.use(i18nextMiddleware.handle(i18n, { ignoreRoutes }))
-
   const ignoreRegex = new RegExp(`^\/(?!${ignoreRoutes.map(x => x.replace('/', '')).join('|')}).*$`)
+
+  if (!config.serverLanguageDetection) {
+    server.get(ignoreRegex, (req, res, next) => {
+      req.lng = config.defaultLanguage
+      next()
+    })
+  }
+
+  server.use(i18nextMiddleware.handle(i18n, { ignoreRoutes }))
 
   if (localeSubpaths) {
     server.get(ignoreRegex, forceTrailingSlash)

@@ -33,6 +33,7 @@ describe('next-18next middleware', () => {
         allLanguages: ['en', 'de'],
         ignoreRoutes: ['/_next', '/static'],
         localeSubpaths: true,
+        serverLanguageDetection: true,
       },
       i18n: 'i18n',
     }
