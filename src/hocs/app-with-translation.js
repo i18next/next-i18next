@@ -36,7 +36,7 @@ export default function (WrappedComponent) {
       }
 
       // Initiate vars to return
-      const { req } = ctx
+      const { req } = ctx.ctx
       let initialI18nStore = {}
       let initialLanguage = null
 
