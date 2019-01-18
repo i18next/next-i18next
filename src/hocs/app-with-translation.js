@@ -1,6 +1,5 @@
 import React from 'react'
 import Router from 'next/router'
-import { loadGetInitialProps } from 'next/dist/lib/utils'
 
 import { I18nextProvider } from 'react-i18next'
 import { lngFromReq, lngPathCorrector } from 'utils'
@@ -31,7 +30,10 @@ export default function (WrappedComponent) {
 
     static async getInitialProps(ctx) {
 
-      const wrappedComponentProps = await loadGetInitialProps(WrappedComponent, ctx)
+      let wrappedComponentProps = { pageProps: {} }
+      if (WrappedComponent.getInitialProps) {
+        wrappedComponentProps = await WrappedComponent.getInitialProps(ctx)
+      }
 
       // Initiate vars to return
       const { req } = ctx
