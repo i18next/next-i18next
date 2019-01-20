@@ -52,7 +52,7 @@
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
-    "eslint": "^5.9.0",
+    "eslint": "^5.12.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
@@ -78,7 +78,7 @@
     "pretty-error": "^2.1.1",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
-    "react-i18next": "^8.4.0",
+    "react-i18next": "^9.0.4",
     "url": "^0.11.0"
   }
 }
