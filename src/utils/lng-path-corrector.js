@@ -20,5 +20,5 @@ export default (config, i18n, currentRoute, currentLanguage = i18n.languages[0])
     return [`/${currentLanguage}${as}`, { ...query, lng: currentLanguage }]
   }
 
-  return [as, { ...query, lng: defaultLanguage }]
+  return [as, query]
 }

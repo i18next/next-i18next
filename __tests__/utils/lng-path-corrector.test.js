@@ -33,7 +33,8 @@ describe('lngPathCorrector utility function', () => {
   it('strips off the default language', () => {
     currentRoute.asPath = '/en/foo'
 
-    expect(lngPathCorrector(config, i18n, currentRoute)).toEqual(['/foo', { lng: 'en' }])
+    // no 'lng ' parameter needed if this is the default language
+    expect(lngPathCorrector(config, i18n, currentRoute)).toEqual(['/foo', {}])
   })
 
   it('corrects path with language, if not the default', () => {
@@ -50,7 +51,8 @@ describe('lngPathCorrector utility function', () => {
     expect(lngPathCorrector(config, i18n, currentRoute, 'de'))
       .toEqual(['/de/foo', { lng: 'de', option1: 'value1' }])
 
+    // no 'lng ' parameter needed if this is the default language
     expect(lngPathCorrector(config, i18n, currentRoute))
-      .toEqual(['/foo', { lng: 'en', option1: 'value1' }])
+      .toEqual(['/foo', { option1: 'value1' }])
   })
 })
