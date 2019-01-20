@@ -4,6 +4,7 @@ export default (req, res, next) => {
   if (req.i18n) {
     const language = lngFromReq(req)
     const { allLanguages, defaultLanguage } = req.i18n.options
+    let languageChanged = false
     /*
       If a user has hit a subpath which does not
       match their language, give preference to
@@ -12,6 +13,7 @@ export default (req, res, next) => {
     allLanguages.forEach((lng) => {
       if (req.url.startsWith(`/${lng}/`) && language !== lng) {
         req.i18n.changeLanguage(lng)
+        languageChanged = true
       }
     })
     /*
@@ -20,7 +22,7 @@ export default (req, res, next) => {
       preference to the language and redirect
       their path.
     */
-    if (language !== defaultLanguage && !req.url.startsWith(`/${language}/`)) {
+    if (!languageChanged && language !== defaultLanguage && !req.url.startsWith(`/${language}/`)) {
       allLanguages.forEach((lng) => {
         if (req.url.startsWith(`/${lng}/`)) {
           req.url = req.url.replace(`/${lng}/`, '/')

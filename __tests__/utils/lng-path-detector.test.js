@@ -50,15 +50,13 @@ describe('lngPathDetector utility function', () => {
     expect(next).toBeCalled()
   })
 
-  it('performs redirect if url starts with default and language is not the default', () => {
+  it('performs language change if url starts with a locale subpath of a different locale', () => {
     req.i18n.languages = ['de', 'en']
     req.url = '/en/foo?test=123'
 
     lngPathDetector(req, res, next)
 
     expect(req.i18n.changeLanguage).toBeCalledWith('en')
-
-    expect(res.redirect).toBeCalledWith(302, '/de/foo?test=123')
 
     expect(next).toBeCalled()
   })
