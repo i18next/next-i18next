@@ -8,7 +8,6 @@ import Trans from '../../src/components/Trans'
 
 jest.mock('react-i18next', () => ({
   Trans: () => 'mock-trans',
-  withNamespaces: () => Component => Component,
 }))
 
 describe('Trans component', () => {
@@ -16,10 +15,12 @@ describe('Trans component', () => {
 
   beforeEach(() => {
     props = {
-      i18n: {
-        languages: ['de', 'en'],
-      },
       i18nKey: 'title',
+      nextI18NextConfig: {
+        i18n: {
+          languages: ['de', 'en'],
+        },
+      },
     }
   })
 

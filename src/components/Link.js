@@ -37,9 +37,9 @@ const removeWithNamespacesProps = (props) => {
 class Link extends React.Component {
   render() {
     const {
-      as, children, href, lng, nextI18NextConfig: config, ...props
+      as, children, href, lng, nextI18NextConfig, ...props
     } = this.props
-    const { defaultLanguage, localeSubpaths } = config
+    const { defaultLanguage, localeSubpaths } = nextI18NextConfig.config
     if (localeSubpaths && lng && lng !== defaultLanguage) {
       const { pathname, query } = parseUrl(href, true /* parseQueryString */)
 
@@ -75,8 +75,10 @@ Link.propTypes = {
   ]).isRequired,
   lng: PropTypes.string,
   nextI18NextConfig: PropTypes.shape({
-    defaultLanguage: PropTypes.string.isRequired,
-    localeSubpaths: PropTypes.bool.isRequired,
+    config: PropTypes.shape({
+      defaultLanguage: PropTypes.string.isRequired,
+      localeSubpaths: PropTypes.bool.isRequired,
+    }).isRequired,
   }).isRequired,
 }
 

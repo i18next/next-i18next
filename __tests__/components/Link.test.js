@@ -18,8 +18,10 @@ describe('Link component', () => {
       href: '/foo/bar',
       lng: 'de',
       nextI18NextConfig: {
-        defaultLanguage: 'en',
-        localeSubpaths: false,
+        config: {
+          defaultLanguage: 'en',
+          localeSubpaths: false,
+        },
       },
     }
   })
@@ -44,7 +46,7 @@ describe('Link component', () => {
   })
 
   it('renders without lang if props.lng is undefined', () => {
-    props.nextI18NextConfig.localeSubpaths = true
+    props.nextI18NextConfig.config.localeSubpaths = true
     props.lng = undefined
 
     // without 'as' prop
@@ -62,8 +64,8 @@ describe('Link component', () => {
   })
 
   it('renders without lang if props.lng === defaultLanguage', () => {
-    props.nextI18NextConfig.localeSubpaths = true
-    props.nextI18NextConfig.defaultLanguage = 'en'
+    props.nextI18NextConfig.config.localeSubpaths = true
+    props.nextI18NextConfig.config.defaultLanguage = 'en'
     props.lng = 'en'
 
     // without 'as' prop
@@ -81,8 +83,8 @@ describe('Link component', () => {
   })
 
   it('renders with lang', () => {
-    props.nextI18NextConfig.localeSubpaths = true
-    props.nextI18NextConfig.defaultLanguage = 'en'
+    props.nextI18NextConfig.config.localeSubpaths = true
+    props.nextI18NextConfig.config.defaultLanguage = 'en'
 
     // without 'as' prop -- no query parameters
     let component = createLinkComponent()

@@ -15,8 +15,9 @@ export default class NextI18Next {
     this.appWithTranslation = appWithTranslation.bind(this)
     this.withNamespaces = withNamespaces
 
-    this.Trans = Trans
-    this.Link = withConfig(Link, this.config)
+    const nextI18NextConfig = { config: this.config, i18n: this.i18n }
+    this.Trans = withConfig(Trans, nextI18NextConfig)
+    this.Link = withConfig(Link, nextI18NextConfig)
   }
 
 }
