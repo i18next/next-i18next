@@ -24,13 +24,7 @@ import { format as formatUrl, parse as parseUrl } from 'url'
 
 const formatAsProp = (as, href, lng) => `/${lng}${as || formatUrl(href, { unicode: true })}`
 
-const parseHref = (href) => {
-  if (typeof href !== 'object') {
-    return parseUrl(href, true /* parseQueryString */)
-  }
-
-  return href
-}
+const parseHref = href => ((typeof href === 'string') ? parseUrl(href, true /* parseQueryString */) : href)
 
 const removeWithNamespacesProps = (props) => {
   const strippedProps = Object.assign({}, props)
