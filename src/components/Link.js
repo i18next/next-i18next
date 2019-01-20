@@ -73,7 +73,6 @@ Link.propTypes = {
     PropTypes.string,
     PropTypes.object,
   ]).isRequired,
-  lng: PropTypes.string,
   nextI18NextConfig: PropTypes.shape({
     config: PropTypes.shape({
       defaultLanguage: PropTypes.string.isRequired,
@@ -84,7 +83,6 @@ Link.propTypes = {
 
 Link.defaultProps = {
   as: undefined,
-  lng: undefined,
 }
 
 /*
