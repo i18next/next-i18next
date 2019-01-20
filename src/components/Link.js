@@ -24,6 +24,12 @@ import { format as formatUrl, parse as parseUrl } from 'url'
 
 const formatAsProp = (as, href, lng) => `/${lng}${as || formatUrl(href, { unicode: true })}`
 
+const localeSubpathRequired = (nextI18NextConfig, lng) => {
+  const { defaultLanguage, localeSubpaths } = nextI18NextConfig.config
+
+  return localeSubpaths && lng && lng !== defaultLanguage
+}
+
 const parseHref = href => ((typeof href === 'string') ? parseUrl(href, true /* parseQueryString */) : href)
 
 const removeWithNamespacesProps = (props) => {
@@ -39,19 +45,12 @@ const removeWithNamespacesProps = (props) => {
 }
 
 class Link extends React.Component {
-  localeSubpathRequired(lng) {
-    const { nextI18NextConfig } = this.props
-    const { defaultLanguage, localeSubpaths } = nextI18NextConfig.config
-
-    return localeSubpaths && lng && lng !== defaultLanguage
-  }
-
   render() {
     const {
-      as, children, href: hrefProp, lng, ...props
+      as, children, href: hrefProp, lng, nextI18NextConfig, ...props
     } = this.props
 
-    if (this.localeSubpathRequired(lng)) {
+    if (localeSubpathRequired(nextI18NextConfig, lng)) {
       const href = parseHref(hrefProp)
       const { pathname, query } = href
 
