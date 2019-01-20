@@ -33,24 +33,6 @@ describe('withConfig HoC', () => {
     expect(wrappedComponent.prop('prop')).toEqual('value')
   })
 
-  describe('getInitialProps', () => {
-    const ctx = {}
-
-    it('returns empty object if getInitialProps of wrapped component does not exist', async () => {
-      const Component = withConfig(WrappedComponent, config)
-
-      expect(await Component.getInitialProps(ctx)).toEqual({})
-    })
-
-    it('calls getInitialProps of wrapped component, if it exists', async () => {
-      WrappedComponent.getInitialProps = jest.fn(() => Promise.resolve({ prop: 'value' }))
-      const Component = withConfig(WrappedComponent, config)
-
-      expect(await Component.getInitialProps(ctx)).toEqual({ prop: 'value' })
-      expect(WrappedComponent.getInitialProps).toBeCalledWith(ctx)
-    })
-  })
-
   describe('displayName', () => {
     it('renders with Component displayName, if displayName available', () => {
       WrappedComponent.displayName = 'withAnotherHoC(WrappedComponent)'
