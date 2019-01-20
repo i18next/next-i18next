@@ -21,7 +21,7 @@ export default function (WrappedComponent) {
           if (process.browser) {
             const { router } = props
             const { pathname, asPath, query: routerQuery } = router
-            const [as, query] = lngPathCorrector(config, i18n, asPath, routerQuery, lng)
+            const [as, query] = lngPathCorrector(config, i18n, { asPath, query: routerQuery }, lng)
             if (as !== asPath) {
               router.replace({ pathname, query }, as, { shallow: true })
             }
