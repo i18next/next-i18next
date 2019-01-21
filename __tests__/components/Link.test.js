@@ -3,39 +3,32 @@
 import React from 'react'
 import { mount } from 'enzyme'
 
-import linkFunction from '../../src/components/Link'
+import Link from '../../src/components/Link'
 
 jest.mock('next/link')
+jest.mock('react-i18next', () => ({
+  withNamespaces: () => Component => Component,
+}))
 
 describe('Link component', () => {
-  let context
   let props
 
   beforeEach(() => {
-    context = {}
-
-    context.config = {
-      defaultLanguage: 'en',
-      localeSubpaths: false,
-    }
-
-    context.i18n = {
-      languages: ['de', 'en'],
-    }
-
-    context.withNamespaces = () => Component => Component
-
     props = {
       href: '/foo/bar',
       lng: 'de',
+      nextI18NextConfig: {
+        config: {
+          defaultLanguage: 'en',
+          localeSubpaths: false,
+        },
+      },
     }
   })
 
-  const createLinkComponent = (otherProps = {}) => {
-    const Link = linkFunction.apply(context)
-
-    return mount(<Link {...props} {...otherProps}>click here</Link>).find('Link').at(1)
-  }
+  const createLinkComponent = (otherProps = {}) => mount(
+    <Link {...props} {...otherProps}>click here</Link>,
+  ).find('Link').at(1)
 
   it('renders without lang if localeSubpaths === false', () => {
     // without 'as' prop
@@ -53,7 +46,7 @@ describe('Link component', () => {
   })
 
   it('renders without lang if props.lng is undefined', () => {
-    context.config.localeSubpaths = true
+    props.nextI18NextConfig.config.localeSubpaths = true
     props.lng = undefined
 
     // without 'as' prop
@@ -71,8 +64,8 @@ describe('Link component', () => {
   })
 
   it('renders without lang if props.lng === defaultLanguage', () => {
-    context.config.localeSubpaths = true
-    context.config.defaultLanguage = 'en'
+    props.nextI18NextConfig.config.localeSubpaths = true
+    props.nextI18NextConfig.config.defaultLanguage = 'en'
     props.lng = 'en'
 
     // without 'as' prop
@@ -90,8 +83,8 @@ describe('Link component', () => {
   })
 
   it('renders with lang', () => {
-    context.config.localeSubpaths = true
-    context.config.defaultLanguage = 'en'
+    props.nextI18NextConfig.config.localeSubpaths = true
+    props.nextI18NextConfig.config.defaultLanguage = 'en'
 
     // without 'as' prop -- no query parameters
     let component = createLinkComponent()

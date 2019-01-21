@@ -1,16 +1,13 @@
 import React from 'react'
 import { Trans } from 'react-i18next'
 
-export default function () {
+export default class WrappedTrans extends React.Component {
+  render() {
+    const { nextI18NextConfig } = this.props
+    const { i18n } = nextI18NextConfig
 
-  const { i18n } = this
-
-  return class WrappedTrans extends React.Component {
-    render() {
-      return (
-        <Trans {...this.props} i18n={i18n} />
-      )
-    }
+    return (
+      <Trans {...this.props} i18n={i18n} />
+    )
   }
-
 }
