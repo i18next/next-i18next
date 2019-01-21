@@ -109,6 +109,77 @@ describe('Link component', () => {
     expect(component.prop('as')).toEqual('/de/foo?bar')
   })
 
+  describe('https://github.com/isaachinman/next-i18next/issues/89', () => {
+    describe('when href is an object, properly parse it', () => {
+      beforeEach(() => {
+        props.href = {
+          pathname: '/foo/bar',
+          query: {},
+        }
+      })
+
+      describe('localeSubpaths === false', () => {
+        beforeEach(() => {
+          props.nextI18NextConfig.config.localeSubpaths = false
+        })
+
+        it('renders without lang', () => {
+          const component = createLinkComponent()
+
+          expect(component.prop('href')).toEqual({ pathname: '/foo/bar', query: {} })
+          expect(component.prop('as')).toBeUndefined()
+        })
+
+        it('renders without lang (with "as" prop)', () => {
+          props.as = '/foo?bar'
+
+          const component = createLinkComponent()
+
+          expect(component.prop('href')).toEqual({ pathname: '/foo/bar', query: {} })
+          expect(component.prop('as')).toEqual('/foo?bar')
+        })
+      })
+
+      describe('localeSubpaths === true', () => {
+        beforeEach(() => {
+          props.nextI18NextConfig.config.localeSubpaths = true
+        })
+
+        beforeEach(() => {
+          props.nextI18NextConfig.config.defaultLanguage = 'en'
+
+          props.href = { pathname: '/foo/bar', query: {} }
+        })
+
+        it('renders with lang', () => {
+          const component = createLinkComponent()
+
+          expect(component.prop('href')).toEqual({ pathname: '/foo/bar', query: { lng: 'de' } })
+          expect(component.prop('as')).toEqual('/de/foo/bar')
+        })
+
+        it('renders with lang (with "as" prop)', () => {
+          props.as = '/foo?bar'
+
+          const component = createLinkComponent()
+
+          expect(component.prop('href')).toEqual({ pathname: '/foo/bar', query: { lng: 'de' } })
+          expect(component.prop('as')).toEqual('/de/foo?bar')
+        })
+
+        it('renders with lang (with query parameters)', () => {
+          props.href.query = { baz: '' }
+
+          const component = createLinkComponent()
+
+          expect(component.prop('href'))
+            .toEqual({ pathname: '/foo/bar', query: { baz: '', lng: 'de' } })
+          expect(component.prop('as')).toEqual('/de/foo/bar?baz=')
+        })
+      })
+    })
+  })
+
   describe('https://github.com/isaachinman/next-i18next/issues/97', () => {
     const withNamespacesPropNames = [
       'defaultNS',
