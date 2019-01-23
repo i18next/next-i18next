@@ -35,6 +35,13 @@ export default function (WrappedComponent) {
         wrappedComponentProps = await WrappedComponent.getInitialProps(ctx)
       }
 
+      if (config.otherLanguages.length <= 0) {
+        consoleMessage(
+          'error',
+          'To properly initialise a next-i18next instance you must provide one or more locale codes in config.otherLanguages.',
+        )
+      }
+
       // Initiate vars to return
       const { req } = ctx.ctx
       let initialI18nStore = {}
