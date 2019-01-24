@@ -34,6 +34,12 @@ export default function (WrappedComponent) {
       if (WrappedComponent.getInitialProps) {
         wrappedComponentProps = await WrappedComponent.getInitialProps(ctx)
       }
+      if (typeof wrappedComponentProps.pageProps === 'undefined') {
+        consoleMessage(
+          'error',
+          'If you have a getInitialProps method in your custom _app.js file, you must explicitly return pageProps. For more information, see: https://github.com/zeit/next.js#custom-app',
+        )
+      }
 
       if (config.otherLanguages.length <= 0) {
         consoleMessage(
