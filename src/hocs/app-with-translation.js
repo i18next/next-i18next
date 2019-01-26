@@ -1,5 +1,5 @@
 import React from 'react'
-import Router from 'next/router'
+import { withRouter } from 'next/router'
 
 import { I18nextProvider } from 'react-i18next'
 import { lngFromReq, lngPathCorrector } from 'utils'
@@ -13,15 +13,17 @@ export default function (WrappedComponent) {
 
   class AppWithTranslation extends React.Component {
 
-    constructor() {
-      super()
+    constructor(props) {
+      super(props)
+
       if (config.localeSubpaths) {
         i18n.on('languageChanged', (lng) => {
           if (process.browser) {
-            const originalRoute = window.location.pathname
-            const [href, as] = lngPathCorrector(config, i18n, originalRoute, lng)
-            if (as !== originalRoute) {
-              Router.replace(href, as, { shallow: true })
+            const { router } = props
+            const { pathname, asPath, query: routerQuery } = router
+            const [as, query] = lngPathCorrector(config, i18n, { asPath, query: routerQuery }, lng)
+            if (as !== asPath) {
+              router.replace({ pathname, query }, as, { shallow: true })
             }
           }
         })
@@ -145,6 +147,8 @@ export default function (WrappedComponent) {
     }
   }
 
-  return hoistNonReactStatics(AppWithTranslation, WrappedComponent, { getInitialProps: true })
+  return hoistNonReactStatics(
+    withRouter(AppWithTranslation), WrappedComponent, { getInitialProps: true },
+  )
 
 }
