@@ -24,6 +24,7 @@ export default {
   browserLanguageDetection: true,
   serverLanguageDetection: true,
   ignoreRoutes: ['/_next', '/static'],
+  customDetectors: [],
   detection: {
     order: ['cookie', 'header', 'querystring'],
     caches: ['cookie'],

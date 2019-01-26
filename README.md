@@ -149,6 +149,7 @@ class SomeLink extends React.Component {
 | `localeSubpaths` | `false`  |
 | `serverLanguageDetection` | `true`  |
 | `use` (for plugins) | `[]`  |
+| `customDetectors` | `[]`  |
 
 _This table contains options which are specific to next-i18next. All other [i18next options](https://www.i18next.com/overview/configuration-options) can be passed in as well._
 
