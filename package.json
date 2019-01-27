@@ -21,8 +21,8 @@
   ],
   "scripts": {
     "start": "babel-node ./src/index.js",
-    "lint": "eslint src __tests__",
-    "lint:fix": "eslint src __tests__ --fix",
+    "lint": "eslint src examples __tests__",
+    "lint:fix": "eslint src examples __tests__ --fix",
     "build": "babel src --out-dir dist",
     "prepare": "yarn build",
     "run-example": "yarn build && cd examples/simple && rm -rf node_modules && yarn && yarn dev",

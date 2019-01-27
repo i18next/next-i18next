@@ -1,4 +1,6 @@
 /* eslint-env jest */
+/* eslint-disable no-undef */
+
 const testLanguage = 'en'
 const testLanguageSecondary = 'de'
 
@@ -15,10 +17,10 @@ describe('example project', () => {
   })
 
   it('should navigate to the second page and back', async () => {
-    await expect(page).toClick('a', { text: 'To second page' })
+    await expect(page).toClick('button', { text: 'To second page' })
     await expect(page).toMatch('A second page')
 
-    await expect(page).toClick('a', { text: 'Back to home' })
+    await expect(page).toClick('button', { text: 'Back to home' })
     await expect(page).toMatch('A simple example')
   })
 
@@ -32,10 +34,10 @@ describe('example project', () => {
     })
 
     it('should navigate to the second page and back', async () => {
-      await expect(page).toClick('a', { text: 'Zur zweiten Seite' })
+      await expect(page).toClick('button', { text: 'Zur zweiten Seite' })
       await expect(page).toMatch('Eine zweite Seite')
 
-      await expect(page).toClick('a', { text: 'Zurück zur Hauptseite' })
+      await expect(page).toClick('button', { text: 'Zurück zur Hauptseite' })
       await expect(page).toMatch('Ein einfaches Beispiel')
     })
 
