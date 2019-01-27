@@ -135,6 +135,19 @@ class SomeLink extends React.Component {
 }
 ```
 
+## Custom Routing
+
+Custom routing can be achieved via the `app.render` method:
+
+```jsx
+server.use(nextI18NextMiddleware(nextI18next))
+
+server.get('/products/:id', (req, res) => {
+  const { query, params } = req
+  return app.render(req, res, '/product-page', { ...query, id: params.id })
+})
+```
+
 ## Options
 
 | Key  | Default value |

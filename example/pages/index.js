@@ -10,10 +10,8 @@ class Homepage extends React.Component {
       namespacesRequired: ['common', 'footer']
     }
   }
-
   render() {
     const { t } = this.props
-
     return (
       <React.Fragment>
         <Title />
@@ -23,23 +21,10 @@ class Homepage extends React.Component {
         <Link href='/second-page'>
           <a>{t('to-second-page')}</a>
         </Link>
-        {
-          [1, 2, 3].map(
-            productId => <React.Fragment key={productId}>
-              <br />
-              <Link
-                href={`/product-page?id=${productId}`}
-                as={`/products/${productId}`}
-              >
-                <a>{t(`common:product${productId}`)}</a>
-              </Link>
-            </React.Fragment>
-          )
-        }
         <Footer />
       </React.Fragment>
     )
   }
 }
 
-export default withNamespaces(['common', 'footer'])(Homepage)
+export default withNamespaces('common')(Homepage)
