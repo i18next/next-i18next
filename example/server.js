@@ -11,7 +11,7 @@ const handle = app.getRequestHandler();
   await app.prepare()
   const server = express()
 
-  nextI18NextMiddleware(nextI18next, app, server)
+  server.use(nextI18NextMiddleware(nextI18next))
 
   server.get('*', (req, res) => handle(req, res))
 

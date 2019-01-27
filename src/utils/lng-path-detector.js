@@ -1,6 +1,6 @@
 import { lngFromReq, redirectWithoutCache } from 'utils'
 
-export default (req, res, next) => {
+export default (req, res) => {
   if (req.i18n) {
     const language = lngFromReq(req)
     const { allLanguages, defaultLanguage } = req.i18n.options
@@ -38,5 +38,4 @@ export default (req, res, next) => {
       redirectWithoutCache(res, req.url.replace(`/${defaultLanguage}/`, '/'))
     }
   }
-  next()
 }
