@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import testConfig from '../test-config'
+import testI18NextConfig from '../test-i18next-config'
 
 import lngPathDetector from '../../src/utils/lng-path-detector'
 
@@ -10,7 +10,7 @@ describe('lngPathDetector utility function', () => {
 
   beforeEach(() => {
     req = {
-      i18n: { ...testConfig },
+      i18n: testI18NextConfig,
       url: '/',
     }
 
@@ -28,7 +28,7 @@ describe('lngPathDetector utility function', () => {
     expect(res.redirect).not.toBeCalled()
   })
 
-  it('changes language if url starts with langauge and is not languages[0]', () => {
+  it('changes language if url starts with language and is not languages[0]', () => {
     req.url = '/de/foo'
 
     lngPathDetector(req, res)
@@ -49,10 +49,11 @@ describe('lngPathDetector utility function', () => {
     expect(res.redirect).not.toBeCalledWith()
   })
 
-  it('strips language off url and redirects if langauge is languages[0]', () => {
+  it('strips language off url and redirects if language is languages[0]', () => {
+    req.i18n.languages = ['en', 'de']
     req.url = '/en/foo'
 
-    lngPathDetector(req, res)
+    lngPathDetector(req, res, true)
 
     expect(req.i18n.changeLanguage).not.toBeCalledWith()
 

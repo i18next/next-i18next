@@ -2,7 +2,7 @@
 
 import i18nextMiddleware from 'i18next-express-middleware'
 import { forceTrailingSlash, handleLanguageSubpath, lngPathDetector } from 'utils'
-import testConfig from '../test-config'
+import testI18NextConfig from '../test-i18next-config'
 
 import nextI18nextMiddleware from '../../src/middlewares/next-i18next-middleware'
 
@@ -24,7 +24,7 @@ describe('next-18next middleware', () => {
 
   beforeEach(() => {
     nexti18next = {
-      config: { ...testConfig.options },
+      config: testI18NextConfig.options,
       i18n: 'i18n',
     }
 
