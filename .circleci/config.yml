@@ -16,7 +16,7 @@ jobs:
       - restore_cache:
           name: Restore cache (example)
           keys:
-          - v1-dependencies-{{ checksum "example/package.json" }}
+          - v1-dependencies-{{ checksum "examples/simple/package.json" }}
           - v1-dependencies-
 
       - run:
@@ -33,7 +33,7 @@ jobs:
 
       - run:
           name: Build source (example)
-          command: cd example && yarn && yarn build
+          command: cd examples/simple && yarn && yarn build
 
       - save_cache:
           name: Save cache (main)
@@ -44,8 +44,8 @@ jobs:
       - save_cache:
           name: Save cache (example)
           paths:
-            - example/node_modules
-          key: v1-dependencies-{{ checksum "example/package.json" }}
+            - examples/simple/node_modules
+          key: v1-dependencies-{{ checksum "examples/simple/package.json" }}
 
       - run:
           name: Lint
