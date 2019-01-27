@@ -1,6 +1,5 @@
 export { default as consoleMessage } from './console-message.js'
 export { default as forceTrailingSlash } from './force-trailing-slash'
-export { default as handleLanguageSubpath } from './handle-language-subpath'
 export { default as lngFromReq } from './lng-from-req'
 export { default as lngPathCorrector } from './lng-path-corrector'
 export { default as lngPathDetector } from './lng-path-detector'

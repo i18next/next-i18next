@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
 import i18nextMiddleware from 'i18next-express-middleware'
-import { forceTrailingSlash, handleLanguageSubpath, lngPathDetector } from 'utils'
+import { forceTrailingSlash, lngPathDetector } from 'utils'
 import testI18NextConfig from '../test-i18next-config'
 
 import nextI18nextMiddleware from '../../src/middlewares/next-i18next-middleware'
@@ -12,7 +12,6 @@ jest.mock('i18next-express-middleware', () => ({
 
 jest.mock('utils', () => ({
   forceTrailingSlash: jest.fn(),
-  handleLanguageSubpath: jest.fn(),
   lngPathDetector: jest.fn(),
 }))
 
@@ -39,7 +38,6 @@ describe('next-18next middleware', () => {
     i18nextMiddleware.handle.mockClear()
 
     forceTrailingSlash.mockReset()
-    handleLanguageSubpath.mockReset()
     lngPathDetector.mockReset()
   })
 
@@ -68,7 +66,6 @@ describe('next-18next middleware', () => {
 
     expect(forceTrailingSlash).not.toBeCalled()
     expect(lngPathDetector).not.toBeCalled()
-    expect(handleLanguageSubpath).not.toBeCalled()
   })
 
   describe('localeSubpaths === true', () => {
@@ -83,7 +80,6 @@ describe('next-18next middleware', () => {
 
       expect(forceTrailingSlash).not.toBeCalled()
       expect(lngPathDetector).not.toBeCalled()
-      expect(handleLanguageSubpath).not.toBeCalled()
 
       expect(next).toBeCalled()
     })
@@ -124,26 +120,6 @@ describe('next-18next middleware', () => {
       callAllMiddleware()
 
       expect(lngPathDetector).not.toBeCalled()
-
-      expect(next).toBeCalled()
-    })
-
-    it('calls handleLanguageSubpath if a locale subpath route', () => {
-      req.url = '/de/page/'
-
-      callAllMiddleware()
-
-      expect(handleLanguageSubpath).toBeCalledWith(req, 'de')
-
-      expect(next).toBeCalled()
-    })
-
-    it('does not call handleLanguageSubpath if not a locale subpath route', () => {
-      req.url = '/page/'
-
-      callAllMiddleware()
-
-      expect(handleLanguageSubpath).not.toBeCalled()
 
       expect(next).toBeCalled()
     })

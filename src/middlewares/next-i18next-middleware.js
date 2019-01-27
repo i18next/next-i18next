@@ -1,5 +1,5 @@
 import i18nextMiddleware from 'i18next-express-middleware'
-import { forceTrailingSlash, handleLanguageSubpath, lngPathDetector } from 'utils'
+import { forceTrailingSlash, lngPathDetector } from 'utils'
 import { parse } from 'url'
 import pathMatch from 'path-match'
 
@@ -14,12 +14,12 @@ export default function (nexti18next) {
   const isI18nRoute = url => ignoreRoute(url)
 
   const localeSubpathRoute = route(`/:lng(${allLanguages.join('|')})/*`)
-  const isLocaleSubpathRoute = params => params !== false
-
-  const isLocaleRootRouteWithoutSlash = pathname => allLanguages.some(lng => pathname === `/${lng}`)
 
   const middleware = []
 
+  // If not using server side language detection,
+  // we need to manually set the language for
+  // each request
   if (!config.serverLanguageDetection) {
     middleware.push((req, res, next) => {
       if (isI18nRoute(req.url)) {
@@ -37,22 +37,22 @@ export default function (nexti18next) {
         if (isI18nRoute(req.url)) {
           const { pathname } = parse(req.url)
 
-          if (isLocaleRootRouteWithoutSlash(pathname)) {
-            forceTrailingSlash(req, res, pathname.slice(1))
-
-            return
+          if (allLanguages.some(lng => pathname === `/${lng}`)) {
+            return forceTrailingSlash(req, res, pathname.slice(1))
           }
 
           lngPathDetector(req, res)
 
           const params = localeSubpathRoute(req.url)
 
-          if (isLocaleSubpathRoute(params)) {
-            handleLanguageSubpath(req, params.lng)
+          if (params !== false) {
+            const { lng } = params
+            req.query = { ...req.query, lng }
+            req.url = req.url.replace(`/${lng}`, '')
           }
         }
 
-        next()
+        return next()
       },
     )
   }
