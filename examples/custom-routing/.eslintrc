@@ -1,0 +1,15 @@
+{
+  "extends": "eslint-config-airbnb-base",
+  "rules": {
+    "semi": [
+      2,
+      "never"
+    ],
+    "padded-blocks": 0,
+    "function-paren-newline": 0,
+    "no-buffer-constructor": 0,
+    "import/no-extraneous-dependencies": 0,
+    "import/no-unresolved": 0,
+    "import/extensions": 0
+  }
+}

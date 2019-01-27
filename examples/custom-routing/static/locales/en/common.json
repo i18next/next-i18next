@@ -1,0 +1,11 @@
+{
+  "h1": "A simple example",
+  "back-to-home": "Back to home",
+  "change-locale": "Change locale",
+  "to-second-page": "To second page",
+  "error-with-status": "A {{statusCode}} error occurred on server",
+  "error-without-status": "An error occurred on the server",
+  "product1": "Product #1",
+  "product2": "Product #2",
+  "product3": "Product #3"
+}
