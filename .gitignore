@@ -1,6 +1,7 @@
 # Dependencies
 node_modules
 
+
 # Dist
 dist
 .next
@@ -17,3 +18,7 @@ out
 
 # Testing
 coverage/
+
+
+.idea/
+package-lock.json

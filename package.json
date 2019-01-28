@@ -24,9 +24,9 @@
     "lint": "eslint src examples __tests__",
     "lint:fix": "eslint src examples __tests__ --fix",
     "build": "babel src --out-dir dist",
-    "prepare": "yarn build",
-    "run-example": "yarn build && cd examples/simple && rm -rf node_modules && yarn && yarn dev",
-    "run-example:prod": "yarn build && cd examples/simple && rm -rf node_modules && yarn && yarn build && yarn start",
+    "prepare": "$npm_execpath run build",
+    "run-example": "$npm_execpath build && cd examples/simple && rm -rf node_modules && $npm_execpath && $npm_execpath dev",
+    "run-example:prod": "$npm_execpath build && cd examples/simple && rm -rf node_modules && $npm_execpath && $npm_execpath build && $npm_execpath start",
     "test": "NODE_ENV=test jest --silent",
     "contributors:check": "all-contributors check",
     "contributors:add": "all-contributors add",
@@ -34,7 +34,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint && yarn test"
+      "pre-commit": "$npm_execpath lint && $npm_execpath test"
     }
   },
   "devDependencies": {
@@ -70,7 +70,7 @@
     "@babel/polyfill": "^7.2.5",
     "detect-node": "^2.0.4",
     "hoist-non-react-statics": "^3.2.0",
-    "i18next": "^13.1.3",
+    "i18next": "^14.0.1",
     "i18next-browser-languagedetector": "^2.2.4",
     "i18next-express-middleware": "^1.5.0",
     "i18next-node-fs-backend": "^2.1.0",
