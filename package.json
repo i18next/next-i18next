@@ -68,6 +68,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
+    "core-js": "^2.6.3",
     "detect-node": "^2.0.4",
     "hoist-non-react-statics": "^3.2.0",
     "i18next": "^13.1.3",
