@@ -18,7 +18,7 @@ describe('create configuration in non-production environment', () => {
     tearDownTest(evalFunc, pwd)
   })
 
-  const importCreateConfig = (isNode) => {
+  const mockIsNodeCreateConfig = (isNode) => {
     mockIsNode = isNode
 
     jest.resetModules()
@@ -28,7 +28,7 @@ describe('create configuration in non-production environment', () => {
 
   describe('server-side', () => {
     beforeEach(() => {
-      createConfig = importCreateConfig(true)
+      createConfig = mockIsNodeCreateConfig(true)
     })
 
     afterEach(() => {
@@ -152,7 +152,7 @@ describe('create configuration in non-production environment', () => {
   // 2. isNode is truthy and process.browser is truthy
   describe('client-side (isNode is falsy)', () => {
     beforeEach(() => {
-      createConfig = importCreateConfig(false)
+      createConfig = mockIsNodeCreateConfig(false)
       delete process.browser
     })
 
@@ -165,7 +165,7 @@ describe('create configuration in non-production environment', () => {
 
   describe('client-side (isNode is truthy and process.browser is truthy)', () => {
     beforeEach(() => {
-      createConfig = importCreateConfig(true)
+      createConfig = mockIsNodeCreateConfig(true)
       process.browser = true
     })
 
