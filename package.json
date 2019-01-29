@@ -24,7 +24,7 @@
     "lint": "eslint src examples __tests__",
     "lint:fix": "eslint src examples __tests__ --fix",
     "build": "babel src --out-dir dist",
-    "prepare": "yarn build",
+    "prepublishOnly": "yarn build",
     "run-example": "yarn build && cd examples/simple && rm -rf node_modules && yarn && yarn dev",
     "run-example:prod": "yarn build && cd examples/simple && rm -rf node_modules && yarn && yarn build && yarn start",
     "test": "NODE_ENV=test jest --silent",
