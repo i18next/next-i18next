@@ -91,6 +91,34 @@ describe('create configuration in non-production environment', () => {
       expect(config.backend.loadPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.json')
       expect(config.backend.addPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.missing.json')
     })
+
+    it('does not overwrite loadPath if user has specified one', () => {
+      const userConfigWithLoadPath = {
+        ...userConfig,
+        backend: {
+          loadPath: '/static/custom/path/{{ns}}/{{lng}}.json',
+        },
+      }
+
+      const config = createConfig(userConfigWithLoadPath)
+
+      expect(config.backend.loadPath)
+        .toEqual('/home/user/static/custom/path/{{ns}}/{{lng}}.json')
+    })
+
+    it('does not overwrite addPath if user has specified one', () => {
+      const userConfigWithAddPath = {
+        ...userConfig,
+        backend: {
+          addPath: '/static/custom/path/{{ns}}/{{lng}}.missing.json',
+        },
+      }
+
+      const config = createConfig(userConfigWithAddPath)
+
+      expect(config.backend.addPath)
+        .toEqual('/home/user/static/custom/path/{{ns}}/{{lng}}.missing.json')
+    })
   })
 
   const runClientSideTests = () => {
@@ -146,6 +174,34 @@ describe('create configuration in non-production environment', () => {
         .toEqual('/static/translations/{{ns}}/{{lng}}.json')
       expect(config.backend.addPath)
         .toEqual('/static/translations/{{ns}}/{{lng}}.missing.json')
+    })
+
+    it('does not overwrite loadPath if user has specified one', () => {
+      const userConfigWithLoadPath = {
+        ...userConfig,
+        backend: {
+          loadPath: '/static/custom/path/{{ns}}/{{lng}}.json',
+        },
+      }
+
+      const config = createConfig(userConfigWithLoadPath)
+
+      expect(config.backend.loadPath)
+        .toEqual('/static/custom/path/{{ns}}/{{lng}}.json')
+    })
+
+    it('does not overwrite addPath if user has specified one', () => {
+      const userConfigWithAddPath = {
+        ...userConfig,
+        backend: {
+          addPath: '/static/custom/path/{{ns}}/{{lng}}.missing.json',
+        },
+      }
+
+      const config = createConfig(userConfigWithAddPath)
+
+      expect(config.backend.addPath)
+        .toEqual('/static/custom/path/{{ns}}/{{lng}}.missing.json')
     })
   }
 

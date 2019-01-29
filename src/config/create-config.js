@@ -1,6 +1,8 @@
 import defaultConfig from 'config/default-config'
 import isNode from 'detect-node'
 
+const userDefinedBackend = userConfig => typeof userConfig.backend === 'object'
+
 export default (userConfig) => {
 
   let combinedConfig = {
@@ -18,6 +20,10 @@ export default (userConfig) => {
     .concat([combinedConfig.defaultLanguage])
   combinedConfig.ns = [combinedConfig.defaultNS]
 
+  if (!userDefinedBackend(userConfig)) {
+    combinedConfig.backend = {}
+  }
+
   const {
     localePath, localeStructure,
   } = combinedConfig
@@ -34,18 +40,25 @@ export default (userConfig) => {
       ...combinedConfig,
       preload: allLanguages,
       ns: getAllNamespaces(path.join(process.cwd(), `${localePath}/${defaultLanguage}`)),
-      backend: {
-        loadPath: path.join(process.cwd(), `${localePath}/${localeStructure}.json`),
-        addPath: path.join(process.cwd(), `${localePath}/${localeStructure}.missing.json`),
-      },
     }
+
+    let { loadPath, addPath } = combinedConfig.backend
+    if (typeof loadPath === 'undefined') {
+      loadPath = path.join(localePath, `${localeStructure}.json`)
+    }
+    combinedConfig.backend.loadPath = path.join(process.cwd(), loadPath)
+
+    if (typeof addPath === 'undefined') {
+      addPath = path.join(localePath, `${localeStructure}.missing.json`)
+    }
+    combinedConfig.backend.addPath = path.join(process.cwd(), addPath)
   } else {
-    combinedConfig = {
-      ...combinedConfig,
-      backend: {
-        loadPath: `/${localePath}/${localeStructure}.json`,
-        addPath: `/${localePath}/${localeStructure}.missing.json`,
-      },
+    if (typeof combinedConfig.backend.loadPath === 'undefined') {
+      combinedConfig.backend.loadPath = `/${localePath}/${localeStructure}.json`
+    }
+
+    if (typeof combinedConfig.backend.addPath === 'undefined') {
+      combinedConfig.backend.addPath = `/${localePath}/${localeStructure}.missing.json`
     }
   }
 
