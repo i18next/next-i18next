@@ -156,7 +156,7 @@ server.get('/products/:id', (req, res) => {
 | `defaultNS` | `'common'`  |
 | `defaultLanguage`  | `'en'`  |
 | `ignoreRoutes`  | `['/_next', '/static']`  |
-| `otherLanguages` | `[]`  |
+| `otherLanguages` (required) | `[]`  |
 | `localePath` | `'static/locales'`  |
 | `localeStructure` | `'{{lng}}/{{ns}}'`  |
 | `localeSubpaths` | `false`  |
