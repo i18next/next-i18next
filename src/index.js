@@ -11,6 +11,12 @@ export default class NextI18Next {
   constructor(userConfig) {
     this.config = createConfig(userConfig)
     this.consoleMessage = consoleMessage.bind(this)
+
+    /* Validation */
+    if (this.config.otherLanguages.length <= 0) {
+      throw new Error('To properly initialise a next-i18next instance you must provide one or more locale codes in config.otherLanguages.')
+    }
+
     this.i18n = createI18NextClient(this.config)
     this.appWithTranslation = appWithTranslation.bind(this)
     this.withNamespaces = withNamespaces
