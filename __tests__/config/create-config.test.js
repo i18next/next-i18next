@@ -176,4 +176,34 @@ describe('create configuration in non-production environment', () => {
 
     runClientSideTests()
   })
+
+  describe('https://github.com/isaachinman/next-i18next/issues/134', () => {
+    describe('if user specifies a default language and not a fallbackLng', () => {
+      let userConfigDeNoFallback
+
+      beforeEach(() => {
+        userConfigDeNoFallback = { ...userConfig, defaultLanguage: 'de' }
+        delete userConfigDeNoFallback.fallbackLng
+      })
+
+      it('fallbackLng === null in development', () => {
+        createConfig = mockIsNodeCreateConfig(true)
+
+        const config = createConfig(userConfigDeNoFallback)
+
+        expect(config.fallbackLng).toEqual(null)
+      })
+
+      it('fallbackLng === user-specified default language in production', () => {
+        process.env.NODE_ENV = 'production'
+        createConfig = mockIsNodeCreateConfig(true)
+
+        const config = createConfig(userConfigDeNoFallback)
+
+        expect(config.fallbackLng).toEqual('de')
+
+        delete process.env.NODE_ENV
+      })
+    })
+  })
 })
