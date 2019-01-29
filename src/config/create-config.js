@@ -8,6 +8,12 @@ export default (userConfig) => {
     ...userConfig,
   }
 
+  if (!userConfig.fallbackLng) {
+    combinedConfig.fallbackLng = process.env.NODE_ENV === 'production'
+      ? combinedConfig.defaultLanguage
+      : null
+  }
+
   combinedConfig.allLanguages = combinedConfig.otherLanguages
     .concat([combinedConfig.defaultLanguage])
   combinedConfig.ns = [combinedConfig.defaultNS]
