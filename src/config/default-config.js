@@ -28,10 +28,6 @@ export default {
     order: ['cookie', 'header', 'querystring'],
     caches: ['cookie'],
   },
-  backend: {
-    loadPath: `/${LOCALE_PATH}/${LOCALE_STRUCTURE}.json`,
-    addPath: `/${LOCALE_PATH}/${LOCALE_STRUCTURE}.missing.json`,
-  },
   react: {
     wait: true,
   },

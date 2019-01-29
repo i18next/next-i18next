@@ -142,8 +142,10 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.ns).toEqual(['universal'])
 
-      expect(config.backend.loadPath).toEqual('/static/locales/{{lng}}/{{ns}}.json')
-      expect(config.backend.addPath).toEqual('/static/locales/{{lng}}/{{ns}}.missing.json')
+      expect(config.backend.loadPath)
+        .toEqual('/static/translations/{{ns}}/{{lng}}.json')
+      expect(config.backend.addPath)
+        .toEqual('/static/translations/{{ns}}/{{lng}}.missing.json')
     })
   }
 

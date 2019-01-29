@@ -18,13 +18,16 @@ export default (userConfig) => {
     .concat([combinedConfig.defaultLanguage])
   combinedConfig.ns = [combinedConfig.defaultNS]
 
+  const {
+    localePath, localeStructure,
+  } = combinedConfig
   if (isNode && !process.browser) {
     const fs = eval("require('fs')")
     const path = require('path')
 
     const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace('.json', ''))
     const {
-      allLanguages, defaultLanguage, localePath, localeStructure,
+      allLanguages, defaultLanguage,
     } = combinedConfig
 
     combinedConfig = {
@@ -34,6 +37,14 @@ export default (userConfig) => {
       backend: {
         loadPath: path.join(process.cwd(), `${localePath}/${localeStructure}.json`),
         addPath: path.join(process.cwd(), `${localePath}/${localeStructure}.missing.json`),
+      },
+    }
+  } else {
+    combinedConfig = {
+      ...combinedConfig,
+      backend: {
+        loadPath: `/${localePath}/${localeStructure}.json`,
+        addPath: `/${localePath}/${localeStructure}.missing.json`,
       },
     }
   }
