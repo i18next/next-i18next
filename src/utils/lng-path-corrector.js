@@ -3,10 +3,6 @@ export default (config, i18n, currentRoute, currentLanguage = i18n.languages[0])
   const { defaultLanguage, allLanguages } = config
   const { asPath, query } = currentRoute
 
-  if (!allLanguages.includes(currentLanguage)) {
-    throw new Error('Invalid configuration: Current language is not included in all languages array')
-  }
-
   let as = asPath
 
   for (const lng of allLanguages) {
@@ -16,9 +12,9 @@ export default (config, i18n, currentRoute, currentLanguage = i18n.languages[0])
     }
   }
 
-  if (currentLanguage !== defaultLanguage) {
-    return [`/${currentLanguage}${as}`, { ...query, lng: currentLanguage }]
+  if (currentLanguage === defaultLanguage || !allLanguages.includes(currentLanguage)) {
+    return [as, query]
   }
 
-  return [as, query]
+  return [`/${currentLanguage}${as}`, { ...query, lng: currentLanguage }]
 }

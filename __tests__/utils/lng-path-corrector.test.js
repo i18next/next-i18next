@@ -23,11 +23,13 @@ describe('lngPathCorrector utility function', () => {
     }
   })
 
-  it('throws if allLanguages does not include current language', () => {
+  it('treats it like default language, if !allLanguages.includes(currentLanguage)', () => {
     config.allLanguages = ['de', 'fr']
+    currentRoute.asPath = '/de/foo'
+    currentRoute.query.query1 = 'value1'
 
-    expect(() => lngPathCorrector(config, i18n, currentRoute))
-      .toThrowError('Invalid configuration: Current language is not included in all languages array')
+    expect(lngPathCorrector(config, i18n, currentRoute))
+      .toEqual(['/foo', { query1: 'value1' }])
   })
 
   it('strips off the default language', () => {
