@@ -1,6 +1,6 @@
 {
   "name": "next-i18next",
-  "version": "0.23.3",
+  "version": "0.23.4",
   "main": "dist/index.js",
   "module": "src/index.js",
   "repository": "git@github.com:isaachinman/next-i18next.git",
