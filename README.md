@@ -44,8 +44,10 @@ The default export of `next-i18next` is a class constructor, into which you pass
 ```jsx
 import NextI18Next from 'next-i18next'
 
-const options = {}
-export default new NextI18Next(options)
+export default new NextI18Next({
+  defaultLanguage: 'en',
+  otherLanguages: ['de']
+})
 ```
 
 [A full list of options can be seen here](#options).
