@@ -1,10 +1,12 @@
-import createConfig from 'config/create-config'
-import createI18NextClient from 'create-i18next-client'
-
-import { appWithTranslation, withConfig } from 'hocs'
-import { consoleMessage } from 'utils'
-import { Link, Trans } from 'components'
 import { withNamespaces } from 'react-i18next'
+
+import createConfig from './config/create-config'
+import createI18NextClient from './create-i18next-client'
+
+import { appWithTranslation, withConfig } from './hocs/index'
+import { consoleMessage } from './utils/index'
+import { Link, Trans } from './components/index'
+
 
 export default class NextI18Next {
 

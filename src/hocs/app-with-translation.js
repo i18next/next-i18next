@@ -1,11 +1,11 @@
 import React from 'react'
 import { withRouter } from 'next/router'
 
-import { I18nextProvider } from 'react-i18next'
-import { lngFromReq, lngPathCorrector } from 'utils'
-import { NextStaticProvider } from 'components'
-
 import hoistNonReactStatics from 'hoist-non-react-statics'
+import { I18nextProvider } from 'react-i18next'
+
+import { lngFromReq, lngPathCorrector } from '../utils/index'
+import { NextStaticProvider } from '../components/index'
 
 export default function (WrappedComponent) {
 
