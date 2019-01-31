@@ -47,6 +47,7 @@ export default function (WrappedComponent) {
       const { req } = ctx.ctx
       let initialI18nStore = {}
       let initialLanguage = null
+      let i18nServerInstance = null
 
       // Step 1: Determine initial language
       if (req && req.i18n) {
@@ -109,26 +110,29 @@ export default function (WrappedComponent) {
             .map(ns => new Promise(resolve => i18n.loadNamespaces(ns, () => resolve()))),
         )
         initialI18nStore = i18n.store.data
+      }
 
+      // Step 4: Overwrite i18n.toJSON method to be able to serialize the instance
+      if (req && req.i18n) {
+        req.i18n.toJSON = () => null
+        i18nServerInstance = req.i18n
       }
 
       // `pageProps` will get serialized automatically by NextJs
       return {
         initialI18nStore,
         initialLanguage,
+        i18nServerInstance,
         ...wrappedComponentProps,
       }
     }
 
     render() {
-      let { initialLanguage, initialI18nStore } = this.props
-      if (!process.browser) {
-        initialLanguage = i18n.language
-        initialI18nStore = i18n.store.data
-      }
+      const { initialLanguage, initialI18nStore, i18nServerInstance } = this.props
+
       return (
         <I18nextProvider
-          i18n={i18n}
+          i18n={i18nServerInstance || i18n}
           initialLanguage={initialLanguage}
           initialI18nStore={initialI18nStore}
         >
