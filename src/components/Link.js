@@ -21,13 +21,13 @@ import PropTypes from 'prop-types'
 import NextLink from 'next/link'
 import { withNamespaces } from 'react-i18next'
 import { format as formatUrl, parse as parseUrl } from 'url'
+import { lngPathCorrector } from 'utils'
 
-const formatAsProp = (as, href, lng) => `/${lng}${as || formatUrl(href, { unicode: true })}`
-
-const localeSubpathRequired = (nextI18NextConfig, lng) => {
+const localeSubpathRequired = (nextI18NextConfig) => {
+  const { languages } = nextI18NextConfig.i18n
   const { defaultLanguage, localeSubpaths } = nextI18NextConfig.config
 
-  return localeSubpaths && lng && lng !== defaultLanguage
+  return localeSubpaths && Array.isArray(languages) && languages[0] !== defaultLanguage
 }
 
 const parseHref = href => ((typeof href === 'string') ? parseUrl(href, true /* parseQueryString */) : href)
@@ -47,17 +47,21 @@ const removeWithNamespacesProps = (props) => {
 class Link extends React.Component {
   render() {
     const {
-      as, children, href: hrefProp, lng, nextI18NextConfig, ...props
+      as, children, href: hrefProp, nextI18NextConfig, ...props
     } = this.props
 
-    if (localeSubpathRequired(nextI18NextConfig, lng)) {
+    if (localeSubpathRequired(nextI18NextConfig)) {
+      const { config, i18n } = nextI18NextConfig
       const href = parseHref(hrefProp)
       const { pathname, query } = href
 
+      const asPath = as || formatUrl(href, { unicode: true })
+      const [correctedAs, correctedQuery] = lngPathCorrector(config, i18n, { asPath, query })
+
       return (
         <NextLink
-          href={{ pathname, query: { ...query, lng } }}
-          as={formatAsProp(as, href, lng)}
+          href={{ pathname, query: correctedQuery }}
+          as={correctedAs}
           {...removeWithNamespacesProps(props)}
         >
           {children}
@@ -88,6 +92,9 @@ Link.propTypes = {
     config: PropTypes.shape({
       defaultLanguage: PropTypes.string.isRequired,
       localeSubpaths: PropTypes.bool.isRequired,
+    }).isRequired,
+    i18n: PropTypes.shape({
+      languages: PropTypes.array,
     }).isRequired,
   }).isRequired,
 }
