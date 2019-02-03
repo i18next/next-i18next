@@ -71,7 +71,7 @@
     "core-js": "^2.6.3",
     "detect-node": "^2.0.4",
     "hoist-non-react-statics": "^3.2.0",
-    "i18next": "^13.1.3",
+    "i18next": "^14.0.1",
     "i18next-browser-languagedetector": "^2.2.4",
     "i18next-express-middleware": "^1.5.0",
     "i18next-node-fs-backend": "^2.1.0",

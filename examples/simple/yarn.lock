@@ -3709,10 +3709,10 @@ i18next-xhr-backend@^1.5.1:
   resolved "https://registry.yarnpkg.com/i18next-xhr-backend/-/i18next-xhr-backend-1.5.1.tgz#50282610780c6a696d880dfa7f4ac1d01e8c3ad5"
   integrity sha512-9OLdC/9YxDvTFcgsH5t2BHCODHEotHCa6h7Ly0EUlUC7Y2GS09UeoHOGj3gWKQ3HCqXz8NlH4gOrK3NNc9vPuw==
 
-i18next@^13.1.3:
-  version "13.1.5"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-13.1.5.tgz#b1fbc35e00047e6f580288f6774b21b5d42649e6"
-  integrity sha512-tFaX79dg5IcO02I/p8ImZubrxZrOCf06eiAUBlqCjcHXSfC8wqUgI+Yp4qH0iZZV5jBG5z0RWLAamO72NnZiyg==
+i18next@^14.0.1:
+  version "14.0.1"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-14.0.1.tgz#c5f0292ea6389394b6056f597b75f1f9aa03124f"
+  integrity sha512-wsKfQuYsy4RdCaqqN71eDjWMhizhTfQSIBGttEA7vcboQrUfpQlCezrSzrtmoW9F9tmVyNs38iBgLYLMhRSeIQ==
 
 iconv-lite@0.4.23:
   version "0.4.23"
@@ -4647,13 +4647,13 @@ neo-async@^2.5.0:
   integrity sha512-MFh0d/Wa7vkKO3Y3LlacqAEeHK0mckVqzDieUKTT+KGxi+zIpeVsFxymkIiRpbpDziHc290Xr9A1O4Om7otoRA==
 
 next-i18next@../../:
-  version "0.23.1"
+  version "0.24.0"
   dependencies:
     "@babel/polyfill" "^7.2.5"
     core-js "^2.6.3"
     detect-node "^2.0.4"
     hoist-non-react-statics "^3.2.0"
-    i18next "^13.1.3"
+    i18next "^14.0.1"
     i18next-browser-languagedetector "^2.2.4"
     i18next-express-middleware "^1.5.0"
     i18next-node-fs-backend "^2.1.0"
