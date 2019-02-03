@@ -20,6 +20,8 @@ While `next-i18next` uses [i18next](https://www.i18next.com/) and [react-i18next
 yarn add next-i18next
 ```
 
+You need to also have `react`, `next`, and `i18next` installed.
+
 ### 2. Translation content
 
 By default, `next-i18next` expects your translations to be organised as such:
