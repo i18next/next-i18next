@@ -12,7 +12,12 @@
     ["@babel/preset-react"]
   ],
   "plugins": [
-    "@babel/plugin-transform-runtime",
+    [
+      "module-resolver",
+      {
+        "root": ["./src"]
+      }
+    ],
     [
       "add-module-exports",
       {
