@@ -21,8 +21,7 @@ import PropTypes from 'prop-types'
 import NextLink from 'next/link'
 import { withNamespaces } from 'react-i18next'
 import { format as formatUrl, parse as parseUrl } from 'url'
-
-const formatAsProp = (as, href, lng) => `/${lng}${as || formatUrl(href, { unicode: true })}`
+import { lngPathCorrector } from 'utils'
 
 const localeSubpathRequired = (nextI18NextConfig, lng) => {
   const { defaultLanguage, localeSubpaths } = nextI18NextConfig.config
@@ -51,13 +50,17 @@ class Link extends React.Component {
     } = this.props
 
     if (localeSubpathRequired(nextI18NextConfig, lng)) {
+      const { config } = nextI18NextConfig
       const href = parseHref(hrefProp)
       const { pathname, query } = href
 
+      const asPath = as || formatUrl(href, { unicode: true })
+      const [correctedAs, correctedQuery] = lngPathCorrector(config, [], { asPath, query }, lng)
+
       return (
         <NextLink
-          href={{ pathname, query: { ...query, lng } }}
-          as={formatAsProp(as, href, lng)}
+          href={{ pathname, query: correctedQuery }}
+          as={correctedAs}
           {...removeWithNamespacesProps(props)}
         >
           {children}
