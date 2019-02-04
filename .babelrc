@@ -4,20 +4,13 @@
       "@babel/env",
       {
         "targets": {
-          "ie": "11"
-        },
-        "useBuiltIns": "usage"
+          "node": "current"
+        }
       }
     ],
     ["@babel/preset-react"]
   ],
   "plugins": [
-    [
-      "module-resolver",
-      {
-        "root": ["./src"]
-      }
-    ],
     [
       "add-module-exports",
       {

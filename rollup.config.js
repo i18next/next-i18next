@@ -1,12 +1,13 @@
 import babel from 'rollup-plugin-babel'
 import commonjs from 'rollup-plugin-commonjs'
 import nodeResolve from 'rollup-plugin-node-resolve'
+import nodeBuiltIns from 'rollup-plugin-node-builtins'
 import replace from 'rollup-plugin-replace'
 import { terser } from 'rollup-plugin-terser'
 import { argv } from 'yargs'
 
 const format = argv.format || argv.f || 'iife'
-const compress = argv.uglify
+const compress = process.env.COMPRESS === 'true'
 
 const babelOptions = {
   presets: [
@@ -29,6 +30,11 @@ const file = {
   iife: `dist/iife/next-i18next${compress ? '.min' : ''}.js`,
 }[format]
 
+const globals = {
+  react: 'React',
+  'next/router': 'next/router',
+}
+
 export default {
   input: 'src/index.js',
   plugins: [
@@ -37,11 +43,13 @@ export default {
       'process.env.NODE_ENV': JSON.stringify(compress ? 'production' : 'development'),
     }),
     nodeResolve({ jsnext: true, main: true, preferBuiltins: true }),
+    nodeBuiltIns(),
     commonjs({}),
   ].concat(compress ? terser() : []),
   external: ['react', 'react-dom', 'next/router'],
   output: {
     name: 'ReactI18next',
+    globals,
     format,
     file,
   },

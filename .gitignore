@@ -7,7 +7,6 @@ dist
 out
 next-i18next.js
 next-i18next.min.js
-middleware.js
 
 # OS
 .DS_Store
