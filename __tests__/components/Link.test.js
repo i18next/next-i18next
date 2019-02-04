@@ -19,6 +19,7 @@ describe('Link component', () => {
       lng: 'de',
       nextI18NextConfig: {
         config: {
+          allLanguages: ['en', 'de'],
           defaultLanguage: 'en',
           localeSubpaths: false,
         },
