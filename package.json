@@ -58,7 +58,6 @@
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
     "husky": "^1.1.4",
-    "i18next": "^14.0.1",
     "jest": "^23.6.0",
     "jest-puppeteer": "^3.7.0",
     "jsdom": "^13.1.0",
@@ -71,6 +70,7 @@
   "dependencies": {
     "detect-node": "^2.0.4",
     "hoist-non-react-statics": "^3.2.0",
+    "i18next": "^14.0.1",
     "i18next-browser-languagedetector": "^2.2.4",
     "i18next-express-middleware": "^1.5.0",
     "i18next-node-fs-backend": "^2.1.0",
@@ -82,7 +82,6 @@
     "url": "^0.11.0"
   },
   "peerDependencies": {
-    "i18next": ">= 14.0.1",
     "next": ">= 7.0.2",
     "react": ">= 16.3.0"
   }
