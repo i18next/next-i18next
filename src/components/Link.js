@@ -23,11 +23,10 @@ import { withNamespaces } from 'react-i18next'
 import { format as formatUrl, parse as parseUrl } from 'url'
 import { lngPathCorrector } from 'utils'
 
-const localeSubpathRequired = (nextI18NextConfig) => {
-  const { languages } = nextI18NextConfig.i18n
+const localeSubpathRequired = (nextI18NextConfig, lng) => {
   const { defaultLanguage, localeSubpaths } = nextI18NextConfig.config
 
-  return localeSubpaths && Array.isArray(languages) && languages[0] !== defaultLanguage
+  return localeSubpaths && lng && lng !== defaultLanguage
 }
 
 const parseHref = href => ((typeof href === 'string') ? parseUrl(href, true /* parseQueryString */) : href)
@@ -47,16 +46,16 @@ const removeWithNamespacesProps = (props) => {
 class Link extends React.Component {
   render() {
     const {
-      as, children, href: hrefProp, nextI18NextConfig, ...props
+      as, children, href: hrefProp, lng, nextI18NextConfig, ...props
     } = this.props
 
-    if (localeSubpathRequired(nextI18NextConfig)) {
-      const { config, i18n } = nextI18NextConfig
+    if (localeSubpathRequired(nextI18NextConfig, lng)) {
+      const { config } = nextI18NextConfig
       const href = parseHref(hrefProp)
       const { pathname, query } = href
 
       const asPath = as || formatUrl(href, { unicode: true })
-      const [correctedAs, correctedQuery] = lngPathCorrector(config, i18n, { asPath, query })
+      const [correctedAs, correctedQuery] = lngPathCorrector(config, [], { asPath, query }, lng)
 
       return (
         <NextLink
@@ -92,9 +91,6 @@ Link.propTypes = {
     config: PropTypes.shape({
       defaultLanguage: PropTypes.string.isRequired,
       localeSubpaths: PropTypes.bool.isRequired,
-    }).isRequired,
-    i18n: PropTypes.shape({
-      languages: PropTypes.array,
     }).isRequired,
   }).isRequired,
 }
