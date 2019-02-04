@@ -18,7 +18,6 @@
         "root": ["./src"]
       }
     ],
-    "@babel/plugin-transform-runtime",
     [
       "add-module-exports",
       {
