@@ -33,6 +33,7 @@ const file = {
 const globals = {
   react: 'React',
   'next/router': 'next/router',
+  'next/link': 'next/link',
 }
 
 export default {
