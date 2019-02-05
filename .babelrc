@@ -1,27 +1,61 @@
 {
-  "presets": [
-    [
-      "@babel/env",
-      {
-        "targets": {
-          "node": "current"
-        }
-      }
-    ],
-    ["@babel/preset-react"]
-  ],
-  "plugins": [
-    [
-      "module-resolver",
-      {
-        "root": ["./src"]
-      }
-    ],
-    [
-      "add-module-exports",
-      {
-        "addDefaultProperty": true
-      }
-    ]
-  ]
+  "env": {
+    "es": {
+      "presets": [
+        [
+          "@babel/env",
+          {
+            "modules": false,
+            "targets": {
+              "node": "current"
+            }
+          }
+        ],
+        ["@babel/preset-react"]
+      ]
+    },
+    "cjs": {
+      "presets": [
+        [
+          "@babel/env",
+          {
+            "targets": {
+              "node": "current"
+            }
+          }
+        ],
+        ["@babel/preset-react"]
+      ],
+      "plugins": [
+        [
+          "add-module-exports",
+          {
+            "addDefaultProperty": true
+          }
+        ]
+      ]
+    },
+    "test": {
+      "presets": [
+        [
+          "@babel/env",
+          {
+            "targets": {
+              "node": "current"
+            },
+            "modules": "commonjs"
+          }
+        ],
+        ["@babel/preset-react"]
+      ],
+      "plugins": [
+        [
+          "add-module-exports",
+          {
+            "addDefaultProperty": true
+          }
+        ]
+      ]
+    },
+  }
 }

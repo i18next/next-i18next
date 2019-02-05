@@ -1,5 +1,5 @@
 import { parse } from 'url'
-import { redirectWithoutCache } from 'utils'
+import redirectWithoutCache from './redirect-without-cache'
 
 export default (req, res, lng) => {
   const { pathname, search } = parse(req.url)

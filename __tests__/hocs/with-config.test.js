@@ -3,7 +3,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 
-import { withConfig } from 'hocs'
+import { withConfig } from '../../src/hocs'
 
 describe('withConfig HoC', () => {
   let config

@@ -1,1 +1,1 @@
-module.exports = require('./dist/middlewares/next-i18next-middleware')
+module.exports = require('./dist/commonjs/middlewares/next-i18next-middleware')

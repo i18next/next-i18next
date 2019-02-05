@@ -17,3 +17,6 @@ out
 
 # Testing
 coverage/
+
+# npm
+package-lock.json

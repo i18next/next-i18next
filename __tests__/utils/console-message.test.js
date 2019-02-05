@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-env jest */
 
-import { consoleMessage as _consoleMessage } from 'utils'
+import { consoleMessage as _consoleMessage } from '../../src/utils'
 
 const consoleMessage = _consoleMessage.bind({
   config: {
