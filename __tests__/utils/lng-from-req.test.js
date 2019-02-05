@@ -54,4 +54,22 @@ describe('lngFromReq utility function', () => {
 
   })
 
+  it('returns fallback language if i18n.languages is not an array', () => {
+
+    req.i18n.languages = null
+    req.i18n.options.fallbackLng = ['es']
+    const language = lngFromReq(req)
+
+    expect(language).toBe('es')
+
+  })
+
+  it('returns default language if i18n.languages is not an array and no fallback language', () => {
+
+    req.i18n.languages = null
+    const language = lngFromReq(req)
+
+    expect(language).toBe('en')
+
+  })
 })
