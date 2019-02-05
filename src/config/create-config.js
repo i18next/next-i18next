@@ -10,13 +10,17 @@ export default (userConfig) => {
 
   if (!userConfig.fallbackLng) {
     combinedConfig.fallbackLng = process.env.NODE_ENV === 'production'
-      ? combinedConfig.defaultLanguage
-      : null
+      ? [combinedConfig.defaultLanguage]
+      : []
+  } else if (typeof userConfig.fallbackLng === 'string') {
+    combinedConfig.fallbackLng = [userConfig.fallbackLng]
   }
 
   combinedConfig.allLanguages = combinedConfig.otherLanguages
     .concat([combinedConfig.defaultLanguage])
   combinedConfig.ns = [combinedConfig.defaultNS]
+  combinedConfig.whitelist = combinedConfig.allLanguages
+  combinedConfig.load = 'currentOnly'
 
   if (isNode && !process.browser) {
     const fs = eval("require('fs')")
