@@ -55,7 +55,7 @@ export default function (WrappedComponent) {
         initialLanguage = lngFromReq(req)
 
         // Perform a lang change in case we're not on the right lang
-        await i18n.changeLanguage(initialLanguage)
+        await req.i18n.changeLanguage(initialLanguage)
 
       } else if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
         initialLanguage = i18n.language
