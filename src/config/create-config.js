@@ -20,7 +20,6 @@ export default (userConfig) => {
     .concat([combinedConfig.defaultLanguage])
   combinedConfig.ns = [combinedConfig.defaultNS]
   combinedConfig.whitelist = combinedConfig.allLanguages
-  combinedConfig.load = 'currentOnly'
 
   if (isNode && !process.browser) {
     const fs = eval("require('fs')")
