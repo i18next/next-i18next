@@ -95,6 +95,28 @@ describe('create configuration in non-production environment', () => {
       expect(config.backend.loadPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.json')
       expect(config.backend.addPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.missing.json')
     })
+
+    it('enforces that fallbackLng is an array in custom configuration', () => {
+      evalFunc.mockImplementation(() => ({
+        readdirSync: jest.fn().mockImplementation(() => ['universal', 'file1', 'file2']),
+      }))
+      const userConfigWithFallbackLngString = { ...userConfig, fallbackLng: 'en' }
+
+      const config = createConfig(userConfigWithFallbackLngString)
+
+      expect(config.fallbackLng).toEqual(['en'])
+    })
+
+    it('if fallbackLng is an array in custom configuration, leave it as such', () => {
+      evalFunc.mockImplementation(() => ({
+        readdirSync: jest.fn().mockImplementation(() => ['universal', 'file1', 'file2']),
+      }))
+      const userConfigWithFallbackLngString = { ...userConfig, fallbackLng: ['en'] }
+
+      const config = createConfig(userConfigWithFallbackLngString)
+
+      expect(config.fallbackLng).toEqual(['en'])
+    })
   })
 
   const runClientSideTests = () => {
