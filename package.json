@@ -78,7 +78,7 @@
     "path-match": "^1.2.4",
     "pretty-error": "^2.1.1",
     "prop-types": "^15.6.2",
-    "react-i18next": "^9.0.4",
+    "react-i18next": "^10.0.1",
     "url": "^0.11.0"
   },
   "peerDependencies": {
