@@ -10,8 +10,7 @@
   and not this file, your lang subpath routing will break.
 */
 import NextRouter from 'next/router'
-import { format } from 'url'
-import { parseHref, lngPathCorrector, localeSubpathRequired } from '../utils'
+import { lngPathCorrector, localeSubpathRequired } from '../utils'
 
 const propertyFields = ['pathname', 'route', 'query', 'asPath', 'components', 'events']
 const coreMethods = ['reload', 'back', 'beforePopState', 'ready', 'prefetch']
@@ -37,12 +36,11 @@ export default function (nextI18NextConfig) {
       const { config, i18n } = nextI18NextConfig
 
       if (localeSubpathRequired(nextI18NextConfig, i18n.languages[0])) {
-        const href = parseHref(path)
-        const { pathname, query } = href
-        const asPath = as || format(href, { unicode: true })
-        const [correctedAs, correctedQuery] = lngPathCorrector(config, i18n, { asPath, query })
+        const { as: correctedAs, href: correctedHref } = lngPathCorrector(
+          config, { as, href: path }, i18n.languages[0],
+        )
 
-        return NextRouter[method]({ pathname, query: correctedQuery }, correctedAs, options)
+        return NextRouter[method](correctedHref, correctedAs, options)
       }
 
       return NextRouter[method](path, as, options)
