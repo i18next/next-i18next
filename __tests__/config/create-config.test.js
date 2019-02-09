@@ -40,8 +40,8 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.defaultLanguage).toEqual('en')
       expect(config.otherLanguages).toEqual([])
-      expect(config.fallbackLng).toBeNull()
-      expect(config.load).toEqual('languageOnly')
+      expect(config.fallbackLng).toEqual(false)
+      expect(config.load).toEqual('currentOnly')
       expect(config.localePath).toEqual('static/locales')
       expect(config.localeStructure).toEqual('{{lng}}/{{ns}}')
       expect(config.localeSubpaths).toEqual(false)
@@ -78,7 +78,7 @@ describe('create configuration in non-production environment', () => {
       expect(config.defaultLanguage).toEqual('de')
       expect(config.otherLanguages).toEqual(['fr', 'it'])
       expect(config.fallbackLng).toEqual('it')
-      expect(config.load).toEqual('languageOnly')
+      expect(config.load).toEqual('currentOnly')
       expect(config.localePath).toEqual('static/translations')
       expect(config.localeStructure).toEqual('{{ns}}/{{lng}}')
       expect(config.localeSubpaths).toEqual(true)
@@ -99,8 +99,8 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.defaultLanguage).toEqual('en')
       expect(config.otherLanguages).toEqual([])
-      expect(config.fallbackLng).toBeNull()
-      expect(config.load).toEqual('languageOnly')
+      expect(config.fallbackLng).toEqual(false)
+      expect(config.load).toEqual('currentOnly')
       expect(config.localePath).toEqual('static/locales')
       expect(config.localeStructure).toEqual('{{lng}}/{{ns}}')
       expect(config.localeSubpaths).toEqual(false)
@@ -133,7 +133,7 @@ describe('create configuration in non-production environment', () => {
       expect(config.defaultLanguage).toEqual('de')
       expect(config.otherLanguages).toEqual(['fr', 'it'])
       expect(config.fallbackLng).toEqual('it')
-      expect(config.load).toEqual('languageOnly')
+      expect(config.load).toEqual('currentOnly')
       expect(config.localePath).toEqual('static/translations')
       expect(config.localeStructure).toEqual('{{ns}}/{{lng}}')
       expect(config.localeSubpaths).toEqual(true)
@@ -186,12 +186,12 @@ describe('create configuration in non-production environment', () => {
         delete userConfigDeNoFallback.fallbackLng
       })
 
-      it('fallbackLng === null in development', () => {
+      it('fallbackLng === false in development', () => {
         createConfig = mockIsNodeCreateConfig(true)
 
         const config = createConfig(userConfigDeNoFallback)
 
-        expect(config.fallbackLng).toEqual(null)
+        expect(config.fallbackLng).toEqual(false)
       })
 
       it('fallbackLng === user-specified default language in production', () => {
