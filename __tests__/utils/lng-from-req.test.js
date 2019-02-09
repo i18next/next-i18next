@@ -11,7 +11,7 @@ describe('lngFromReq utility function', () => {
         options: {
           allLanguages: ['en', 'de'],
           defaultLanguage: 'en',
-          fallbackLng: null,
+          fallbackLng: false,
         },
       },
     }
@@ -48,6 +48,15 @@ describe('lngFromReq utility function', () => {
   it('returns default language if no others are available and no fallback language', () => {
 
     req.i18n.languages = ['nl']
+    const language = lngFromReq(req)
+
+    expect(language).toBe('en')
+
+  })
+
+  it('returns default language if req.i18n.languages is undefined', () => {
+
+    req.i18n.languages = undefined
     const language = lngFromReq(req)
 
     expect(language).toBe('en')

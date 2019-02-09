@@ -8,7 +8,7 @@ const LOCALE_SUBPATHS = false
 export default {
   defaultLanguage: DEFAULT_LANGUAGE,
   otherLanguages: OTHER_LANGUAGES,
-  load: 'languageOnly',
+  load: 'currentOnly',
   localePath: LOCALE_PATH,
   localeStructure: LOCALE_STRUCTURE,
   localeSubpaths: LOCALE_SUBPATHS,
