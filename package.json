@@ -1,9 +1,11 @@
 {
   "name": "next-i18next",
   "version": "0.28.0",
-  "main": "dist/index.js",
   "repository": "git@github.com:isaachinman/next-i18next.git",
   "author": "Isaac Hinman <isaac@isaachinman.com>",
+  "main": "dist/commonjs/index.js",
+  "jsnext:main": "dist/es/index.js",
+  "module": "dist/es/index.js",
   "license": "MIT",
   "engines": {
     "node": ">=8"
@@ -20,10 +22,12 @@
     "locale"
   ],
   "scripts": {
-    "start": "babel-node ./src/index.js",
     "lint": "eslint src examples __tests__",
     "lint:fix": "eslint src examples __tests__ --fix",
-    "build": "babel src --out-dir dist",
+    "clean": "rm -rf dist && mkdir dist",
+    "build:es": "BABEL_ENV=es babel src --out-dir dist/es",
+    "build:cjs": "BABEL_ENV=cjs babel src --out-dir dist/commonjs",
+    "build": "yarn clean && yarn build:cjs && yarn build:es",
     "prepublishOnly": "yarn build",
     "run-example": "yarn build && cd examples/simple && rm -rf node_modules && yarn && yarn dev",
     "run-example:prod": "yarn build && cd examples/simple && rm -rf node_modules && yarn && yarn build && yarn start",
@@ -40,7 +44,6 @@
   "devDependencies": {
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.6",
-    "@babel/node": "^7.0.0",
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
@@ -48,7 +51,6 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
     "babel-plugin-add-module-exports": "^1.0.0",
-    "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",

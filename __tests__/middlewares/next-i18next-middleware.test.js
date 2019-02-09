@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
 import i18nextMiddleware from 'i18next-express-middleware'
-import { forceTrailingSlash, lngPathDetector } from 'utils'
+import { forceTrailingSlash, lngPathDetector } from '../../src/utils'
 import testI18NextConfig from '../test-i18next-config'
 
 import nextI18nextMiddleware from '../../src/middlewares/next-i18next-middleware'
@@ -10,7 +10,7 @@ jest.mock('i18next-express-middleware', () => ({
   handle: jest.fn(() => jest.fn()),
 }))
 
-jest.mock('utils', () => ({
+jest.mock('../../src/utils', () => ({
   forceTrailingSlash: jest.fn(),
   lngPathDetector: jest.fn(),
 }))

@@ -23,7 +23,7 @@ describe('create configuration in non-production environment', () => {
 
     jest.resetModules()
 
-    return require('config/create-config')
+    return require('../../src/config/create-config')
   }
 
   describe('server-side', () => {

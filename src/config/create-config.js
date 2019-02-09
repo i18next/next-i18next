@@ -1,5 +1,6 @@
-import defaultConfig from 'config/default-config'
 import isNode from 'detect-node'
+
+import defaultConfig from './default-config'
 
 export default (userConfig) => {
 

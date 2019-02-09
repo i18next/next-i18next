@@ -1,7 +1,8 @@
 import i18nextMiddleware from 'i18next-express-middleware'
-import { forceTrailingSlash, lngPathDetector } from 'utils'
 import { parse } from 'url'
 import pathMatch from 'path-match'
+
+import { forceTrailingSlash, lngPathDetector } from '../utils'
 
 const route = pathMatch()
 

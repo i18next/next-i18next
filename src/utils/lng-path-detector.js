@@ -1,4 +1,5 @@
-import { lngFromReq, redirectWithoutCache } from 'utils'
+import lngFromReq from './lng-from-req'
+import redirectWithoutCache from './redirect-without-cache'
 
 export default (req, res) => {
   if (req.i18n) {
