@@ -3671,10 +3671,10 @@ https-browserify@^1.0.0:
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
   integrity sha1-7AbBDgo0wPL68Zn3/X/Hj//QPHM=
 
-i18next-browser-languagedetector@^2.2.4:
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/i18next-browser-languagedetector/-/i18next-browser-languagedetector-2.2.4.tgz#b02412d7ab15d7d74e1b1317d67d8a244b219ee3"
-  integrity sha512-wPbtH18FdOuB245I8Bhma5/XSDdN/HpYlX+wga1eMy+slhaFQSnrWX6fp+aYSL2eEuj0RlfHeEVz6Fo/lxAj6A==
+i18next-browser-languagedetector@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/i18next-browser-languagedetector/-/i18next-browser-languagedetector-3.0.0.tgz#bdcce9e3f40162cdefc7db469a972c34f224250b"
+  integrity sha512-WI+XaZ94+WDp7HhIVykTwZUQsyCqpNDGWTIKG4PAeekZ4UVeMX6sN4gQj+Ad5g5PPwwENiynbW8x9TFFStoYPg==
 
 i18next-express-middleware@^1.5.0:
   version "1.7.1"
@@ -3691,15 +3691,22 @@ i18next-node-fs-backend@^2.1.0:
     js-yaml "3.12.0"
     json5 "2.0.0"
 
-i18next-xhr-backend@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/i18next-xhr-backend/-/i18next-xhr-backend-1.5.1.tgz#50282610780c6a696d880dfa7f4ac1d01e8c3ad5"
-  integrity sha512-9OLdC/9YxDvTFcgsH5t2BHCODHEotHCa6h7Ly0EUlUC7Y2GS09UeoHOGj3gWKQ3HCqXz8NlH4gOrK3NNc9vPuw==
+i18next-xhr-backend@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/i18next-xhr-backend/-/i18next-xhr-backend-2.0.0.tgz#91fa7473d8964fefbdfdf710c26d85999cdf8e22"
+  integrity sha512-Zo596j/kXFC0W8slM4Qg+oRnh2rxEWbXCZ+y/2Xr5UUuE7J99BmXeSIvLERfgwp8SneMzI2TekdY48Nn3i/bWA==
 
 i18next@^14.0.1:
   version "14.0.1"
   resolved "https://registry.yarnpkg.com/i18next/-/i18next-14.0.1.tgz#c5f0292ea6389394b6056f597b75f1f9aa03124f"
   integrity sha512-wsKfQuYsy4RdCaqqN71eDjWMhizhTfQSIBGttEA7vcboQrUfpQlCezrSzrtmoW9F9tmVyNs38iBgLYLMhRSeIQ==
+
+i18next@^15.0.0:
+  version "15.0.0"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-15.0.0.tgz#26faacb69949c71328e10bcdb51afc7d7a1e326c"
+  integrity sha512-wcfFJC4pLDGhDMWaaInkyAWhVC8WEQERWJzB61Ai+9fkZ4CqeOKC9qIE5wjJnQmcWIAjJfyck5EGkitPkEcLGQ==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
 
 iconv-lite@0.4.23:
   version "0.4.23"
@@ -4634,14 +4641,15 @@ neo-async@^2.5.0:
   integrity sha512-MFh0d/Wa7vkKO3Y3LlacqAEeHK0mckVqzDieUKTT+KGxi+zIpeVsFxymkIiRpbpDziHc290Xr9A1O4Om7otoRA==
 
 next-i18next@../../:
-  version "0.25.0"
+  version "0.29.0"
   dependencies:
     detect-node "^2.0.4"
     hoist-non-react-statics "^3.2.0"
-    i18next-browser-languagedetector "^2.2.4"
+    i18next "^15.0.0"
+    i18next-browser-languagedetector "^3.0.0"
     i18next-express-middleware "^1.5.0"
     i18next-node-fs-backend "^2.1.0"
-    i18next-xhr-backend "^1.5.1"
+    i18next-xhr-backend "^2.0.0"
     path-match "^1.2.4"
     pretty-error "^2.1.1"
     prop-types "^15.6.2"
