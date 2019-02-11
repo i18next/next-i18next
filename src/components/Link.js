@@ -20,16 +20,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import NextLink from 'next/link'
 import { withNamespaces } from 'react-i18next'
-import { format as formatUrl, parse as parseUrl } from 'url'
-import { lngPathCorrector } from '../utils'
-
-const localeSubpathRequired = (nextI18NextConfig, lng) => {
-  const { defaultLanguage, localeSubpaths } = nextI18NextConfig.config
-
-  return localeSubpaths && lng && lng !== defaultLanguage
-}
-
-const parseHref = href => ((typeof href === 'string') ? parseUrl(href, true /* parseQueryString */) : href)
+import { format as formatUrl } from 'url'
+import { lngPathCorrector, parseHref, localeSubpathRequired } from '../utils'
 
 const removeWithNamespacesProps = (props) => {
   const strippedProps = Object.assign({}, props)

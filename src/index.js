@@ -1,11 +1,12 @@
 import { withNamespaces } from 'react-i18next'
-
 import createConfig from './config/create-config'
 import createI18NextClient from './create-i18next-client'
 
 import { appWithTranslation, withConfig } from './hocs'
 import { consoleMessage } from './utils'
 import { Link, Trans } from './components'
+import { wrapRouter } from './router'
+
 
 export default class NextI18Next {
 
@@ -25,6 +26,7 @@ export default class NextI18Next {
     const nextI18NextConfig = { config: this.config, i18n: this.i18n }
     this.Trans = withConfig(Trans, nextI18NextConfig)
     this.Link = withConfig(Link, nextI18NextConfig)
+    this.Router = wrapRouter(nextI18NextConfig)
   }
 
 }

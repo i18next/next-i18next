@@ -128,7 +128,7 @@ The main "gotcha" with locale subpaths is routing. We want to be able to route t
 
 With this link, we would expect someone whose language is set to French to automatically be directed to `/fr/some-page`.
 
-To do that, we must import `Link` from your `NextI18Next`, **not next/router**:
+To do that, we must import `Link` from your `NextI18Next` instance, **not next/router**:
 
 ```jsx
 import React from 'react'
@@ -136,15 +136,29 @@ import React from 'react'
 // This is our initialised `NextI18Next` instance
 import { Link } from '../i18n'
 
-class SomeLink extends React.Component {
-  render() {
-    return (
-      <Link href='/some-page'>
-        This will magically prepend locale subpaths
-      </Link>
-    )
-  }
-}
+const SomeLink = () => (
+  <Link href='/some-page'>
+    This will magically prepend locale subpaths
+  </Link>
+)
+```
+
+We can also navigate imperatively with locale subpaths by importing `Router` from your `NextI18Next` instance.
+The exported Router shares the same API as the native Next Router. The push, replace, and prefetch functions will automatically prepend locale subpaths.
+
+```jsx
+import React from 'react'
+
+// This is our initialised `NextI18Next` instance
+import { Router } from '../i18n'
+
+const SomeButton = () => (
+  <button
+    onClick={() => Router.push('/some-page')}
+  >
+    This will magically prepend locale subpaths
+  </button>
+)
 ```
 
 ## Custom Routing
