@@ -52,6 +52,15 @@
         "ideas",
         "review"
       ]
+    },
+    {
+      "login": "minocys",
+      "name": "Ryan Leung",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/6932550?v=4",
+      "profile": "http://www.fifteenprospects.com",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }
