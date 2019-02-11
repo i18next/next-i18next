@@ -49,7 +49,7 @@
     "@babel/preset-react": "^7.0.0",
     "all-contributors-cli": "^6.0.0",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^23.6.0",
+    "babel-jest": "^24.1.0",
     "babel-plugin-add-module-exports": "^1.0.0",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "enzyme": "^3.8.0",
@@ -60,11 +60,11 @@
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
     "husky": "^1.1.4",
-    "jest": "^23.6.0",
+    "jest": "^24.1.0",
     "jest-puppeteer": "^3.7.0",
     "jsdom": "^13.1.0",
     "jsdom-global": "^3.0.2",
-    "next": "^7.0.2",
+    "next": "^8.0.0",
     "puppeteer": "^1.11.0",
     "react": "^16.7.0",
     "react-dom": "^16.6.3"
@@ -84,7 +84,6 @@
     "url": "^0.11.0"
   },
   "peerDependencies": {
-    "next": ">= 7.0.2",
     "react": ">= 16.3.0"
   }
 }
