@@ -64,7 +64,7 @@
     "jest-puppeteer": "^3.7.0",
     "jsdom": "^13.1.0",
     "jsdom-global": "^3.0.2",
-    "next": "^7.0.2",
+    "next": "^8.0.0",
     "puppeteer": "^1.11.0",
     "react": "^16.7.0",
     "react-dom": "^16.6.3"
