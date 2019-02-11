@@ -147,6 +147,23 @@ class SomeLink extends React.Component {
 }
 ```
 
+We can also navigate imperatively with locale subpaths by importing `Router` from your `NextI18Next`.
+The exported Router shares the same API as the native Next Router. The push, replace, and prefetch functions will automatically prepend locale subpaths.
+
+```jsx
+import { Router } from '../i18n'
+
+function SomeButton() {
+  return (
+    <button
+      onClick={() => Router.push('/some-page')} // Navigates to /fr/some-page if users language is French
+    >
+      Navigate!
+    </button>
+  );
+}
+```
+
 ## Custom Routing
 
 Custom routing can be achieved via the `app.render` method:

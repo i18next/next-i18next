@@ -8,7 +8,8 @@ module.exports = {
     '!src/components/index.js',
     '!src/hocs/index.js',
     '!src/middlewares/index.js',
-    '!src/utils/index.js'
+    '!src/utils/index.js',
+    '!src/router/index.js',
   ],
 
   setupFiles: ['<rootDir>/jest.setup.js'],
@@ -20,6 +21,6 @@ module.exports = {
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
     '<rootDir>/__tests__/test-i18next-config.js',
-    '<rootDir>/__tests__/config/test-helpers.js'
+    '<rootDir>/__tests__/config/test-helpers.js',
   ],
 }
