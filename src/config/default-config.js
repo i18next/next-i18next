@@ -25,6 +25,7 @@ export default {
   ignoreRoutes: ['/_next', '/static'],
   customDetectors: [],
   detection: {
+    lookupCookie: 'next-i18next',
     order: ['cookie', 'header', 'querystring'],
     caches: ['cookie'],
   },

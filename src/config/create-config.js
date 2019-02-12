@@ -2,12 +2,21 @@ import isNode from 'detect-node'
 
 import defaultConfig from './default-config'
 
+const deepMergeObjects = ['detection']
+
 export default (userConfig) => {
 
   let combinedConfig = {
     ...defaultConfig,
     ...userConfig,
   }
+
+  deepMergeObjects.forEach((obj) => {
+    combinedConfig[obj] = {
+      ...defaultConfig[obj],
+      ...userConfig[obj],
+    }
+  })
 
   if (!userConfig.fallbackLng) {
     combinedConfig.fallbackLng = process.env.NODE_ENV === 'production'
