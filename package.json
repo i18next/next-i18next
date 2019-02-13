@@ -61,7 +61,7 @@
     "eslint-plugin-react": "^7.11.1",
     "husky": "^1.1.4",
     "jest": "^24.1.0",
-    "jest-puppeteer": "^3.7.0",
+    "jest-puppeteer": "^4.0.0",
     "jsdom": "^13.1.0",
     "jsdom-global": "^3.0.2",
     "next": "^8.0.0",
