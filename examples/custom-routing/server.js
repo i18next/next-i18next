@@ -4,6 +4,7 @@ const nextI18NextMiddleware = require('next-i18next/middleware')
 
 const nextI18next = require('./i18n')
 
+const port = process.env.PORT || 3000
 const app = next({ dev: process.env.NODE_ENV !== 'production' })
 const handle = app.getRequestHandler();
 
@@ -21,6 +22,6 @@ const handle = app.getRequestHandler();
 
   server.get('*', (req, res) => handle(req, res))
 
-  await server.listen(3000)
-  console.log('> Ready on http://localhost:3000') // eslint-disable-line no-console
+  await server.listen(port)
+  console.log(`> Ready on http://localhost:${port}`) // eslint-disable-line no-console
 })()
