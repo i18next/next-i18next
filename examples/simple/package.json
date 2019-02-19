@@ -7,9 +7,9 @@
     "node": ">=8"
   },
   "scripts": {
-    "dev": "node server.js",
+    "dev": "node index.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "start": "NODE_ENV=production node index.js"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

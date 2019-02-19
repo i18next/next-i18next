@@ -28,10 +28,11 @@
     "build:es": "BABEL_ENV=es babel src --out-dir dist/es",
     "build:cjs": "BABEL_ENV=cjs babel src --out-dir dist/commonjs",
     "build": "yarn clean && yarn build:cjs && yarn build:es",
+    "build:example": "cd examples/simple && yarn build",
     "prepublishOnly": "yarn build",
     "run-example": "yarn build && cd examples/simple && rm -rf node_modules && yarn && yarn dev",
     "run-example:prod": "yarn build && cd examples/simple && rm -rf node_modules && yarn && yarn build && yarn start",
-    "test": "NODE_ENV=test jest --silent",
+    "test": "yarn build:example && NODE_ENV=test jest --maxWorkers=1 --silent",
     "contributors:check": "all-contributors check",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate"

@@ -1,5 +1,6 @@
 /* eslint-env jest */
 /* eslint-disable no-undef */
+const jestPuppeteerConfig = require('../../../../jest-puppeteer.config')
 
 const testLanguage = 'en'
 const testLanguageSecondary = 'de'
@@ -9,7 +10,7 @@ describe('example project', () => {
     await page.setExtraHTTPHeaders({
       'Accept-Language': testLanguage,
     })
-    await page.goto('http://localhost:3000/')
+    await page.goto(`http://localhost:${jestPuppeteerConfig.e2eTests.BASIC.port}/`)
   })
 
   it(`should display h1 in ${testLanguage} locale`, async () => {
