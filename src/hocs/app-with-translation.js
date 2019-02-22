@@ -19,10 +19,11 @@ export default function (WrappedComponent) {
       if (process.browser && config.localeSubpaths) {
         i18n.on('languageChanged', (lng) => {
           const { router } = props
-          const { pathname, asPath, query: routerQuery } = router
-          const [as, query] = lngPathCorrector(config, i18n, { asPath, query: routerQuery }, lng)
+          const { pathname, asPath, query } = router
+          const routeInfo = { pathname, query }
+          const { as, href } = lngPathCorrector(config, { as: asPath, href: routeInfo }, lng)
           if (as !== asPath) {
-            router.replace({ pathname, query }, as, { shallow: true })
+            router.replace(href, as, { shallow: true })
           }
         })
       }

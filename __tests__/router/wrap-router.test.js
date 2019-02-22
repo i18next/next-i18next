@@ -118,10 +118,10 @@ describe('wrapRouter', () => {
 
     it('calls NextRouter.push with locale subpath prepended', () => {
       router.push(href, as, options)
-      expect(NextRouter.push).toHaveBeenNthCalledWith(1, {
+      expect(NextRouter.push).toHaveBeenNthCalledWith(1, expect.objectContaining({
         pathname: href,
         query: { lng: 'de' },
-      }, `/de${as}`, options)
+      }), `/de${as}`, options)
 
       router.push(hrefObj, as, options)
       expect(NextRouter.push).toHaveBeenNthCalledWith(2, {
@@ -130,10 +130,10 @@ describe('wrapRouter', () => {
       }, `/de${as}`, options)
 
       router.push(href, undefined, options)
-      expect(NextRouter.push).toHaveBeenNthCalledWith(3, {
+      expect(NextRouter.push).toHaveBeenNthCalledWith(3, expect.objectContaining({
         pathname: href,
         query: { lng: 'de' },
-      }, `/de${href}`, options)
+      }), `/de${href}`, options)
 
       router.push(hrefObj, undefined, options)
       expect(NextRouter.push).toHaveBeenNthCalledWith(4, {
@@ -144,10 +144,10 @@ describe('wrapRouter', () => {
 
     it('calls NextRouter.replace with locale subpath prepended', () => {
       router.replace(href, as, options)
-      expect(NextRouter.replace).toHaveBeenNthCalledWith(1, {
+      expect(NextRouter.replace).toHaveBeenNthCalledWith(1, expect.objectContaining({
         pathname: href,
         query: { lng: 'de' },
-      }, `/de${as}`, options)
+      }), `/de${as}`, options)
 
       router.replace(hrefObj, as, options)
       expect(NextRouter.replace).toHaveBeenNthCalledWith(2, {
@@ -156,10 +156,10 @@ describe('wrapRouter', () => {
       }, `/de${as}`, options)
 
       router.replace(href, undefined, options)
-      expect(NextRouter.replace).toHaveBeenNthCalledWith(3, {
+      expect(NextRouter.replace).toHaveBeenNthCalledWith(3, expect.objectContaining({
         pathname: href,
         query: { lng: 'de' },
-      }, `/de${href}`, options)
+      }), `/de${href}`, options)
 
       router.replace(hrefObj, undefined, options)
       expect(NextRouter.replace).toHaveBeenNthCalledWith(4, {

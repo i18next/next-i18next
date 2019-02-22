@@ -20,8 +20,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import NextLink from 'next/link'
 import { withNamespaces } from 'react-i18next'
-import { format as formatUrl } from 'url'
-import { lngPathCorrector, parseHref, localeSubpathRequired } from '../utils'
+import { lngPathCorrector, localeSubpathRequired } from '../utils'
 
 const removeWithNamespacesProps = (props) => {
   const strippedProps = Object.assign({}, props)
@@ -38,20 +37,16 @@ const removeWithNamespacesProps = (props) => {
 class Link extends React.Component {
   render() {
     const {
-      as, children, href: hrefProp, lng, nextI18NextConfig, ...props
+      as, children, href, lng, nextI18NextConfig, ...props
     } = this.props
 
     if (localeSubpathRequired(nextI18NextConfig, lng)) {
       const { config } = nextI18NextConfig
-      const href = parseHref(hrefProp)
-      const { pathname, query } = href
-
-      const asPath = as || formatUrl(href, { unicode: true })
-      const [correctedAs, correctedQuery] = lngPathCorrector(config, [], { asPath, query }, lng)
+      const { as: correctedAs, href: correctedHref } = lngPathCorrector(config, { as, href }, lng)
 
       return (
         <NextLink
-          href={{ pathname, query: correctedQuery }}
+          href={correctedHref}
           as={correctedAs}
           {...removeWithNamespacesProps(props)}
         >
@@ -62,7 +57,7 @@ class Link extends React.Component {
 
     return (
       <NextLink
-        href={hrefProp}
+        href={href}
         as={as}
         {...removeWithNamespacesProps(props)}
       >
