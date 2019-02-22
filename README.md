@@ -166,12 +166,18 @@ const SomeButton = () => (
 Custom routing can be achieved via the `app.render` method:
 
 ```jsx
+/* First, use middleware */
 server.use(nextI18NextMiddleware(nextI18next))
 
+/* Second, declare custom routes */
 server.get('/products/:id', (req, res) => {
   const { query, params } = req
+
   return app.render(req, res, '/product-page', { ...query, id: params.id })
 })
+
+/* Third, add catch-all GET for non-custom routes */
+server.get('*', (req, res) => handle(req, res))
 ```
 
 ## Options
