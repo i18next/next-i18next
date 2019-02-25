@@ -29,8 +29,6 @@ declare class NextI18Next {
   withNamespaces(namespace: string | string[]): any;
 
   appWithTranslation(Component: React.ComponentType): any;
-
-  createConsoleLog(messageType: string, message: string): void;
 }
 
 export default NextI18Next;
