@@ -59,4 +59,14 @@ describe('lngPathDetector utility function', () => {
 
     expect(res.redirect).toBeCalledWith(302, '/foo')
   })
+
+  it('does not strips language off url if language is languages[0] with defaultLocaleSubpath to true ', () => {
+    req.i18n.languages = ['en', 'de']
+    req.i18n.options.defaultLocaleSubpath = true
+    req.url = '/en/foo'
+
+    lngPathDetector(req, res, true)
+
+    expect(res.redirect).not.toBeCalledWith()
+  })
 })

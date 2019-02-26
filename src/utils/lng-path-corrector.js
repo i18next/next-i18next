@@ -32,9 +32,8 @@ const parseHref = (originalHref) => {
 }
 
 export default (config, currentRoute, currentLanguage) => {
-  const { defaultLanguage, allLanguages } = config
+  const { defaultLanguage, allLanguages, defaultLocaleSubpath } = config
   const { as: originalAs, href: originalHref } = currentRoute
-
   if (!allLanguages.includes(currentLanguage)) {
     throw new Error('Invalid configuration: Current language is not included in all languages array')
   }
@@ -53,7 +52,7 @@ export default (config, currentRoute, currentLanguage) => {
     }
   }
 
-  if (currentLanguage !== defaultLanguage) {
+  if (currentLanguage !== defaultLanguage || defaultLocaleSubpath) {
     as = `/${currentLanguage}${as}`
     href.query.lng = currentLanguage
   }
