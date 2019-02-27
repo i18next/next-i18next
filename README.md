@@ -120,7 +120,7 @@ myapp.com/de/
 myapp.com/es/
 ```
 
-If you want to enable default locale subpath, pass this option into the `NextI18Next` constructor:
+If you also want to enable locale subpaths for the default locale, pass the `defaultLocaleSubpath` option into the `NextI18Next` constructor:
 ```jsx
 new NextI18Next({ localeSubpaths: true, defaultLocaleSubpath: true })
 ```
