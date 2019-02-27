@@ -177,7 +177,7 @@ describe('lngPathCorrector utility function', () => {
       expect(format(result.href)).toEqual('/somewhere/else?option1=value1#hash1')
     })
 
-    it('does not removes default language from as when defaultLocaleSubpath is true', () => {
+    it('does not remove default language from as when defaultLocaleSubpath is true', () => {
       currentRoute.as = '/en/foo'
       currentRoute.href = '/somewhere/else?option1=value1#hash1'
       config.defaultLocaleSubpath = true
