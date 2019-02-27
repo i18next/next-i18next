@@ -67,6 +67,6 @@ describe('lngPathDetector utility function', () => {
 
     lngPathDetector(req, res, true)
 
-    expect(res.redirect).not.toBeCalledWith()
+    expect(res.redirect).not.toBeCalled()
   })
 })
