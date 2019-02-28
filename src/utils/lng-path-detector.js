@@ -4,7 +4,7 @@ import redirectWithoutCache from './redirect-without-cache'
 export default (req, res) => {
   if (req.i18n) {
     const language = lngFromReq(req)
-    const { allLanguages, defaultLanguage } = req.i18n.options
+    const { allLanguages, defaultLanguage, defaultLocaleSubpath } = req.i18n.options
     let languageChanged = false
     /*
       If a user has hit a subpath which does not
@@ -35,7 +35,7 @@ export default (req, res) => {
       If a user has a default language prefix
       in their URL, strip it.
     */
-    if (language === defaultLanguage && req.url.startsWith(`/${defaultLanguage}/`)) {
+    if (language === defaultLanguage && req.url.startsWith(`/${defaultLanguage}/`) && !defaultLocaleSubpath) {
       redirectWithoutCache(res, req.url.replace(`/${defaultLanguage}/`, '/'))
     }
   }

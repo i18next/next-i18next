@@ -120,6 +120,19 @@ myapp.com/de/
 myapp.com/es/
 ```
 
+If you also want to enable locale subpaths for the default locale, pass the `defaultLocaleSubpath` option into the `NextI18Next` constructor:
+```jsx
+new NextI18Next({ localeSubpaths: true, defaultLocaleSubpath: true })
+```
+
+ And we will get:
+```
+myapp.com/en/
+myapp.com/fr/
+myapp.com/de/
+myapp.com/es/
+```
+
 The main "gotcha" with locale subpaths is routing. We want to be able to route to "naked" routes, and not have to worry about the locale subpath part of the route:
 
 ```jsx
@@ -192,6 +205,7 @@ server.get('*', (req, res) => handle(req, res))
 | `localePath` | `'static/locales'`  |
 | `localeStructure` | `'{{lng}}/{{ns}}'`  |
 | `localeSubpaths` | `false`  |
+| `defaultLocaleSubpath` | `false`  |
 | `serverLanguageDetection` | `true`  |
 | `use` (for plugins) | `[]`  |
 | `customDetectors` | `[]`  |

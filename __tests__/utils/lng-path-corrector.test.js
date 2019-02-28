@@ -177,6 +177,21 @@ describe('lngPathCorrector utility function', () => {
       expect(format(result.href)).toEqual('/somewhere/else?option1=value1#hash1')
     })
 
+    it('does not remove default language from as when defaultLocaleSubpath is true', () => {
+      currentRoute.as = '/en/foo'
+      currentRoute.href = '/somewhere/else?option1=value1#hash1'
+      config.defaultLocaleSubpath = true
+
+      const result = lngPathCorrector(config, currentRoute, 'en')
+      expect(result.as).toEqual('/en/foo')
+      expect(result.href).toEqual(expect.objectContaining({
+        pathname: '/somewhere/else',
+        hash: '#hash1',
+        query: { option1: 'value1', lng: 'en' },
+      }))
+      expect(format(result.href)).toEqual('/somewhere/else?option1=value1&lng=en#hash1')
+    })
+
     it('adds non-default language to as and href.query', () => {
       currentRoute.as = '/foo'
       currentRoute.href = '/somewhere/else?option1=value1#hash1'
