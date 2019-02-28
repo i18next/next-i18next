@@ -87,16 +87,33 @@ export default function (WrappedComponent) {
         const { fallbackLng } = config
         initialI18nStore[initialLanguage] = {}
         if (fallbackLng) {
-          initialI18nStore[fallbackLng] = {}
+          if (fallbackLng.default) {
+            initialI18nStore[fallbackLng.default] = {}
+          }
+          if (Array.isArray(fallbackLng[initialLanguage])) {
+            fallbackLng[initialLanguage].forEach((fallbackLanguage) => {
+              initialI18nStore[fallbackLanguage] = {}
+            })
+          }
         }
         namespacesRequired.forEach((ns) => {
           initialI18nStore[initialLanguage][ns] = (
             (req.i18n.services.resourceStore.data[initialLanguage] || {})[ns] || {}
           )
           if (fallbackLng) {
-            initialI18nStore[fallbackLng][ns] = (
-              (req.i18n.services.resourceStore.data[fallbackLng] || {})[ns] || {}
-            )
+            if (fallbackLng.default) {
+              initialI18nStore[fallbackLng.default][ns] = (
+                (req.i18n.services.resourceStore.data[fallbackLng.default] || {})[ns] || {}
+              )
+            }
+
+            if (Array.isArray(fallbackLng[initialLanguage])) {
+              fallbackLng[initialLanguage].forEach((fallbackLanguage) => {
+                initialI18nStore[fallbackLanguage][ns] = (
+                  (req.i18n.services.resourceStore.data[fallbackLanguage] || {})[ns] || {}
+                )
+              })
+            }
           }
         })
 
