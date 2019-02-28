@@ -32,7 +32,7 @@ const parseHref = (originalHref) => {
 }
 
 export default (config, currentRoute, currentLanguage) => {
-  const { defaultLanguage, allLanguages } = config
+  const { defaultLanguage, allLanguages, defaultLocaleSubpath } = config
   const { as: originalAs, href: originalHref } = currentRoute
 
   if (!allLanguages.includes(currentLanguage)) {
@@ -53,7 +53,7 @@ export default (config, currentRoute, currentLanguage) => {
     }
   }
 
-  if (currentLanguage !== defaultLanguage) {
+  if (currentLanguage !== defaultLanguage || defaultLocaleSubpath) {
     as = `/${currentLanguage}${as}`
     href.query.lng = currentLanguage
   }
