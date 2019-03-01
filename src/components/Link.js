@@ -77,7 +77,7 @@ Link.propTypes = {
   nextI18NextConfig: PropTypes.shape({
     config: PropTypes.shape({
       defaultLanguage: PropTypes.string.isRequired,
-      localeSubpaths: PropTypes.bool.isRequired,
+      localeSubpaths: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
 }

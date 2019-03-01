@@ -7,6 +7,10 @@ const testLanguageSecondary = 'de'
 
 describe('example project', () => {
   beforeAll(async () => {
+    await page.close()
+    const context = await browser.createIncognitoBrowserContext()
+    page = await context.newPage()
+
     await page.setExtraHTTPHeaders({
       'Accept-Language': testLanguage,
     })

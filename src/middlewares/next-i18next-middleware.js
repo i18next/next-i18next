@@ -3,6 +3,7 @@ import { parse } from 'url'
 import pathMatch from 'path-match'
 
 import { forceTrailingSlash, lngPathDetector } from '../utils'
+import { localeSubpathOptions } from '../config/default-config'
 
 const route = pathMatch()
 
@@ -32,7 +33,7 @@ export default function (nexti18next) {
 
   middleware.push(i18nextMiddleware.handle(i18n, { ignoreRoutes }))
 
-  if (localeSubpaths) {
+  if (localeSubpaths !== localeSubpathOptions.NONE) {
     middleware.push(
       (req, res, next) => {
         if (isI18nRoute(req.url)) {

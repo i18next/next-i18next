@@ -4,6 +4,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 
 import Link from '../../src/components/Link'
+import { localeSubpathOptions } from '../../src/config/default-config'
 
 jest.mock('next/link')
 jest.mock('react-i18next', () => ({
@@ -21,7 +22,7 @@ describe('Link component', () => {
         config: {
           allLanguages: ['en', 'de'],
           defaultLanguage: 'en',
-          localeSubpaths: false,
+          localeSubpaths: localeSubpathOptions.NONE,
         },
       },
     }
@@ -31,7 +32,7 @@ describe('Link component', () => {
     <Link {...props} {...otherProps}>click here</Link>,
   ).find('Link').at(1)
 
-  it('renders without lang if localeSubpaths === false', () => {
+  it(`renders without lang if localeSubpaths is "${localeSubpathOptions.NONE}"`, () => {
     // without 'as' prop
     let component = createLinkComponent()
 
@@ -47,7 +48,7 @@ describe('Link component', () => {
   })
 
   it('renders without lang if props.lng is undefined', () => {
-    props.nextI18NextConfig.config.localeSubpaths = true
+    props.nextI18NextConfig.config.localeSubpaths = localeSubpathOptions.FOREIGN
     props.lng = undefined
 
     // without 'as' prop
@@ -65,7 +66,7 @@ describe('Link component', () => {
   })
 
   it('renders without lang if props.lng === defaultLanguage', () => {
-    props.nextI18NextConfig.config.localeSubpaths = true
+    props.nextI18NextConfig.config.localeSubpaths = localeSubpathOptions.FOREIGN
     props.nextI18NextConfig.config.defaultLanguage = 'en'
     props.lng = 'en'
 
@@ -84,7 +85,7 @@ describe('Link component', () => {
   })
 
   it('renders with lang', () => {
-    props.nextI18NextConfig.config.localeSubpaths = true
+    props.nextI18NextConfig.config.localeSubpaths = localeSubpathOptions.FOREIGN
     props.nextI18NextConfig.config.defaultLanguage = 'en'
 
     // without 'as' prop -- no query parameters
@@ -125,9 +126,9 @@ describe('Link component', () => {
         }
       })
 
-      describe('localeSubpaths === false', () => {
+      describe(`localeSubpaths = "${localeSubpathOptions.NONE}"`, () => {
         beforeEach(() => {
-          props.nextI18NextConfig.config.localeSubpaths = false
+          props.nextI18NextConfig.config.localeSubpaths = localeSubpathOptions.NONE
         })
 
         it('renders without lang', () => {
@@ -147,9 +148,9 @@ describe('Link component', () => {
         })
       })
 
-      describe('localeSubpaths === true', () => {
+      describe(`localeSubpaths = "${localeSubpathOptions.FOREIGN}"`, () => {
         beforeEach(() => {
-          props.nextI18NextConfig.config.localeSubpaths = true
+          props.nextI18NextConfig.config.localeSubpaths = localeSubpathOptions.FOREIGN
         })
 
         beforeEach(() => {

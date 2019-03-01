@@ -5,6 +5,7 @@ import { forceTrailingSlash, lngPathDetector } from '../../src/utils'
 import testI18NextConfig from '../test-i18next-config'
 
 import nextI18nextMiddleware from '../../src/middlewares/next-i18next-middleware'
+import { localeSubpathOptions } from '../../src/config/default-config'
 
 jest.mock('i18next-express-middleware', () => ({
   handle: jest.fn(() => jest.fn()),
@@ -59,8 +60,8 @@ describe('next-18next middleware', () => {
         }))
   })
 
-  it('does not call any next-i18next middleware if localeSubpaths === false', () => {
-    nexti18next.config.localeSubpaths = false
+  it(`does not call any next-i18next middleware if localeSubpaths is "${localeSubpathOptions.NONE}"`, () => {
+    nexti18next.config.localeSubpaths = localeSubpathOptions.NONE
 
     callAllMiddleware()
 
@@ -68,9 +69,9 @@ describe('next-18next middleware', () => {
     expect(lngPathDetector).not.toBeCalled()
   })
 
-  describe('localeSubpaths === true', () => {
+  describe(`localeSubpaths = "${localeSubpathOptions.FOREIGN}"`, () => {
     beforeEach(() => {
-      nexti18next.config.localeSubpaths = true
+      nexti18next.config.localeSubpaths = localeSubpathOptions.FOREIGN
     })
 
     it('does not call middleware, if route to ignore', () => {

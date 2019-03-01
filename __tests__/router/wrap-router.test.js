@@ -1,6 +1,7 @@
 /* eslint-env jest */
 import NextRouter from 'next/router'
 import wrapRouter from '../../src/router/wrap-router'
+import { localeSubpathOptions } from '../../src/config/default-config'
 
 jest.mock('next/router', () => ({
   asPath: '/some-path',
@@ -32,7 +33,7 @@ const nextI18NextConfig = {
   },
   config: {
     defaultLanguage: 'en',
-    localeSubpaths: false,
+    localeSubpaths: localeSubpathOptions.NONE,
     allLanguages: ['en', 'de'],
   },
 }
@@ -112,7 +113,7 @@ describe('wrapRouter', () => {
       NextRouter.push.mockClear()
       NextRouter.replace.mockClear()
       NextRouter.prefetch.mockClear()
-      nextI18NextConfig.config.localeSubpaths = true
+      nextI18NextConfig.config.localeSubpaths = localeSubpathOptions.FOREIGN
       router = wrapRouter(nextI18NextConfig)
     })
 

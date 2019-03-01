@@ -1,10 +1,15 @@
+export const localeSubpathOptions = {
+  ALL: 'all',
+  FOREIGN: 'foreign',
+  NONE: 'none',
+}
+
 const DEFAULT_LANGUAGE = 'en'
 const OTHER_LANGUAGES = []
 const DEFAULT_NAMESPACE = 'common'
 const LOCALE_PATH = 'static/locales'
 const LOCALE_STRUCTURE = '{{lng}}/{{ns}}'
-const LOCALE_SUBPATHS = false
-const DEFAULT_LOCALE_SUBPATH = false
+const LOCALE_SUBPATHS = localeSubpathOptions.NONE
 
 export default {
   defaultLanguage: DEFAULT_LANGUAGE,
@@ -13,7 +18,6 @@ export default {
   localePath: LOCALE_PATH,
   localeStructure: LOCALE_STRUCTURE,
   localeSubpaths: LOCALE_SUBPATHS,
-  defaultLocaleSubpath: DEFAULT_LOCALE_SUBPATH,
   ns: [DEFAULT_NAMESPACE],
   use: [],
   defaultNS: DEFAULT_NAMESPACE,

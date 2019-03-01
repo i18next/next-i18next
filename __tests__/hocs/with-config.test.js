@@ -4,6 +4,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 
 import { withConfig } from '../../src/hocs'
+import { localeSubpathOptions } from '../../src/config/default-config'
 
 describe('withConfig HoC', () => {
   let config
@@ -11,7 +12,7 @@ describe('withConfig HoC', () => {
   let WrappedComponent
 
   beforeEach(() => {
-    config = { localeSubpaths: true }
+    config = { localeSubpaths: localeSubpathOptions.FOREIGN }
     props = {}
     WrappedComponent = () => <div />
   })
@@ -20,7 +21,7 @@ describe('withConfig HoC', () => {
     const Component = withConfig(WrappedComponent, config)
 
     expect(mount(<Component />).find('WrappedComponent').prop('nextI18NextConfig'))
-      .toEqual({ localeSubpaths: true })
+      .toEqual({ localeSubpaths: localeSubpathOptions.FOREIGN })
   })
 
   it('passes other props into wrapped component', () => {
@@ -29,7 +30,7 @@ describe('withConfig HoC', () => {
     const Component = withConfig(WrappedComponent, config)
 
     const wrappedComponent = mount(<Component {...props} />).find('WrappedComponent')
-    expect(wrappedComponent.prop('nextI18NextConfig')).toEqual({ localeSubpaths: true })
+    expect(wrappedComponent.prop('nextI18NextConfig')).toEqual({ localeSubpaths: localeSubpathOptions.FOREIGN })
     expect(wrappedComponent.prop('prop')).toEqual('value')
   })
 

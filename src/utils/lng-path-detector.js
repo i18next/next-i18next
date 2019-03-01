@@ -1,10 +1,11 @@
 import lngFromReq from './lng-from-req'
 import redirectWithoutCache from './redirect-without-cache'
+import { localeSubpathOptions } from '../config/default-config'
 
 export default (req, res) => {
   if (req.i18n) {
     const language = lngFromReq(req)
-    const { allLanguages, defaultLanguage, defaultLocaleSubpath } = req.i18n.options
+    const { allLanguages, defaultLanguage, localeSubpaths } = req.i18n.options
     let languageChanged = false
     /*
       If a user has hit a subpath which does not
@@ -23,7 +24,11 @@ export default (req, res) => {
       preference to the language and redirect
       their path.
     */
-    if (!languageChanged && language !== defaultLanguage && !req.url.startsWith(`/${language}/`)) {
+    const languageNeedsSubpath = (localeSubpaths === localeSubpathOptions.FOREIGN
+      && language !== defaultLanguage)
+      || localeSubpaths === localeSubpathOptions.ALL
+
+    if (!languageChanged && languageNeedsSubpath && !req.url.startsWith(`/${language}/`)) {
       allLanguages.forEach((lng) => {
         if (req.url.startsWith(`/${lng}/`)) {
           req.url = req.url.replace(`/${lng}/`, '/')
@@ -35,7 +40,9 @@ export default (req, res) => {
       If a user has a default language prefix
       in their URL, strip it.
     */
-    if (language === defaultLanguage && req.url.startsWith(`/${defaultLanguage}/`) && !defaultLocaleSubpath) {
+    if (language === defaultLanguage
+        && req.url.startsWith(`/${defaultLanguage}/`)
+        && localeSubpaths !== localeSubpathOptions.ALL) {
       redirectWithoutCache(res, req.url.replace(`/${defaultLanguage}/`, '/'))
     }
   }
