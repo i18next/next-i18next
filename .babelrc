@@ -16,15 +16,14 @@
     },
     "cjs": {
       "presets": [
-        [
-          "@babel/env",
-          {
-            "targets": {
-              "node": "current"
-            }
-          }
-        ],
-        ["@babel/preset-react"]
+        ["next/babel", {
+          "transform-runtime": {
+            "corejs": false,
+            "helpers": true,
+            "regenerator": true,
+            "useESModules": false
+          },
+        }]
       ],
       "plugins": [
         [
