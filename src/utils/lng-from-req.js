@@ -1,5 +1,9 @@
 export default (req) => {
 
+  if (!req.i18n) {
+    return null
+  }
+
   const { allLanguages, defaultLanguage, fallbackLng } = req.i18n.options
 
   const fallback = fallbackLng || defaultLanguage
