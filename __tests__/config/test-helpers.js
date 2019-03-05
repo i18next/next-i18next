@@ -1,3 +1,5 @@
+import { localeSubpathOptions } from '../../src/config/default-config'
+
 /* eslint-env jest */
 
 const userConfig = {
@@ -8,7 +10,7 @@ const userConfig = {
   otherLanguages: ['fr', 'it'],
   localePath: 'static/translations',
   localeStructure: '{{ns}}/{{lng}}',
-  localeSubpaths: true,
+  localeSubpaths: localeSubpathOptions.FOREIGN,
 }
 
 const setUpTest = () => {

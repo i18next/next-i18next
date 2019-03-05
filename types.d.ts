@@ -13,7 +13,7 @@ export interface INextI18NextConfig {
   localePath: string;
   localeStructure: string;
   otherLanguages: string[];
-  localeSubpaths: boolean;
+  localeSubpaths: string;
   use: any[];
   customDetectors: any[];
 }

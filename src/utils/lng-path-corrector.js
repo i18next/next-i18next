@@ -1,4 +1,5 @@
 import { format as formatUrl, parse as parseUrl } from 'url'
+import { localeSubpathOptions } from '../config/default-config'
 
 const parseAs = (originalAs, href) => {
   const asType = typeof originalAs
@@ -32,7 +33,7 @@ const parseHref = (originalHref) => {
 }
 
 export default (config, currentRoute, currentLanguage) => {
-  const { defaultLanguage, allLanguages, defaultLocaleSubpath } = config
+  const { defaultLanguage, allLanguages, localeSubpaths } = config
   const { as: originalAs, href: originalHref } = currentRoute
 
   if (!allLanguages.includes(currentLanguage)) {
@@ -53,7 +54,7 @@ export default (config, currentRoute, currentLanguage) => {
     }
   }
 
-  if (currentLanguage !== defaultLanguage || defaultLocaleSubpath) {
+  if (currentLanguage !== defaultLanguage || localeSubpaths === localeSubpathOptions.ALL) {
     as = `/${currentLanguage}${as}`
     href.query.lng = currentLanguage
   }

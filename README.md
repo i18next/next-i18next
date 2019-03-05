@@ -108,7 +108,7 @@ myapp.com/de/     ---> Homepage in German
 This functionality is not enabled by default, and must be passed as an option into the `NextI18Next` constructor:
 
 ```jsx
-new NextI18Next({ localeSubpaths: true })
+new NextI18Next({ localeSubpaths: 'foreign' })
 ```
 
 Now, all your page routes will be duplicated across all your non-default language subpaths. If our `static/locales` folder included `fr`, `de`, and `es` translation directories, we will automatically get:
@@ -120,12 +120,12 @@ myapp.com/de/
 myapp.com/es/
 ```
 
-If you also want to enable locale subpaths for the default locale, pass the `defaultLocaleSubpath` option into the `NextI18Next` constructor:
+If you also want to enable locale subpaths for the default locale, set `localeSubpaths` to `all`:
 ```jsx
-new NextI18Next({ localeSubpaths: true, defaultLocaleSubpath: true })
+new NextI18Next({ localeSubpaths: 'all' })
 ```
 
- And we will get:
+We'll now get:
 ```
 myapp.com/en/
 myapp.com/fr/
@@ -204,8 +204,7 @@ server.get('*', (req, res) => handle(req, res))
 | `otherLanguages` (required) | `[]`  |
 | `localePath` | `'static/locales'`  |
 | `localeStructure` | `'{{lng}}/{{ns}}'`  |
-| `localeSubpaths` | `false`  |
-| `defaultLocaleSubpath` | `false`  |
+| `localeSubpaths` | `'none'`  |
 | `serverLanguageDetection` | `true`  |
 | `use` (for plugins) | `[]`  |
 | `customDetectors` | `[]`  |

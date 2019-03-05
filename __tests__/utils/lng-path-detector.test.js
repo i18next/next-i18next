@@ -3,6 +3,7 @@
 import testI18NextConfig from '../test-i18next-config'
 
 import lngPathDetector from '../../src/utils/lng-path-detector'
+import { localeSubpathOptions } from '../../src/config/default-config'
 
 describe('lngPathDetector utility function', () => {
   let req
@@ -60,9 +61,9 @@ describe('lngPathDetector utility function', () => {
     expect(res.redirect).toBeCalledWith(302, '/foo')
   })
 
-  it('does not redirect if language is languages[0] and defaultLocaleSubpath is true ', () => {
+  it(`does not redirect if language is languages[0] and localeSubpaths is "${localeSubpathOptions.ALL}"`, () => {
     req.i18n.languages = ['en', 'de']
-    req.i18n.options.defaultLocaleSubpath = true
+    req.i18n.options.localeSubpaths = localeSubpathOptions.ALL
     req.url = '/en/foo'
 
     lngPathDetector(req, res, true)

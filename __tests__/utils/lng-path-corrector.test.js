@@ -3,6 +3,7 @@
 import { format } from 'url'
 
 import lngPathCorrector from '../../src/utils/lng-path-corrector'
+import { localeSubpathOptions } from '../../src/config/default-config'
 
 describe('lngPathCorrector utility function', () => {
   let config
@@ -177,10 +178,10 @@ describe('lngPathCorrector utility function', () => {
       expect(format(result.href)).toEqual('/somewhere/else?option1=value1#hash1')
     })
 
-    it('does not remove default language from as when defaultLocaleSubpath is true', () => {
+    it(`does not remove default language from as when localeSubpath is "${localeSubpathOptions.ALL}"`, () => {
       currentRoute.as = '/en/foo'
       currentRoute.href = '/somewhere/else?option1=value1#hash1'
-      config.defaultLocaleSubpath = true
+      config.localeSubpaths = localeSubpathOptions.ALL
 
       const result = lngPathCorrector(config, currentRoute, 'en')
       expect(result.as).toEqual('/en/foo')

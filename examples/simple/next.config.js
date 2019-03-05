@@ -1,5 +1,7 @@
 module.exports = {
   publicRuntimeConfig: {
-    localeSubpaths: process.env.LOCALE_SUBPATHS === 'true',
+    localeSubpaths: typeof process.env.LOCALE_SUBPATHS === 'string'
+      ? process.env.LOCALE_SUBPATHS
+      : 'none',
   },
 }
