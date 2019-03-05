@@ -5,6 +5,7 @@ import hoistNonReactStatics from 'hoist-non-react-statics'
 import { I18nextProvider } from 'react-i18next'
 
 import { lngFromReq, lngPathCorrector } from '../utils'
+import { localeSubpathOptions } from '../config/default-config'
 import { NextStaticProvider } from '../components'
 
 export default function (WrappedComponent) {
@@ -16,7 +17,7 @@ export default function (WrappedComponent) {
     constructor(props) {
       super(props)
 
-      if (process.browser && config.localeSubpaths) {
+      if (process.browser && config.localeSubpaths !== localeSubpathOptions.NONE) {
         i18n.on('languageChanged', (lng) => {
           const { router } = props
           const { pathname, asPath, query } = router

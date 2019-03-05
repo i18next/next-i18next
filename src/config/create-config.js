@@ -6,6 +6,10 @@ const deepMergeObjects = ['detection']
 
 export default (userConfig) => {
 
+  if (typeof userConfig.localeSubpaths === 'boolean') {
+    throw new Error('The localeSubpaths option has been changed to a string: "none", "foreign", or "all"')
+  }
+
   let combinedConfig = {
     ...defaultConfig,
     ...userConfig,
