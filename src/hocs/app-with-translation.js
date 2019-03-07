@@ -107,20 +107,14 @@ export default function (WrappedComponent) {
           if (fallbackLng) {
             if (Array.isArray(fallbackLng[initialLanguage])) {
               fallbackLng[initialLanguage].forEach((fallbackLanguage) => {
-                initialI18nStore[fallbackLanguage][ns] = (
-                  (req.i18n.services.resourceStore.data[fallbackLanguage] || {})[ns] || {}
-                )
+                initialI18nStore[fallbackLanguage][ns] = AppWithTranslation.loadNamespaceInLanguage(ns, fallbackLanguage, req)
               })
 
               if (fallbackLng.default) {
-                initialI18nStore[fallbackLng.default][ns] = (
-                  (req.i18n.services.resourceStore.data[fallbackLng.default] || {})[ns] || {}
-                )
+                initialI18nStore[fallbackLng.default][ns] = AppWithTranslation.loadNamespaceInLanguage(ns, fallbackLng.default, req)
               }
             } else {
-              initialI18nStore[fallbackLng][ns] = (
-                (req.i18n.services.resourceStore.data[fallbackLng] || {})[ns] || {}
-              )
+              initialI18nStore[fallbackLng][ns] = AppWithTranslation.loadNamespaceInLanguage(ns, fallbackLng, req)
             }
           }
         })
@@ -149,6 +143,12 @@ export default function (WrappedComponent) {
         i18nServerInstance,
         ...wrappedComponentProps,
       }
+    }
+
+    static loadNamespaceInLanguage(ns, fallbackLanguage, req) {
+      return (
+        (req.i18n.services.resourceStore.data[language] || {})[ns] || {}
+      );
     }
 
     render() {
