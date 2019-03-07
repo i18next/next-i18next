@@ -11,6 +11,7 @@ out
 
 # Development Environment
 .vscode
+.idea
 
 # Logs
 *.log
