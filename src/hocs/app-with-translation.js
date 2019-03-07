@@ -14,7 +14,7 @@ export default function (WrappedComponent) {
 
   class AppWithTranslation extends React.Component {
 
-    static loadNamespaceInLanguage(ns, fallbackLanguage, req) {
+    static loadNamespaceInLanguage(ns, language, req) {
       return (
         (req.i18n.services.resourceStore.data[language] || {})[ns] || {}
       )
