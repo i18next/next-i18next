@@ -89,44 +89,41 @@ export default function (WrappedComponent) {
       // Step 3: Perform data fetching, depending on environment
       if (req && req.i18n) {
 
+        // Parse fallbackLng object
+        const { fallbackLng } = config
+        const additionalLanguages = []
+
+        if (Array.isArray(fallbackLng[initialLanguage])) {
+          fallbackLng[initialLanguage].forEach((lng) => {
+            additionalLanguages.push(lng)
+          })
+
+          if (fallbackLng.default) {
+            additionalLanguages.push(fallbackLng.default)
+          }
+
+        } else if (fallbackLng !== initialLanguage) {
+          additionalLanguages.push(fallbackLng)
+        }
+
         // Initialise the store with only the initialLanguage and
         // necessary namespaces needed to render this specific tree
-        const { fallbackLng } = config
         initialI18nStore[initialLanguage] = {}
-        if (fallbackLng) {
-          if (Array.isArray(fallbackLng[initialLanguage])) {
-            fallbackLng[initialLanguage].forEach((fallbackLanguage) => {
-              initialI18nStore[fallbackLanguage] = {}
-            })
+        additionalLanguages.forEach((lng) => {
+          initialI18nStore[lng] = {}
+        })
 
-            if (fallbackLng.default) {
-              initialI18nStore[fallbackLng.default] = {}
-            }
-          } else {
-            initialI18nStore[fallbackLng] = {}
-          }
-        }
         namespacesRequired.forEach((ns) => {
           initialI18nStore[initialLanguage][ns] = (
             (req.i18n.services.resourceStore.data[initialLanguage] || {})[ns] || {}
           )
-          if (fallbackLng) {
-            if (Array.isArray(fallbackLng[initialLanguage])) {
-              fallbackLng[initialLanguage].forEach((fallbackLanguage) => {
-                initialI18nStore[fallbackLanguage][ns] =
-                  AppWithTranslation.loadNamespaceInLanguage(ns, fallbackLanguage, req)
-              })
 
-              if (fallbackLng.default) {
-                initialI18nStore[fallbackLng.default][ns] =
-                  AppWithTranslation.loadNamespaceInLanguage(ns, fallbackLng.default, req)
-              }
-            } else {
-              initialI18nStore[fallbackLng][ns] = AppWithTranslation.loadNamespaceInLanguage(ns, fallbackLng, req)
-            }
-          }
+          additionalLanguages.forEach((lng) => {
+            initialI18nStore[lng][ns] = (
+              (req.i18n.services.resourceStore.data[lng] || {})[ns] || {}
+            )
+          })
         })
-
       } else if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
 
         // Load newly-required translations if changing route clientside
