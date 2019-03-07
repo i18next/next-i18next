@@ -87,7 +87,7 @@ export default function (WrappedComponent) {
       }
 
       // Step 3: Perform data fetching, depending on environment
-      if (req.i18n) {
+      if (req && req.i18n) {
 
         // Parse fallbackLng object
         const { fallbackLng } = config
