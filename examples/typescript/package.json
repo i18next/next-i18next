@@ -12,6 +12,8 @@
     "dev": "nodemon --exec ts-node --project tsconfig.server.json index.ts",
     "build": "next build && tsc --project tsconfig.server.json",
     "start": "NODE_ENV=production node .build/index.js",
+    "lint": " eslint --ext ts,tsx .",
+    "lint:fix": "eslint --ext ts,tsx . --fix",
     "clean": "rm -rf .build/ .next/",
     "type-check": "tsc"
   },
@@ -28,6 +30,8 @@
     "@types/next": "^8.0.1",
     "@types/react": "^16.4.16",
     "@types/react-dom": "16.0.11",
+    "@typescript-eslint/eslint-plugin": "^1.4.2",
+    "@typescript-eslint/parser": "^1.4.2",
     "babel-cli": "^6.26.0",
     "babel-plugin-module-resolver": "^3.2.0",
     "babel-preset-env": "^1.7.0",
