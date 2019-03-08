@@ -93,25 +93,20 @@ export default function (WrappedComponent) {
         const { fallbackLng } = config
         const languagesThatWeWillLoad = [initialLanguage]
 
-        if (typeof fallbackLng === 'string') {
-          if (fallbackLng !== initialLanguage) {
-            languagesThatWeWillLoad.push(fallbackLng)
+        if (typeof fallbackLng === 'string' && fallbackLng !== initialLanguage) {
+          languagesThatWeWillLoad.push(fallbackLng)
+        } else if (Array.isArray(fallbackLng[initialLanguage])) {
+          fallbackLng[initialLanguage].forEach((lng) => {
+            languagesThatWeWillLoad.push(lng)
+          })
+
+          // The object can have a default parameter.
+          if (fallbackLng.default) {
+            languagesThatWeWillLoad.push(fallbackLng.default)
           }
         } else {
-          if (Array.isArray(fallbackLng[initialLanguage])) {
-            fallbackLng[initialLanguage].forEach((lng) => {
-              languagesThatWeWillLoad.push(lng)
-            })
-
-            // The object can have a default parameter.
-            if (fallbackLng.default) {
-              languagesThatWeWillLoad.push(fallbackLng.default)
-            }
-          } else {
-            languagesThatWeWillLoad.push(fallbackLng[initialLanguage])
-          }
+          languagesThatWeWillLoad.push(fallbackLng[initialLanguage])
         }
-
 
         // Initialise the store with the languagesThatWeShouldLoad and
         // necessary namespaces needed to render this specific tree
