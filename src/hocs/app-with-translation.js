@@ -107,6 +107,8 @@ export default function (WrappedComponent) {
             if (fallbackLng.default) {
               languagesThatWeShouldLoad.push(fallbackLng.default)
             }
+          } else {
+            languagesThatWeShouldLoad.push(fallbackLng[initialLanguage])
           }
         }
 
