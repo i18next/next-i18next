@@ -91,34 +91,29 @@ export default function (WrappedComponent) {
 
         // Parse fallbackLng object
         const { fallbackLng } = config
-        const additionalLanguages = []
+        const languagesThatWeShouldLoad = [initialLanguage]
 
         if (Array.isArray(fallbackLng[initialLanguage])) {
           fallbackLng[initialLanguage].forEach((lng) => {
-            additionalLanguages.push(lng)
+            languagesThatWeShouldLoad.push(lng)
           })
 
           if (fallbackLng.default) {
-            additionalLanguages.push(fallbackLng.default)
+            languagesThatWeShouldLoad.push(fallbackLng.default)
           }
 
         } else if (fallbackLng !== initialLanguage) {
-          additionalLanguages.push(fallbackLng)
+          languagesThatWeShouldLoad.push(fallbackLng)
         }
 
-        // Initialise the store with only the initialLanguage and
+        // Initialise the store with the languagesThatWeShouldLoad and
         // necessary namespaces needed to render this specific tree
-        initialI18nStore[initialLanguage] = {}
-        additionalLanguages.forEach((lng) => {
+        languagesThatWeShouldLoad.forEach((lng) => {
           initialI18nStore[lng] = {}
         })
 
         namespacesRequired.forEach((ns) => {
-          initialI18nStore[initialLanguage][ns] = (
-            (req.i18n.services.resourceStore.data[initialLanguage] || {})[ns] || {}
-          )
-
-          additionalLanguages.forEach((lng) => {
+          languagesThatWeShouldLoad.forEach((lng) => {
             initialI18nStore[lng][ns] = (
               (req.i18n.services.resourceStore.data[lng] || {})[ns] || {}
             )
