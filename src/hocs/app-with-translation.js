@@ -93,7 +93,7 @@ export default function (WrappedComponent) {
         const { fallbackLng } = config
         const languagesThatWeShouldLoad = [initialLanguage]
 
-        if (typeof fallbackLng === "string") {
+        if (typeof fallbackLng === 'string') {
           if (fallbackLng !== initialLanguage) {
             languagesThatWeShouldLoad.push(fallbackLng)
           }
