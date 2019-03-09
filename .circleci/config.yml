@@ -19,6 +19,12 @@ jobs:
           - v1-dependencies-{{ checksum "examples/simple/package.json" }}
           - v1-dependencies-
 
+      - restore_cache:
+          name: Restore cache (example-ts)
+          keys:
+          - v1-dependencies-{{ checksum "examples/typescript/package.json" }}
+          - v1-dependencies-
+
       - run:
           name: Install dependencies (main)
           command: yarn install
@@ -28,12 +34,20 @@ jobs:
           command: yarn install
 
       - run:
+          name: Install dependencies (example-ts)
+          command: yarn install
+
+      - run:
           name: Build source (main)
           command: yarn build
 
       - run:
           name: Build source (example)
           command: cd examples/simple && yarn && yarn build
+
+      - run:
+          name: Build source (example-ts)
+          command: cd examples/typescript && yarn && yarn build
 
       - save_cache:
           name: Save cache (main)
@@ -46,6 +60,12 @@ jobs:
           paths:
             - examples/simple/node_modules
           key: v1-dependencies-{{ checksum "examples/simple/package.json" }}
+
+      - save_cache:
+          name: Save cache (example-ts)
+          paths:
+            - examples/simple/node_modules
+          key: v1-dependencies-{{ checksum "examples/typescript/package.json" }}
 
       - run:
           name: Lint
