@@ -14,7 +14,7 @@ describe('example project', () => {
     await page.setExtraHTTPHeaders({
       'Accept-Language': testLanguage,
     })
-    await page.goto(`http://localhost:${jestPuppeteerConfig.e2eTests.BASIC.port}/`)
+    await page.goto(`http://localhost:${jestPuppeteerConfig.e2eTests.TS_BASIC.port}/`)
   })
 
   it(`should display h1 in ${testLanguage} locale`, async () => {

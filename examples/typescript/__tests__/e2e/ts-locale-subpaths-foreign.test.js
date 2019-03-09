@@ -13,16 +13,16 @@ describe('example project with localeSubpaths set to foreign', () => {
     await page.setExtraHTTPHeaders({
       'Accept-Language': testLanguage,
     })
-    await page.goto(`http://localhost:${jestPuppeteerConfig.e2eTests.LOCALE_SUBPATHS_FOREIGN.port}/`)
+    await page.goto(`http://localhost:${jestPuppeteerConfig.e2eTests.TS_LOCALE_SUBPATHS_FOREIGN.port}/`)
     await page.waitForSelector('html')
-    await expect(page.url()).toBe(`http://localhost:${jestPuppeteerConfig.e2eTests.LOCALE_SUBPATHS_FOREIGN.port}/`)
+    await expect(page.url()).toBe(`http://localhost:${jestPuppeteerConfig.e2eTests.TS_LOCALE_SUBPATHS_FOREIGN.port}/`)
   })
 
   describe(`changing to ${testLanguageSecondary} locale`, () => {
     beforeAll(async () => {
       await expect(page).toClick('button', { text: 'Change locale' })
       await page.waitForNavigation()
-      await expect(page.url()).toBe(`http://localhost:${jestPuppeteerConfig.e2eTests.LOCALE_SUBPATHS_FOREIGN.port}/${testLanguageSecondary}/`)
+      await expect(page.url()).toBe(`http://localhost:${jestPuppeteerConfig.e2eTests.TS_LOCALE_SUBPATHS_FOREIGN.port}/${testLanguageSecondary}/`)
     })
 
     it(`should display h1 in ${testLanguageSecondary} locale`, async () => {
