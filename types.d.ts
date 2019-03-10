@@ -13,7 +13,7 @@ export interface INextI18NextConfig {
   localePath: string;
   localeStructure: string;
   otherLanguages: string[];
-  localeSubpaths: string;
+  localeSubpaths: 'none' | 'foreign' | 'all';
   use: any[];
   customDetectors: any[];
 }
@@ -28,7 +28,7 @@ declare class NextI18Next {
 
   withNamespaces(namespace: string | string[]): any;
 
-  appWithTranslation(Component: React.ComponentType | React.ElementType): any;
+  appWithTranslation<P extends object>(Component: React.ComponentType<P>): any;
 }
 
 export default NextI18Next;
