@@ -4,7 +4,7 @@ import { withRouter } from 'next/router'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import { I18nextProvider } from 'react-i18next'
 
-import { lngFromReq, lngPathCorrector } from '../utils'
+import { lngFromReq, lngPathCorrector, fallbackLngAnalysis } from '../utils'
 import { localeSubpathOptions } from '../config/default-config'
 import { NextStaticProvider } from '../components'
 
@@ -91,22 +91,7 @@ export default function (WrappedComponent) {
 
         // Parse fallbackLng object
         const { fallbackLng } = config
-        const languagesThatWeWillLoad = [initialLanguage]
-
-        if (typeof fallbackLng === 'string' && fallbackLng !== initialLanguage) {
-          languagesThatWeWillLoad.push(fallbackLng)
-        } else if (Array.isArray(fallbackLng[initialLanguage])) {
-          fallbackLng[initialLanguage].forEach((lng) => {
-            languagesThatWeWillLoad.push(lng)
-          })
-
-          // The object can have a default parameter.
-          if (fallbackLng.default) {
-            languagesThatWeWillLoad.push(fallbackLng.default)
-          }
-        } else {
-          languagesThatWeWillLoad.push(fallbackLng[initialLanguage])
-        }
+        const languagesThatWeWillLoad = fallbackLngAnalysis(fallbackLng, initialLanguage)
 
         // Initialise the store with the languagesThatWeShouldLoad and
         // necessary namespaces needed to render this specific tree
