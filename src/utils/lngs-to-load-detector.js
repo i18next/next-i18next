@@ -1,4 +1,4 @@
-export default (fallbackLng, initialLng) => {
+export default (initialLng, fallbackLng) => {
   const languages = [initialLng]
 
   if (typeof fallbackLng === 'string' && fallbackLng !== initialLng) {
