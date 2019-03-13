@@ -91,16 +91,16 @@ export default function (WrappedComponent) {
 
         // Parse fallbackLng object
         const { fallbackLng } = config
-        const languagesThatWeWillLoad = fallbackLngAnalysis(fallbackLng, initialLanguage)
+        const languagesToLoad = fallbackLngAnalysis(fallbackLng, initialLanguage)
 
         // Initialise the store with the languagesThatWeShouldLoad and
         // necessary namespaces needed to render this specific tree
-        languagesThatWeWillLoad.forEach((lng) => {
+        languagesToLoad.forEach((lng) => {
           initialI18nStore[lng] = {}
         })
 
         namespacesRequired.forEach((ns) => {
-          languagesThatWeWillLoad.forEach((lng) => {
+          languagesToLoad.forEach((lng) => {
             initialI18nStore[lng][ns] = (
               (req.i18n.services.resourceStore.data[lng] || {})[ns] || {}
             )
