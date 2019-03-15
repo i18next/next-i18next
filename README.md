@@ -216,6 +216,7 @@ _This table contains options which are specific to next-i18next. All other [i18n
 - [`next export` will result in a _client-side only_ React application.](https://github.com/isaachinman/next-i18next/issues/10)
 - [We cannot support koa until a 1:1 replacement for `i18next-express-middleware` exists](https://github.com/isaachinman/next-i18next/issues/9).
 - [To add a `lang` attribute to your top-level html DOM node, you must create a `_document.js` file.](https://github.com/isaachinman/next-i18next/issues/20#issuecomment-443461652)
+- `git commit` throws [ModuleNotFoundError: Module not found: Error: Can't resolve 'next-i18next/dist/commonjs'](https://github.com/isaachinman/next-i18next/issues/220#issuecomment-471019577)
 
 ## Contributors
 
