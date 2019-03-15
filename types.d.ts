@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { TransProps } from 'react-i18next';
+import {
+  TransProps,
+  Namespace,
+  NamespaceExtractor,
+  WithNamespacesOptions,
+  WithNamespaces,
+  Subtract
+} from 'react-i18next';
 import { LinkProps } from 'next-server/link';
 import { SingletonRouter } from 'next-server/router';
 import i18next from 'i18next';
@@ -26,7 +33,12 @@ declare class NextI18Next {
 
   constructor(config: Partial<INextI18NextConfig>);
 
-  withNamespaces(namespace: string | string[]): any;
+  withNamespaces(
+    namespace: Namespace | NamespaceExtractor,
+    options?: WithNamespacesOptions
+  ): <P extends WithNamespaces>(
+    component: React.ComponentType<P>
+  ) => React.ComponentType<Subtract<P, WithNamespaces>>;
 
   appWithTranslation<P extends object>(Component: React.ComponentType<P>): any;
 }
