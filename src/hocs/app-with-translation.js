@@ -14,12 +14,6 @@ export default function (WrappedComponent) {
 
   class AppWithTranslation extends React.Component {
 
-    static loadNamespaceInLanguage(ns, language, req) {
-      return (
-        (req.i18n.services.resourceStore.data[language] || {})[ns] || {}
-      )
-    }
-
     constructor(props) {
       super(props)
 
@@ -93,7 +87,7 @@ export default function (WrappedComponent) {
         const { fallbackLng } = config
         const languagesToLoad = lngsToLoadDetector(initialLanguage, fallbackLng)
 
-        // Initialise the store with the languagesThatWeShouldLoad and
+        // Initialise the store with the languagesToLoad and
         // necessary namespaces needed to render this specific tree
         languagesToLoad.forEach((lng) => {
           initialI18nStore[lng] = {}
