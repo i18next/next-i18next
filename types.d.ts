@@ -40,7 +40,7 @@ declare class NextI18Next {
     component: React.ComponentType<P>
   ) => React.ComponentType<Subtract<P, WithNamespaces>>;
 
-  appWithTranslation<P extends object>(Component: React.ComponentType<P>): any;
+  appWithTranslation<P extends object>(Component: React.ComponentType<P> | React.ElementType<P>): any;
 }
 
 export default NextI18Next;
