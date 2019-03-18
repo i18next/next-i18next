@@ -25,6 +25,10 @@ export interface INextI18NextConfig {
   customDetectors: any[];
 }
 
+export interface I18nProps {
+  t(key: string, option?: object): string;
+}
+
 declare class NextI18Next {
   Trans: React.ComponentClass<TransProps>;
   Link: React.ComponentClass<LinkProps>;
@@ -35,10 +39,10 @@ declare class NextI18Next {
 
   withNamespaces(
     namespace: Namespace | NamespaceExtractor,
-    options?: WithNamespacesOptions
-  ): <P extends WithNamespaces>(
-    component: React.ComponentType<P>
-  ) => React.ComponentType<Subtract<P, WithNamespaces>>;
+    options?: WithNamespacesOptions,
+  ): <T extends React.ComponentType<any>>(
+    component: T,
+  ) => T & (T extends React.ComponentType<infer P> ? React.ComponentType<Subtract<P, I18nProps>> : never);
 
   appWithTranslation<P extends object>(Component: React.ComponentType<P> | React.ElementType<P>): any;
 }
