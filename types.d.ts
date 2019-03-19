@@ -42,7 +42,7 @@ declare class NextI18Next {
     options?: WithNamespacesOptions,
   ): <T extends React.ComponentType<any>>(
     component: T,
-  ) => T & (T extends React.ComponentType<infer P> ? React.ComponentType<Subtract<P, I18nProps>> : never);
+  ) => T extends React.ComponentType<infer P> ? React.ComponentType<Subtract<P, I18nProps>> : never;
 
   appWithTranslation<P extends object>(Component: React.ComponentType<P> | React.ElementType<P>): any;
 }
