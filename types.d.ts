@@ -24,6 +24,13 @@ export type InitConfig = {
   customDetectors?: any[];
 } & i18next.InitOptions;
 
+export type NextI18nextConfig = {
+  fallbackLng?: boolean;
+  allLanguages?: string[];
+  whitelist?: string[];
+  preload?: string[];
+} & InitConfig;
+
 export interface I18nProps {
   t(key: string, option?: object): string;
 }
@@ -33,6 +40,7 @@ declare class NextI18Next {
   Link: React.ComponentClass<LinkProps>;
   Router: SingletonRouter;
   i18n: i18next.i18n;
+  config: NextI18nextConfig;
 
   constructor(config: InitConfig);
 
