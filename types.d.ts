@@ -29,7 +29,7 @@ export type NextI18nextConfig = {
   allLanguages: string[];
   whitelist: string[];
   preload: string[];
-} & InitConfig;
+} & i18next.InitOptions;
 
 export interface I18nProps {
   t(key: string, option?: object): string;
