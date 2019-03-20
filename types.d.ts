@@ -11,19 +11,18 @@ import { LinkProps } from 'next-server/link';
 import { SingletonRouter } from 'next-server/router';
 import i18next from 'i18next';
 
-export interface INextI18NextConfig {
-  browserLanguageDetection: boolean;
-  serverLanguageDetection: boolean;
-  defaultNS: string;
-  defaultLanguage: string;
-  ignoreRoutes: string[];
-  localePath: string;
-  localeStructure: string;
-  otherLanguages: string[];
-  localeSubpaths: 'none' | 'foreign' | 'all';
-  use: any[];
-  customDetectors: any[];
-}
+export type InitConfig = {
+  browserLanguageDetection?: boolean;
+  serverLanguageDetection?: boolean;
+  defaultLanguage?: string;
+  ignoreRoutes?: string[];
+  localePath?: string;
+  localeStructure?: string;
+  otherLanguages?: string[];
+  localeSubpaths?: "none" | "foreign" | "all";
+  use?: any[];
+  customDetectors?: any[];
+} & i18next.InitOptions;
 
 export interface I18nProps {
   t(key: string, option?: object): string;
@@ -35,7 +34,7 @@ declare class NextI18Next {
   Router: SingletonRouter;
   i18n: i18next.i18n;
 
-  constructor(config: Partial<INextI18NextConfig>);
+  constructor(config: InitConfig);
 
   withNamespaces(
     namespace: Namespace | NamespaceExtractor,
