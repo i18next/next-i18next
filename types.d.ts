@@ -24,7 +24,7 @@ export type InitConfig = {
   customDetectors?: any[];
 } & i18next.InitOptions;
 
-export type NextI18nextConfig = {
+export type Config = {
   fallbackLng: boolean;
   allLanguages: string[];
   whitelist: string[];
@@ -40,7 +40,7 @@ declare class NextI18Next {
   Link: React.ComponentClass<LinkProps>;
   Router: SingletonRouter;
   i18n: i18next.i18n;
-  config: NextI18nextConfig;
+  config: Config;
 
   constructor(config: InitConfig);
 
