@@ -25,6 +25,16 @@ export type InitConfig = {
 } & i18next.InitOptions;
 
 export type NextI18nextConfig = {
+  browserLanguageDetection: boolean;
+  serverLanguageDetection: boolean;
+  defaultLanguage: string;
+  ignoreRoutes: string[];
+  localePath: string;
+  localeStructure: string;
+  otherLanguages: string[];
+  localeSubpaths: "none" | "foreign" | "all";
+  use: any[];
+  customDetectors: any[];
   fallbackLng: boolean;
   allLanguages: string[];
   whitelist: string[];
