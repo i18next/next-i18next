@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   TransProps,
   Namespace,
@@ -6,10 +6,10 @@ import {
   WithNamespacesOptions,
   WithNamespaces,
   Subtract
-} from "react-i18next";
-import { LinkProps } from "next-server/link";
-import { SingletonRouter } from "next-server/router";
-import i18next from "i18next";
+} from 'react-i18next';
+import { LinkProps } from 'next-server/link';
+import { SingletonRouter } from 'next-server/router';
+import i18next from 'i18next';
 
 export type InitConfig = {
   browserLanguageDetection?: boolean;
@@ -56,17 +56,12 @@ declare class NextI18Next {
 
   withNamespaces(
     namespace: Namespace | NamespaceExtractor,
-    options?: WithNamespacesOptions
+    options?: WithNamespacesOptions,
   ): <T extends React.ComponentType<any>>(
-    component: T
-  ) => T &
-    (T extends React.ComponentType<infer P>
-      ? React.ComponentType<Subtract<P, I18nProps>>
-      : never);
+    component: T,
+  ) => T & (T extends React.ComponentType<infer P> ? React.ComponentType<Subtract<P, I18nProps>> : never);
 
-  appWithTranslation<P extends object>(
-    Component: React.ComponentType<P> | React.ElementType<P>
-  ): any;
+  appWithTranslation<P extends object>(Component: React.ComponentType<P> | React.ElementType<P>): any;
 }
 
 export default NextI18Next;
