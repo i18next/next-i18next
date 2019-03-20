@@ -14,32 +14,22 @@ import i18next from 'i18next';
 export type InitConfig = {
   browserLanguageDetection?: boolean;
   serverLanguageDetection?: boolean;
-  defaultLanguage?: string;
+  defaultLanguage: string;
   ignoreRoutes?: string[];
   localePath?: string;
   localeStructure?: string;
-  otherLanguages?: string[];
+  otherLanguages: string[];
   localeSubpaths?: "none" | "foreign" | "all";
   use?: any[];
   customDetectors?: any[];
 } & i18next.InitOptions;
 
 export type NextI18nextConfig = {
-  browserLanguageDetection: boolean;
-  serverLanguageDetection: boolean;
-  defaultLanguage: string;
-  ignoreRoutes: string[];
-  localePath: string;
-  localeStructure: string;
-  otherLanguages: string[];
-  localeSubpaths: "none" | "foreign" | "all";
-  use: any[];
-  customDetectors: any[];
   fallbackLng: boolean;
   allLanguages: string[];
   whitelist: string[];
   preload: string[];
-} & i18next.InitOptions;
+} & InitConfig;
 
 export interface I18nProps {
   t(key: string, option?: object): string;
