@@ -83,7 +83,7 @@ export default function (WrappedComponent) {
       // Step 3: Perform data fetching, depending on environment
       if (req && req.i18n) {
 
-        // Parse fallbackLng object
+        // Detect the languages to load based upon the fallbackLng configuration
         const { fallbackLng } = config
         const languagesToLoad = lngsToLoadDetector(initialLanguage, fallbackLng)
 
@@ -91,10 +91,7 @@ export default function (WrappedComponent) {
         // necessary namespaces needed to render this specific tree
         languagesToLoad.forEach((lng) => {
           initialI18nStore[lng] = {}
-        })
-
-        namespacesRequired.forEach((ns) => {
-          languagesToLoad.forEach((lng) => {
+          namespacesRequired.forEach((ns) => {
             initialI18nStore[lng][ns] = (
               (req.i18n.services.resourceStore.data[lng] || {})[ns] || {}
             )
