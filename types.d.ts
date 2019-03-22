@@ -14,6 +14,7 @@ import i18next from 'i18next';
 export type InitConfig = {
   browserLanguageDetection?: boolean;
   serverLanguageDetection?: boolean;
+  strictMode?: boolean;
   defaultLanguage?: string;
   ignoreRoutes?: string[];
   localePath?: string;
