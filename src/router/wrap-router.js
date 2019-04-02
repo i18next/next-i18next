@@ -16,7 +16,7 @@ const propertyFields = ['pathname', 'route', 'query', 'asPath', 'components', 'e
 const coreMethods = ['reload', 'back', 'beforePopState', 'ready', 'prefetch']
 const wrappedMethods = ['push', 'replace']
 
-export default function (nextI18NextConfig) {
+export default function (nextI18NextInternals) {
   const Router = {}
 
   propertyFields.forEach((field) => {
@@ -33,9 +33,9 @@ export default function (nextI18NextConfig) {
 
   wrappedMethods.forEach((method) => {
     Router[method] = (path, as, options) => {
-      const { config, i18n } = nextI18NextConfig
+      const { config, i18n } = nextI18NextInternals
 
-      if (localeSubpathRequired(nextI18NextConfig, i18n.languages[0])) {
+      if (localeSubpathRequired(nextI18NextInternals, i18n.languages[0])) {
         const { as: correctedAs, href: correctedHref } = lngPathCorrector(
           config, { as, href: path }, i18n.languages[0],
         )

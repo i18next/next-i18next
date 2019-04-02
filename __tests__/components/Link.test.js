@@ -18,7 +18,7 @@ describe('Link component', () => {
     props = {
       href: '/foo/bar',
       lng: 'de',
-      nextI18NextConfig: {
+      nextI18NextInternals: {
         config: {
           allLanguages: ['en', 'de'],
           defaultLanguage: 'en',
@@ -48,7 +48,7 @@ describe('Link component', () => {
   })
 
   it('renders without lang if props.lng is undefined', () => {
-    props.nextI18NextConfig.config.localeSubpaths = localeSubpathOptions.FOREIGN
+    props.nextI18NextInternals.config.localeSubpaths = localeSubpathOptions.FOREIGN
     props.lng = undefined
 
     // without 'as' prop
@@ -66,8 +66,8 @@ describe('Link component', () => {
   })
 
   it('renders without lang if props.lng === defaultLanguage', () => {
-    props.nextI18NextConfig.config.localeSubpaths = localeSubpathOptions.FOREIGN
-    props.nextI18NextConfig.config.defaultLanguage = 'en'
+    props.nextI18NextInternals.config.localeSubpaths = localeSubpathOptions.FOREIGN
+    props.nextI18NextInternals.config.defaultLanguage = 'en'
     props.lng = 'en'
 
     // without 'as' prop
@@ -85,8 +85,8 @@ describe('Link component', () => {
   })
 
   it('renders with lang', () => {
-    props.nextI18NextConfig.config.localeSubpaths = localeSubpathOptions.FOREIGN
-    props.nextI18NextConfig.config.defaultLanguage = 'en'
+    props.nextI18NextInternals.config.localeSubpaths = localeSubpathOptions.FOREIGN
+    props.nextI18NextInternals.config.defaultLanguage = 'en'
 
     // without 'as' prop -- no query parameters
     let component = createLinkComponent()
@@ -128,7 +128,7 @@ describe('Link component', () => {
 
       describe(`localeSubpaths = "${localeSubpathOptions.NONE}"`, () => {
         beforeEach(() => {
-          props.nextI18NextConfig.config.localeSubpaths = localeSubpathOptions.NONE
+          props.nextI18NextInternals.config.localeSubpaths = localeSubpathOptions.NONE
         })
 
         it('renders without lang', () => {
@@ -150,11 +150,11 @@ describe('Link component', () => {
 
       describe(`localeSubpaths = "${localeSubpathOptions.FOREIGN}"`, () => {
         beforeEach(() => {
-          props.nextI18NextConfig.config.localeSubpaths = localeSubpathOptions.FOREIGN
+          props.nextI18NextInternals.config.localeSubpaths = localeSubpathOptions.FOREIGN
         })
 
         beforeEach(() => {
-          props.nextI18NextConfig.config.defaultLanguage = 'en'
+          props.nextI18NextInternals.config.defaultLanguage = 'en'
 
           props.href = { pathname: '/foo/bar', query: {} }
         })
