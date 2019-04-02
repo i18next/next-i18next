@@ -13,6 +13,11 @@ describe('lngsToLoadDetector utility function', () => {
     expect(analysis).toMatchObject(['en', 'de'])
   })
 
+  it('returns fallbackLng array and initial', () => {
+    const analysis = lngsToLoadDetector('en-BE', ['en', 'nl'])
+    expect(analysis).toMatchObject(['en-BE', 'en', 'nl'])
+  })
+
   it('returns locale specific fallbackLng', () => {
     const analysis = lngsToLoadDetector('en-BE', { 'en-BE': 'en' })
     expect(analysis).toMatchObject(['en-BE', 'en'])

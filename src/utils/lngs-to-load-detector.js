@@ -5,12 +5,12 @@ export default (initialLng, fallbackLng) => {
     languages.push(fallbackLng)
   }
 
-  if (typeof fallbackLng[initialLng] === 'string') {
+  if (Array.isArray(fallbackLng)) {
+    fallbackLng.forEach(lng => languages.push(lng))
+  } else if (typeof fallbackLng[initialLng] === 'string') {
     languages.push(fallbackLng[initialLng])
   } else if (Array.isArray(fallbackLng[initialLng])) {
-    fallbackLng[initialLng].forEach((lng) => {
-      languages.push(lng)
-    })
+    fallbackLng[initialLng].forEach(lng => languages.push(lng))
   }
 
   if (fallbackLng.default) {
