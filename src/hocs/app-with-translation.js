@@ -4,7 +4,7 @@ import { withRouter } from 'next/router'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import { I18nextProvider } from 'react-i18next'
 
-import { lngFromReq, lngPathCorrector, lngsToLoadDetector } from '../utils'
+import { lngFromReq, lngPathCorrector, lngsToLoad } from '../utils'
 import { localeSubpathOptions } from '../config/default-config'
 import { NextStaticProvider } from '../components'
 
@@ -85,7 +85,7 @@ export default function (WrappedComponent) {
 
         // Detect the languages to load based upon the fallbackLng configuration
         const { fallbackLng } = config
-        const languagesToLoad = lngsToLoadDetector(initialLanguage, fallbackLng)
+        const languagesToLoad = lngsToLoad(initialLanguage, fallbackLng)
 
         // Initialise the store with the languagesToLoad and
         // necessary namespaces needed to render this specific tree
