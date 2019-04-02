@@ -55,7 +55,9 @@ export default (config, currentRoute, currentLanguage) => {
   }
 
   if (currentLanguage !== defaultLanguage || localeSubpaths === localeSubpathOptions.ALL) {
-    as = `/${currentLanguage}${as}`
+    const basePath = `${href.protocol}//${href.host}`
+    const currentAs = as.replace(basePath, '')
+    as = `/${currentLanguage}${currentAs}`
     href.query.lng = currentLanguage
   }
 

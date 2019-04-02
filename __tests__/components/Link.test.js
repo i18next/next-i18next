@@ -117,6 +117,20 @@ describe('Link component', () => {
     expect(component.prop('as')).toEqual('/de/foo?bar')
   })
 
+  it('handles full URLs', () => {
+    props.nextI18NextInternals.config.localeSubpaths = localeSubpathOptions.FOREIGN
+    props.nextI18NextInternals.config.defaultLanguage = 'en'
+
+    // without 'as' prop -- query parameters
+    props.href = 'https://my-website.com/foo/bar?baz'
+    const component = createLinkComponent(props)
+
+    expect(component.prop('href')).toEqual(
+      expect.objectContaining({ pathname: '/foo/bar', query: { baz: '', lng: 'de' } }),
+    )
+    expect(component.prop('as')).toEqual('/de/foo/bar?baz')
+  })
+
   describe('https://github.com/isaachinman/next-i18next/issues/89', () => {
     describe('when href is an object, properly parse it', () => {
       beforeEach(() => {
