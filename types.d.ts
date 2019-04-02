@@ -15,21 +15,29 @@ export type InitConfig = {
   browserLanguageDetection?: boolean;
   serverLanguageDetection?: boolean;
   strictMode?: boolean;
-  defaultLanguage?: string;
+  defaultLanguage: string;
   ignoreRoutes?: string[];
   localePath?: string;
   localeStructure?: string;
-  otherLanguages?: string[];
+  otherLanguages: string[];
   localeSubpaths?: "none" | "foreign" | "all";
   use?: any[];
   customDetectors?: any[];
 } & i18next.InitOptions;
+
+export type Config = {
+  fallbackLng: boolean;
+  allLanguages: string[];
+  whitelist: string[];
+  preload: string[];
+} & InitConfig;
 
 declare class NextI18Next {
   Trans: React.ComponentClass<TransProps>;
   Link: React.ComponentClass<LinkProps>;
   Router: SingletonRouter;
   i18n: i18next.i18n;
+  config: Config;
 
   constructor(config: InitConfig);
 
