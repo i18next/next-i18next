@@ -34,6 +34,7 @@ export default (userConfig) => {
   combinedConfig.ns = [combinedConfig.defaultNS]
 
   combinedConfig.whitelist = combinedConfig.allLanguages
+
   if (isNode && !process.browser) {
     const fs = eval("require('fs')")
     const path = require('path')
