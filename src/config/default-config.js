@@ -37,7 +37,6 @@ export default {
     order: ['cookie', 'header', 'querystring'],
     caches: ['cookie'],
   },
-  // todo: remove this?  it get's overwritten in create-config.js
   backend: {
     loadPath: `/${LOCALE_PATH}/${LOCALE_STRUCTURE}.${LOCALE_EXTENSION}`,
     addPath: `/${LOCALE_PATH}/${LOCALE_STRUCTURE}.missing.${LOCALE_EXTENSION}`,
