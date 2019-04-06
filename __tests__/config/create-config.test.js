@@ -44,6 +44,7 @@ describe('create configuration in non-production environment', () => {
       expect(config.fallbackLng).toEqual(false)
       expect(config.load).toEqual('currentOnly')
       expect(config.localePath).toEqual('static/locales')
+      expect(config.localeFileExtension).toEqual('json')
       expect(config.localeStructure).toEqual('{{lng}}/{{ns}}')
       expect(config.localeSubpaths).toEqual(localeSubpathOptions.NONE)
       expect(config.use).toEqual([])
@@ -81,6 +82,7 @@ describe('create configuration in non-production environment', () => {
       expect(config.fallbackLng).toEqual('it')
       expect(config.load).toEqual('currentOnly')
       expect(config.localePath).toEqual('static/translations')
+      expect(config.localeFileExtension).toEqual('yml')
       expect(config.localeStructure).toEqual('{{ns}}/{{lng}}')
       expect(config.localeSubpaths).toEqual(localeSubpathOptions.FOREIGN)
       expect(config.defaultNS).toEqual('universal')
@@ -89,8 +91,8 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.ns).toEqual(['universal', 'file1', 'file2'])
 
-      expect(config.backend.loadPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.json')
-      expect(config.backend.addPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.missing.json')
+      expect(config.backend.loadPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.yml')
+      expect(config.backend.addPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.missing.yml')
     })
   })
 
@@ -105,6 +107,7 @@ describe('create configuration in non-production environment', () => {
       expect(config.localePath).toEqual('static/locales')
       expect(config.localeStructure).toEqual('{{lng}}/{{ns}}')
       expect(config.localeSubpaths).toEqual(localeSubpathOptions.NONE)
+      expect(config.localeFileExtension).toEqual('yml')
       expect(config.use).toEqual([])
       expect(config.defaultNS).toEqual('common')
 
@@ -137,14 +140,15 @@ describe('create configuration in non-production environment', () => {
       expect(config.load).toEqual('currentOnly')
       expect(config.localePath).toEqual('static/translations')
       expect(config.localeStructure).toEqual('{{ns}}/{{lng}}')
+      expect(config.localeFileExtension).toEqual('yml')
       expect(config.localeSubpaths).toEqual(localeSubpathOptions.FOREIGN)
       expect(config.defaultNS).toEqual('universal')
       expect(config.browserLanguageDetection).toEqual(false)
 
       expect(config.ns).toEqual(['universal'])
 
-      expect(config.backend.loadPath).toEqual('/static/locales/{{lng}}/{{ns}}.json')
-      expect(config.backend.addPath).toEqual('/static/locales/{{lng}}/{{ns}}.missing.json')
+      expect(config.backend.loadPath).toEqual('/static/locales/{{lng}}/{{ns}}.yml')
+      expect(config.backend.addPath).toEqual('/static/locales/{{lng}}/{{ns}}.missing.yml')
     })
   }
 

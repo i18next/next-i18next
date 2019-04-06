@@ -8,6 +8,7 @@ const userConfig = {
   defaultNS: 'universal',
   fallbackLng: 'it',
   otherLanguages: ['fr', 'it'],
+  localeFileExtension: 'yml',
   localePath: 'static/translations',
   localeStructure: '{{ns}}/{{lng}}',
   localeSubpaths: localeSubpathOptions.FOREIGN,
