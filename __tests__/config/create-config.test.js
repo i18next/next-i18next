@@ -107,7 +107,7 @@ describe('create configuration in non-production environment', () => {
       expect(config.localePath).toEqual('static/locales')
       expect(config.localeStructure).toEqual('{{lng}}/{{ns}}')
       expect(config.localeSubpaths).toEqual(localeSubpathOptions.NONE)
-      expect(config.localeFileExtension).toEqual('yml')
+      expect(config.localeFileExtension).toEqual('json')
       expect(config.use).toEqual([])
       expect(config.defaultNS).toEqual('common')
 
