@@ -2,7 +2,8 @@ import isNode from 'detect-node'
 
 import defaultConfig from './default-config'
 
-const deepMergeObjects = ['detection']
+// these keys will be merged on extra level deeper
+const deepMergeObjects = ['detection', 'backend']
 
 export default (userConfig) => {
 
