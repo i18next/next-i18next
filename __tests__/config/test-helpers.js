@@ -14,8 +14,8 @@ const userConfig = {
   localeSubpaths: localeSubpathOptions.FOREIGN,
   // must be passed in for proper client-side config generation.
   backend: {
-    loadPath: '/static/translations/{{ns}}/{{lng}}.yml',
-    addPath: '/static/translations/{{ns}}/{{lng}}.missing.yml',
+    loadPath: '/static/locales/{{lng}}/{{ns}}.yml',
+    addPath: '/static/locales/{{lng}}/{{ns}}.missing.yml',
   },
 }
 
