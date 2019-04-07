@@ -12,6 +12,11 @@ const userConfig = {
   localePath: 'static/translations',
   localeStructure: '{{ns}}/{{lng}}',
   localeSubpaths: localeSubpathOptions.FOREIGN,
+  // must be passed in for proper client-side config generation.
+  backend: {
+    loadPath: '/static/translations/{{ns}}/{{lng}}.yml',
+    addPath: '/static/translations/{{ns}}/{{lng}}.missing.yml',
+  },
 }
 
 const setUpTest = () => {
