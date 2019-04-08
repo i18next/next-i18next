@@ -14,29 +14,15 @@ Object.freeze(messageTypes)
 
 /**
  *  Logs a custom message to console
- * @param {PrettyError} PrettyError
  * @param {messageTypes} messageType One of: error, warn or info
  * @param {String} message
  */
-function logMessage(PrettyError, messageType, message) {
-  const capitalize = str => str.replace(str[0], str[0].toUpperCase())
-
-  const pe = new PrettyError()
-
-  // Create a new empty error
-  const newLog = new Error()
-
-  // Set the new error message
-  newLog.message = message
-
+function logMessage(messageType, message) {
   if (Object.values(messageTypes).includes(messageType)) {
-    newLog.name = capitalize(messageTypes[messageType])
-    console[messageType](pe.render(newLog))
+    console[messageType](message)
   } else {
-    newLog.name = capitalize(messageTypes.info)
-    console.info(pe.render(newLog))
+    console.info(message)
   }
-
 }
 
 /**
@@ -53,8 +39,6 @@ export default function createConsoleLog(messageType, message) {
   Error.stackTraceLimit = errorStackTraceLimit
 
   let util
-  let PrettyError
-  let pe
 
   if (!strictMode) {
     return
@@ -62,10 +46,6 @@ export default function createConsoleLog(messageType, message) {
 
   if (process.env.NODE_ENV !== 'production') {
     util = require('util')
-    PrettyError = require('pretty-error')
-
-    pe = new PrettyError()
-
   } else {
     return
   }
@@ -90,12 +70,12 @@ export default function createConsoleLog(messageType, message) {
 \u200b
 ------------------------------------------------\n
     `
-    console.error(pe.render(metaError))
+    console.error(metaError)
     return
   }
 
   // Log the message to console
-  logMessage(PrettyError, messageType, message)
+  logMessage(messageType, message)
 
   // Reset stack limit
   Error.stackTraceLimit = prevStackLimit
