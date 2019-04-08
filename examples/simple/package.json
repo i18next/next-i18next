@@ -23,7 +23,7 @@
     "express": "^4.16.4",
     "i18next": "^14.0.1",
     "next": "^7.0.2",
-    "next-i18next": "../../",
+    "next-i18next": "*",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "winston": "^3.1.0"
