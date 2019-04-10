@@ -8,7 +8,7 @@
 
 ## What is this?
 
-`next-i18next` is a plugin for [Next.js](https://nextjs.org/) projects that allows you to get translations up and running quickly and easily, while fully supporting SSR, multiple namespaces with codesplitting, etc.
+`next-i18next` is a plugin for [Next.js](https://nextjs.org/) projects that allows you to get translations up and running quickly and easily, while fully supporting SSR, multiple [namespaces](https://www.i18next.com/principles/namespaces) with codesplitting, etc.
 
 While `next-i18next` uses [i18next](https://www.i18next.com/) and [react-i18next](https://github.com/i18next/react-i18next) under the hood, users of `next-i18next` simply need to include their translation content as JSON files and don't have to worry about much else.
 
@@ -89,6 +89,8 @@ export default withNamespaces('footer')(Footer)
 ```
 
 ### 4. Declaring namespace dependencies
+
+The `withNamespaces` HOC is responsible for passing the `t` function to your component. It enables all the translation functionality provided by `i18next`. Further, it asserts your component gets re-rendered on language change or changes to the translation catalog itself (loaded translations). More info can be found [here](https://react.i18next.com/legacy-v9/withnamespaces).
 
 By default, `next-i18next` will send _all your namespaces_ down to the client on each initial request. This can be an appropriate approach for smaller apps with less content, but a lot of apps will benefit from splitting namespaces based on route.
 
