@@ -14,28 +14,28 @@ describe('lngsToLoad utility function', () => {
   })
 
   it('returns fallbackLng array and initial', () => {
-    const analysis = lngsToLoad('en-BE', ['en', 'nl'])
-    expect(analysis).toMatchObject(['en-BE', 'en', 'nl'])
+    const analysis = lngsToLoad('fi', ['en', 'nl'])
+    expect(analysis).toMatchObject(['fi', 'en', 'nl'])
   })
 
   it('returns locale specific fallbackLng', () => {
-    const analysis = lngsToLoad('en-BE', { 'en-BE': 'en' })
-    expect(analysis).toMatchObject(['en-BE', 'en'])
+    const analysis = lngsToLoad('nl', { 'nl': 'en', 'sv': 'da' })
+    expect(analysis).toMatchObject(['nl', 'en'])
   })
 
   it('returns locale specific fallbackLng and default', () => {
-    const analysis = lngsToLoad('de-BE', { 'de-BE': 'de', default: 'en' })
-    expect(analysis).toMatchObject(['de-BE', 'de', 'en'])
+    const analysis = lngsToLoad('fr', { 'fr': 'de', default: 'en' })
+    expect(analysis).toMatchObject(['fr', 'de', 'en'])
   })
 
   it('returns locale specific fallbackLng array', () => {
-    const analysis = lngsToLoad('fi-FI', { 'fi-FI': ['fi', 'en'] })
-    expect(analysis).toMatchObject(['fi-FI', 'fi', 'en'])
+    const analysis = lngsToLoad('fi', { 'fi': ['dk', 'sv', 'en'] })
+    expect(analysis).toMatchObject(['fi', 'dk', 'sv', 'en'])
   })
 
   it('returns locale specific fallbackLng array and default', () => {
-    const analysis = lngsToLoad('fi-FI', { 'fi-FI': ['fi', 'en'], default: 'it' })
-    expect(analysis).toMatchObject(['fi-FI', 'fi', 'en', 'it'])
+    const analysis = lngsToLoad('fi', { 'fi': ['dk', 'en'], default: 'it' })
+    expect(analysis).toMatchObject(['fi', 'dk', 'en', 'it'])
   })
 
 })
