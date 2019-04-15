@@ -1,10 +1,10 @@
 import { localeSubpathOptions } from '../config/default-config'
 
-export default (nextI18NextConfig, lng) => {
+export default (nextI18NextInternals, lng) => {
   const {
     defaultLanguage,
     localeSubpaths,
-  } = nextI18NextConfig.config
+  } = nextI18NextInternals.config
 
   if (lng) {
 

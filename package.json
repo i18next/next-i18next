@@ -1,6 +1,6 @@
 {
   "name": "next-i18next",
-  "version": "0.36.6",
+  "version": "0.37.0",
   "repository": "git@github.com:isaachinman/next-i18next.git",
   "author": "Isaac Hinman <isaac@isaachinman.com>",
   "main": "dist/commonjs/index.js",
@@ -29,11 +29,11 @@
     "build:es": "BABEL_ENV=es babel src --out-dir dist/es",
     "build:cjs": "BABEL_ENV=cjs babel src --out-dir dist/commonjs",
     "build": "yarn clean && yarn build:cjs && yarn build:es",
-    "build:example": "cd examples/simple && yarn build",
+    "build:examples/simple": "yarn link && cd examples/simple && yarn && yarn link next-i18next && yarn build",
     "prepublishOnly": "yarn build",
     "run-example": "yarn build && cd examples/simple && rm -rf node_modules && yarn && yarn dev",
     "run-example:prod": "yarn build && cd examples/simple && rm -rf node_modules && yarn && yarn build && yarn start",
-    "test": "yarn build:example && NODE_ENV=test jest --maxWorkers=1 --silent",
+    "test": "yarn build && yarn build:examples/simple && NODE_ENV=test jest --maxWorkers=1 --silent",
     "contributors:check": "all-contributors check",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate"
@@ -61,7 +61,7 @@
     "enzyme-adapter-react-16": "^1.7.1",
     "eslint": "^5.12.1",
     "eslint-config-airbnb": "^17.1.0",
-    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-import": "^2.17.1",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
     "husky": "^1.1.4",
@@ -83,7 +83,6 @@
     "i18next-node-fs-backend": "^2.1.0",
     "i18next-xhr-backend": "^2.0.0",
     "path-match": "^1.2.4",
-    "pretty-error": "^2.1.1",
     "prop-types": "^15.6.2",
     "react-i18next": "9.0.10",
     "url": "^0.11.0"

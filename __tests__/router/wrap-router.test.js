@@ -25,7 +25,7 @@ const hrefObj = {
   query: { test: 'something' },
 }
 const options = { shallow: true }
-const nextI18NextConfig = {
+const nextI18NextInternals = {
   i18n: {
     // Use non default language to ensure navigation calls
     // without localeSubpaths does not modify the paths
@@ -43,7 +43,7 @@ let router
 describe('wrapRouter', () => {
   describe('NextRouter Instance', () => {
     beforeAll(() => {
-      router = wrapRouter(nextI18NextConfig)
+      router = wrapRouter(nextI18NextInternals)
     })
 
     it('has the same properties as NextRouter', () => {
@@ -90,7 +90,7 @@ describe('wrapRouter', () => {
       NextRouter.push.mockClear()
       NextRouter.replace.mockClear()
       NextRouter.prefetch.mockClear()
-      router = wrapRouter(nextI18NextConfig)
+      router = wrapRouter(nextI18NextInternals)
     })
 
     it('calls NextRouter.push', () => {
@@ -113,8 +113,8 @@ describe('wrapRouter', () => {
       NextRouter.push.mockClear()
       NextRouter.replace.mockClear()
       NextRouter.prefetch.mockClear()
-      nextI18NextConfig.config.localeSubpaths = localeSubpathOptions.FOREIGN
-      router = wrapRouter(nextI18NextConfig)
+      nextI18NextInternals.config.localeSubpaths = localeSubpathOptions.FOREIGN
+      router = wrapRouter(nextI18NextInternals)
     })
 
     it('calls NextRouter.push with locale subpath prepended', () => {

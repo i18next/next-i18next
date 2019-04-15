@@ -16,7 +16,7 @@ describe('Trans component', () => {
   beforeEach(() => {
     props = {
       i18nKey: 'title',
-      nextI18NextConfig: {
+      nextI18NextInternals: {
         i18n: {
           languages: ['de', 'en'],
         },
