@@ -67,7 +67,7 @@
     "husky": "^1.1.4",
     "jest": "^24.1.0",
     "jest-puppeteer": "^4.0.0",
-    "jsdom": "^14.0.0",
+    "jsdom": "^15.0.0",
     "jsdom-global": "^3.0.2",
     "next": "^8.0.0",
     "puppeteer": "^1.11.0",
