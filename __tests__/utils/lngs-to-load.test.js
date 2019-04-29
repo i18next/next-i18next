@@ -38,4 +38,13 @@ describe('lngsToLoad utility function', () => {
     expect(analysis).toMatchObject(['fi', 'dk', 'en', 'it'])
   })
 
+  it('returns correctly when fallbackLng is undefined', () => {
+    expect(lngsToLoad('fi', undefined)).toMatchObject(['fi'])
+  })
+
+  it('returns correctly when initialLng is undefined', () => {
+    expect(lngsToLoad(undefined, { default: 'it' })).toMatchObject(['it'])
+    expect(lngsToLoad(undefined, { it: ['dk', 'en'] })).toMatchObject([])
+  })
+
 })
