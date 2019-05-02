@@ -6,8 +6,10 @@
           "@babel/env",
           {
             "modules": false,
+            "useBuiltIns": "usage",
             "targets": {
-              "node": "current"
+              "node": "current",
+              "ie": "11"
             }
           }
         ],
@@ -23,6 +25,13 @@
             "regenerator": true,
             "useESModules": false
           },
+          "preset-env": {
+            "useBuiltIns": "usage",
+            "targets": {
+              "node": "current",
+              "ie": "11"
+            }
+          }
         }]
       ],
       "plugins": [
