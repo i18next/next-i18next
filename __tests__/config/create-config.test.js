@@ -1,10 +1,11 @@
 /* eslint-env jest */
 
-import { userConfig, setUpTest, tearDownTest } from './test-helpers'
+import {
+  userConfigClientSide, userConfigServerSide, setUpTest, tearDownTest,
+} from './test-helpers'
 import { localeSubpathOptions } from '../../src/config/default-config'
 
 let mockIsNode
-jest.mock('detect-node', () => mockIsNode)
 
 describe('create configuration in non-production environment', () => {
   let createConfig
@@ -23,6 +24,7 @@ describe('create configuration in non-production environment', () => {
     mockIsNode = isNode
 
     jest.resetModules()
+    jest.mock('detect-node', () => mockIsNode)
 
     return require('../../src/config/create-config')
   }
@@ -74,7 +76,7 @@ describe('create configuration in non-production environment', () => {
         readdirSync: jest.fn().mockImplementation(() => ['universal', 'file1', 'file2']),
       }))
 
-      const config = createConfig(userConfig)
+      const config = createConfig(userConfigServerSide)
 
       expect(config.defaultLanguage).toEqual('de')
       expect(config.otherLanguages).toEqual(['fr', 'it'])
@@ -129,7 +131,7 @@ describe('create configuration in non-production environment', () => {
     })
 
     it('creates custom client-side non-production configuration', () => {
-      const config = createConfig(userConfig)
+      const config = createConfig(userConfigClientSide)
 
       expect(config.defaultLanguage).toEqual('de')
       expect(config.otherLanguages).toEqual(['fr', 'it'])
@@ -143,8 +145,8 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.ns).toEqual(['universal'])
 
-      expect(config.backend.loadPath).toEqual('/static/locales/{{lng}}/{{ns}}.json')
-      expect(config.backend.addPath).toEqual('/static/locales/{{lng}}/{{ns}}.missing.json')
+      expect(config.backend.loadPath).toEqual('/static/translations/{{ns}}/{{lng}}.json')
+      expect(config.backend.addPath).toEqual('/static/translations/{{ns}}/{{lng}}.missing.json')
     })
   }
 
@@ -153,8 +155,8 @@ describe('create configuration in non-production environment', () => {
   // 2. isNode is truthy and process.browser is truthy
   describe('client-side (isNode is falsy)', () => {
     beforeEach(() => {
-      createConfig = mockIsNodeCreateConfig(false)
       delete process.browser
+      createConfig = mockIsNodeCreateConfig(false)
     })
 
     afterEach(() => {
@@ -166,8 +168,8 @@ describe('create configuration in non-production environment', () => {
 
   describe('client-side (isNode is truthy and process.browser is truthy)', () => {
     beforeEach(() => {
-      createConfig = mockIsNodeCreateConfig(true)
       process.browser = true
+      createConfig = mockIsNodeCreateConfig(true)
     })
 
     afterEach(() => {
@@ -183,7 +185,7 @@ describe('create configuration in non-production environment', () => {
       let userConfigDeNoFallback
 
       beforeEach(() => {
-        userConfigDeNoFallback = { ...userConfig, defaultLanguage: 'de' }
+        userConfigDeNoFallback = { ...userConfigClientSide, defaultLanguage: 'de' }
         delete userConfigDeNoFallback.fallbackLng
       })
 

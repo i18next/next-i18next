@@ -1,6 +1,4 @@
-import isNode from 'detect-node'
-
-import defaultConfig from './default-config'
+import defaultConfig, { isServer } from './default-config'
 
 const deepMergeObjects = ['detection']
 
@@ -35,23 +33,17 @@ export default (userConfig) => {
 
   combinedConfig.whitelist = combinedConfig.allLanguages
 
-  if (isNode && !process.browser) {
+  if (isServer) {
     const fs = eval("require('fs')")
     const path = require('path')
 
     const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace('.json', ''))
-    const {
-      allLanguages, defaultLanguage, localePath, localeStructure,
-    } = combinedConfig
+    const { allLanguages, defaultLanguage, localePath } = combinedConfig
 
     combinedConfig = {
       ...combinedConfig,
       preload: allLanguages,
       ns: getAllNamespaces(path.join(process.cwd(), `${localePath}/${defaultLanguage}`)),
-      backend: {
-        loadPath: path.join(process.cwd(), `${localePath}/${localeStructure}.json`),
-        addPath: path.join(process.cwd(), `${localePath}/${localeStructure}.missing.json`),
-      },
     }
   }
 
