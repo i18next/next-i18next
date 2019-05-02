@@ -11,12 +11,12 @@ export default (initialLng, fallbackLng) => {
     }
 
     if (Array.isArray(fallbackLng)) {
-      fallbackLng.forEach(lng => languages.push(lng))
+      languages.push(...fallbackLng)
     } else if (initialLng) {
       if (typeof fallbackLng[initialLng] === 'string') {
         languages.push(fallbackLng[initialLng])
       } else if (Array.isArray(fallbackLng[initialLng])) {
-        fallbackLng[initialLng].forEach(lng => languages.push(lng))
+        languages.push(...fallbackLng[initialLng])
       }
     }
 
