@@ -213,6 +213,20 @@ server.get('*', (req, res) => handle(req, res))
 
 _This table contains options which are specific to next-i18next. All other [i18next options](https://www.i18next.com/overview/configuration-options) can be passed in as well._
 
+## Usage in getInitialProps
+
+Sometimes you need to change what resource you request, or add an `Accept-Language` header to the request of the resource, depending on your user's currently chosen language. It needs to work both client- and server-side, too. You can do it like so:
+
+```
+// see samples/usage; the singleton instance (client-side)
+import i18next from '../lib/i18n' 
+MyPage.getInitialProps = async ({ req }) => {
+  const language = req != null ? req.language : i18next.i18n.language
+  // use language here to fetch what you need
+  return { ... }
+}
+```
+
 ## Notes
 
 - [`next export` will result in a _client-side only_ React application.](https://github.com/isaachinman/next-i18next/issues/10)
