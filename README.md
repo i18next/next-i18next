@@ -204,6 +204,7 @@ server.get('*', (req, res) => handle(req, res))
 | `defaultLanguage`  | `'en'`  |
 | `ignoreRoutes`  | `['/_next', '/static']`  |
 | `otherLanguages` (required) | `[]`  |
+| `localeExtension` | `'json'`  |
 | `localePath` | `'static/locales'`  |
 | `localeStructure` | `'{{lng}}/{{ns}}'`  |
 | `localeSubpaths` | `'none'`  |
