@@ -239,7 +239,7 @@ MyPage.getInitialProps = async({ req }) => {
 | `serverLanguageDetection` | `true`  |
 | `use` (for plugins) | `[]`  |
 | `customDetectors` | `[]`  |
-| `shallowRouteChange` | `false`  |
+| `shallowRouteChange` | `true`  |
 
 _This table contains options which are specific to next-i18next. All other [i18next options](https://www.i18next.com/overview/configuration-options) can be passed in as well._
 
