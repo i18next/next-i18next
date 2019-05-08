@@ -24,7 +24,7 @@ export default function (WrappedComponent) {
           const routeInfo = { pathname, query }
           const { as, href } = lngPathCorrector(config, { as: asPath, href: routeInfo }, lng)
           if (as !== asPath) {
-            router.replace(href, as, { shallow: true })
+            router.replace(href, as, { shallow: config.shallowRouteChange })
           }
         })
       }

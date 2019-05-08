@@ -17,6 +17,7 @@ const LOCALE_SUBPATHS = localeSubpathOptions.NONE
 const config = {
   defaultLanguage: DEFAULT_LANGUAGE,
   otherLanguages: OTHER_LANGUAGES,
+  shallowRouteChange: true,
   load: 'currentOnly',
   localePath: LOCALE_PATH,
   localeStructure: LOCALE_STRUCTURE,

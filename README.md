@@ -195,6 +195,20 @@ server.get('/products/:id', (req, res) => {
 server.get('*', (req, res) => handle(req, res))
 ```
 
+### Reload `getInitialProps` on language change
+
+In some cases, you'll want to refetch your page content in a different language. The default behaviour won't trigger a reload of `getInitialProps`. This is called [shallow](https://github.com/zeit/next.js#shallow-routing) routing.
+
+```jsx
+import NextI18Next from 'next-i18next'
+
+const NextI18NextInstance = new NextI18Next({
+  shallowRouteChange: false
+})
+
+export default NextI18NextInstance
+```
+
 ## Accessing the Current Language
 
 In many cases, you'll need to know the currently active language. Most of the time, to accomplish this, you should use the `withNamespaces` HOC, which will pass a `lng` prop to the wrapped component and further asserts your component will get re-rendered on language change or changes to the translation catalog itself (loaded translations). More info can be found [here](https://react.i18next.com/legacy-v9/withnamespaces).
@@ -225,6 +239,7 @@ MyPage.getInitialProps = async({ req }) => {
 | `serverLanguageDetection` | `true`  |
 | `use` (for plugins) | `[]`  |
 | `customDetectors` | `[]`  |
+| `shallowRouteChange` | `false`  |
 
 _This table contains options which are specific to next-i18next. All other [i18next options](https://www.i18next.com/overview/configuration-options) can be passed in as well._
 
