@@ -51,6 +51,7 @@ const tearDownTest = (evalFunc, pwd) => {
 }
 
 export {
+  userConfig,
   userConfigClientSide,
   userConfigServerSide,
   setUpTest,
