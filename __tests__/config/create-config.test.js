@@ -1,7 +1,11 @@
 /* eslint-env jest */
 
 import {
-  userConfigClientSide, userConfigServerSide, setUpTest, tearDownTest,
+  userConfig,
+  userConfigClientSide,
+  userConfigServerSide,
+  setUpTest,
+  tearDownTest,
 } from './test-helpers'
 import { localeSubpathOptions } from '../../src/config/default-config'
 
@@ -94,6 +98,22 @@ describe('create configuration in non-production environment', () => {
       expect(config.backend.loadPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.json')
       expect(config.backend.addPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.missing.json')
     })
+
+    describe('localeExtension config option', () => {
+      it('is set to JSON by default', () => {
+        const config = createConfig(userConfig)
+        expect(config.backend.loadPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.json')
+        expect(config.backend.addPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.missing.json')
+      })
+      it('accepts any string and modifies backend paths', () => {
+        const config = createConfig({
+          ...userConfig,
+          localeExtension: 'test-extension',
+        })
+        expect(config.backend.loadPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.test-extension')
+        expect(config.backend.addPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.missing.test-extension')
+      })
+    })
   })
 
   const runClientSideTests = () => {
@@ -147,6 +167,22 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.backend.loadPath).toEqual('/static/translations/{{ns}}/{{lng}}.json')
       expect(config.backend.addPath).toEqual('/static/translations/{{ns}}/{{lng}}.missing.json')
+    })
+
+    describe('localeExtension config option', () => {
+      it('is set to JSON by default', () => {
+        const config = createConfig(userConfig)
+        expect(config.backend.loadPath).toEqual('/static/translations/{{ns}}/{{lng}}.json')
+        expect(config.backend.addPath).toEqual('/static/translations/{{ns}}/{{lng}}.missing.json')
+      })
+      it('accepts any string and modifies backend paths', () => {
+        const config = createConfig({
+          ...userConfig,
+          localeExtension: 'test-extension',
+        })
+        expect(config.backend.loadPath).toEqual('/static/translations/{{ns}}/{{lng}}.test-extension')
+        expect(config.backend.addPath).toEqual('/static/translations/{{ns}}/{{lng}}.missing.test-extension')
+      })
     })
   }
 
