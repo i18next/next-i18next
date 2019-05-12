@@ -195,6 +195,21 @@ server.get('/products/:id', (req, res) => {
 server.get('*', (req, res) => handle(req, res))
 ```
 
+## Accessing the Current Language
+
+In many cases, you'll need to know the currently active language. Most of the time, to accomplish this, you should use the `withNamespaces` HOC, which will pass a `lng` prop to the wrapped component and further asserts your component will get re-rendered on language change or changes to the translation catalog itself (loaded translations). More info can be found [here](https://react.i18next.com/legacy-v9/withnamespaces).
+
+If for some reason you need to access the current language inside `getInitialProps`, you'll need to switch over server and client contexts. For example:
+
+```jsx
+// This is our initialised `NextI18Next` instance
+import { i18n } from '../i18n'
+
+MyPage.getInitialProps = async({ req }) => {
+  const currentLanguage = req === null ? i18n.language : req.language
+}
+```
+
 ## Options
 
 | Key  | Default value |
