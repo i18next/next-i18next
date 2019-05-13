@@ -49,6 +49,7 @@
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
+    "@types/express": "^4.16.1",
     "@types/next": "^8.0.1",
     "@types/react": "^16.8.4",
     "@types/react-dom": "^16.8.2",
