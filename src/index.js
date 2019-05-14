@@ -1,10 +1,12 @@
-import { withNamespaces } from 'react-i18next'
+import { withTranslation, Trans } from 'react-i18next'
+import hoistNonReactStatics from 'hoist-non-react-statics'
+
 import createConfig from './config/create-config'
 import createI18NextClient from './create-i18next-client'
 
 import { appWithTranslation, withInternals } from './hocs'
 import { consoleMessage } from './utils'
-import { Link, Trans } from './components'
+import { Link } from './components'
 import { wrapRouter } from './router'
 
 
@@ -21,10 +23,11 @@ export default class NextI18Next {
 
     this.i18n = createI18NextClient(this.config)
     this.appWithTranslation = appWithTranslation.bind(this)
-    this.withNamespaces = withNamespaces
+    this.withTranslation = (namespace, options) => Component => hoistNonReactStatics(
+      withTranslation(namespace, options)(Component), Component)
 
     const nextI18NextInternals = { config: this.config, i18n: this.i18n }
-    this.Trans = withInternals(Trans, nextI18NextInternals)
+    this.Trans = Trans
     this.Link = withInternals(Link, nextI18NextInternals)
     this.Router = wrapRouter(nextI18NextInternals)
   }
