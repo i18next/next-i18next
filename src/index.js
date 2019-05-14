@@ -1,4 +1,4 @@
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import createConfig from './config/create-config'
 import createI18NextClient from './create-i18next-client'
 
@@ -21,7 +21,7 @@ export default class NextI18Next {
 
     this.i18n = createI18NextClient(this.config)
     this.appWithTranslation = appWithTranslation.bind(this)
-    this.withNamespaces = withNamespaces
+    this.withTranslation = withTranslation
 
     const nextI18NextInternals = { config: this.config, i18n: this.i18n }
     this.Trans = withInternals(Trans, nextI18NextInternals)

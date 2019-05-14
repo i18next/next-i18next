@@ -19,10 +19,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import NextLink from 'next/link'
-import { withNamespaces } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import { lngPathCorrector, localeSubpathRequired } from '../utils'
 
-const removeWithNamespacesProps = (props) => {
+const removeWithTranslationProps = (props) => {
   const strippedProps = Object.assign({}, props)
   delete strippedProps.defaultNS
   delete strippedProps.i18n
@@ -48,7 +48,7 @@ class Link extends React.Component {
         <NextLink
           href={correctedHref}
           as={correctedAs}
-          {...removeWithNamespacesProps(props)}
+          {...removeWithTranslationProps(props)}
         >
           {children}
         </NextLink>
@@ -59,7 +59,7 @@ class Link extends React.Component {
       <NextLink
         href={href}
         as={as}
-        {...removeWithNamespacesProps(props)}
+        {...removeWithTranslationProps(props)}
       >
         {children}
       </NextLink>
@@ -87,7 +87,7 @@ Link.defaultProps = {
 }
 
 /*
-  Usage of `withNamespaces` here is just to
+  Usage of `withTranslation` here is just to
   force `Link` to rerender on language change
 */
-export default withNamespaces()(Link)
+export default withTranslation()(Link)

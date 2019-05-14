@@ -72,8 +72,8 @@
     "jsdom-global": "^3.0.2",
     "next": "^8.0.0",
     "puppeteer": "^1.11.0",
-    "react": "^16.7.0",
-    "react-dom": "^16.6.3"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   },
   "dependencies": {
     "detect-node": "^2.0.4",
@@ -85,10 +85,14 @@
     "i18next-xhr-backend": "^2.0.0",
     "path-match": "^1.2.4",
     "prop-types": "^15.6.2",
-    "react-i18next": "9.0.10",
+    "react-i18next": "^10.9.0",
     "url": "^0.11.0"
   },
+  "resolutions": {
+    "**/react": "^16.8.6",
+    "**/react-dom": "^16.8.6"
+  },
   "peerDependencies": {
-    "react": ">= 16.3.0"
+    "react": ">= 16.8.0"
   }
 }
