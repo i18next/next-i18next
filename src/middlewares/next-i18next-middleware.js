@@ -34,29 +34,40 @@ export default function (nexti18next) {
   middleware.push(i18nextMiddleware.handle(i18n, { ignoreRoutes }))
 
   if (localeSubpaths !== localeSubpathOptions.NONE) {
-    middleware.push(
-      (req, res, next) => {
-        if (isI18nRoute(req.url)) {
-          const { pathname } = parse(req.url)
+    middleware.push((req, res, next) => {
+      if (isI18nRoute(req.url)) {
+        const { pathname } = parse(req.url)
 
-          if (allLanguages.some(lng => pathname === `/${lng}`)) {
-            return forceTrailingSlash(req, res, pathname.slice(1))
-          }
-
-          lngPathDetector(req, res)
-
-          const params = localeSubpathRoute(req.url)
-
-          if (params !== false) {
-            const { lng } = params
-            req.query = { ...req.query, lng }
-            req.url = req.url.replace(`/${lng}`, '')
-          }
+        if (allLanguages.some(lng => pathname === `/${lng}`)) {
+          forceTrailingSlash(req, res, pathname.slice(1))
+          return
         }
+      }
+      next()
+    })
 
-        return next()
-      },
-    )
+    middleware.push((req, res, next) => {
+      if (isI18nRoute(req.url)) {
+        const redirectPerformed = lngPathDetector(req, res)
+        if (redirectPerformed) {
+          return
+        }
+      }
+      next()
+    })
+
+    middleware.push((req, res, next) => {
+      if (isI18nRoute(req.url)) {
+        const params = localeSubpathRoute(req.url)
+
+        if (params !== false) {
+          const { lng } = params
+          req.query = { ...req.query, lng }
+          req.url = req.url.replace(`/${lng}`, '')
+        }
+      }
+      next()
+    })
   }
 
   return middleware

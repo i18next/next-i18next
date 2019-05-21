@@ -45,8 +45,11 @@ describe('next-18next middleware', () => {
   const callAllMiddleware = () => {
     const middlewareFunctions = nextI18nextMiddleware(nexti18next)
 
-    middlewareFunctions.forEach((middleware) => {
-      middleware(req, res, next)
+    middlewareFunctions.forEach((middleware, index) => {
+      // only call next middleware if this is the first request or if next() was called
+      if (index === 0 || next.mock.calls.length === index - 1) {
+        middleware(req, res, next)
+      }
     })
   }
 
@@ -102,27 +105,61 @@ describe('next-18next middleware', () => {
 
       expect(forceTrailingSlash).not.toBeCalled()
 
-      expect(next).toBeCalled()
+      expect(next).toBeCalledTimes(3)
     })
 
-    it('calls lngPathDetector if not a route to ignore', () => {
-      req.url = '/page/'
+    describe('lngPathDetector', () => {
+      it('calls lngPathDetector if not a route to ignore', () => {
+        req.url = '/page/'
+
+        callAllMiddleware()
+
+        expect(lngPathDetector).toBeCalledWith(req, res)
+
+        expect(next).toBeCalledTimes(3)
+      })
+
+      it('does not call next() if lngPathDetector redirects', () => {
+        req.url = '/page/'
+        lngPathDetector.mockImplementation(() => true)
+
+        callAllMiddleware()
+
+        expect(next).toBeCalledTimes(1)
+      })
+
+      it('calls next() if lngPathDetector does not redirect', () => {
+        req.url = '/page/'
+        lngPathDetector.mockImplementation(() => false)
+
+        callAllMiddleware()
+
+        expect(next).toBeCalledTimes(3)
+      })
+
+      it('does not call lngPathDetector if a route to ignore', () => {
+        req.url = '/static/locales/en/common.js'
+
+        callAllMiddleware()
+
+        expect(lngPathDetector).not.toBeCalled()
+
+        expect(next).toBeCalledTimes(3)
+      })
+    })
+
+    it('adds lng to query parameters and removes from url for i18next processing', () => {
+      req = {
+        url: '/de/page1',
+        query: {},
+      }
 
       callAllMiddleware()
 
-      expect(lngPathDetector).toBeCalledWith(req, res)
+      expect(req.url).toBe('/page1')
+      expect(req.query).toEqual({ lng: 'de' })
 
-      expect(next).toBeCalled()
-    })
-
-    it('does not call lngPathDetector if a route to ignore', () => {
-      req.url = '/static/locales/en/common.js'
-
-      callAllMiddleware()
-
-      expect(lngPathDetector).not.toBeCalled()
-
-      expect(next).toBeCalled()
+      expect(next).toBeCalledTimes(3)
     })
   })
 })

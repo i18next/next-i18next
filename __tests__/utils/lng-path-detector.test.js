@@ -24,18 +24,20 @@ describe('lngPathDetector utility function', () => {
   it('skips everything if req.i18n is not defined', () => {
     delete req.i18n
 
-    lngPathDetector(req, res)
+    const redirectPerformed = lngPathDetector(req, res)
 
+    expect(redirectPerformed).toBe(false)
     expect(res.redirect).not.toBeCalled()
   })
 
   it('changes language if url starts with language and is not languages[0]', () => {
     req.url = '/de/foo'
 
-    lngPathDetector(req, res)
+    const redirectPerformed = lngPathDetector(req, res)
 
     expect(req.i18n.changeLanguage).toBeCalledWith('de')
 
+    expect(redirectPerformed).toBe(false)
     expect(res.redirect).not.toBeCalled()
   })
 
@@ -43,10 +45,11 @@ describe('lngPathDetector utility function', () => {
     req.i18n.languages = ['de', 'en']
     req.url = '/en/foo?test=123'
 
-    lngPathDetector(req, res)
+    const redirectPerformed = lngPathDetector(req, res)
 
     expect(req.i18n.changeLanguage).toBeCalledWith('en')
 
+    expect(redirectPerformed).toBe(false)
     expect(res.redirect).not.toBeCalledWith()
   })
 
@@ -54,10 +57,11 @@ describe('lngPathDetector utility function', () => {
     req.i18n.languages = ['en', 'de']
     req.url = '/en/foo'
 
-    lngPathDetector(req, res, true)
+    const redirectPerformed = lngPathDetector(req, res, true)
 
     expect(req.i18n.changeLanguage).not.toBeCalledWith()
 
+    expect(redirectPerformed).toBe(true)
     expect(res.redirect).toBeCalledWith(302, '/foo')
   })
 
@@ -66,8 +70,9 @@ describe('lngPathDetector utility function', () => {
     req.i18n.options.localeSubpaths = localeSubpathOptions.ALL
     req.url = '/en/foo'
 
-    lngPathDetector(req, res, true)
+    const redirectPerformed = lngPathDetector(req, res, true)
 
+    expect(redirectPerformed).toBe(false)
     expect(res.redirect).not.toBeCalled()
   })
 })

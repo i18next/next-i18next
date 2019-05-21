@@ -3,6 +3,8 @@ import redirectWithoutCache from './redirect-without-cache'
 import { localeSubpathOptions } from '../config/default-config'
 
 export default (req, res) => {
+  let redirectPerformed = false
+
   if (req.i18n) {
     const language = lngFromReq(req)
     const { allLanguages, defaultLanguage, localeSubpaths } = req.i18n.options
@@ -35,6 +37,7 @@ export default (req, res) => {
         }
       })
       redirectWithoutCache(res, req.url.replace('/', `/${language}/`))
+      redirectPerformed = true
     }
     /*
       If a user has a default language prefix
@@ -44,6 +47,9 @@ export default (req, res) => {
         && req.url.startsWith(`/${defaultLanguage}/`)
         && localeSubpaths !== localeSubpathOptions.ALL) {
       redirectWithoutCache(res, req.url.replace(`/${defaultLanguage}/`, '/'))
+      redirectPerformed = true
     }
   }
+
+  return redirectPerformed
 }

@@ -14,7 +14,13 @@ const handle = app.getRequestHandler();
 
   server.use(nextI18NextMiddleware(nextI18next))
 
-  server.get('*', (req, res) => handle(req, res))
+  server.get('*', (req, res) => {
+    // the next line is included to test regression of https://github.com/isaachinman/next-i18next/issues/304
+    // Do not include it in your code
+    res.setHeader('X-Check-No-Fail', 'should not fail')
+
+    return handle(req, res)
+  })
 
   await server.listen(port)
   console.log(`> Ready on http://localhost:${port}`) // eslint-disable-line no-console
