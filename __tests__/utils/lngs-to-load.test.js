@@ -47,4 +47,8 @@ describe('lngsToLoad utility function', () => {
     expect(lngsToLoad(undefined, { it: ['dk', 'en'] })).toMatchObject([])
   })
 
+  it('returns main language when initialLng is locale specific', () => {
+    const analysis = lngsToLoad('fr-FR', 'en', ['fr', 'nl', 'de', 'fr-BE', 'en-US'])
+    expect(analysis).toMatchObject(['fr-FR', 'en', 'fr'])
+  })
 })

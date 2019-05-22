@@ -85,7 +85,7 @@ export default function (WrappedComponent) {
 
         // Detect the languages to load based upon the fallbackLng configuration
         const { fallbackLng } = config
-        const languagesToLoad = lngsToLoad(initialLanguage, fallbackLng)
+        const languagesToLoad = lngsToLoad(initialLanguage, fallbackLng, config.otherLanguages)
 
         // Initialise the store with the languagesToLoad and
         // necessary namespaces needed to render this specific tree

@@ -1,4 +1,4 @@
-export default (initialLng, fallbackLng) => {
+export default (initialLng, fallbackLng, otherLanguages) => {
   const languages = []
 
   if (initialLng) {
@@ -23,6 +23,15 @@ export default (initialLng, fallbackLng) => {
     if (fallbackLng.default) {
       languages.push(fallbackLng.default)
     }
+  }
+
+  if (initialLng && initialLng.includes('-') && Array.isArray(otherLanguages)) {
+    const [languageFromLocale] = initialLng.split('-')
+    otherLanguages.forEach((otherLanguage) => {
+      if (otherLanguage === languageFromLocale) {
+        languages.push(otherLanguage)
+      }
+    })
   }
 
   return languages
