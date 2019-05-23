@@ -21,7 +21,6 @@ describe('lngPathDetector utility function', () => {
 
     const config = lngPathDetector(req)
 
-    expect(config.redirectRequired).toBe(false)
     expect(config.correctedUrl).toBe(config.originalUrl)
   })
 
@@ -32,7 +31,6 @@ describe('lngPathDetector utility function', () => {
 
     expect(req.i18n.changeLanguage).toBeCalledWith('de')
 
-    expect(config.redirectRequired).toBe(false)
     expect(config.correctedUrl).toBe(config.originalUrl)
   })
 
@@ -44,7 +42,6 @@ describe('lngPathDetector utility function', () => {
 
     expect(req.i18n.changeLanguage).toBeCalledWith('en')
 
-    expect(config.redirectRequired).toBe(false)
     expect(config.correctedUrl).toBe(config.originalUrl)
   })
 
@@ -56,7 +53,6 @@ describe('lngPathDetector utility function', () => {
 
     expect(req.i18n.changeLanguage).not.toBeCalledWith()
 
-    expect(config.redirectRequired).toBe(true)
     expect(config.correctedUrl).not.toBe(config.originalUrl)
     expect(config.originalUrl).toBe('/en/foo')
     expect(config.correctedUrl).toBe('/foo')
@@ -69,7 +65,6 @@ describe('lngPathDetector utility function', () => {
 
     const config = lngPathDetector(req)
 
-    expect(config.redirectRequired).toBe(false)
     expect(config.correctedUrl).toBe(config.originalUrl)
   })
 })

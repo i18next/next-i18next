@@ -38,7 +38,6 @@ describe('next-18next middleware', () => {
     lngPathDetector.mockImplementation(() => ({
       originalUrl: '/page',
       correctedUrl: '/page',
-      redirectRequired: false,
     }))
   })
 
@@ -130,14 +129,14 @@ describe('next-18next middleware', () => {
       it('does not call next() if lngPathDetector redirects', () => {
         req.url = '/page/'
         lngPathDetector.mockImplementation(() => ({
-          redirectRequired: true,
-          correctedUrl: '/de/page',
+          originalUrl: '/page/',
+          correctedUrl: '/de/page/',
         }))
 
         callAllMiddleware()
 
         expect(lngPathDetector).toBeCalledWith(req)
-        expect(redirectWithoutCache).toBeCalledWith(res, '/de/page')
+        expect(redirectWithoutCache).toBeCalledWith(res, '/de/page/')
 
         expect(next).toBeCalledTimes(1)
       })
@@ -145,7 +144,8 @@ describe('next-18next middleware', () => {
       it('calls next() if lngPathDetector does not redirect', () => {
         req.url = '/page/'
         lngPathDetector.mockImplementation(() => ({
-          redirectRequired: false,
+          originalUrl: '/page/',
+          correctedUrl: '/page/',
         }))
 
         callAllMiddleware()

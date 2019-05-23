@@ -49,7 +49,7 @@ export default function (nexti18next) {
     middleware.push((req, res, next) => {
       if (isI18nRoute(req.url)) {
         const lngPathDetectorConfig = lngPathDetector(req)
-        if (lngPathDetectorConfig.redirectRequired) {
+        if (lngPathDetectorConfig.originalUrl !== lngPathDetectorConfig.correctedUrl) {
           redirectWithoutCache(res, lngPathDetectorConfig.correctedUrl)
 
           return

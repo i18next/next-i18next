@@ -5,7 +5,6 @@ export default (req) => {
   const config = {
     originalUrl: req.url,
     correctedUrl: req.url,
-    redirectRequired: false,
   }
 
   if (req.i18n) {
@@ -37,7 +36,6 @@ export default (req) => {
       allLanguages.forEach((lng) => {
         if (req.url.startsWith(`/${lng}/`)) {
           config.correctedUrl = req.url.replace(`/${lng}/`, '/')
-          config.redirectRequired = true
         }
       })
     }
@@ -49,7 +47,6 @@ export default (req) => {
         && req.url.startsWith(`/${defaultLanguage}/`)
         && localeSubpaths !== localeSubpathOptions.ALL) {
       config.correctedUrl = req.url.replace(`/${defaultLanguage}/`, '/')
-      config.redirectRequired = true
     }
   }
 
