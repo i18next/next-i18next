@@ -33,6 +33,14 @@ describe('create configuration in non-production environment', () => {
     return require('../../src/config/create-config')
   }
 
+  it('throws if userConfig.localeSubpaths is a boolean', () => {
+    createConfig = mockIsNodeCreateConfig(true)
+
+    expect(() => createConfig({ localeSubpaths: true })).toThrow(
+      'The localeSubpaths option has been changed to a string: "none", "foreign", or "all"',
+    )
+  })
+
   describe('server-side', () => {
     beforeEach(() => {
       createConfig = mockIsNodeCreateConfig(true)
@@ -97,6 +105,17 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.backend.loadPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.json')
       expect(config.backend.addPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.missing.json')
+    })
+
+    it('preserves config.ns, if provided in user configuration', () => {
+      const mockReadDirSync = jest.fn()
+      evalFunc.mockImplementation(() => ({
+        readdirSync: mockReadDirSync,
+      }))
+      const config = createConfig({ ns: ['common', 'ns1', 'ns2'] })
+
+      expect(mockReadDirSync).not.toBeCalled()
+      expect(config.ns).toEqual(['common', 'ns1', 'ns2'])
     })
 
     describe('localeExtension config option', () => {
