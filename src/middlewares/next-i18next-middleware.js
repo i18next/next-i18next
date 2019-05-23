@@ -2,7 +2,7 @@ import i18nextMiddleware from 'i18next-express-middleware'
 import { parse } from 'url'
 import pathMatch from 'path-match'
 
-import { forceTrailingSlash, lngPathDetector } from '../utils'
+import { forceTrailingSlash, lngPathDetector, redirectWithoutCache } from '../utils'
 import { localeSubpathOptions } from '../config/default-config'
 
 const route = pathMatch()
@@ -48,8 +48,10 @@ export default function (nexti18next) {
 
     middleware.push((req, res, next) => {
       if (isI18nRoute(req.url)) {
-        const redirectPerformed = lngPathDetector(req, res)
-        if (redirectPerformed) {
+        const lngPathDetectorConfig = lngPathDetector(req)
+        if (lngPathDetectorConfig.redirectRequired) {
+          redirectWithoutCache(res, lngPathDetectorConfig.correctedUrl)
+
           return
         }
       }

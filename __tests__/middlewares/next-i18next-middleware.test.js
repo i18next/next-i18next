@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
 import i18nextMiddleware from 'i18next-express-middleware'
-import { forceTrailingSlash, lngPathDetector } from '../../src/utils'
+import { forceTrailingSlash, lngPathDetector, redirectWithoutCache } from '../../src/utils'
 import testI18NextConfig from '../test-i18next-config'
 
 import nextI18nextMiddleware from '../../src/middlewares/next-i18next-middleware'
@@ -14,6 +14,7 @@ jest.mock('i18next-express-middleware', () => ({
 jest.mock('../../src/utils', () => ({
   forceTrailingSlash: jest.fn(),
   lngPathDetector: jest.fn(),
+  redirectWithoutCache: jest.fn(),
 }))
 
 describe('next-18next middleware', () => {
@@ -33,6 +34,12 @@ describe('next-18next middleware', () => {
     }
     res = {}
     next = jest.fn()
+
+    lngPathDetector.mockImplementation(() => ({
+      originalUrl: '/page',
+      correctedUrl: '/page',
+      redirectRequired: false,
+    }))
   })
 
   afterEach(() => {
@@ -40,6 +47,7 @@ describe('next-18next middleware', () => {
 
     forceTrailingSlash.mockReset()
     lngPathDetector.mockReset()
+    redirectWithoutCache.mockReset()
   })
 
   const callAllMiddleware = () => {
@@ -114,25 +122,36 @@ describe('next-18next middleware', () => {
 
         callAllMiddleware()
 
-        expect(lngPathDetector).toBeCalledWith(req, res)
+        expect(lngPathDetector).toBeCalledWith(req)
 
         expect(next).toBeCalledTimes(3)
       })
 
       it('does not call next() if lngPathDetector redirects', () => {
         req.url = '/page/'
-        lngPathDetector.mockImplementation(() => true)
+        lngPathDetector.mockImplementation(() => ({
+          redirectRequired: true,
+          correctedUrl: '/de/page',
+        }))
 
         callAllMiddleware()
+
+        expect(lngPathDetector).toBeCalledWith(req)
+        expect(redirectWithoutCache).toBeCalledWith(res, '/de/page')
 
         expect(next).toBeCalledTimes(1)
       })
 
       it('calls next() if lngPathDetector does not redirect', () => {
         req.url = '/page/'
-        lngPathDetector.mockImplementation(() => false)
+        lngPathDetector.mockImplementation(() => ({
+          redirectRequired: false,
+        }))
 
         callAllMiddleware()
+
+        expect(lngPathDetector).toBeCalledWith(req)
+        expect(redirectWithoutCache).not.toBeCalled()
 
         expect(next).toBeCalledTimes(3)
       })
