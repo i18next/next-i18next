@@ -10,6 +10,12 @@ const consoleMessage = _consoleMessage.bind({
   },
 })
 
+const consoleMessageNotStrictMode = _consoleMessage.bind({
+  config: {
+    strictMode: false,
+  },
+})
+
 describe('consoleMessage utility function', () => {
   const OLD_ENV = process.env
 
@@ -62,21 +68,46 @@ describe('consoleMessage utility function', () => {
 
   })
 
-  it('Returns undefined if process.NODE_ENV === production', () => {
-    process.env.NODE_ENV = 'production'
-    expect(consoleMessage('info', 'Testing production logging')).toBeUndefined()
+  it('Does not log messages in non-strict mode', () => {
+    consoleMessageNotStrictMode('info', 'Testing info message')
+    consoleMessageNotStrictMode('warn', 'Testing warning message')
+    consoleMessageNotStrictMode('error', 'Testing error message')
 
+    expect(console.info).not.toHaveBeenCalled()
+    expect(console.warn).not.toHaveBeenCalled()
+    expect(console.error).not.toHaveBeenCalled()
   })
 
-  it('Returns undefined if strictMode is false', () => {
+  it('does not log messages if process.NODE_ENV === production', () => {
     process.env.NODE_ENV = 'production'
-    expect(consoleMessage('info', 'Testing production logging', { strictMode: false })).toBeUndefined()
+    consoleMessage('info', 'Testing production logging')
+    consoleMessage('warn', 'Testing production logging')
+    consoleMessage('error', 'Testing production logging')
 
+    expect(consoleInfoSpy).not.toHaveBeenCalled()
+    expect(consoleErrSpy).not.toHaveBeenCalled()
+    expect(consoleWarnSpy).not.toHaveBeenCalled()
   })
 
-  it('Return errors on non-string messages', () => {
-    expect(consoleMessage('info', { message: 'Message in object' })).toBeUndefined()
-    expect(consoleMessage('info', ['An', 'array', 'of', 'message'])).toBeUndefined()
-    expect(consoleMessage('info', () => 'Function message')).toBeUndefined()
+  it('Logs errors on non-string messages', () => {
+    consoleMessage('info', { message: 'Message in object' })
+    consoleMessage('info', ['An', 'array', 'of', 'message'])
+    consoleMessage('info', () => 'Function message')
+
+    const [[errorObject1], [errorObject2], [errorObject3]] = consoleErrSpy.mock.calls
+    expect(errorObject1.name).toBe('Meta')
+    expect(errorObject1.message).toMatch(
+      "Param message needs to be of type: string. Instead, 'object' was provided",
+    )
+
+    expect(errorObject2.name).toBe('Meta')
+    expect(errorObject2.message).toMatch(
+      "Param message needs to be of type: string. Instead, 'object' was provided",
+    )
+
+    expect(errorObject3.name).toBe('Meta')
+    expect(errorObject3.message).toMatch(
+      "Param message needs to be of type: string. Instead, 'function' was provided",
+    )
   })
 })
