@@ -17,6 +17,12 @@ describe('lngFromReq utility function', () => {
     }
   })
 
+  it('returns null if req.i18n does not exist', () => {
+    delete req.i18n
+
+    expect(lngFromReq(req)).toBeNull()
+  })
+
   it('returns first language if available', () => {
 
     req.i18n.languages = ['en']
