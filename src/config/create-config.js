@@ -25,6 +25,7 @@ export default (userConfig) => {
     localeExtension,
     localePath,
     localeStructure,
+    nextjsDir,
   } = combinedConfig
 
   if (isServer) {
@@ -34,15 +35,15 @@ export default (userConfig) => {
 
     // Set server side backend
     combinedConfig.backend = {
-      loadPath: path.join(process.cwd(), `${localePath}/${localeStructure}.${localeExtension}`),
-      addPath: path.join(process.cwd(), `${localePath}/${localeStructure}.missing.${localeExtension}`),
+      loadPath: path.join(process.cwd(), `${nextjsDir}/${localePath}/${localeStructure}.${localeExtension}`),
+      addPath: path.join(process.cwd(), `${nextjsDir}/${localePath}/${localeStructure}.missing.${localeExtension}`),
     }
 
     // Set server side preload (languages and namespaces)
     combinedConfig.preload = allLanguages
     if (!combinedConfig.ns) {
       const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace(`.${localeExtension}`, ''))
-      combinedConfig.ns = getAllNamespaces(path.join(process.cwd(), `${localePath}/${defaultLanguage}`))
+      combinedConfig.ns = getAllNamespaces(path.join(process.cwd(), `${nextjsDir}/${localePath}/${defaultLanguage}`))
     }
 
   } else {

@@ -11,6 +11,7 @@ const DEFAULT_LANGUAGE = 'en'
 const OTHER_LANGUAGES = []
 const DEFAULT_NAMESPACE = 'common'
 const LOCALE_PATH = 'static/locales'
+const NEXTJS_DIR = ''
 const LOCALE_STRUCTURE = '{{lng}}/{{ns}}'
 const LOCALE_EXTENSION = 'json'
 const LOCALE_SUBPATHS = localeSubpathOptions.NONE
@@ -20,6 +21,7 @@ const config = {
   otherLanguages: OTHER_LANGUAGES,
   load: 'currentOnly',
   localePath: LOCALE_PATH,
+  nextjsDir: NEXTJS_DIR,
   localeStructure: LOCALE_STRUCTURE,
   localeExtension: LOCALE_EXTENSION,
   localeSubpaths: LOCALE_SUBPATHS,
