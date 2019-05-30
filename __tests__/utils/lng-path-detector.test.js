@@ -7,58 +7,55 @@ import { localeSubpathOptions } from '../../src/config/default-config'
 
 describe('lngPathDetector utility function', () => {
   let req
-  let res
 
   beforeEach(() => {
     req = {
       i18n: testI18NextConfig,
       url: '/',
     }
-
-    res = {
-      redirect: jest.fn(),
-      header: jest.fn(),
-    }
   })
 
   it('skips everything if req.i18n is not defined', () => {
+    req.url = '/foo'
     delete req.i18n
 
-    lngPathDetector(req, res)
+    const config = lngPathDetector(req)
 
-    expect(res.redirect).not.toBeCalled()
+    expect(config.correctedUrl).toBe(config.originalUrl)
   })
 
   it('changes language if url starts with language and is not languages[0]', () => {
     req.url = '/de/foo'
 
-    lngPathDetector(req, res)
+    const config = lngPathDetector(req)
 
     expect(req.i18n.changeLanguage).toBeCalledWith('de')
 
-    expect(res.redirect).not.toBeCalled()
+    expect(config.correctedUrl).toBe(config.originalUrl)
   })
 
   it('performs language change if url starts with a locale subpath of a different locale', () => {
     req.i18n.languages = ['de', 'en']
     req.url = '/en/foo?test=123'
 
-    lngPathDetector(req, res)
+    const config = lngPathDetector(req)
 
     expect(req.i18n.changeLanguage).toBeCalledWith('en')
 
-    expect(res.redirect).not.toBeCalledWith()
+    expect(config.correctedUrl).toBe(config.originalUrl)
   })
 
   it('strips language off url and redirects if language is languages[0]', () => {
     req.i18n.languages = ['en', 'de']
     req.url = '/en/foo'
 
-    lngPathDetector(req, res, true)
+    const config = lngPathDetector(req)
 
     expect(req.i18n.changeLanguage).not.toBeCalledWith()
 
-    expect(res.redirect).toBeCalledWith(302, '/foo')
+    expect(config.correctedUrl).not.toBe(config.originalUrl)
+    expect(config.originalUrl).toBe('/en/foo')
+    expect(config.correctedUrl).toBe('/foo')
   })
 
   it(`does not redirect if language is languages[0] and localeSubpaths is "${localeSubpathOptions.ALL}"`, () => {
@@ -66,8 +63,8 @@ describe('lngPathDetector utility function', () => {
     req.i18n.options.localeSubpaths = localeSubpathOptions.ALL
     req.url = '/en/foo'
 
-    lngPathDetector(req, res, true)
+    const config = lngPathDetector(req)
 
-    expect(res.redirect).not.toBeCalled()
+    expect(config.correctedUrl).toBe(config.originalUrl)
   })
 })

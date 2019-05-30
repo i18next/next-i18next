@@ -2,7 +2,7 @@ import i18nextMiddleware from 'i18next-express-middleware'
 import { parse } from 'url'
 import pathMatch from 'path-match'
 
-import { forceTrailingSlash, lngPathDetector } from '../utils'
+import { forceTrailingSlash, lngPathDetector, redirectWithoutCache } from '../utils'
 import { localeSubpathOptions } from '../config/default-config'
 
 const route = pathMatch()
@@ -34,29 +34,42 @@ export default function (nexti18next) {
   middleware.push(i18nextMiddleware.handle(i18n, { ignoreRoutes }))
 
   if (localeSubpaths !== localeSubpathOptions.NONE) {
-    middleware.push(
-      (req, res, next) => {
-        if (isI18nRoute(req.url)) {
-          const { pathname } = parse(req.url)
+    middleware.push((req, res, next) => {
+      if (isI18nRoute(req.url)) {
+        const { pathname } = parse(req.url)
 
-          if (allLanguages.some(lng => pathname === `/${lng}`)) {
-            return forceTrailingSlash(req, res, pathname.slice(1))
-          }
-
-          lngPathDetector(req, res)
-
-          const params = localeSubpathRoute(req.url)
-
-          if (params !== false) {
-            const { lng } = params
-            req.query = { ...req.query, lng }
-            req.url = req.url.replace(`/${lng}`, '')
-          }
+        if (allLanguages.some(lng => pathname === `/${lng}`)) {
+          forceTrailingSlash(req, res, pathname.slice(1))
+          return
         }
+      }
+      next()
+    })
 
-        return next()
-      },
-    )
+    middleware.push((req, res, next) => {
+      if (isI18nRoute(req.url)) {
+        const lngPathDetectorConfig = lngPathDetector(req)
+        if (lngPathDetectorConfig.originalUrl !== lngPathDetectorConfig.correctedUrl) {
+          redirectWithoutCache(res, lngPathDetectorConfig.correctedUrl)
+
+          return
+        }
+      }
+      next()
+    })
+
+    middleware.push((req, res, next) => {
+      if (isI18nRoute(req.url)) {
+        const params = localeSubpathRoute(req.url)
+
+        if (params !== false) {
+          const { lng } = params
+          req.query = { ...req.query, lng }
+          req.url = req.url.replace(`/${lng}`, '')
+        }
+      }
+      next()
+    })
   }
 
   return middleware

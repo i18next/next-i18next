@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
 import i18nextMiddleware from 'i18next-express-middleware'
-import { forceTrailingSlash, lngPathDetector } from '../../src/utils'
+import { forceTrailingSlash, lngPathDetector, redirectWithoutCache } from '../../src/utils'
 import testI18NextConfig from '../test-i18next-config'
 
 import nextI18nextMiddleware from '../../src/middlewares/next-i18next-middleware'
@@ -14,6 +14,7 @@ jest.mock('i18next-express-middleware', () => ({
 jest.mock('../../src/utils', () => ({
   forceTrailingSlash: jest.fn(),
   lngPathDetector: jest.fn(),
+  redirectWithoutCache: jest.fn(),
 }))
 
 describe('next-18next middleware', () => {
@@ -33,6 +34,11 @@ describe('next-18next middleware', () => {
     }
     res = {}
     next = jest.fn()
+
+    lngPathDetector.mockImplementation(() => ({
+      originalUrl: '/page',
+      correctedUrl: '/page',
+    }))
   })
 
   afterEach(() => {
@@ -40,13 +46,17 @@ describe('next-18next middleware', () => {
 
     forceTrailingSlash.mockReset()
     lngPathDetector.mockReset()
+    redirectWithoutCache.mockReset()
   })
 
   const callAllMiddleware = () => {
     const middlewareFunctions = nextI18nextMiddleware(nexti18next)
 
-    middlewareFunctions.forEach((middleware) => {
-      middleware(req, res, next)
+    middlewareFunctions.forEach((middleware, index) => {
+      // only call next middleware if this is the first request or if next() was called
+      if (index === 0 || next.mock.calls.length === index - 1) {
+        middleware(req, res, next)
+      }
     })
   }
 
@@ -102,27 +112,73 @@ describe('next-18next middleware', () => {
 
       expect(forceTrailingSlash).not.toBeCalled()
 
-      expect(next).toBeCalled()
+      expect(next).toBeCalledTimes(3)
     })
 
-    it('calls lngPathDetector if not a route to ignore', () => {
-      req.url = '/page/'
+    describe('lngPathDetector', () => {
+      it('calls lngPathDetector if not a route to ignore', () => {
+        req.url = '/page/'
+
+        callAllMiddleware()
+
+        expect(lngPathDetector).toBeCalledWith(req)
+
+        expect(next).toBeCalledTimes(3)
+      })
+
+      it('does not call next() if lngPathDetector redirects', () => {
+        req.url = '/page/'
+        lngPathDetector.mockImplementation(() => ({
+          originalUrl: '/page/',
+          correctedUrl: '/de/page/',
+        }))
+
+        callAllMiddleware()
+
+        expect(lngPathDetector).toBeCalledWith(req)
+        expect(redirectWithoutCache).toBeCalledWith(res, '/de/page/')
+
+        expect(next).toBeCalledTimes(1)
+      })
+
+      it('calls next() if lngPathDetector does not redirect', () => {
+        req.url = '/page/'
+        lngPathDetector.mockImplementation(() => ({
+          originalUrl: '/page/',
+          correctedUrl: '/page/',
+        }))
+
+        callAllMiddleware()
+
+        expect(lngPathDetector).toBeCalledWith(req)
+        expect(redirectWithoutCache).not.toBeCalled()
+
+        expect(next).toBeCalledTimes(3)
+      })
+
+      it('does not call lngPathDetector if a route to ignore', () => {
+        req.url = '/static/locales/en/common.js'
+
+        callAllMiddleware()
+
+        expect(lngPathDetector).not.toBeCalled()
+
+        expect(next).toBeCalledTimes(3)
+      })
+    })
+
+    it('adds lng to query parameters and removes from url for i18next processing', () => {
+      req = {
+        url: '/de/page1',
+        query: {},
+      }
 
       callAllMiddleware()
 
-      expect(lngPathDetector).toBeCalledWith(req, res)
+      expect(req.url).toBe('/page1')
+      expect(req.query).toEqual({ lng: 'de' })
 
-      expect(next).toBeCalled()
-    })
-
-    it('does not call lngPathDetector if a route to ignore', () => {
-      req.url = '/static/locales/en/common.js'
-
-      callAllMiddleware()
-
-      expect(lngPathDetector).not.toBeCalled()
-
-      expect(next).toBeCalled()
+      expect(next).toBeCalledTimes(3)
     })
   })
 })

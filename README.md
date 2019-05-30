@@ -135,6 +135,8 @@ myapp.com/de/
 myapp.com/es/
 ```
 
+When using the localeSubpaths option, our middleware may redirect without calling any subsequent middleware.  Therefore, if there are any critical middleware that must run before this redirect, ensure that you place it before the `nextI18NextMiddleware` middleware.
+
 The main "gotcha" with locale subpaths is routing. We want to be able to route to "naked" routes, and not have to worry about the locale subpath part of the route:
 
 ```jsx
