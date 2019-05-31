@@ -12,7 +12,6 @@
     "start": "NODE_ENV=production node index.js"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
     "babel-plugin-module-resolver": "^3.0.0",
     "babel-preset-env": "^1.6.1",
     "eslint": "^5.12.1",
