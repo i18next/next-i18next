@@ -78,7 +78,7 @@
   "dependencies": {
     "detect-node": "^2.0.4",
     "hoist-non-react-statics": "^3.2.0",
-    "i18next": "^15.0.0",
+    "i18next": "^16.0.0",
     "i18next-browser-languagedetector": "^3.0.0",
     "i18next-express-middleware": "^1.5.0",
     "i18next-node-fs-backend": "^2.1.0",
