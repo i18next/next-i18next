@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { i18n, Link, withNamespaces } from '../i18n'
+import { i18n, Link, withTranslation } from '../i18n'
 
 import Title from '../components/Title'
 import Footer from '../components/Footer'
@@ -41,4 +41,4 @@ Homepage.propTypes = {
   t: PropTypes.func.isRequired,
 }
 
-export default withNamespaces('common')(Homepage)
+export default withTranslation('common')(Homepage)

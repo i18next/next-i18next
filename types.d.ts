@@ -3,8 +3,8 @@ import {
   TransProps,
   Namespace,
   NamespaceExtractor,
-  WithNamespacesOptions,
-  WithNamespaces,
+  WithTranslationOptions,
+  WithTranslation,
   Subtract
 } from 'react-i18next';
 import { LinkProps } from 'next-server/link';
@@ -41,12 +41,12 @@ declare class NextI18Next {
 
   constructor(config: InitConfig);
 
-  withNamespaces(
+  withTranslation(
     namespace: Namespace | NamespaceExtractor,
-    options?: WithNamespacesOptions,
+    options?: WithTranslationOptions,
   ): <P>(
     component: React.ComponentType<P>,
-  ) => React.ComponentType<Subtract<P, WithNamespaces>>;
+  ) => React.ComponentType<Subtract<P, WithTranslation>>;
 
   appWithTranslation<P extends object>(Component: React.ComponentType<P> | React.ElementType<P>): any;
 }

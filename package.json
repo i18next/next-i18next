@@ -1,6 +1,6 @@
 {
   "name": "next-i18next",
-  "version": "0.40.1",
+  "version": "0.41.0",
   "repository": "git@github.com:isaachinman/next-i18next.git",
   "author": "Isaac Hinman <isaac@isaachinman.com>",
   "main": "dist/commonjs/index.js",
@@ -72,23 +72,27 @@
     "jsdom-global": "^3.0.2",
     "next": "^8.0.0",
     "puppeteer": "^1.11.0",
-    "react": "^16.7.0",
-    "react-dom": "^16.6.3"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   },
   "dependencies": {
     "detect-node": "^2.0.4",
     "hoist-non-react-statics": "^3.2.0",
-    "i18next": "^15.0.0",
+    "i18next": "^16.0.0",
     "i18next-browser-languagedetector": "^3.0.0",
     "i18next-express-middleware": "^1.5.0",
     "i18next-node-fs-backend": "^2.1.0",
     "i18next-xhr-backend": "^3.0.0",
     "path-match": "^1.2.4",
     "prop-types": "^15.6.2",
-    "react-i18next": "9.0.10",
+    "react-i18next": "^10.9.0",
     "url": "^0.11.0"
   },
+  "resolutions": {
+    "**/react": "^16.8.6",
+    "**/react-dom": "^16.8.6"
+  },
   "peerDependencies": {
-    "react": ">= 16.3.0"
+    "react": ">= 16.8.0"
   }
 }

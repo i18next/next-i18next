@@ -2,7 +2,7 @@ import React from 'react'
 import { withRouter } from 'next/router'
 
 import hoistNonReactStatics from 'hoist-non-react-statics'
-import { I18nextProvider } from 'react-i18next'
+import { I18nextProvider, withSSR } from 'react-i18next'
 
 import { lngFromReq, lngPathCorrector, lngsToLoad } from '../utils'
 import { localeSubpathOptions } from '../config/default-config'
@@ -10,6 +10,7 @@ import { NextStaticProvider } from '../components'
 
 export default function (WrappedComponent) {
 
+  const WrappedComponentWithSSR = withSSR()(WrappedComponent)
   const { config, consoleMessage, i18n } = this
 
   class AppWithTranslation extends React.Component {
@@ -129,11 +130,13 @@ export default function (WrappedComponent) {
       return (
         <I18nextProvider
           i18n={i18nServerInstance || i18n}
-          initialLanguage={initialLanguage}
-          initialI18nStore={initialI18nStore}
         >
           <NextStaticProvider>
-            <WrappedComponent {...this.props} />
+            <WrappedComponentWithSSR
+              initialLanguage={initialLanguage}
+              initialI18nStore={initialI18nStore}
+              {...this.props}
+            />
           </NextStaticProvider>
         </I18nextProvider>
       )
