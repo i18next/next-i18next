@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { withNamespaces } from '../i18n'
+import { withTranslation } from '../i18n'
 
 class Error extends React.Component {
   static getInitialProps({ res, err }) {
@@ -38,4 +38,4 @@ Error.propTypes = {
   t: PropTypes.func.isRequired,
 }
 
-export default withNamespaces('common')(Error)
+export default withTranslation('common')(Error)

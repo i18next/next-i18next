@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { withNamespaces } from '../i18n'
+import { withTranslation } from '../i18n'
 
 class Footer extends React.Component {
   render() {
@@ -16,4 +16,4 @@ Footer.propTypes = {
   t: PropTypes.func.isRequired,
 }
 
-export default withNamespaces('footer')(Footer)
+export default withTranslation('footer')(Footer)

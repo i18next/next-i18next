@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { withNamespaces, Link } from '../i18n'
+import { withTranslation, Link } from '../i18n'
 
 class SecondPage extends React.Component {
 
@@ -32,4 +32,4 @@ SecondPage.propTypes = {
   t: PropTypes.func.isRequired,
 }
 
-export default withNamespaces('second-page')(SecondPage)
+export default withTranslation('second-page')(SecondPage)
