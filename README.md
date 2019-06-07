@@ -56,7 +56,7 @@ export default NextI18NextInstance
 /* Optionally, export class methods as named exports */
 export const {
   appWithTranslation,
-  withNamespaces,
+  withTranslation,
 } = NextI18NextInstance
 ```
 
@@ -69,13 +69,13 @@ After creating and exporting your `NextI18Next` instance, you need to take the f
 1. Create an `_app.js` file inside your `pages` directory, and wrap it with the `NextI18Next.appWithTranslation` higher order component (HOC). You can see this approach in the [examples/simple/pages/_app.js](./examples/simple/pages/_app.js). 
 2. Create a `server.js` file inside your root directory, initialise an [express](https://www.npmjs.com/package/express) server, and use the `nextI18NextMiddleware` middleware with your `nextI18Next` instance passed in. You can see this approach in the [examples/simple/server.js](./examples/simple/server.js). For more info, see [the NextJs section on custom servers](https://github.com/zeit/next.js#custom-server-and-routing).
 
-That's it! Your app is ready to go. You can now use the `NextI18Next.withNamespaces` HOC to make your components or pages translatable, based on namespaces:
+That's it! Your app is ready to go. You can now use the `NextI18Next.withTranslation` HOC to make your components or pages translatable, based on namespaces:
 
 ```jsx
 import React from 'react'
 
 // This is our initialised `NextI18Next` instance
-import { withNamespaces } from '../i18n'
+import { withTranslation } from '../i18n'
 
 class Footer extends React.Component {
   render() {
@@ -85,18 +85,18 @@ class Footer extends React.Component {
   }
 }
 
-export default withNamespaces('footer')(Footer)
+export default withTranslation('footer')(Footer)
 ```
 
 ### 4. Declaring namespace dependencies
 
-The `withNamespaces` HOC is responsible for passing the `t` function to your component. It enables all the translation functionality provided by `i18next`. Further, it asserts your component gets re-rendered on language change or changes to the translation catalog itself (loaded translations). More info can be found [here](https://react.i18next.com/legacy-v9/withnamespaces).
+The `withTranslation` HOC is responsible for passing the `t` function to your component. It enables all the translation functionality provided by `i18next`. Further, it asserts your component gets re-rendered on language change or changes to the translation catalog itself (loaded translations). More info can be found [here](https://react.i18next.com/latest/withtranslation-hoc).
 
 By default, `next-i18next` will send _all your namespaces_ down to the client on each initial request. This can be an appropriate approach for smaller apps with less content, but a lot of apps will benefit from splitting namespaces based on route.
 
 To do that, you need to return a `namespacesRequired` array via `getInitialProps` on your page-level component. You can see this approach in [examples/simple/pages/index.js](./examples/simple/pages/index.js).
 
-Note: `withNamespaces` provides namespaces to the component that it wraps. However, `namespacesRequired` provides the total available namespaces to the entire React tree and belongs on the page level. Both are required (although you can use `Trans` instead of `withNamespaces` if desired).
+Note: `withTranslation` provides namespaces to the component that it wraps. However, `namespacesRequired` provides the total available namespaces to the entire React tree and belongs on the page level. Both are required (although you can use `Trans` instead of `withTranslation` if desired).
 
 ### 5. Locale subpaths
 
@@ -199,7 +199,7 @@ server.get('*', (req, res) => handle(req, res))
 
 ## Accessing the Current Language
 
-In many cases, you'll need to know the currently active language. Most of the time, to accomplish this, you should use the `withNamespaces` HOC, which will pass a `lng` prop to the wrapped component and further asserts your component will get re-rendered on language change or changes to the translation catalog itself (loaded translations). More info can be found [here](https://react.i18next.com/legacy-v9/withnamespaces).
+In many cases, you'll need to know the currently active language. Most of the time, to accomplish this, you should use the `withTranslation` HOC, which will pass a `lng` prop to the wrapped component and further asserts your component will get re-rendered on language change or changes to the translation catalog itself (loaded translations). More info can be found [here](https://react.i18next.com/latest/withtranslation-hoc).
 
 If for some reason you need to access the current language inside `getInitialProps`, you'll need to switch over server and client contexts. For example:
 

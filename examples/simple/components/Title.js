@@ -1,5 +1,6 @@
 import React from 'react'
-import { Trans, withNamespaces } from '../i18n'
+
+import { Trans, withTranslation } from '../i18n'
 
 class Title extends React.Component {
   render() { // eslint-disable-line class-methods-use-this
@@ -11,4 +12,4 @@ class Title extends React.Component {
   }
 }
 
-export default withNamespaces('common')(Title)
+export default withTranslation('common')(Title)

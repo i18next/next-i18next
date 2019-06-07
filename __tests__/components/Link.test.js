@@ -8,7 +8,7 @@ import { localeSubpathOptions } from '../../src/config/default-config'
 
 jest.mock('next/link')
 jest.mock('react-i18next', () => ({
-  withNamespaces: () => Component => Component,
+  withTranslation: () => Component => Component,
 }))
 
 describe('Link component', () => {
@@ -203,7 +203,7 @@ describe('Link component', () => {
   })
 
   describe('https://github.com/isaachinman/next-i18next/issues/97', () => {
-    const withNamespacesPropNames = [
+    const withTranslationPropNames = [
       'defaultNS',
       'i18n',
       'i18nOptions',
@@ -213,17 +213,17 @@ describe('Link component', () => {
       'tReady',
     ]
 
-    it('strips withNamespaces props before passing props to NextLink', () => {
-      const withNamespacesProps = withNamespacesPropNames.reduce((accum, propName, index) => {
+    it('strips withTranslation props before passing props to NextLink', () => {
+      const withTranslationProps = withTranslationPropNames.reduce((accum, propName, index) => {
         // eslint-disable-next-line no-param-reassign
         accum[propName] = index
 
         return accum
       }, {})
 
-      const component = createLinkComponent(withNamespacesProps)
+      const component = createLinkComponent(withTranslationProps)
 
-      withNamespacesPropNames.forEach((propName) => {
+      withTranslationPropNames.forEach((propName) => {
         expect(component.prop(propName)).toBeUndefined()
       })
     })

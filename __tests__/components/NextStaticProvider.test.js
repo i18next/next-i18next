@@ -6,7 +6,7 @@ import { mount } from 'enzyme'
 import NextStaticProvider from '../../src/components/NextStaticProvider'
 
 jest.mock('react-i18next', () => ({
-  withNamespaces: () => Component => Component,
+  withTranslation: () => Component => Component,
 }))
 
 describe('NextStaticProvider component', () => {

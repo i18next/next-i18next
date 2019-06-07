@@ -41,6 +41,7 @@ const config = {
   },
   react: {
     wait: true,
+    useSuspense: false,
   },
   strictMode: true,
   errorStackTraceLimit: 0,
