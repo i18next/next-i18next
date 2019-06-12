@@ -199,7 +199,7 @@ server.get('*', (req, res) => handle(req, res))
 
 ## Accessing the Current Language
 
-In many cases, you'll need to know the currently active language. Most of the time, to accomplish this, you should use the `withTranslation` HOC, which will pass a `lng` prop to the wrapped component and further asserts your component will get re-rendered on language change or changes to the translation catalog itself (loaded translations). More info can be found [here](https://react.i18next.com/latest/withtranslation-hoc).
+In many cases, you'll need to know the currently active language. Most of the time, to accomplish this, you should use the `withTranslation` HOC, which will pass an `i18n` prop to the wrapped component and further asserts your component will get re-rendered on language change or changes to the translation catalog itself (loaded translations). More info can be found [here](https://react.i18next.com/latest/withtranslation-hoc).
 
 If for some reason you need to access the current language inside `getInitialProps`, you'll need to switch over server and client contexts. For example:
 
