@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+  useTranslation,
   TransProps,
   Namespace,
   NamespaceExtractor,
@@ -38,6 +39,7 @@ declare class NextI18Next {
   Router: SingletonRouter;
   i18n: i18next.i18n;
   config: Config;
+  useTranslation: typeof useTranslation;
 
   constructor(config: InitConfig);
 
