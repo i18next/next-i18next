@@ -20,6 +20,9 @@ export default class NextI18Next {
     if (this.config.otherLanguages.length <= 0) {
       throw new Error('To properly initialise a next-i18next instance you must provide one or more locale codes in config.otherLanguages.')
     }
+    this.withNamespaces = () => {
+      throw new Error('next-i18next has upgraded to react-i18next v10 - please rename withNamespaces to withTranslation.')
+    }
 
     this.i18n = createI18NextClient(this.config)
     this.appWithTranslation = appWithTranslation.bind(this)
