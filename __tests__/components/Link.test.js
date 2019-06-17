@@ -17,7 +17,9 @@ describe('Link component', () => {
   beforeEach(() => {
     props = {
       href: '/foo/bar',
-      lng: 'de',
+      i18n: {
+        language: 'de',
+      },
       nextI18NextInternals: {
         config: {
           allLanguages: ['en', 'de'],
@@ -49,7 +51,7 @@ describe('Link component', () => {
 
   it('renders without lang if props.lng is undefined', () => {
     props.nextI18NextInternals.config.localeSubpaths = localeSubpathOptions.FOREIGN
-    props.lng = undefined
+    props.i18n.language = undefined
 
     // without 'as' prop
     let component = createLinkComponent()
@@ -68,7 +70,7 @@ describe('Link component', () => {
   it('renders without lang if props.lng === defaultLanguage', () => {
     props.nextI18NextInternals.config.localeSubpaths = localeSubpathOptions.FOREIGN
     props.nextI18NextInternals.config.defaultLanguage = 'en'
-    props.lng = 'en'
+    props.i18n.language = 'en'
 
     // without 'as' prop
     let component = createLinkComponent()
