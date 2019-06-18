@@ -37,12 +37,15 @@ const removeWithTranslationProps = (props) => {
 class Link extends React.Component {
   render() {
     const {
-      as, children, href, lng, nextI18NextInternals, ...props
+      as, children, href, i18n, nextI18NextInternals, ...props
     } = this.props
+    const { language } = i18n
 
-    if (localeSubpathRequired(nextI18NextInternals, lng)) {
+    if (localeSubpathRequired(nextI18NextInternals, language)) {
       const { config } = nextI18NextInternals
-      const { as: correctedAs, href: correctedHref } = lngPathCorrector(config, { as, href }, lng)
+      const { as: correctedAs, href: correctedHref } = lngPathCorrector(
+        config, { as, href }, language,
+      )
 
       return (
         <NextLink
