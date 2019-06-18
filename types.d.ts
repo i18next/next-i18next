@@ -3,10 +3,7 @@ import {
   useTranslation,
   TransProps,
   Namespace,
-  NamespaceExtractor,
-  WithTranslationOptions,
-  WithTranslation,
-  Subtract
+  withTranslation
 } from 'react-i18next';
 import { LinkProps } from 'next-server/link';
 import { SingletonRouter } from 'next-server/router';
@@ -43,12 +40,7 @@ declare class NextI18Next {
 
   constructor(config: InitConfig);
 
-  withTranslation(
-    namespace: Namespace | NamespaceExtractor,
-    options?: WithTranslationOptions,
-  ): <P>(
-    component: React.ComponentType<P>,
-  ) => React.ComponentType<Subtract<P, WithTranslation>>;
+  withTranslation: typeof withTranslation;
 
   appWithTranslation<P extends object>(Component: React.ComponentType<P> | React.ElementType<P>): any;
 }
