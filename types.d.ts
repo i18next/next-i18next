@@ -3,7 +3,6 @@ import {
   useTranslation,
   TransProps,
   Namespace,
-  WithTranslation,
   withTranslation
 } from 'react-i18next';
 import { LinkProps } from 'next-server/link';
