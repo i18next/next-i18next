@@ -3,7 +3,8 @@ import {
   useTranslation,
   TransProps,
   Namespace,
-  withTranslation
+  withTranslation,
+  WithTranslation
 } from 'react-i18next';
 import { LinkProps } from 'next-server/link';
 import { SingletonRouter } from 'next-server/router';
@@ -44,5 +45,7 @@ declare class NextI18Next {
 
   appWithTranslation<P extends object>(Component: React.ComponentType<P> | React.ElementType<P>): any;
 }
+
+export type WithTranslation = WithTranslation;
 
 export default NextI18Next;
