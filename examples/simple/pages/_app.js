@@ -1,18 +1,18 @@
-import App, { Container } from 'next/app';
-import React from 'react';
-import { appWithTranslation } from '../i18n';
+import App, { Container } from 'next/app'
+import React from 'react'
+import { appWithTranslation } from '../i18n'
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
-    let pageProps = {};
+    let pageProps = {}
 
     if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
+      pageProps = await Component.getInitialProps(ctx)
     }
 
-    return { pageProps };
+    return { pageProps }
   }
-  
+
   render() {
     const { Component, pageProps } = this.props
     return (
