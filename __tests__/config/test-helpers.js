@@ -32,6 +32,7 @@ const userConfigServerSide = {
 const setUpTest = () => {
   const evalFunc = jest.spyOn(global, 'eval').mockImplementation(() => ({
     readdirSync: jest.fn().mockImplementation(() => ['common', 'file1', 'file2']),
+    existsSync: jest.fn().mockImplementation(() => true),
   }))
 
   const pwd = jest.spyOn(process, 'cwd').mockImplementation(() => '/home/user/')
