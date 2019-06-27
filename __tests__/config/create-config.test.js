@@ -41,6 +41,18 @@ describe('create configuration in non-production environment', () => {
     )
   })
 
+  it('throws if defaultNS does not exist', () => {
+    createConfig = mockIsNodeCreateConfig(true)
+    evalFunc.mockImplementation(() => ({
+      readdirSync: jest.fn().mockImplementation(() => ['universal', 'file1', 'file2']),
+      existsSync: jest.fn().mockImplementation(() => false),
+    }))
+
+    expect(() => createConfig({ localeSubpaths: 'all' })).toThrow(
+      'Default namespace not found at /home/user/static/locales/en/common.json',
+    )
+  })
+
   describe('server-side', () => {
     beforeEach(() => {
       createConfig = mockIsNodeCreateConfig(true)
@@ -86,6 +98,7 @@ describe('create configuration in non-production environment', () => {
     it('creates custom non-production configuration', () => {
       evalFunc.mockImplementation(() => ({
         readdirSync: jest.fn().mockImplementation(() => ['universal', 'file1', 'file2']),
+        existsSync: jest.fn().mockImplementation(() => true),
       }))
 
       const config = createConfig(userConfigServerSide)
@@ -111,6 +124,7 @@ describe('create configuration in non-production environment', () => {
       const mockReadDirSync = jest.fn()
       evalFunc.mockImplementation(() => ({
         readdirSync: mockReadDirSync,
+        existsSync: jest.fn().mockImplementation(() => true),
       }))
       const config = createConfig({ ns: ['common', 'ns1', 'ns2'] })
 
