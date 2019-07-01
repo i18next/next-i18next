@@ -133,9 +133,9 @@ export default function (WrappedComponent) {
         >
           <NextStaticProvider>
             <WrappedComponentWithSSR
-              initialLanguage={initialLanguage}
-              initialI18nStore={initialI18nStore}
               {...this.props}
+              initialLanguage={initialLanguage}
+              initialI18nStore={process.browser ? initialI18nStore : null}
             />
           </NextStaticProvider>
         </I18nextProvider>
