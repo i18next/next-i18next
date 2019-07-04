@@ -85,7 +85,7 @@
     "i18next-xhr-backend": "^3.0.0",
     "path-match": "^1.2.4",
     "prop-types": "^15.6.2",
-    "react-i18next": "^10.9.0",
+    "react-i18next": "^10.11.3",
     "url": "^0.11.0"
   },
   "resolutions": {

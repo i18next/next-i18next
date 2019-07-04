@@ -6591,10 +6591,10 @@ react-error-overlay@4.0.0:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-4.0.0.tgz#d198408a85b4070937a98667f500c832f86bd5d4"
   integrity sha512-FlsPxavEyMuR6TjVbSSywovXSEyOg6ZDj5+Z8nbsRl9EkOzAhEIcS+GLoQDC5fz/t9suhUXWmUrOBrgeUvrMxw==
 
-react-i18next@^10.9.0:
-  version "10.9.0"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-10.9.0.tgz#fdbb83d0d7a5bc7638e58088833f55581ec13f4e"
-  integrity sha512-jnutkawC0UVUCwcMPtLiLmCi1HjcHkKla+QiAAYy23SR3mEJtDXvd7ztI08vOHYNT2eUPqdPrdiD6/Xc607CGA==
+react-i18next@^10.11.3:
+  version "10.11.3"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-10.11.3.tgz#ceeae82177162b6ba0af162b5c355258cf4e5d0d"
+  integrity sha512-+kR0SQrTSws+NQfqK6Xe2FR6tMyfIPB6voxUqnLQ35Eh7T0vfe+v7eC4fF3pZlGGyn0qPKr294ACGbIz74u0sQ==
   dependencies:
     "@babel/runtime" "^7.3.1"
     html-parse-stringify2 "2.0.1"
