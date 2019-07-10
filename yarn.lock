@@ -374,9 +374,9 @@
     "@babel/types" "^7.3.0"
 
 "@babel/helpers@^7.4.4":
-  version "7.5.2"
-  resolved "https://registry.yarnpkg.com/@babel/helpers/-/helpers-7.5.2.tgz#97424dc82fc0041f4c751119b4d2b1ec68cdb5ba"
-  integrity sha512-NDkkTqDvgFUeo8djXBOiwO/mFjownznOWvmP9hvNdfiFUmx0nwNOqxuaTTbxjH744eQsD9M5ubC7gdANBvIWPw==
+  version "7.5.4"
+  resolved "https://registry.yarnpkg.com/@babel/helpers/-/helpers-7.5.4.tgz#2f00608aa10d460bde0ccf665d6dcf8477357cf0"
+  integrity sha512-6LJ6xwUEJP51w0sIgKyfvFMJvIb9mWAfohJp0+m6eHJigkFdcH8duZ1sfhn0ltJRzwUIT/yqqhdSfRpCpL7oow==
   dependencies:
     "@babel/template" "^7.4.4"
     "@babel/traverse" "^7.5.0"
@@ -465,9 +465,9 @@
     "@babel/plugin-syntax-object-rest-spread" "^7.0.0"
 
 "@babel/plugin-proposal-object-rest-spread@^7.4.4":
-  version "7.5.2"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-object-rest-spread/-/plugin-proposal-object-rest-spread-7.5.2.tgz#ec92b0c6419074ea7af77c78b7c5d42041f2f5a9"
-  integrity sha512-C/JU3YOx5J4d9s0GGlJlYXVwsbd5JmqQ0AvB7cIDAx7nN57aDTnlJEsZJPuSskeBtMGFWSWU5Q+piTiDe0s7FQ==
+  version "7.5.4"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-object-rest-spread/-/plugin-proposal-object-rest-spread-7.5.4.tgz#250de35d867ce8260a31b1fdac6c4fc1baa99331"
+  integrity sha512-KCx0z3y7y8ipZUMAEEJOyNi11lMb/FOPUjjB113tfowgw0c16EGYos7worCKBcUAh2oG+OBnoUhsnTSoLpV9uA==
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
     "@babel/plugin-syntax-object-rest-spread" "^7.2.0"
@@ -1663,11 +1663,6 @@ abbrev@1:
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
   integrity sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==
 
-acorn-dynamic-import@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/acorn-dynamic-import/-/acorn-dynamic-import-4.0.0.tgz#482210140582a36b83c3e342e1cfebcaa9240948"
-  integrity sha512-d3OEjQV4ROpoflsnUA8HozoIR504TFxNivYEUi6uwz0IYhBkTDXGuWlNdMtybRt3nqVx/L6XqMt0FxkXuWKZhw==
-
 acorn-globals@^4.1.0, acorn-globals@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/acorn-globals/-/acorn-globals-4.3.0.tgz#e3b6f8da3c1552a95ae627571f7dd6923bb54103"
@@ -1701,7 +1696,7 @@ acorn@^6.0.4:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.0.5.tgz#81730c0815f3f3b34d8efa95cb7430965f4d887a"
   integrity sha512-i33Zgp3XWtmZBMNvCr4azvOFeWVw1Rk6p3hfi3LUDvIFraOMywb1kAtrbi+med14m4Xfpqm3zRZMT+c0FNE7kg==
 
-acorn@^6.0.5:
+acorn@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.2.0.tgz#67f0da2fc339d6cfb5d6fb244fd449f33cd8bbe3"
   integrity sha512-8oe72N3WPMjA+2zVG71Ia0nXZ8DpQH+QyyHO+p06jT8eg8FGG3FbcUIi8KziHlAfheJQZeoqbvq1mQSQHXKYLw==
@@ -2563,9 +2558,9 @@ caniuse-lite@^1.0.30000899:
   integrity sha512-No5sQ/OB2Nmka8MNOOM6nJx+Hxt6MQ6h7t7kgJFu9oTuwjykyKRSBP/+i/QAyFHxeHB+ddE0Da1CG5ihx9oehQ==
 
 caniuse-lite@^1.0.30000981:
-  version "1.0.30000981"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000981.tgz#5b6828803362363e5a1deba2eb550185cf6cec8f"
-  integrity sha512-JTByHj4DQgL2crHNMK6PibqAMrqqb/Vvh0JrsTJVSWG4VSUrT16EklkuRZofurlMjgA9e+zlCM4Y39F3kootMQ==
+  version "1.0.30000983"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000983.tgz#ab3c70061ca2a3467182a10ac75109b199b647f8"
+  integrity sha512-/llD1bZ6qwNkt41AsvjsmwNOoA4ZB+8iqmf5LVyeSXuBODT/hAMFNVOh84NdUzoiYiSKqo5vQ3ZzeYHSi/olDQ==
 
 capture-exit@^1.2.0:
   version "1.2.0"
@@ -6085,10 +6080,10 @@ neo-async@^2.5.0:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
-next-server@9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/next-server/-/next-server-9.0.0.tgz#a90c6f7e10ce3b3d69cab17cbf9fbcb536c579c4"
-  integrity sha512-bKEuXxcY9Nv8GL4364rErlByRZzhfQbyBGrGvk1t6Nskp5fGhhSDXgH8oMP3DGx3w92sdA+tS2Zel4i9eWHSyw==
+next-server@9.0.1-canary.1:
+  version "9.0.1-canary.1"
+  resolved "https://registry.yarnpkg.com/next-server/-/next-server-9.0.1-canary.1.tgz#cb0c57c41291f23d2223304f0f7ed89188928d9b"
+  integrity sha512-M/JF/LyIpBYUMKZjmsz7O4eF7Av8KeBYi3j0K3h0ySeLaab5nV8UebrggGwfJl6ltPcPFaoDAak7B6m14QRIkg==
   dependencies:
     amp-toolbox-optimizer "1.2.0-alpha.1"
     content-type "1.0.4"
@@ -6104,10 +6099,10 @@ next-server@9.0.0:
     styled-jsx "3.2.1"
     url "0.11.0"
 
-next@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/next/-/next-9.0.0.tgz#c2cecdd279b5ff1df74b0f18c63fb04328ecd673"
-  integrity sha512-xMBVY3N/EAbjyb+7DbhP0JetJqZzCiYG44bJqDRh0QTYI+RYcYvW1Z+rxKQsm5CIyJuc2jCii+61DznKbpnrlA==
+next@9.0.1-canary.1:
+  version "9.0.1-canary.1"
+  resolved "https://registry.yarnpkg.com/next/-/next-9.0.1-canary.1.tgz#2528005a47f34cb46f990aa049877032a9790890"
+  integrity sha512-XV4+141zEynXWvEbqGz2Btgc6IUOIpLZki3ceH9WQCiymuZiDYvqLisRpSw/Z3Z0bpzLjiJ3F0SCPKusMzGWRA==
   dependencies:
     "@babel/core" "7.4.5"
     "@babel/plugin-proposal-class-properties" "7.4.4"
@@ -6135,7 +6130,7 @@ next@^9.0.0:
     launch-editor "2.2.1"
     loader-utils "1.2.3"
     mkdirp "0.5.1"
-    next-server "9.0.0"
+    next-server "9.0.1-canary.1"
     prop-types "15.7.2"
     prop-types-exact "1.2.0"
     react-error-overlay "5.1.6"
@@ -6150,7 +6145,7 @@ next@^9.0.0:
     unfetch "4.1.0"
     url "0.11.0"
     watchpack "2.0.0-beta.5"
-    webpack "4.32.2"
+    webpack "4.35.3"
     webpack-dev-middleware "3.7.0"
     webpack-hot-middleware "2.25.0"
     webpack-sources "1.3.0"
@@ -8668,17 +8663,16 @@ webpack-sources@1.3.0, webpack-sources@^1.0.1, webpack-sources@^1.3.0:
     source-list-map "^2.0.0"
     source-map "~0.6.1"
 
-webpack@4.32.2:
-  version "4.32.2"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-4.32.2.tgz#3639375364a617e84b914ddb2c770aed511e5bc8"
-  integrity sha512-F+H2Aa1TprTQrpodRAWUMJn7A8MgDx82yQiNvYMaj3d1nv3HetKU0oqEulL9huj8enirKi8KvEXQ3QtuHF89Zg==
+webpack@4.35.3:
+  version "4.35.3"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-4.35.3.tgz#66bc35ef215a7b75e8790f84d560013ffecf0ca3"
+  integrity sha512-xggQPwr9ILlXzz61lHzjvgoqGU08v5+Wnut19Uv3GaTtzN4xBTcwnobodrXE142EL1tOiS5WVEButooGzcQzTA==
   dependencies:
     "@webassemblyjs/ast" "1.8.5"
     "@webassemblyjs/helper-module-context" "1.8.5"
     "@webassemblyjs/wasm-edit" "1.8.5"
     "@webassemblyjs/wasm-parser" "1.8.5"
-    acorn "^6.0.5"
-    acorn-dynamic-import "^4.0.0"
+    acorn "^6.2.0"
     ajv "^6.1.0"
     ajv-keywords "^3.1.0"
     chrome-trace-event "^1.0.0"
