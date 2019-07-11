@@ -21,7 +21,7 @@
   "dependencies": {
     "express": "^4.16.4",
     "i18next": "^14.0.1",
-    "next": "^7.0.2",
+    "next": "9.0.1-canary.1",
     "next-i18next": "*",
     "react": "link:../../node_modules/react",
     "react-dom": "link:../../node_modules/react-dom",

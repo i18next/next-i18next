@@ -70,7 +70,7 @@
     "jest-puppeteer": "^4.0.0",
     "jsdom": "^15.0.0",
     "jsdom-global": "^3.0.2",
-    "next": "^8.0.0",
+    "next": "9.0.1-canary.1",
     "puppeteer": "^1.11.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
@@ -93,6 +93,7 @@
     "**/react-dom": "^16.8.6"
   },
   "peerDependencies": {
+    "next": ">= 7.0.0",
     "react": ">= 16.8.0"
   }
 }

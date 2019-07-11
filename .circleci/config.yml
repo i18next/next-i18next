@@ -24,16 +24,12 @@ jobs:
           command: yarn install
 
       - run:
-          name: Install dependencies (example)
-          command: yarn install
-
-      - run:
           name: Build source (main)
           command: yarn build
 
       - run:
           name: Build source (example)
-          command: cd examples/simple && yarn && yarn build
+          command: yarn build:examples/simple
 
       - save_cache:
           name: Save cache (main)
