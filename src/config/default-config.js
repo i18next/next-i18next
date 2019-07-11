@@ -7,6 +7,7 @@ export const localeSubpathOptions = {
   NONE: 'none',
 }
 
+const NEXT_SERVER_DIR = '.'
 const DEFAULT_LANGUAGE = 'en'
 const OTHER_LANGUAGES = []
 const DEFAULT_NAMESPACE = 'common'
@@ -16,6 +17,7 @@ const LOCALE_EXTENSION = 'json'
 const LOCALE_SUBPATHS = localeSubpathOptions.NONE
 
 const config = {
+  nextServerDir: NEXT_SERVER_DIR,
   defaultLanguage: DEFAULT_LANGUAGE,
   otherLanguages: OTHER_LANGUAGES,
   load: 'currentOnly',
