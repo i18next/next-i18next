@@ -46,6 +46,8 @@ declare class NextI18Next {
   appWithTranslation<P extends object>(Component: React.ComponentType<P> | React.ElementType<P>): any;
 }
 
+export type TFunction = i18next.TFunction;
+export type I18n = i18next.i18n;
 export type WithTranslation = WithTranslation;
 
 export default NextI18Next;
