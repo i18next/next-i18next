@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "noEmit": true,
+    "lib": ["esnext", "dom"]
+  },
+  "include": [
+    "__tests__/types.test.ts"
+  ]
+}
