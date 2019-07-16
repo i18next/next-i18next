@@ -12,6 +12,8 @@
 
 While `next-i18next` uses [i18next](https://www.i18next.com/) and [react-i18next](https://github.com/i18next/react-i18next) under the hood, users of `next-i18next` simply need to include their translation content as JSON files and don't have to worry about much else.
 
+A live demo is [available here](http://next-i18next.com/). Please be aware this is hosted on a free Heroku dyno and therefore may go to sleep during periods of inactivity. This demo app is the [simple example](./examples/simple/) - nothing more, nothing less.
+
 ## Setup
 
 ### 1. Installation
