@@ -23,6 +23,15 @@ h2 {
   opacity: 0.3;
 }
 
+p {
+  line-height: 1.65em;
+}
+p:nth-child(2) {
+  font-style: italic;
+  opacity: 0.65;
+  margin-top: 1rem;
+}
+
 a.github {
   position: fixed;
   top: 0.5rem;
