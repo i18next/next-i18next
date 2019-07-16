@@ -3,30 +3,28 @@ import PropTypes from 'prop-types'
 
 import { withTranslation, Link } from '../i18n'
 
-class SecondPage extends React.Component {
+import Header from '../components/Header'
+import Footer from '../components/Footer'
 
-  static async getInitialProps() {
-    return {
-      namespacesRequired: ['second-page'],
-    }
-  }
+const SecondPage = ({ t }) => (
+  <React.Fragment>
+    <main>
+      <Header title={t('h1')} />
+      <Link href='/'>
+        <button
+          type='button'
+        >
+          {t('back-to-home')}
+        </button>
+      </Link>
+    </main>
+    <Footer />
+  </React.Fragment>
+)
 
-  render() {
-    const { t } = this.props
-    return (
-      <React.Fragment>
-        <h1>{t('h1')}</h1>
-        <Link href='/'>
-          <button
-            type='button'
-          >
-            {t('back-to-home')}
-          </button>
-        </Link>
-      </React.Fragment>
-    )
-  }
-}
+SecondPage.getInitialProps = async () => ({
+  namespacesRequired: ['second-page', 'footer'],
+})
 
 SecondPage.propTypes = {
   t: PropTypes.func.isRequired,
