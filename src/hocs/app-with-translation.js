@@ -45,7 +45,7 @@ export default function (WrappedComponent) {
             .map(x => x[0])
           await clientLoadNamespaces(lng, usedNamespaces)
         }
-        changeLanguage(...args)
+        return changeLanguage(...args)
       }
     }
 
