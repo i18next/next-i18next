@@ -16,11 +16,11 @@ module.exports = {
 
   preset: 'jest-puppeteer',
 
-
   testPathIgnorePatterns: [
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
     '<rootDir>/__tests__/test-i18next-config.js',
+    '<rootDir>/__tests__/types.test.ts',
     '<rootDir>/__tests__/config/test-helpers.js',
   ],
 }

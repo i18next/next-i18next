@@ -6,8 +6,8 @@ import {
   withTranslation,
   WithTranslation
 } from 'react-i18next';
-import { LinkProps } from 'next-server/link';
-import { SingletonRouter } from 'next-server/router';
+import { LinkProps } from 'next/link';
+import { SingletonRouter } from 'next/router';
 import i18next from 'i18next';
 
 export type InitConfig = {
