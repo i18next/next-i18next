@@ -13,6 +13,12 @@ export default function (WrappedComponent) {
   const WrappedComponentWithSSR = withSSR()(WrappedComponent)
   const { config, consoleMessage, i18n } = this
 
+  const clientLoadNamespaces = (lng, namespaces) => Promise.all(
+    namespaces
+      .filter(ns => !i18n.hasResourceBundle(lng, ns))
+      .map(ns => i18n.reloadResources(lng, ns)),
+  )
+
   class AppWithTranslation extends React.Component {
 
     constructor(props) {
@@ -28,6 +34,18 @@ export default function (WrappedComponent) {
             router.replace(href, as, { shallow: true })
           }
         })
+      }
+
+      const changeLanguage = i18n.changeLanguage.bind(i18n)
+      i18n.changeLanguage = async (...args) => {
+        const lng = args[0]
+        if (typeof lng === 'string' && i18n.initializedLanguageOnce === true) {
+          const usedNamespaces = Object.entries(i18n.reportNamespaces.usedNamespaces)
+            .filter(x => x[1] === true)
+            .map(x => x[0])
+          await clientLoadNamespaces(lng, usedNamespaces)
+        }
+        return changeLanguage(...args)
       }
     }
 
@@ -77,7 +95,7 @@ export default function (WrappedComponent) {
       // the client will trigger a request for it and issue
       // the "Did not expect server HTML to contain a <h1> in <div>"
       // error
-      if (!namespacesRequired.includes(config.defaultNS)) {
+      if (typeof config.defaultNS === 'string' && !namespacesRequired.includes(config.defaultNS)) {
         namespacesRequired.push(config.defaultNS)
       }
 
@@ -101,11 +119,8 @@ export default function (WrappedComponent) {
       } else if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
 
         // Load newly-required translations if changing route clientside
-        await Promise.all(
-          namespacesRequired
-            .filter(ns => !i18n.hasResourceBundle(i18n.languages[0], ns))
-            .map(ns => new Promise(resolve => i18n.loadNamespaces(ns, () => resolve()))),
-        )
+        await clientLoadNamespaces(i18n.languages[0], namespacesRequired)
+
         initialI18nStore = i18n.store.data
       }
 
