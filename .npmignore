@@ -29,3 +29,5 @@ jest.*
 greenkeeper.json
 jest-puppeteer.config.js
 .github
+Procfile
+*.md
