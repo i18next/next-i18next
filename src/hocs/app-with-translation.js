@@ -24,17 +24,20 @@ export default function (WrappedComponent) {
     constructor(props) {
       super(props)
 
-      if (process.browser && config.localeSubpaths !== localeSubpathOptions.NONE) {
-        i18n.on('languageChanged', (lng) => {
-          const { router } = props
-          const { pathname, asPath, query } = router
-          const routeInfo = { pathname, query }
+      i18n.on('languageChanged', (lng) => {
+        const { router } = props
+        const { pathname, asPath, query } = router
+        const routeInfo = { pathname, query }
+
+        if (process.browser && config.localeSubpaths !== localeSubpathOptions.NONE) {
           const { as, href } = lngPathCorrector(config, { as: asPath, href: routeInfo }, lng)
           if (as !== asPath) {
-            router.replace(href, as, { shallow: true })
+            router.replace(href, as)
           }
-        })
-      }
+        } else {
+          router.replace({ pathname, query })
+        }
+      })
 
       const changeLanguage = i18n.changeLanguage.bind(i18n)
       i18n.changeLanguage = async (...args) => {
