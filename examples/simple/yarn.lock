@@ -4154,9 +4154,20 @@ neo-async@^2.5.0:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
-"next-i18next@link:../..":
-  version "0.0.0"
-  uid ""
+"next-i18next@file:../..":
+  version "0.47.0"
+  dependencies:
+    detect-node "^2.0.4"
+    hoist-non-react-statics "^3.2.0"
+    i18next "^17.0.4"
+    i18next-browser-languagedetector "^3.0.0"
+    i18next-express-middleware "^1.5.0"
+    i18next-node-fs-backend "^2.1.0"
+    i18next-xhr-backend "^3.0.0"
+    path-match "^1.2.4"
+    prop-types "^15.6.2"
+    react-i18next "^10.11.3"
+    url "^0.11.0"
 
 next-server@9.0.1-canary.1:
   version "9.0.1-canary.1"
@@ -4881,9 +4892,13 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-"react-dom@link:../../node_modules/react-dom":
-  version "0.0.0"
-  uid ""
+"react-dom@file:../../node_modules/react-dom":
+  version "16.8.6"
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    scheduler "^0.13.6"
 
 react-error-overlay@5.1.6:
   version "5.1.6"
@@ -4903,9 +4918,13 @@ react-is@16.8.6, react-is@^16.7.0, react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
   integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
 
-"react@link:../../node_modules/react":
-  version "0.0.0"
-  uid ""
+"react@file:../../node_modules/react":
+  version "16.8.6"
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    scheduler "^0.13.6"
 
 read-pkg-up@^2.0.0:
   version "2.0.0"
