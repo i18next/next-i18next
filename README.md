@@ -228,6 +228,7 @@ MyPage.getInitialProps = async({ req }) => {
 | `localeStructure` | `'{{lng}}/{{ns}}'`  |
 | `localeSubpaths` | `'none'`  |
 | `serverLanguageDetection` | `true`  |
+| `strictMode` | `true`  |
 | `use` (for plugins) | `[]`  |
 | `customDetectors` | `[]`  |
 
