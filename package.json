@@ -33,7 +33,7 @@
     "prepublishOnly": "yarn build",
     "run-example": "yarn build && cd examples/simple && yarn && yarn dev",
     "run-example:prod": "yarn --cwd examples/simple start",
-    "test": "yarn check-types && yarn build && yarn build:examples/simple && NODE_ENV=test jest --maxWorkers=1 --silent",
+    "test": "yarn check-types && yarn build && yarn build:examples/simple && bundlesize && NODE_ENV=test jest --maxWorkers=1 --silent",
     "contributors:check": "all-contributors check",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate"
@@ -43,6 +43,19 @@
       "pre-commit": "yarn lint && yarn test"
     }
   },
+  "bundlesize": [{
+      "path": "./examples/simple/.next/static/chunks/commons*.js",
+      "maxSize": "106 kB"
+    },
+    {
+      "path": "./examples/simple/.next/static/runtime/main*.js",
+      "maxSize": "8 kB"
+    },
+    {
+      "path": "./examples/simple/.next/static/runtime/webpack*.js",
+      "maxSize": "750 B"
+    }
+  ],
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
@@ -57,6 +70,7 @@
     "babel-jest": "^24.1.0",
     "babel-plugin-add-module-exports": "^1.0.0",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "bundlesize": "^0.18.0",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
     "eslint": "^5.12.1",
