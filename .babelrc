@@ -16,14 +16,27 @@
     },
     "cjs": {
       "presets": [
-        ["next/babel", {
-          "transform-runtime": {
-            "corejs": false,
-            "helpers": true,
-            "regenerator": true,
-            "useESModules": false
-          },
-        }]
+        [
+          "@babel/preset-env",
+          {
+            "useBuiltIns": "usage",
+            "corejs": {
+              "version": 3,
+              "proposals": true
+            }
+          }
+        ],
+        [
+          "next/babel", 
+          {
+            "transform-runtime": {
+              "corejs": false,
+              "helpers": true,
+              "regenerator": true,
+              "useESModules": false
+            },
+          }
+        ]
       ],
       "plugins": [
         [

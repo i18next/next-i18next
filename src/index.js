@@ -1,5 +1,3 @@
-import 'core-js/stable'
-
 import { withTranslation as _withTranslation, useTranslation, Trans } from 'react-i18next'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 
