@@ -1,6 +1,6 @@
 import 'core-js/stable'
 
-import { withTranslation, useTranslation, Trans } from 'react-i18next'
+import { withTranslation as _withTranslation, useTranslation, Trans } from 'react-i18next'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 
 import createConfig from './config/create-config'
@@ -11,6 +11,8 @@ import { consoleMessage } from './utils'
 import { Link } from './components'
 import { wrapRouter } from './router'
 
+export const withTranslation = (namespace, options) => Component => hoistNonReactStatics(
+  _withTranslation(namespace, options)(Component), Component)
 
 export default class NextI18Next {
 
@@ -28,8 +30,7 @@ export default class NextI18Next {
 
     this.i18n = createI18NextClient(this.config)
     this.appWithTranslation = appWithTranslation.bind(this)
-    this.withTranslation = (namespace, options) => Component => hoistNonReactStatics(
-      withTranslation(namespace, options)(Component), Component)
+    this.withTranslation = withTranslation
 
     const nextI18NextInternals = { config: this.config, i18n: this.i18n }
     this.Link = withInternals(Link, nextI18NextInternals)
