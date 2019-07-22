@@ -1,7 +1,9 @@
 import { withTranslation, useTranslation, Trans } from 'react-i18next'
 import hoistNonReactStatics from 'hoist-non-react-statics'
+
 import createConfig from './config/create-config'
 import createI18NextClient from './create-i18next-client'
+
 import { appWithTranslation, withInternals } from './hocs'
 import { consoleMessage } from './utils'
 import { Link } from './components'
