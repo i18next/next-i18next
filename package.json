@@ -43,7 +43,8 @@
       "pre-commit": "yarn lint && yarn test"
     }
   },
-  "bundlesize": [{
+  "bundlesize": [
+    {
       "path": "./examples/simple/.next/static/chunks/commons*.js",
       "maxSize": "106 kB"
     },
@@ -90,7 +91,7 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "core-js": "^3.1.4",
+    "core-js": "^2",
     "detect-node": "^2.0.4",
     "hoist-non-react-statics": "^3.2.0",
     "i18next": "^17.0.4",
