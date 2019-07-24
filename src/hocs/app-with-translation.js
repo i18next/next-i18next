@@ -29,13 +29,15 @@ export default function (WrappedComponent) {
         const { pathname, asPath, query } = router
         const routeInfo = { pathname, query }
 
-        if (process.browser && config.localeSubpaths !== localeSubpathOptions.NONE) {
-          const { as, href } = lngPathCorrector(config, { as: asPath, href: routeInfo }, lng)
-          if (as !== asPath) {
-            router.replace(href, as)
+        if (process.browser) {
+          if (config.localeSubpaths !== localeSubpathOptions.NONE) {
+            const { as, href } = lngPathCorrector(config, { as: asPath, href: routeInfo }, lng)
+            if (as !== asPath) {
+              router.replace(href, as)
+            }
+          } else {
+            router.replace({ pathname, query })
           }
-        } else {
-          router.replace({ pathname, query })
         }
       })
 
