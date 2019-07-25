@@ -49,5 +49,6 @@ declare class NextI18Next {
 export type TFunction = i18next.TFunction;
 export type I18n = i18next.i18n;
 export type WithTranslation = WithTranslation;
+export type withTranslation = typeof withTranslation
 
 export default NextI18Next;

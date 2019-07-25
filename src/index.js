@@ -9,6 +9,7 @@ import { consoleMessage } from './utils'
 import { Link } from './components'
 import { wrapRouter } from './router'
 
+export { withTranslation } from 'react-i18next'
 
 export default class NextI18Next {
 
