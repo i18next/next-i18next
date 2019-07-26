@@ -60,6 +60,7 @@ describe('appWithTranslation', () => {
   it('will call router events in a browser context', async () => {
     const { i18n } = await createApp()
     process.browser = true
+    i18n.initializedLanguageOnce = true
     await i18n.changeLanguage('en')
     expect(mockRouterFn).toHaveBeenCalledTimes(1)
   })
@@ -67,6 +68,15 @@ describe('appWithTranslation', () => {
   it('will not call router events in a server context', async () => {
     const { i18n } = await createApp()
     process.browser = false
+    i18n.initializedLanguageOnce = true
+    await i18n.changeLanguage('en')
+    expect(mockRouterFn).toHaveBeenCalledTimes(0)
+  })
+
+  it('will not call router events if initializedLanguageOnce is false', async () => {
+    const { i18n } = await createApp()
+    process.browser = true
+    i18n.initializedLanguageOnce = false
     await i18n.changeLanguage('en')
     expect(mockRouterFn).toHaveBeenCalledTimes(0)
   })
