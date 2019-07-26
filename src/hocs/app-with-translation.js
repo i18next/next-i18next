@@ -36,7 +36,7 @@ export default function (WrappedComponent) {
               router.replace(href, as)
             }
           } else {
-            router.replace({ pathname, query })
+            router.replace({ pathname, query }, { pathname: asPath })
           }
         }
       })
