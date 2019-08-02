@@ -2,6 +2,7 @@
   "env": {
     "es": {
       "presets": [
+        "@babel/preset-typescript",
         [
           "@babel/env",
           {
@@ -16,6 +17,7 @@
     },
     "cjs": {
       "presets": [
+        "@babel/preset-typescript",
         [
           "@babel/preset-env",
           {
@@ -38,6 +40,7 @@
         ]
       ],
       "plugins": [
+        "@babel/proposal-class-properties",
         [
           "add-module-exports",
           {
@@ -48,6 +51,7 @@
     },
     "test": {
       "presets": [
+        "@babel/preset-typescript",
         [
           "@babel/env",
           {
@@ -60,6 +64,7 @@
         ["@babel/preset-react"]
       ],
       "plugins": [
+        "@babel/proposal-class-properties",
         [
           "add-module-exports",
           {

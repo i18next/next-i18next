@@ -1,4 +1,4 @@
-export { default as consoleMessage } from './console-message.js'
+export { default as consoleMessage } from './console-message'
 export { default as forceTrailingSlash } from './force-trailing-slash'
 export { default as lngFromReq } from './lng-from-req'
 export { default as lngPathCorrector } from './lng-path-corrector'

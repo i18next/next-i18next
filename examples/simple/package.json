@@ -11,20 +11,13 @@
     "build": "next build",
     "start": "NODE_ENV=production node index.js"
   },
-  "devDependencies": {
-    "babel-plugin-module-resolver": "^3.0.0",
-    "babel-preset-env": "^1.6.1",
-    "eslint": "^5.12.1",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0"
-  },
+  "devDependencies": {},
   "dependencies": {
     "express": "^4.16.4",
     "i18next": "^14.0.1",
-    "next": "9.0.1-canary.1",
+    "next": "^9.0.3",
     "next-i18next": "link:../../",
     "react": "link:../../node_modules/react",
-    "react-dom": "link:../../node_modules/react-dom",
-    "winston": "^3.1.0"
+    "react-dom": "link:../../node_modules/react-dom"
   }
 }

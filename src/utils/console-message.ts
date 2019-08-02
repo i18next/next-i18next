@@ -52,7 +52,7 @@ export default function createConsoleLog(messageType, message) {
 
   /* Temporarily set the stacktrace to 0 or errorStackTraceLimit,
      in order to only display a message */
-  Error.errorStackTraceLimit = errorStackTraceLimit
+  (Error as any).errorStackTraceLimit = errorStackTraceLimit
 
   // Make room for new message
   console.log()
