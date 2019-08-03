@@ -1,7 +1,8 @@
-/* eslint-env jest */
-import NextRouter from 'next/router'
 import wrapRouter from '../../src/router/wrap-router'
+import { Router } from 'next/router'
 import { localeSubpathOptions } from '../../src/config/default-config'
+
+const NextRouter: jest.Mocked<Router> = require('next/router')
 
 jest.mock('next/router', () => ({
   asPath: '/some-path',
@@ -78,7 +79,7 @@ describe('wrapRouter', () => {
       router.beforePopState()
       expect(NextRouter.beforePopState).toHaveBeenCalled()
       router.ready()
-      expect(NextRouter.ready).toHaveBeenCalled()
+      expect((NextRouter as any).ready).toHaveBeenCalled()
       router.prefetch()
       expect(NextRouter.prefetch).toHaveBeenCalled()
     })

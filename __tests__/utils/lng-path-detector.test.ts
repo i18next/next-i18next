@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import testI18NextConfig from '../test-i18next-config'
 
 import lngPathDetector from '../../src/utils/lng-path-detector'

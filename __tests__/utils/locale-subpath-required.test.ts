@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { localeSubpathOptions } from '../../src/config/default-config'
 
 import { localeSubpathRequired } from '../../src/utils'
@@ -17,7 +15,7 @@ describe('localeSubpathRequired utility function', () => {
   })
 
   it('returns false if lng is falsy', () => {
-    expect(localeSubpathRequired(nextI18NextInternals)).toBe(false)
+    expect((localeSubpathRequired as any)(nextI18NextInternals)).toBe(false)
   })
 
   it('returns false is localeSubpaths is set to none', () => {

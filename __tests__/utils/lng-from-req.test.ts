@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import lngFromReq from '../../src/utils/lng-from-req'
 
 describe('lngFromReq utility function', () => {

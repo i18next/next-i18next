@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import defaultConfig from '../src/config/default-config'
 
 export default {

@@ -1,11 +1,13 @@
-/* eslint-env jest */
-
 import i18nextMiddleware from 'i18next-express-middleware'
-import { forceTrailingSlash, lngPathDetector, redirectWithoutCache } from '../../src/utils'
+
 import testI18NextConfig from '../test-i18next-config'
 
 import nextI18nextMiddleware from '../../src/middlewares/next-i18next-middleware'
 import { localeSubpathOptions } from '../../src/config/default-config'
+
+const forceTrailingSlash: jest.Mock = require('../../src/utils').forceTrailingSlash
+const lngPathDetector: jest.Mock = require('../../src/utils').lngPathDetector
+const redirectWithoutCache: jest.Mock = require('../../src/utils').redirectWithoutCache
 
 jest.mock('i18next-express-middleware', () => ({
   handle: jest.fn(() => jest.fn()),

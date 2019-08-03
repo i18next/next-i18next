@@ -1,4 +1,3 @@
-/* eslint-env jest */
 import i18next from 'i18next'
 import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector'
 import createI18nextClient from '../src/create-i18next-client'
@@ -22,8 +21,8 @@ describe('initializing i18n', () => {
   })
 
   afterEach(() => {
-    i18next.init.mockClear()
-    i18next.use.mockClear()
+    (i18next.init as jest.Mock).mockClear();
+    (i18next.use as jest.Mock).mockClear()
     i18nextMiddleware.LanguageDetector.mockClear()
   })
 
