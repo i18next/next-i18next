@@ -1,4 +1,3 @@
-/* eslint-env jest */
 import lngsToLoad from '../../src/utils/lngs-to-load'
 
 describe('lngsToLoad utility function', () => {

@@ -1,4 +1,3 @@
-/* eslint-env jest */
 import React from 'react'
 
 import i18next from 'i18next'
@@ -58,25 +57,25 @@ describe('appWithTranslation', () => {
   beforeEach(mockRouterFn.mockReset)
 
   it('will call router events in a browser context', async () => {
-    const { i18n } = await createApp()
-    process.browser = true
-    i18n.initializedLanguageOnce = true
+    const { i18n } = await createApp();
+    (process as any).browser = true;
+    (i18n as any).initializedLanguageOnce = true
     await i18n.changeLanguage('en')
     expect(mockRouterFn).toHaveBeenCalledTimes(1)
   })
 
   it('will not call router events in a server context', async () => {
-    const { i18n } = await createApp()
-    process.browser = false
-    i18n.initializedLanguageOnce = true
+    const { i18n } = await createApp();
+    (process as any).browser = false;
+    (i18n as any).initializedLanguageOnce = true
     await i18n.changeLanguage('en')
     expect(mockRouterFn).toHaveBeenCalledTimes(0)
   })
 
   it('will not call router events if initializedLanguageOnce is false', async () => {
-    const { i18n } = await createApp()
-    process.browser = true
-    i18n.initializedLanguageOnce = false
+    const { i18n } = await createApp();
+    (process as any).browser = true;
+    (i18n as any).initializedLanguageOnce = false
     await i18n.changeLanguage('en')
     expect(mockRouterFn).toHaveBeenCalledTimes(0)
   })

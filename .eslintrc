@@ -1,13 +1,25 @@
 {
-  "extends": "eslint-config-airbnb",
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "env": {
     "browser": true
   },
   "rules": {
-    "semi": [
-      2,
-      "never"
-    ],
+    "@typescript-eslint/indent": ["error", 2],
+    "semi": "off",
+    "@typescript-eslint/semi": ["error", "never"],
+    "@typescript-eslint/no-var-requires": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/explicit-member-accessibility": 0,
+    "@typescript-eslint/no-object-literal-type-assertion": 0,
     "padded-blocks": 0,
     "global-require": 0,
     "function-paren-newline": 0,
@@ -16,6 +28,8 @@
     "import/no-unresolved": 0,
     "import/extensions": 0,
     "import/no-mutable-exports": 0,
+    "react/prop-types": 0,
+    "react/display-name": 0,
     "react/jsx-filename-extension": 0,
     "react/prefer-stateless-function": 0,
     "no-restricted-syntax": 0,

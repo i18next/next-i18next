@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { format } from 'url'
 
 import lngPathCorrector from '../../src/utils/lng-path-corrector'

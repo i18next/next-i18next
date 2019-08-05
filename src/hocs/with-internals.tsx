@@ -1,7 +1,9 @@
 import React from 'react'
 
 export default (WrappedComponent, config) => {
-  class withInternals extends React.Component {
+  class WithInternals extends React.Component {
+    static displayName = `withnextI18NextInternals(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`
+
     render() {
       return (
         <WrappedComponent
@@ -12,7 +14,5 @@ export default (WrappedComponent, config) => {
     }
   }
 
-  withInternals.displayName = `withnextI18NextInternals(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`
-
-  return withInternals
+  return WithInternals
 }

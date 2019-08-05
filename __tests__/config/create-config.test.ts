@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import {
   userConfig,
   userConfigClientSide,
@@ -224,7 +222,7 @@ describe('create configuration in non-production environment', () => {
   // 2. isNode is truthy and process.browser is truthy
   describe('client-side (isNode is falsy)', () => {
     beforeEach(() => {
-      delete process.browser
+      delete (process as any).browser
       createConfig = mockIsNodeCreateConfig(false)
     })
 
@@ -237,13 +235,13 @@ describe('create configuration in non-production environment', () => {
 
   describe('client-side (isNode is truthy and process.browser is truthy)', () => {
     beforeEach(() => {
-      process.browser = true
+      (process as any).browser = true
       createConfig = mockIsNodeCreateConfig(true)
     })
 
     afterEach(() => {
       createConfig = undefined
-      delete process.browser
+      delete (process as any).browser
     })
 
     runClientSideTests()

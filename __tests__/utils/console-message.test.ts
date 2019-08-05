@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-env jest */
-
 import { consoleMessage as _consoleMessage } from '../../src/utils'
 
 const consoleMessage = _consoleMessage.bind({
@@ -50,7 +47,7 @@ describe('consoleMessage utility function', () => {
   it('Logs info messages', () => {
     consoleMessage('info', 'Testing info message')
 
-    expect(console.info).toHaveBeenCalledTimes(1)
+    expect(console.info).toHaveBeenCalledTimes(1) // eslint-disable-line
   })
 
   it('Logs warning messages', () => {
@@ -73,7 +70,7 @@ describe('consoleMessage utility function', () => {
     consoleMessageNotStrictMode('warn', 'Testing warning message')
     consoleMessageNotStrictMode('error', 'Testing error message')
 
-    expect(console.info).not.toHaveBeenCalled()
+    expect(console.info).not.toHaveBeenCalled() // eslint-disable-line
     expect(console.warn).not.toHaveBeenCalled()
     expect(console.error).not.toHaveBeenCalled()
   })

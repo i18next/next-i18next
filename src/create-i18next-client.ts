@@ -1,9 +1,7 @@
 import isNode from 'detect-node'
-import i18next from 'i18next'
+import i18n from 'i18next'
 import i18nextXHRBackend from 'i18next-xhr-backend'
 import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector'
-
-const i18n = i18next.default ? i18next.default : i18next
 
 export default (config) => {
   if (!i18n.isInitialized) {

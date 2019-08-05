@@ -1,6 +1,6 @@
 import isNode from 'detect-node'
 
-export const isServer = isNode && !process.browser
+export const isServer = isNode && !(process as any).browser
 export const localeSubpathOptions = {
   ALL: 'all',
   FOREIGN: 'foreign',

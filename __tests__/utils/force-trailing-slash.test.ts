@@ -1,8 +1,6 @@
-/* eslint-env jest */
-
-import { parse } from 'url'
-
 import forceTrailingSlash from '../../src/utils/force-trailing-slash'
+
+const parse: jest.Mocked<any> = require('url').parse
 
 jest.mock('url', () => ({
   parse: jest.fn(),

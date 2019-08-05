@@ -18,8 +18,10 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
-import NextLink from 'next/link'
+import NextLink, { LinkProps } from 'next/link'
 import { withTranslation } from 'react-i18next'
+
+import { I18n, Config } from '../../types.d'
 import { lngPathCorrector, localeSubpathRequired } from '../utils'
 
 const removeWithTranslationProps = (props) => {
@@ -34,7 +36,33 @@ const removeWithTranslationProps = (props) => {
   return strippedProps
 }
 
-class Link extends React.Component {
+type Props = LinkProps & {
+  i18n: I18n;
+  nextI18NextInternals: {
+    config: Config;
+  };
+}
+
+class Link extends React.Component<Props> {
+  static propTypes = {
+    as: PropTypes.string,
+    children: PropTypes.node.isRequired,
+    href: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object,
+    ]).isRequired,
+    nextI18NextInternals: PropTypes.shape({
+      config: PropTypes.shape({
+        defaultLanguage: PropTypes.string.isRequired,
+        localeSubpaths: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
+  }
+
+  static defaultProps = {
+    as: undefined,
+  }
+
   render() {
     const {
       as, children, href, i18n, nextI18NextInternals, ...props
@@ -70,27 +98,8 @@ class Link extends React.Component {
   }
 }
 
-Link.propTypes = {
-  as: PropTypes.string,
-  children: PropTypes.node.isRequired,
-  href: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.object,
-  ]).isRequired,
-  nextI18NextInternals: PropTypes.shape({
-    config: PropTypes.shape({
-      defaultLanguage: PropTypes.string.isRequired,
-      localeSubpaths: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-}
-
-Link.defaultProps = {
-  as: undefined,
-}
-
 /*
   Usage of `withTranslation` here is just to
   force `Link` to rerender on language change
 */
-export default withTranslation()(Link)
+export default withTranslation()(Link as any)

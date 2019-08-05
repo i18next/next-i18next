@@ -9,7 +9,7 @@
   Very important: if you import `Router` from NextJs directly,
   and not this file, your lang subpath routing will break.
 */
-import NextRouter from 'next/router'
+import NextRouter, { SingletonRouter} from 'next/router'
 import { lngPathCorrector, localeSubpathRequired } from '../utils'
 
 const propertyFields = ['pathname', 'route', 'query', 'asPath', 'components', 'events']
@@ -17,7 +17,7 @@ const coreMethods = ['reload', 'back', 'beforePopState', 'ready', 'prefetch']
 const wrappedMethods = ['push', 'replace']
 
 export default function (nextI18NextInternals) {
-  const Router = {}
+  const Router = {} as SingletonRouter
 
   propertyFields.forEach((field) => {
     Object.defineProperty(Router, field, {

@@ -1,7 +1,5 @@
 import { localeSubpathOptions } from '../../src/config/default-config'
 
-/* eslint-env jest */
-
 const userConfig = {
   browserLanguageDetection: false,
   defaultLanguage: 'de',

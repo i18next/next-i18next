@@ -8,6 +8,18 @@ import { lngFromReq, lngPathCorrector, lngsToLoad } from '../utils'
 import { localeSubpathOptions } from '../config/default-config'
 import { NextStaticProvider } from '../components'
 
+interface Props {
+  initialLanguage: string;
+  initialI18nStore: any;
+  i18nServerInstance: any;
+}
+
+interface WrappedComponentProps {
+  pageProps: {
+    namespacesRequired?: string[];
+  };
+}
+
 export default function (WrappedComponent) {
 
   const WrappedComponentWithSSR = withSSR()(WrappedComponent)
@@ -19,7 +31,7 @@ export default function (WrappedComponent) {
       .map(ns => i18n.reloadResources(lng, ns)),
   )
 
-  class AppWithTranslation extends React.Component {
+  class AppWithTranslation extends React.Component<Props> {
 
     constructor(props) {
       super(props)
@@ -29,7 +41,7 @@ export default function (WrappedComponent) {
         const { pathname, asPath, query } = router
         const routeInfo = { pathname, query }
 
-        if (process.browser && i18n.initializedLanguageOnce) {
+        if ((process as any).browser && i18n.initializedLanguageOnce) {
           if (config.localeSubpaths !== localeSubpathOptions.NONE) {
             const { as, href } = lngPathCorrector(config, { as: asPath, href: routeInfo }, lng)
             if (as !== asPath) {
@@ -56,7 +68,7 @@ export default function (WrappedComponent) {
 
     static async getInitialProps(ctx) {
 
-      let wrappedComponentProps = { pageProps: {} }
+      let wrappedComponentProps: WrappedComponentProps = { pageProps: {} }
       if (WrappedComponent.getInitialProps) {
         wrappedComponentProps = await WrappedComponent.getInitialProps(ctx)
       }
