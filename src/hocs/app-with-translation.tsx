@@ -36,14 +36,14 @@ export default function (WrappedComponent) {
     constructor(props) {
       super(props)
 
-      i18n.on('languageChanged', (lng) => {
+      const changeLanguageCallback = (prevLng, newLng) => {
         const { router } = props
         const { pathname, asPath, query } = router
         const routeInfo = { pathname, query }
 
-        if ((process as any).browser && i18n.initializedLanguageOnce) {
+        if ((process as any).browser && i18n.initializedLanguageOnce && typeof newLng === 'string' && prevLng !== newLng) {
           if (config.localeSubpaths !== localeSubpathOptions.NONE) {
-            const { as, href } = lngPathCorrector(config, { as: asPath, href: routeInfo }, lng)
+            const { as, href } = lngPathCorrector(config, { as: asPath, href: routeInfo }, newLng)
             if (as !== asPath) {
               router.replace(href, as)
             }
@@ -51,18 +51,21 @@ export default function (WrappedComponent) {
             router.replace({ pathname, query }, asPath)
           }
         }
-      })
+      }
 
       const changeLanguage = i18n.changeLanguage.bind(i18n)
-      i18n.changeLanguage = async (...args) => {
-        const lng = args[0]
-        if (typeof lng === 'string' && i18n.initializedLanguageOnce === true) {
+      i18n.changeLanguage = async (newLng, callback = () => null) => {
+        const prevLng = i18n.language
+        if (typeof newLng === 'string' && i18n.initializedLanguageOnce === true) {
           const usedNamespaces = Object.entries(i18n.reportNamespaces.usedNamespaces)
             .filter(x => x[1] === true)
             .map(x => x[0])
-          await clientLoadNamespaces(lng, usedNamespaces)
+          await clientLoadNamespaces(newLng, usedNamespaces)
         }
-        return changeLanguage(...args)
+        return changeLanguage(newLng, () => {
+          changeLanguageCallback(prevLng, newLng)
+          callback()
+        })
       }
     }
 

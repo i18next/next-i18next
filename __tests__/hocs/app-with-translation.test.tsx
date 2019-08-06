@@ -31,6 +31,7 @@ const defaultProps = {
 const createApp = async (config = defaultConfig, props = defaultProps) => {
   const i18n = i18next.createInstance(config)
   await i18n.init()
+  await i18n.changeLanguage(defaultConfig.lng)
 
   const appWithTranslationAndContext = appWithTranslation.bind({
     config,
@@ -60,7 +61,7 @@ describe('appWithTranslation', () => {
     const { i18n } = await createApp();
     (process as any).browser = true;
     (i18n as any).initializedLanguageOnce = true
-    await i18n.changeLanguage('en')
+    await i18n.changeLanguage('de')
     expect(mockRouterFn).toHaveBeenCalledTimes(1)
   })
 
@@ -68,7 +69,7 @@ describe('appWithTranslation', () => {
     const { i18n } = await createApp();
     (process as any).browser = false;
     (i18n as any).initializedLanguageOnce = true
-    await i18n.changeLanguage('en')
+    await i18n.changeLanguage('de')
     expect(mockRouterFn).toHaveBeenCalledTimes(0)
   })
 
@@ -76,7 +77,7 @@ describe('appWithTranslation', () => {
     const { i18n } = await createApp();
     (process as any).browser = true;
     (i18n as any).initializedLanguageOnce = false
-    await i18n.changeLanguage('en')
+    await i18n.changeLanguage('de')
     expect(mockRouterFn).toHaveBeenCalledTimes(0)
   })
 })
