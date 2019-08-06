@@ -3,6 +3,6 @@ import {
   I18n,
   InitConfig,
   TFunction,
-  withTranslation,
   WithTranslation,
+  AppWithTranslation,
 } from '../types.d'

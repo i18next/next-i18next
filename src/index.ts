@@ -9,7 +9,7 @@ import { consoleMessage } from './utils'
 import { Link } from './components';
 import { wrapRouter } from './router';
 
-import { AppWithTranslation, Config, InitConfig, Trans as TransType, Link as LinkType, I18n, UseTranslation, withTranslation as WithTranslation, Router } from '../types'
+import { AppWithTranslation, Config, InitConfig, Trans as TransType, Link as LinkType, I18n, UseTranslation, WithTranslation, Router } from '../types'
 
 export { withTranslation } from 'react-i18next'
 
