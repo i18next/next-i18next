@@ -4,5 +4,8 @@
     "noEmit": true,
     "lib": ["esnext", "dom"],
     "jsx": "react"
-  }
+  },
+  "include": [
+    "__tests__/types.test.tsx"
+  ]
 }
