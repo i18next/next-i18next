@@ -19,7 +19,7 @@ export type InitConfig = {
   localePath?: string;
   localeStructure?: string;
   otherLanguages: string[];
-  localeSubpaths?: "none" | "foreign" | "all";
+  localeSubpaths?: Record<string, string>;
   use?: any[];
   customDetectors?: any[];
 } & i18next.InitOptions
@@ -50,6 +50,17 @@ declare class NextI18Next {
   useTranslation: UseTranslation
   withTranslation: WithTranslation
   appWithTranslation: AppWithTranslation
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      i18n?: I18n & {
+        options: Config;
+      };
+      lng?: string;
+    }
+  }
 }
 
 export default NextI18Next

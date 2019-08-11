@@ -6,6 +6,7 @@
     "jsx": "react"
   },
   "include": [
-    "__tests__/types.test.tsx"
+    "__tests__/types.test.tsx",
+    "src/**/*"
   ]
 }

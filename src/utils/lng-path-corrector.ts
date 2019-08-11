@@ -1,5 +1,9 @@
 import { format as formatUrl, parse as parseUrl } from 'url'
-import { localeSubpathOptions } from '../config/default-config'
+
+import { Config } from '../../types'
+import { removeSubpath, subpathIsPresent } from './index'
+import subpathIsRequired from './subpath-is-required'
+import subpathFromLng from './subpath-from-lng'
 
 const parseAs = (originalAs, href) => {
   const asType = typeof originalAs
@@ -32,33 +36,41 @@ const parseHref = (originalHref) => {
   return href
 }
 
-export default (config, currentRoute, currentLanguage) => {
-  const { defaultLanguage, allLanguages, localeSubpaths } = config
+export default (config: Config, currentRoute, currentLanguage) => {
+  const { allLanguages, localeSubpaths } = config
   const { as: originalAs, href: originalHref } = currentRoute
 
   if (!allLanguages.includes(currentLanguage)) {
     throw new Error('Invalid configuration: Current language is not included in all languages array')
   }
 
-  const href = parseHref(originalHref)
+  let href = parseHref(originalHref)
   let as = parseAs(originalAs, href)
 
-  // url.format prefers the 'url.search' string over the 'url.query' object,
-  // so remove the search string to ensure the query object is used
+  /*
+    url.format prefers the 'url.search' string over
+    the 'url.query' object, so remove the search
+    string to ensure the query object is used.
+  */
   delete href.search
 
-  for (const lng of allLanguages) {
-    if (as.startsWith(`/${lng}/`)) {
-      as = as.replace(`/${lng}/`, '/')
-      break
+  /*
+    Strip any/all subpaths from the `as` value
+  */
+  Object.values(localeSubpaths).forEach((subpath) => {
+    if (subpathIsPresent(as, subpath)) {
+      as = removeSubpath(as, subpath)
     }
-  }
+  })
 
-  if (currentLanguage !== defaultLanguage || localeSubpaths === localeSubpathOptions.ALL) {
+  if (subpathIsRequired(config, currentLanguage)) {
     const basePath = `${href.protocol}//${href.host}`
     const currentAs = as.replace(basePath, '')
-    as = `/${currentLanguage}${currentAs}`
+    const subpath = subpathFromLng(config, currentLanguage)
+
+    as = `/${subpath}${currentAs}`.replace(/\/$/, '')
     href.query.lng = currentLanguage
+    href.query.subpath = subpath
   }
 
   return { as, href }
