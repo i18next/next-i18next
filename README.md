@@ -109,32 +109,34 @@ myapp.com         ---> Homepage in default lang
 myapp.com/de/     ---> Homepage in German
 ```
 
-This functionality is not enabled by default, and must be passed as an option into the `NextI18Next` constructor:
+This functionality is not enabled by default, and must be passed as an option into the `NextI18Next` constructor as a config option:
 
 ```jsx
-new NextI18Next({ localeSubpaths: 'foreign' })
+new NextI18Next({
+  localeSubpaths: {
+    de: 'de'
+  }
+})
 ```
 
-Now, all your page routes will be duplicated across all your non-default language subpaths. If our `static/locales` folder included `fr`, `de`, and `es` translation directories, we will automatically get:
+The `localeSubpaths` option is a key/value mapping, where keys are the locale itself (case sensitive) and values are the subpath without slashes.
 
-```
-myapp.com
-myapp.com/fr/
-myapp.com/de/
-myapp.com/es/
-```
+Now, all your page routes will be duplicated across all your locale subpaths. Here's an example:
 
-If you also want to enable locale subpaths for the default locale, set `localeSubpaths` to `all`:
 ```jsx
-new NextI18Next({ localeSubpaths: 'all' })
-```
+----- Config -----
+new NextI18Next({
+  localeSubpaths: {
+    fr: 'fr',
+    de: 'german',
+    en: 'eng',
+  }
+})
 
-We'll now get:
-```
-myapp.com/en/
+----- Output -----
 myapp.com/fr/
-myapp.com/de/
-myapp.com/es/
+myapp.com/german/
+myapp.com/eng/
 ```
 
 When using the localeSubpaths option, our middleware may redirect without calling any subsequent middleware.  Therefore, if there are any critical middleware that must run before this redirect, ensure that you place it before the `nextI18NextMiddleware` middleware.
@@ -226,7 +228,7 @@ MyPage.getInitialProps = async({ req }) => {
 | `localeExtension` | `'json'`  |
 | `localePath` | `'static/locales'`  |
 | `localeStructure` | `'{{lng}}/{{ns}}'`  |
-| `localeSubpaths` | `'none'`  |
+| `localeSubpaths` | `{}`  |
 | `serverLanguageDetection` | `true`  |
 | `strictMode` | `true`  |
 | `use` (for plugins) | `[]`  |
