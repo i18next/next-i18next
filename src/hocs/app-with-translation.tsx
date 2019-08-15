@@ -6,7 +6,7 @@ import { I18nextProvider, withSSR } from 'react-i18next'
 
 import { lngFromReq, lngPathCorrector, lngsToLoad, subpathIsRequired } from '../utils'
 import { NextStaticProvider } from '../components'
-
+import { isServer } from '../utils'
 interface Props {
   initialLanguage: string;
   initialI18nStore: any;
@@ -34,7 +34,7 @@ export default function (WrappedComponent) {
 
     constructor(props) {
       super(props)
-      if ((process as any).browser) {
+      if (!isServer()) {
 
         const changeLanguageCallback = (prevLng, newLng) => {
           const { router } = props

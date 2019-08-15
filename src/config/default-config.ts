@@ -1,7 +1,3 @@
-import isNode from 'detect-node'
-
-export const isServer = isNode && !(process as any).browser
-
 const DEFAULT_LANGUAGE = 'en'
 const OTHER_LANGUAGES = []
 const DEFAULT_NAMESPACE = 'common'

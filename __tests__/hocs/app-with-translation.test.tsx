@@ -7,7 +7,11 @@ import NextApp, { Container } from 'next/app'
 import { appWithTranslation } from '../../src/hocs'
 import { localeSubpathVariations } from '../config/test-helpers'
 
+const isServer: jest.Mock = require('../../src/utils/is-server')
+
 const mockRouterFn = jest.fn()
+
+jest.mock('../../src/utils/is-server.ts', () => jest.fn())
 
 const defaultConfig = {
   localeSubpaths: localeSubpathVariations.NONE,
@@ -55,10 +59,13 @@ const createApp = async (config = defaultConfig, props = defaultProps) => {
 }
 
 describe('appWithTranslation', () => {
-  beforeEach(mockRouterFn.mockReset)
+  beforeEach(() => {
+    mockRouterFn.mockReset()
+    isServer.mockReset()
+  })
 
   it('will call router events in a browser context', async () => {
-    (process as any).browser = true
+    isServer.mockReturnValue(false)
     const { i18n } = await createApp();
     (i18n as any).initializedLanguageOnce = true
     await i18n.changeLanguage('de')
@@ -66,7 +73,7 @@ describe('appWithTranslation', () => {
   })
 
   it('will not call router events in a server context', async () => {
-    (process as any).browser = false
+    isServer.mockReturnValue(true)
     const { i18n } = await createApp();
     (i18n as any).initializedLanguageOnce = true
     await i18n.changeLanguage('de')
@@ -74,8 +81,8 @@ describe('appWithTranslation', () => {
   })
 
   it('will not call router events if initializedLanguageOnce is false', async () => {
+    isServer.mockReturnValue(false)
     const { i18n } = await createApp();
-    (process as any).browser = true;
     (i18n as any).initializedLanguageOnce = false
     await i18n.changeLanguage('de')
     expect(mockRouterFn).toHaveBeenCalledTimes(0)

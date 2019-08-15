@@ -1,11 +1,12 @@
-import defaultConfig, { isServer } from './default-config'
+import defaultConfig from './default-config'
+import { isServer } from '../utils'
 
 const deepMergeObjects = ['backend', 'detection']
 
 export default (userConfig) => {
 
-  if (typeof userConfig.localeSubpaths === 'boolean') {
-    throw new Error('The localeSubpaths option has been changed to a string: "none", "foreign", or "all"')
+  if (typeof userConfig.localeSubpaths === 'string') {
+    throw new Error('The localeSubpaths option has been changed to an object. Please refer to documentation.')
   }
 
   // Initial merge of default and user-provided config
@@ -27,7 +28,7 @@ export default (userConfig) => {
     localeStructure,
   } = combinedConfig
 
-  if (isServer) {
+  if (isServer()) {
 
     const fs = eval("require('fs')")
     const path = require('path')
