@@ -4,8 +4,7 @@ import { withRouter } from 'next/router'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import { I18nextProvider, withSSR } from 'react-i18next'
 
-import { lngFromReq, lngPathCorrector, lngsToLoad } from '../utils'
-import { localeSubpathOptions } from '../config/default-config'
+import { lngFromReq, lngPathCorrector, lngsToLoad, subpathIsRequired } from '../utils'
 import { NextStaticProvider } from '../components'
 
 interface Props {
@@ -42,14 +41,8 @@ export default function (WrappedComponent) {
         const routeInfo = { pathname, query }
 
         if ((process as any).browser && i18n.initializedLanguageOnce && typeof newLng === 'string' && prevLng !== newLng) {
-          if (config.localeSubpaths !== localeSubpathOptions.NONE) {
-            const { as, href } = lngPathCorrector(config, { as: asPath, href: routeInfo }, newLng)
-            if (as !== asPath) {
-              router.replace(href, as)
-            }
-          } else {
-            router.replace({ pathname, query }, asPath)
-          }
+          const { as, href } = lngPathCorrector(config, { as: asPath, href: routeInfo }, newLng)
+          router.replace(href, as)
         }
       }
 

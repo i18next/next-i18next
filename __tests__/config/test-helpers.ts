@@ -1,4 +1,13 @@
-import { localeSubpathOptions } from '../../src/config/default-config'
+export const localeSubpathVariations = {
+  NONE: {},
+  FOREIGN: {
+    de: 'german',
+  },
+  ALL: {
+    en: 'english',
+    de: 'german',
+  },
+}
 
 const userConfig = {
   browserLanguageDetection: false,
@@ -8,7 +17,7 @@ const userConfig = {
   otherLanguages: ['fr', 'it'],
   localePath: 'static/translations',
   localeStructure: '{{ns}}/{{lng}}',
-  localeSubpaths: localeSubpathOptions.FOREIGN,
+  localeSubpaths: localeSubpathVariations.FOREIGN,
 }
 
 const userConfigClientSide = {

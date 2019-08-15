@@ -2,7 +2,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 
 import Link from '../../src/components/Link'
-import { localeSubpathOptions } from '../../src/config/default-config'
+import { localeSubpathVariations } from '../config/test-helpers'
 
 jest.mock('next/link')
 jest.mock('react-i18next', () => ({
@@ -22,7 +22,7 @@ describe('Link component', () => {
         config: {
           allLanguages: ['en', 'de'],
           defaultLanguage: 'en',
-          localeSubpaths: localeSubpathOptions.NONE,
+          localeSubpaths: localeSubpathVariations.NONE,
         },
       },
     }
@@ -32,7 +32,7 @@ describe('Link component', () => {
     <Link {...props} {...otherProps}>click here</Link>,
   ).find('Link').at(1)
 
-  it(`renders without lang if localeSubpaths is "${localeSubpathOptions.NONE}"`, () => {
+  it('renders without lang if localeSubpaths does not contain entry for language', () => {
     // without 'as' prop
     let component = createLinkComponent()
 
@@ -48,7 +48,7 @@ describe('Link component', () => {
   })
 
   it('renders without lang if props.lng is undefined', () => {
-    props.nextI18NextInternals.config.localeSubpaths = localeSubpathOptions.FOREIGN
+    props.nextI18NextInternals.config.localeSubpaths = localeSubpathVariations.FOREIGN
     props.i18n.language = undefined
 
     // without 'as' prop
@@ -65,8 +65,8 @@ describe('Link component', () => {
     expect(component.prop('as')).toEqual('/foo?bar')
   })
 
-  it('renders without lang if props.lng === defaultLanguage', () => {
-    props.nextI18NextInternals.config.localeSubpaths = localeSubpathOptions.FOREIGN
+  it('renders without lang if props.lng does not have entry in localeSubpaths', () => {
+    props.nextI18NextInternals.config.localeSubpaths = localeSubpathVariations.FOREIGN
     props.nextI18NextInternals.config.defaultLanguage = 'en'
     props.i18n.language = 'en'
 
@@ -85,25 +85,38 @@ describe('Link component', () => {
   })
 
   it('renders with lang', () => {
-    props.nextI18NextInternals.config.localeSubpaths = localeSubpathOptions.FOREIGN
+    props.nextI18NextInternals.config.localeSubpaths = localeSubpathVariations.FOREIGN
     props.nextI18NextInternals.config.defaultLanguage = 'en'
 
     // without 'as' prop -- no query parameters
     let component = createLinkComponent()
 
     expect(component.prop('href')).toEqual(
-      expect.objectContaining({ pathname: '/foo/bar', query: { lng: 'de' } }),
+      expect.objectContaining({
+        pathname: '/foo/bar',
+        query: {
+          lng: 'de',
+          subpath: 'german',
+        }
+      }),
     )
-    expect(component.prop('as')).toEqual('/de/foo/bar')
+    expect(component.prop('as')).toEqual('/german/foo/bar')
 
     // without 'as' prop -- query parameters
     props.href = '/foo/bar?baz'
     component = createLinkComponent()
 
     expect(component.prop('href')).toEqual(
-      expect.objectContaining({ pathname: '/foo/bar', query: { baz: '', lng: 'de' } }),
+      expect.objectContaining({
+        pathname: '/foo/bar',
+        query: {
+          baz: '',
+          lng: 'de',
+          subpath: 'german',
+        }
+      }),
     )
-    expect(component.prop('as')).toEqual('/de/foo/bar?baz')
+    expect(component.prop('as')).toEqual('/german/foo/bar?baz')
 
     props.href = '/foo/bar'
 
@@ -112,13 +125,19 @@ describe('Link component', () => {
     component = createLinkComponent()
 
     expect(component.prop('href')).toEqual(
-      expect.objectContaining({ pathname: '/foo/bar', query: { lng: 'de' } }),
+      expect.objectContaining({
+        pathname: '/foo/bar',
+        query: {
+          lng: 'de',
+          subpath: 'german',
+        }
+      }),
     )
-    expect(component.prop('as')).toEqual('/de/foo?bar')
+    expect(component.prop('as')).toEqual('/german/foo?bar')
   })
 
   it('handles full URLs', () => {
-    props.nextI18NextInternals.config.localeSubpaths = localeSubpathOptions.FOREIGN
+    props.nextI18NextInternals.config.localeSubpaths = localeSubpathVariations.FOREIGN
     props.nextI18NextInternals.config.defaultLanguage = 'en'
 
     // without 'as' prop -- query parameters
@@ -126,9 +145,16 @@ describe('Link component', () => {
     const component = createLinkComponent(props)
 
     expect(component.prop('href')).toEqual(
-      expect.objectContaining({ pathname: '/foo/bar', query: { baz: '', lng: 'de' } }),
+      expect.objectContaining({
+        pathname: '/foo/bar',
+        query: {
+          baz: '',
+          lng: 'de',
+          subpath: 'german',
+        }
+      }),
     )
-    expect(component.prop('as')).toEqual('/de/foo/bar?baz')
+    expect(component.prop('as')).toEqual('/german/foo/bar?baz')
   })
 
   describe('https://github.com/isaachinman/next-i18next/issues/89', () => {
@@ -140,9 +166,9 @@ describe('Link component', () => {
         }
       })
 
-      describe(`localeSubpaths = "${localeSubpathOptions.NONE}"`, () => {
+      describe(`localeSubpaths = "${localeSubpathVariations.NONE}"`, () => {
         beforeEach(() => {
-          props.nextI18NextInternals.config.localeSubpaths = localeSubpathOptions.NONE
+          props.nextI18NextInternals.config.localeSubpaths = localeSubpathVariations.NONE
         })
 
         it('renders without lang', () => {
@@ -162,9 +188,9 @@ describe('Link component', () => {
         })
       })
 
-      describe(`localeSubpaths = "${localeSubpathOptions.FOREIGN}"`, () => {
+      describe(`localeSubpaths = "${localeSubpathVariations.FOREIGN}"`, () => {
         beforeEach(() => {
-          props.nextI18NextInternals.config.localeSubpaths = localeSubpathOptions.FOREIGN
+          props.nextI18NextInternals.config.localeSubpaths = localeSubpathVariations.FOREIGN
         })
 
         beforeEach(() => {
@@ -176,8 +202,14 @@ describe('Link component', () => {
         it('renders with lang', () => {
           const component = createLinkComponent()
 
-          expect(component.prop('href')).toEqual({ pathname: '/foo/bar', query: { lng: 'de' } })
-          expect(component.prop('as')).toEqual('/de/foo/bar')
+          expect(component.prop('href')).toEqual({
+            pathname: '/foo/bar',
+            query: {
+              lng: 'de',
+              subpath: 'german',
+            }
+          })
+          expect(component.prop('as')).toEqual('/german/foo/bar')
         })
 
         it('renders with lang (with "as" prop)', () => {
@@ -185,8 +217,14 @@ describe('Link component', () => {
 
           const component = createLinkComponent()
 
-          expect(component.prop('href')).toEqual({ pathname: '/foo/bar', query: { lng: 'de' } })
-          expect(component.prop('as')).toEqual('/de/foo?bar')
+          expect(component.prop('href')).toEqual({
+            pathname: '/foo/bar',
+            query: {
+              lng: 'de',
+              subpath: 'german',
+            }
+          })
+          expect(component.prop('as')).toEqual('/german/foo?bar')
         })
 
         it('renders with lang (with query parameters)', () => {
@@ -195,8 +233,15 @@ describe('Link component', () => {
           const component = createLinkComponent()
 
           expect(component.prop('href'))
-            .toEqual({ pathname: '/foo/bar', query: { baz: '', lng: 'de' } })
-          expect(component.prop('as')).toEqual('/de/foo/bar?baz=')
+            .toEqual({
+              pathname: '/foo/bar',
+              query: {
+                baz: '',
+                lng: 'de',
+                subpath: 'german',
+              }
+            })
+          expect(component.prop('as')).toEqual('/german/foo/bar?baz=')
         })
       })
     })

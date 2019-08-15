@@ -22,7 +22,7 @@ import NextLink, { LinkProps } from 'next/link'
 import { withTranslation } from 'react-i18next'
 
 import { I18n, Config } from '../../types.d'
-import { lngPathCorrector, localeSubpathRequired } from '../utils'
+import { lngPathCorrector, subpathIsRequired } from '../utils'
 
 const removeWithTranslationProps = (props) => {
   const strippedProps = Object.assign({}, props)
@@ -54,7 +54,7 @@ class Link extends React.Component<Props> {
     nextI18NextInternals: PropTypes.shape({
       config: PropTypes.shape({
         defaultLanguage: PropTypes.string.isRequired,
-        localeSubpaths: PropTypes.string.isRequired,
+        localeSubpaths: PropTypes.object.isRequired,
       }).isRequired,
     }).isRequired,
   }
@@ -67,10 +67,10 @@ class Link extends React.Component<Props> {
     const {
       as, children, href, i18n, nextI18NextInternals, ...props
     } = this.props
+    const { config } = nextI18NextInternals
     const { language } = i18n
 
-    if (localeSubpathRequired(nextI18NextInternals, language)) {
-      const { config } = nextI18NextInternals
+    if (subpathIsRequired(config, language)) {
       const { as: correctedAs, href: correctedHref } = lngPathCorrector(
         config, { as, href }, language,
       )

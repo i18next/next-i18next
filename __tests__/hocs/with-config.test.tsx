@@ -2,7 +2,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 
 import { withInternals } from '../../src/hocs'
-import { localeSubpathOptions } from '../../src/config/default-config'
+import { localeSubpathVariations } from '../config/test-helpers'
 
 describe('withInternals HoC', () => {
   let config
@@ -10,7 +10,7 @@ describe('withInternals HoC', () => {
   let WrappedComponent
 
   beforeEach(() => {
-    config = { localeSubpaths: localeSubpathOptions.FOREIGN }
+    config = { localeSubpaths: localeSubpathVariations.FOREIGN }
     props = {}
     WrappedComponent = () => <div />
   })
@@ -19,7 +19,7 @@ describe('withInternals HoC', () => {
     const Component = withInternals(WrappedComponent, config)
 
     expect(mount(<Component />).find('WrappedComponent').prop('nextI18NextInternals'))
-      .toEqual({ localeSubpaths: localeSubpathOptions.FOREIGN })
+      .toEqual({ localeSubpaths: localeSubpathVariations.FOREIGN })
   })
 
   it('passes other props into wrapped component', () => {
@@ -28,7 +28,7 @@ describe('withInternals HoC', () => {
     const Component = withInternals(WrappedComponent, config)
 
     const wrappedComponent = mount(<Component {...props} />).find('WrappedComponent')
-    expect(wrappedComponent.prop('nextI18NextInternals')).toEqual({ localeSubpaths: localeSubpathOptions.FOREIGN })
+    expect(wrappedComponent.prop('nextI18NextInternals')).toEqual({ localeSubpaths: localeSubpathVariations.FOREIGN })
     expect(wrappedComponent.prop('prop')).toEqual('value')
   })
 

@@ -16,14 +16,14 @@ describe('example project with localeSubpaths set to all', () => {
     })
     await page.goto(`http://localhost:${jestPuppeteerConfig.e2eTests.LOCALE_SUBPATHS_ALL.port}/`)
     await page.waitForSelector('html')
-    await expect(page.url()).toBe(`http://localhost:${jestPuppeteerConfig.e2eTests.LOCALE_SUBPATHS_ALL.port}/en/`)
+    await expect(page.url()).toBe(`http://localhost:${jestPuppeteerConfig.e2eTests.LOCALE_SUBPATHS_ALL.port}/en`)
   })
 
   describe(`changing to ${testLanguageSecondary} locale`, () => {
     beforeAll(async () => {
       await expect(page).toClick('button', { text: 'Change locale' })
       await page.waitForNavigation()
-      await expect(page.url()).toBe(`http://localhost:${jestPuppeteerConfig.e2eTests.LOCALE_SUBPATHS_ALL.port}/${testLanguageSecondary}/`)
+      await expect(page.url()).toBe(`http://localhost:${jestPuppeteerConfig.e2eTests.LOCALE_SUBPATHS_ALL.port}/${testLanguageSecondary}`)
     })
 
     it(`should display h1 in ${testLanguageSecondary} locale`, async () => {

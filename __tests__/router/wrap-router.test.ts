@@ -1,6 +1,6 @@
 import wrapRouter from '../../src/router/wrap-router'
 import { Router } from 'next/router'
-import { localeSubpathOptions } from '../../src/config/default-config'
+import { localeSubpathVariations } from '../config/test-helpers'
 
 const NextRouter: jest.Mocked<Router> = require('next/router')
 
@@ -34,7 +34,7 @@ const nextI18NextInternals = {
   },
   config: {
     defaultLanguage: 'en',
-    localeSubpaths: localeSubpathOptions.NONE,
+    localeSubpaths: localeSubpathVariations.NONE,
     allLanguages: ['en', 'de'],
   },
 }
@@ -114,7 +114,7 @@ describe('wrapRouter', () => {
       NextRouter.push.mockClear()
       NextRouter.replace.mockClear()
       NextRouter.prefetch.mockClear()
-      nextI18NextInternals.config.localeSubpaths = localeSubpathOptions.FOREIGN
+      nextI18NextInternals.config.localeSubpaths = localeSubpathVariations.FOREIGN
       router = wrapRouter(nextI18NextInternals)
     })
 
@@ -122,52 +122,80 @@ describe('wrapRouter', () => {
       router.push(href, as, options)
       expect(NextRouter.push).toHaveBeenNthCalledWith(1, expect.objectContaining({
         pathname: href,
-        query: { lng: 'de' },
-      }), `/de${as}`, options)
+        query: {
+          lng: 'de',
+          subpath: 'german',
+        },
+      }), `/german${as}`, options)
 
       router.push(hrefObj, as, options)
       expect(NextRouter.push).toHaveBeenNthCalledWith(2, {
         pathname: href,
-        query: { test: 'something', lng: 'de' },
-      }, `/de${as}`, options)
+        query: {
+          test: 'something',
+          lng: 'de',
+          subpath: 'german',
+        },
+      }, `/german${as}`, options)
 
       router.push(href, undefined, options)
       expect(NextRouter.push).toHaveBeenNthCalledWith(3, expect.objectContaining({
         pathname: href,
-        query: { lng: 'de' },
-      }), `/de${href}`, options)
+        query: {
+          lng: 'de',
+          subpath: 'german',
+        },
+      }), `/german${href}`, options)
 
       router.push(hrefObj, undefined, options)
       expect(NextRouter.push).toHaveBeenNthCalledWith(4, {
         pathname: href,
-        query: { test: 'something', lng: 'de' },
-      }, `/de${href}?test=something`, options)
+        query: {
+          test: 'something',
+          lng: 'de',
+          subpath: 'german',
+        },
+      }, `/german${href}?test=something`, options)
     })
 
     it('calls NextRouter.replace with locale subpath prepended', () => {
       router.replace(href, as, options)
       expect(NextRouter.replace).toHaveBeenNthCalledWith(1, expect.objectContaining({
         pathname: href,
-        query: { lng: 'de' },
-      }), `/de${as}`, options)
+        query: {
+          lng: 'de',
+          subpath: 'german',
+        },
+      }), `/german${as}`, options)
 
       router.replace(hrefObj, as, options)
       expect(NextRouter.replace).toHaveBeenNthCalledWith(2, {
         pathname: href,
-        query: { test: 'something', lng: 'de' },
-      }, `/de${as}`, options)
+        query: {
+          test: 'something',
+          lng: 'de',
+          subpath: 'german',
+        },
+      }, `/german${as}`, options)
 
       router.replace(href, undefined, options)
       expect(NextRouter.replace).toHaveBeenNthCalledWith(3, expect.objectContaining({
         pathname: href,
-        query: { lng: 'de' },
-      }), `/de${href}`, options)
+        query: {
+          lng: 'de',
+          subpath: 'german',
+        },
+      }), `/german${href}`, options)
 
       router.replace(hrefObj, undefined, options)
       expect(NextRouter.replace).toHaveBeenNthCalledWith(4, {
         pathname: href,
-        query: { test: 'something', lng: 'de' },
-      }, `/de${href}?test=something`, options)
+        query: {
+          test: 'something',
+          lng: 'de',
+          subpath: 'german',
+        },
+      }, `/german${href}?test=something`, options)
     })
   })
 })

@@ -1,11 +1,6 @@
 import isNode from 'detect-node'
 
 export const isServer = isNode && !(process as any).browser
-export const localeSubpathOptions = {
-  ALL: 'all',
-  FOREIGN: 'foreign',
-  NONE: 'none',
-}
 
 const DEFAULT_LANGUAGE = 'en'
 const OTHER_LANGUAGES = []
@@ -13,7 +8,6 @@ const DEFAULT_NAMESPACE = 'common'
 const LOCALE_PATH = 'static/locales'
 const LOCALE_STRUCTURE = '{{lng}}/{{ns}}'
 const LOCALE_EXTENSION = 'json'
-const LOCALE_SUBPATHS = localeSubpathOptions.NONE
 
 const config = {
   defaultLanguage: DEFAULT_LANGUAGE,
@@ -22,7 +16,7 @@ const config = {
   localePath: LOCALE_PATH,
   localeStructure: LOCALE_STRUCTURE,
   localeExtension: LOCALE_EXTENSION,
-  localeSubpaths: LOCALE_SUBPATHS,
+  localeSubpaths: {},
   use: [],
   defaultNS: DEFAULT_NAMESPACE,
   interpolation: {

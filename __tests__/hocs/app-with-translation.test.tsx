@@ -5,13 +5,13 @@ import { mount } from 'enzyme'
 import NextApp, { Container } from 'next/app'
 
 import { appWithTranslation } from '../../src/hocs'
-import { localeSubpathOptions } from '../../src/config/default-config'
+import { localeSubpathVariations } from '../config/test-helpers'
 
 const mockRouterFn = jest.fn()
 
 const defaultConfig = {
-  localeSubpaths: localeSubpathOptions.NONE,
-  allLanguages: ['en'],
+  localeSubpaths: localeSubpathVariations.NONE,
+  allLanguages: ['en', 'de'],
   lng: 'en',
   react: {
     wait: true,
