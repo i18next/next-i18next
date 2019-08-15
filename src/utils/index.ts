@@ -1,5 +1,6 @@
 export { default as addSubpath } from './add-subpath'
 export { default as consoleMessage } from './console-message'
+export { default as isServer } from './is-server'
 export { default as lngFromReq } from './lng-from-req'
 export { default as lngPathCorrector } from './lng-path-corrector'
 export { default as lngsToLoad } from './lngs-to-load'
