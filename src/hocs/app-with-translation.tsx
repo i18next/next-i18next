@@ -34,31 +34,34 @@ export default function (WrappedComponent) {
 
     constructor(props) {
       super(props)
+      if ((process as any).browser) {
 
-      const changeLanguageCallback = (prevLng, newLng) => {
-        const { router } = props
-        const { pathname, asPath, query } = router
-        const routeInfo = { pathname, query }
+        const changeLanguageCallback = (prevLng, newLng) => {
+          const { router } = props
+          const { pathname, asPath, query } = router
+          const routeInfo = { pathname, query }
 
-        if ((process as any).browser && i18n.initializedLanguageOnce && typeof newLng === 'string' && prevLng !== newLng) {
-          const { as, href } = lngPathCorrector(config, { as: asPath, href: routeInfo }, newLng)
-          router.replace(href, as)
+          if (i18n.initializedLanguageOnce && typeof newLng === 'string' && prevLng !== newLng) {
+            const { as, href } = lngPathCorrector(config, { as: asPath, href: routeInfo }, newLng)
+            router.replace(href, as)
+          }
         }
-      }
 
-      const changeLanguage = i18n.changeLanguage.bind(i18n)
-      i18n.changeLanguage = async (newLng, callback = () => null) => {
-        const prevLng = i18n.language
-        if (typeof newLng === 'string' && i18n.initializedLanguageOnce === true) {
-          const usedNamespaces = Object.entries(i18n.reportNamespaces.usedNamespaces)
-            .filter(x => x[1] === true)
-            .map(x => x[0])
-          await clientLoadNamespaces(newLng, usedNamespaces)
+        const changeLanguage = i18n.changeLanguage.bind(i18n)
+        i18n.changeLanguage = async (newLng, callback = () => null) => {
+          const prevLng = i18n.language
+          if (typeof newLng === 'string' && i18n.initializedLanguageOnce === true) {
+            const usedNamespaces = Object.entries(i18n.reportNamespaces.usedNamespaces)
+              .filter(x => x[1] === true)
+              .map(x => x[0])
+            await clientLoadNamespaces(newLng, usedNamespaces)
+          }
+          return changeLanguage(newLng, () => {
+            changeLanguageCallback(prevLng, newLng)
+            callback()
+          })
         }
-        return changeLanguage(newLng, () => {
-          changeLanguageCallback(prevLng, newLng)
-          callback()
-        })
+
       }
     }
 

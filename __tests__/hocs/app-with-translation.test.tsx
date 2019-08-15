@@ -58,16 +58,16 @@ describe('appWithTranslation', () => {
   beforeEach(mockRouterFn.mockReset)
 
   it('will call router events in a browser context', async () => {
+    (process as any).browser = true
     const { i18n } = await createApp();
-    (process as any).browser = true;
     (i18n as any).initializedLanguageOnce = true
     await i18n.changeLanguage('de')
     expect(mockRouterFn).toHaveBeenCalledTimes(1)
   })
 
   it('will not call router events in a server context', async () => {
+    (process as any).browser = false
     const { i18n } = await createApp();
-    (process as any).browser = false;
     (i18n as any).initializedLanguageOnce = true
     await i18n.changeLanguage('de')
     expect(mockRouterFn).toHaveBeenCalledTimes(0)
