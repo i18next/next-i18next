@@ -22,7 +22,7 @@ const config = {
   },
   browserLanguageDetection: true,
   serverLanguageDetection: true,
-  ignoreRoutes: ['/_next', '/static'],
+  ignoreRoutes: ['/_next/', '/static/'],
   customDetectors: [],
   detection: {
     lookupCookie: 'next-i18next',
