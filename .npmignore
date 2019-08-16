@@ -4,6 +4,7 @@ examples
 
 # Dependencies
 node_modules
+yarn.lock
 
 # NextJs
 .next
