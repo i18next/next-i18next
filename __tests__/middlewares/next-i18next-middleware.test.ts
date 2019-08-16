@@ -72,7 +72,7 @@ describe('next-18next middleware', () => {
     expect(i18nextMiddleware.handle)
       .toBeCalledWith('i18n',
         expect.objectContaining({
-          ignoreRoutes: expect.arrayContaining(['/_next', '/static']),
+          ignoreRoutes: expect.arrayContaining(['/_next/', '/static/']),
         }))
   })
 
