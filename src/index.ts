@@ -9,7 +9,7 @@ import { consoleMessage } from './utils'
 import { Link } from './components';
 import { wrapRouter } from './router';
 
-import { AppWithTranslation, Config, InitConfig, Trans as TransType, Link as LinkType, I18n, UseTranslation, WithTranslation, Router } from '../types'
+import { AppWithTranslation, Config, InitConfig, Trans as TransType, Link as LinkType, I18n, UseTranslation, WithTranslationHocType, Router } from '../types'
 
 export { withTranslation } from 'react-i18next'
 
@@ -20,7 +20,7 @@ export default class NextI18Next {
   readonly i18n: I18n;
   readonly config: Config;
   readonly useTranslation: UseTranslation;
-  readonly withTranslation: WithTranslation;
+  readonly withTranslation: WithTranslationHocType;
   readonly appWithTranslation: AppWithTranslation;
 
   readonly consoleMessage: () => void

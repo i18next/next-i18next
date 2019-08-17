@@ -38,7 +38,7 @@ export type UseTranslation = typeof useTranslation
 export type AppWithTranslation = <P extends object>(Component: React.ComponentType<P> | React.ElementType<P>) => any
 export type TFunction = i18next.TFunction
 export type I18n = i18next.i18n
-export type WithTranslation = typeof withTranslation
+export type WithTranslationHocType = typeof withTranslation
 
 declare class NextI18Next {
   constructor(config: InitConfig);
@@ -48,7 +48,7 @@ declare class NextI18Next {
   i18n: I18n
   config: Config
   useTranslation: UseTranslation
-  withTranslation: WithTranslation
+  withTranslation: WithTranslationHocType
   appWithTranslation: AppWithTranslation
 }
 
