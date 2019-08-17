@@ -23,6 +23,7 @@ jest.mock('../../src/utils', () => ({
   subpathFromLng: jest.fn(),
   lngFromReq: jest.fn(),
   removeSubpath: jest.fn(),
+  isServer: jest.fn(),
 }))
 
 describe('next-18next middleware', () => {

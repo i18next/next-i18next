@@ -48,6 +48,7 @@ describe('create configuration in non-production environment', () => {
     })
 
     it('creates default non-production configuration', () => {
+      isServer.mockReturnValue(true)
       const config = createConfig({})
 
       expect(config.defaultLanguage).toEqual('en')
@@ -71,6 +72,8 @@ describe('create configuration in non-production environment', () => {
       expect(config.detection.caches).toEqual(['cookie'])
 
       expect(config.react.wait).toEqual(true)
+
+      expect(config.initImmediate).toEqual(false)
 
       expect(config.preload).toEqual(['en'])
 
@@ -160,6 +163,8 @@ describe('create configuration in non-production environment', () => {
       expect(config.detection.caches).toEqual(['cookie'])
 
       expect(config.react.wait).toEqual(true)
+
+      expect(config.initImmediate).toEqual(true)
 
       expect(config.preload).toBeUndefined()
 

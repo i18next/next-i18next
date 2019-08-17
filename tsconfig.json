@@ -3,6 +3,7 @@
     "esModuleInterop": true,
     "noEmit": true,
     "lib": ["esnext", "dom"],
+    "target": "es5",
     "jsx": "react"
   },
   "include": [
