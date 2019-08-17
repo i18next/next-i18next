@@ -4,7 +4,8 @@ import * as React from 'react'
 import {
   useTranslation,
   TransProps,
-  withTranslation
+  withTranslation,
+  WithTranslation
 } from 'react-i18next'
 import { LinkProps } from 'next/link'
 import { SingletonRouter } from 'next/router'
@@ -39,6 +40,7 @@ export type AppWithTranslation = <P extends object>(Component: React.ComponentTy
 export type TFunction = i18next.TFunction
 export type I18n = i18next.i18n
 export type WithTranslationHocType = typeof withTranslation
+export type WithTranslation = WithTranslation
 
 declare class NextI18Next {
   constructor(config: InitConfig);
