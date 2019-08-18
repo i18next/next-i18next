@@ -1,3 +1,5 @@
+import { isServer } from '../utils'
+
 const DEFAULT_LANGUAGE = 'en'
 const OTHER_LANGUAGES = []
 const DEFAULT_NAMESPACE = 'common'
@@ -35,6 +37,9 @@ const config = {
   },
   strictMode: true,
   errorStackTraceLimit: 0,
+  get initImmediate() {
+    return !isServer()
+  }
 }
 
 export default config
