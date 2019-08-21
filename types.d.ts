@@ -19,7 +19,7 @@ export type InitConfig = {
   localePath?: string;
   localeStructure?: string;
   otherLanguages: string[];
-  localeSubpaths?: Record<string, string>;
+  localeSubpaths?: Record<string, string | string[]>;
   use?: any[];
   customDetectors?: any[];
 } & i18next.InitOptions

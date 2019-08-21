@@ -21,4 +21,12 @@ describe('subpathFromLng utility function', () => {
       }
     } as unknown as Config, 'en-GB')).toBe('my-test-path')
   })
+
+  it('returns first subpath string if multiple locale subpath are provided', () => {
+    expect(subpathFromLng({
+      localeSubpaths: {
+        'en-GB': ['my-test-path', 'my-other-test-path']
+      }
+    } as unknown as Config, 'en-GB')).toBe('my-test-path')
+  })
 })

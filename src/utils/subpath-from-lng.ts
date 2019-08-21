@@ -6,7 +6,10 @@ export default (config: Config, language: string) => {
     return null
   }
 
-  const subpath = config.localeSubpaths[language]
+  let subpath = config.localeSubpaths[language]
+  if (Array.isArray(subpath)) {
+    [subpath] = subpath
+  }
 
   if (typeof subpath !== 'string') {
     return null

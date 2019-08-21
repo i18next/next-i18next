@@ -119,7 +119,7 @@ new NextI18Next({
 })
 ```
 
-The `localeSubpaths` option is a key/value mapping, where keys are the locale itself (case sensitive) and values are the subpath without slashes.
+The `localeSubpaths` option is a key/value mapping, where keys are the locale itself (case sensitive) and values are the subpath without slashes or an array of subpaths without slashes. If an array is specified, the first index will be used as the default for that locale.
 
 Now, all your page routes will be duplicated across all your locale subpaths. Here's an example:
 
@@ -129,7 +129,7 @@ new NextI18Next({
   localeSubpaths: {
     fr: 'fr',
     de: 'german',
-    en: 'eng',
+    en: ['eng', 'english'],
   }
 })
 
@@ -137,6 +137,7 @@ new NextI18Next({
 myapp.com/fr/
 myapp.com/german/
 myapp.com/eng/
+myapp.com/english/
 ```
 
 When using the localeSubpaths option, our middleware may redirect without calling any subsequent middleware.  Therefore, if there are any critical middleware that must run before this redirect, ensure that you place it before the `nextI18NextMiddleware` middleware.

@@ -58,8 +58,16 @@ export default (config: Config, currentRoute, currentLanguage) => {
     Strip any/all subpaths from the `as` value
   */
   Object.values(localeSubpaths).forEach((subpath) => {
-    if (subpathIsPresent(as, subpath)) {
-      as = removeSubpath(as, subpath)
+    if (Array.isArray(subpath)) {
+      subpath.forEach(path => {
+        if (subpathIsPresent(as, path)) {
+          as = removeSubpath(as, path)
+        }
+      })
+    } else {
+      if (subpathIsPresent(as, subpath)) {
+        as = removeSubpath(as, subpath)
+      }
     }
   })
 
