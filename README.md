@@ -212,7 +212,7 @@ If for some reason you need to access the current language inside `getInitialPro
 import { i18n } from '../i18n'
 
 MyPage.getInitialProps = async({ req }) => {
-  const currentLanguage = req === null ? i18n.language : req.language
+  const currentLanguage = req ? req.language : i18n.language
 }
 ```
 
