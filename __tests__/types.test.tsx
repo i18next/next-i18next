@@ -10,7 +10,7 @@ import NextI18Next, {
   WithTranslation,
 } from '../types'
 
-const DummyComponent = () => <div />
+const DummyComponent: React.FC<{} & WithTranslation> = () => <div />
 
 const emptyConfig = {
   defaultLanguage: null,
@@ -21,4 +21,3 @@ const emptyConfig = {
 const Instance = new NextI18Next(emptyConfig)
 Instance.appWithTranslation(DummyComponent)
 Instance.withTranslation('common')(DummyComponent)
-
