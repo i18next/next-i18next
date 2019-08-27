@@ -49,6 +49,20 @@
         ]
       ]
     },
+    "nodejs": {
+      "presets": [
+        "@babel/preset-typescript",
+        [
+          "@babel/preset-env",
+          {
+            "modules": "cjs",
+            "targets": {
+              "node": "8"
+            }
+          }
+        ]
+      ]
+    },
     "test": {
       "presets": [
         "@babel/preset-typescript",
