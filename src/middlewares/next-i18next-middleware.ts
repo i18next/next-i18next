@@ -92,7 +92,7 @@ export default function (nexti18next) {
       const params = localeSubpathRoute(req.url)
       if (params !== false) {
         const { subpath } = params
-        req.query = { ...req.query, subpath, lng }
+        req.query = Object.assign({subpath, lng}, req.query)
         req.url = removeSubpath(req.url, subpath)
       }
     }
