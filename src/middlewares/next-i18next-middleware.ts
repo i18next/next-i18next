@@ -79,7 +79,7 @@ export default function (nexti18next) {
             not present, prepend correct subpath
           */
           redirectWithoutCache(res, addSubpath(req.url, currentLngSubpath))
-
+          return
         }
         
       }
