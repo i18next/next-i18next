@@ -43,7 +43,10 @@ describe('next-18next middleware', () => {
     req = {
       url: '/myapp.com/',
     }
-    res = {}
+    res = {
+      redirect: jest.fn(),
+      header: jest.fn()
+    }
     next = jest.fn()
   })
 
@@ -57,6 +60,8 @@ describe('next-18next middleware', () => {
     lngFromReq.mockReset()
     removeSubpath.mockReset()
     addSubpath.mockReset()
+    res.redirect.mockReset()
+    res.header.mockReset()
   })
 
   const callAllMiddleware = () => {
@@ -142,7 +147,7 @@ describe('next-18next middleware', () => {
       const language = 'de'
       const subpath = 'german'
       req = {
-        url: `/${subpath}/page1`,
+        url: `/page1`,
         query: {},
         i18n: {
           options: {
@@ -161,10 +166,11 @@ describe('next-18next middleware', () => {
 
       callAllMiddleware()
 
-      expect(req.url).toBe('/german/page1')
+      expect(req.url).toBe('/page1')
       expect(req.query).toEqual({})
 
       expect(removeSubpath).toHaveBeenCalledTimes(0)
+      expect(redirectWithoutCache).toHaveBeenCalledWith(res, '/german/page1')
       expect(addSubpath).toHaveBeenCalledTimes(1)
       expect(subpathIsRequired).toHaveBeenCalledTimes(1)
       expect(subpathIsPresent).toHaveBeenCalledTimes(3)
