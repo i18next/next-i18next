@@ -11,6 +11,7 @@ const subpathFromLng: jest.Mock = require('../../src/utils').subpathFromLng
 const subpathIsRequired: jest.Mock = require('../../src/utils').subpathIsRequired
 const subpathIsPresent: jest.Mock = require('../../src/utils').subpathIsPresent
 const removeSubpath: jest.Mock = require('../../src/utils').removeSubpath
+const addSubpath: jest.Mock = require('../../src/utils').addSubpath
 
 jest.mock('i18next-express-middleware', () => ({
   handle: jest.fn(() => jest.fn()),
@@ -24,6 +25,7 @@ jest.mock('../../src/utils', () => ({
   lngFromReq: jest.fn(),
   removeSubpath: jest.fn(),
   isServer: jest.fn(),
+  addSubpath: jest.fn()
 }))
 
 describe('next-18next middleware', () => {
@@ -41,7 +43,10 @@ describe('next-18next middleware', () => {
     req = {
       url: '/myapp.com/',
     }
-    res = {}
+    res = {
+      redirect: jest.fn(),
+      header: jest.fn()
+    }
     next = jest.fn()
   })
 
@@ -54,6 +59,9 @@ describe('next-18next middleware', () => {
     subpathFromLng.mockReset()
     lngFromReq.mockReset()
     removeSubpath.mockReset()
+    addSubpath.mockReset()
+    res.redirect.mockReset()
+    res.header.mockReset()
   })
 
   const callAllMiddleware = () => {
@@ -132,6 +140,44 @@ describe('next-18next middleware', () => {
       expect(subpathFromLng).toHaveBeenCalledTimes(1)
       expect(removeSubpath).toHaveBeenCalledTimes(1)
       expect(next).toBeCalledTimes(1)
+    })
+
+    it('redirect to locale subpath when subpath was not present', () => {
+
+      const language = 'de'
+      const subpath = 'german'
+      req = {
+        url: `/page1`,
+        query: {},
+        i18n: {
+          options: {
+            localeSubpaths: {
+              [language]: subpath,
+            }
+          }
+        }
+      }
+
+      subpathIsRequired.mockReturnValue(true)
+      subpathIsPresent.mockReturnValue(false)
+      lngFromReq.mockReturnValue(language)
+      subpathFromLng.mockReturnValue(subpath)
+      addSubpath.mockReturnValue(`/${subpath}/page1`)
+
+      callAllMiddleware()
+
+      expect(req.url).toBe('/page1')
+      expect(req.query).toEqual({})
+
+      expect(removeSubpath).toHaveBeenCalledTimes(0)
+      expect(redirectWithoutCache).toHaveBeenCalledWith(res, '/german/page1')
+      expect(addSubpath).toHaveBeenCalledTimes(1)
+      expect(subpathIsRequired).toHaveBeenCalledTimes(1)
+      expect(subpathIsPresent).toHaveBeenCalledTimes(3)
+      expect(lngFromReq).toHaveBeenCalledTimes(1)
+      expect(subpathFromLng).toHaveBeenCalledTimes(3)
+      expect(removeSubpath).toHaveBeenCalledTimes(0)
+      expect(next).toBeCalledTimes(0)
     })
   })
 })
