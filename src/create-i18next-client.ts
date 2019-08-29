@@ -2,19 +2,13 @@ import isNode from 'detect-node'
 import i18n from 'i18next'
 import i18nextXHRBackend from 'i18next-xhr-backend'
 import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector'
+import serverI18nSetup from './middlewares/server-i18n-setup'
 
 export default (config) => {
   if (!i18n.isInitialized) {
 
     if (isNode) {
-      const i18nextNodeBackend = eval("require('i18next-node-fs-backend')")
-      const i18nextMiddleware = eval("require('i18next-express-middleware')")
-      i18n.use(i18nextNodeBackend)
-      if (config.serverLanguageDetection) {
-        const serverDetectors = new i18nextMiddleware.LanguageDetector()
-        config.customDetectors.forEach(detector => serverDetectors.addDetector(detector))
-        i18n.use(serverDetectors)
-      }
+      serverI18nSetup(i18n, config);
     } else {
       i18n.use(i18nextXHRBackend)
       if (config.browserLanguageDetection) {

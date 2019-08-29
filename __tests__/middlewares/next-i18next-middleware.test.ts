@@ -2,7 +2,7 @@ import i18nextMiddleware from 'i18next-express-middleware'
 
 import testI18NextConfig from '../test-i18next-config'
 
-import nextI18nextMiddleware from '../../src/middlewares/next-i18next-middleware'
+import nextI18nextMiddleware from '../../src/middlewares/server-next-i18next-middleware'
 import { localeSubpathVariations } from '../config/test-helpers'
 
 const redirectWithoutCache: jest.Mock = require('../../src/utils').redirectWithoutCache
