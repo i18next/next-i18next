@@ -106,7 +106,7 @@ One of the main features of this package, besides translation itself, are locale
 
 ```
 myapp.com         ---> Homepage in default lang
-myapp.com/de/     ---> Homepage in German
+myapp.com/de     ---> Homepage in German
 ```
 
 This functionality is not enabled by default, and must be passed as an option into the `NextI18Next` constructor as a config option:
@@ -134,9 +134,9 @@ new NextI18Next({
 })
 
 ----- Output -----
-myapp.com/fr/
-myapp.com/german/
-myapp.com/eng/
+myapp.com/fr
+myapp.com/german
+myapp.com/eng
 ```
 
 When using the localeSubpaths option, our middleware may redirect without calling any subsequent middleware.  Therefore, if there are any critical middleware that must run before this redirect, ensure that you place it before the `nextI18NextMiddleware` middleware.
