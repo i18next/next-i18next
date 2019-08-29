@@ -16,6 +16,7 @@
       ]
     },
     "cjs": {
+      "ignore": ["src/middlewares/*.ts"],
       "presets": [
         "@babel/preset-typescript",
         [
