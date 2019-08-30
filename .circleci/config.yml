@@ -1,50 +1,56 @@
-version: 2
-jobs:
-  build:
-    docker:
-      - image: circleci/node:10-browsers
-
+version: 2.1
+commands:
+  build-and-test:
     steps:
       - checkout
-
       - restore_cache:
           name: Restore cache (main)
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-
+            - v1-dependencies-{{ checksum "package.json" }}
       - restore_cache:
           name: Restore cache (example)
           keys:
-          - v1-dependencies-{{ checksum "examples/simple/package.json" }}
-
+            - v1-dependencies-{{ checksum "examples/simple/package.json" }}
       - run:
           name: Install dependencies (main)
           command: yarn install
-
       - run:
           name: Build source (main)
           command: yarn build
-
       - run:
           name: Build source (example)
           command: yarn build:examples/simple
-
       - save_cache:
           name: Save cache (main)
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-
       - save_cache:
           name: Save cache (example)
           paths:
             - examples/simple/node_modules
           key: v1-dependencies-{{ checksum "examples/simple/package.json" }}
-
       - run:
           name: Lint
           command: yarn lint
-
       - run:
           name: Test
           command: yarn test
+
+jobs:
+  node-v8:
+    docker:
+      - image: circleci/node:8-browsers
+    steps:
+      - build-and-test
+  node-v10:
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - build-and-test
+
+workflows:
+  node-multi-build:
+    jobs:
+      - node-v8
+      - node-v10
