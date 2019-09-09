@@ -112,6 +112,7 @@ describe('next-18next middleware', () => {
         url: `/${subpath}/page1`,
         query: {},
         i18n: {
+          ...testI18NextConfig,
           options: {
             localeSubpaths: {
               [language]: subpath,
@@ -135,9 +136,9 @@ describe('next-18next middleware', () => {
       })
 
       expect(subpathIsRequired).toHaveBeenCalledTimes(1)
-      expect(subpathIsPresent).toHaveBeenCalledTimes(1)
+      expect(subpathIsPresent).toHaveBeenCalledTimes(2)
       expect(lngFromReq).toHaveBeenCalledTimes(1)
-      expect(subpathFromLng).toHaveBeenCalledTimes(1)
+      expect(subpathFromLng).toHaveBeenCalledTimes(2)
       expect(removeSubpath).toHaveBeenCalledTimes(1)
       expect(next).toBeCalledTimes(1)
     })
