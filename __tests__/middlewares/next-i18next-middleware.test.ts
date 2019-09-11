@@ -100,7 +100,7 @@ describe('next-18next middleware', () => {
 
       expect(req.url).toBe('/page1')
       expect(req.query).toEqual({
-        lng: 'en',
+        lng: language,
         subpath,
       })
 
