@@ -79,7 +79,7 @@ export default function (nexti18next) {
         modify req.url in place so that NextJs will
         render the correct route
       */
-      if(lngFromCurrentSubpath !== undefined) {
+      if (typeof lngFromCurrentSubpath === 'string') {
         const params = localeSubpathRoute(req.url)
         if (params !== false) {
           const { subpath } = params
