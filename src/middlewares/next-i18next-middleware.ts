@@ -47,7 +47,7 @@ export default function (nexti18next) {
   */
   middleware.push((req: Request, res: Response, next: NextFunction) => {
     if (isI18nRoute(req) && req.i18n) {
-      const currentLng = lngFromReq(req)
+      let currentLng = lngFromReq(req)
       const currentLngSubpath = subpathFromLng(config, currentLng)
       const currentLngRequiresSubpath = subpathIsRequired(config, currentLng)
       const currentLngSubpathIsPresent = subpathIsPresent(req.url, currentLngSubpath)
@@ -56,13 +56,13 @@ export default function (nexti18next) {
         subpathIsPresent(req.url, subpathFromLng(config, l)))
 
       if (lngFromCurrentSubpath !== undefined && lngFromCurrentSubpath !== currentLng) {
-
         /*
           If a user has hit a subpath which does not
           match their language, give preference to
           the path, and change user language.
         */
         req.i18n.changeLanguage(lngFromCurrentSubpath)
+        currentLng = lngFromCurrentSubpath
 
       } else if (currentLngRequiresSubpath && !currentLngSubpathIsPresent) {
 
