@@ -137,5 +137,29 @@ describe('next-18next middleware', () => {
       expect(res.header).toHaveBeenNthCalledWith(3, 'Pragma', 'no-cache')
       expect(next).toBeCalledTimes(0)
     })
+
+    it('should not removes lang subpath from url when not required', () => {
+      const language = 'de'
+      const subpath = 'german'
+      const url = `/${subpath}page1`
+      req = {
+        url,
+        query: {},
+        i18n: {
+          ...testI18NextConfig,
+          options: {
+            ...testI18NextConfig.options,
+            localeSubpaths: {
+              [language]: subpath,
+            }
+          }
+        }
+      }
+
+      callAllMiddleware()
+
+      expect(req.url).toBe(url)
+      expect(next).toBeCalledTimes(1)
+    })
   })
 })

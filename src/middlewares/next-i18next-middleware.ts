@@ -1,15 +1,15 @@
+import { NextFunction, Request, Response } from 'express'
 import i18nextMiddleware from 'i18next-express-middleware'
-import { Request, Response, NextFunction } from 'express'
 import pathMatch from 'path-match'
 
 import {
-  redirectWithoutCache,
+  addSubpath,
   lngFromReq,
+  redirectWithoutCache,
   removeSubpath,
   subpathFromLng,
   subpathIsPresent,
   subpathIsRequired,
-  addSubpath,
 } from '../utils'
 
 const route = pathMatch()
@@ -79,11 +79,13 @@ export default function (nexti18next) {
         modify req.url in place so that NextJs will
         render the correct route
       */
-      const params = localeSubpathRoute(req.url)
-      if (params !== false) {
-        const { subpath } = params
-        req.query = { ...req.query, subpath, lng: currentLng }
-        req.url = removeSubpath(req.url, subpath)
+      if (typeof lngFromCurrentSubpath === 'string') {
+        const params = localeSubpathRoute(req.url)
+        if (params !== false) {
+          const { subpath } = params
+          req.query = { ...req.query, subpath, lng: currentLng }
+          req.url = removeSubpath(req.url, subpath)
+        }
       }
     }
 
