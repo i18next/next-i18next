@@ -37,6 +37,7 @@ const config = {
   },
   strictMode: true,
   errorStackTraceLimit: 0,
+  shallowRender: false,
   get initImmediate() {
     return !isServer()
   }

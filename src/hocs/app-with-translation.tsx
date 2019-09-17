@@ -43,7 +43,7 @@ export default function (WrappedComponent) {
 
           if (i18n.initializedLanguageOnce && typeof newLng === 'string' && prevLng !== newLng) {
             const { as, href } = lngPathCorrector(config, { as: asPath, href: routeInfo }, newLng)
-            router.replace(href, as)
+            router.replace(href, as, {shallow: config.shallowRender})
           }
         }
 
