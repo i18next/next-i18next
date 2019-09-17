@@ -23,6 +23,7 @@ export type InitConfig = {
   localeSubpaths?: Record<string, string>;
   use?: any[];
   customDetectors?: any[];
+  shallowRender?: boolean;
 } & InitOptions
 
 export type Config = {
