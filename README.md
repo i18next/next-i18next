@@ -70,7 +70,7 @@ After creating and exporting your `NextI18Next` instance, you need to take the f
 
 1. Create an `_app.js` file inside your `pages` directory, and wrap it with the `NextI18Next.appWithTranslation` higher order component (HOC). You can see this approach in the [examples/simple/pages/_app.js](./examples/simple/pages/_app.js). 
 2. Create a `server.js` file inside your root directory, initialise an [express](https://www.npmjs.com/package/express) server, and use the `nextI18NextMiddleware` middleware with your `nextI18Next` instance passed in. You can see this approach in the [examples/simple/server.js](./examples/simple/server.js).
-3. Update the scripts key in `package.json` to:
+3. Update the scripts in `package.json` to:
 ```
 {
   "scripts": {
