@@ -1,4 +1,4 @@
-import { format as formatUrl, parse as parseUrl } from 'url'
+import { format as formatUrl, parse as parseUrl, UrlObject } from 'url'
 import { LinkProps } from 'next/link'
 
 import { Config } from '../../types'
@@ -8,6 +8,10 @@ import subpathFromLng from './subpath-from-lng'
 
 type As = LinkProps['as']
 type Href = LinkProps['href']
+interface Route {
+  href: Href;
+  as: As;
+}
 
 const parseAs = (originalAs, href): As => {
   const asType = typeof originalAs
@@ -24,7 +28,7 @@ const parseAs = (originalAs, href): As => {
   return as
 }
 
-const parseHref = (originalHref): Href => {
+const parseHref = (originalHref): UrlObject => {
   const hrefType = typeof originalHref
   let href
 
@@ -40,7 +44,7 @@ const parseHref = (originalHref): Href => {
   return href
 }
 
-export default (config: Config, currentRoute, currentLanguage): LinkProps => {
+export default (config: Config, currentRoute: Route, currentLanguage: string): LinkProps => {
   const { allLanguages, localeSubpaths } = config
   const { as: originalAs, href: originalHref } = currentRoute
 
@@ -63,7 +67,7 @@ export default (config: Config, currentRoute, currentLanguage): LinkProps => {
   */
   Object.values(localeSubpaths).forEach((subpath) => {
     if (typeof as === 'object') {
-      if (subpathIsPresent(as, subpath)) {
+      if (subpathIsPresent(as.pathname, subpath)) {
         as.pathname = removeSubpath(as.pathname, subpath)
       }
     } else if (typeof as === 'string') {
@@ -87,8 +91,12 @@ export default (config: Config, currentRoute, currentLanguage): LinkProps => {
       as = `/${subpath}${currentAs}`.replace(/\/$/, '')
     }
 
+    if (typeof href.query !== 'object') throw new Error(`'href.query' must be an object`)
+    if (!href.query) href.query = {}
+
+
     href.query.lng = currentLanguage
-    href.query.subpath = subpath
+    href.query.subpath = subpath || ''
   }
 
   return { as, href }

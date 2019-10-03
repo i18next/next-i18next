@@ -35,7 +35,7 @@ describe('lngPathCorrector utility function', () => {
   it('throws if currentRoute.as is not undefined or a string', () => {
     currentRoute.as = 10
     expect(() => lngPathCorrector(config, currentRoute, 'en')).toThrowError(
-      '\'as\' type must be \'string\', but it is number',
+      '\'as\' type must be \'string\' or an \'object\', but it is number',
     )
   })
 
