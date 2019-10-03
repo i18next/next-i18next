@@ -1,26 +1,30 @@
 import { format as formatUrl, parse as parseUrl } from 'url'
+import { LinkProps } from 'next/link'
 
 import { Config } from '../../types'
 import { removeSubpath, subpathIsPresent } from './index'
 import subpathIsRequired from './subpath-is-required'
 import subpathFromLng from './subpath-from-lng'
 
-const parseAs = (originalAs, href) => {
+type As = LinkProps['as']
+type Href = LinkProps['href']
+
+const parseAs = (originalAs, href): As => {
   const asType = typeof originalAs
   let as
 
   if (asType === 'undefined') {
     as = formatUrl(href, { unicode: true })
-  } else if (asType === 'string') {
+  } else if (asType === 'string' || (asType === 'object' && originalAs !== null)) {
     as = originalAs
   } else {
-    throw new Error(`'as' type must be 'string', but it is ${asType}`)
+    throw new Error(`'as' type must be 'string' or an 'object', but it is ${asType}`)
   }
 
   return as
 }
 
-const parseHref = (originalHref) => {
+const parseHref = (originalHref): Href => {
   const hrefType = typeof originalHref
   let href
 
@@ -36,7 +40,7 @@ const parseHref = (originalHref) => {
   return href
 }
 
-export default (config: Config, currentRoute, currentLanguage) => {
+export default (config: Config, currentRoute, currentLanguage): LinkProps => {
   const { allLanguages, localeSubpaths } = config
   const { as: originalAs, href: originalHref } = currentRoute
 
@@ -58,17 +62,31 @@ export default (config: Config, currentRoute, currentLanguage) => {
     Strip any/all subpaths from the `as` value
   */
   Object.values(localeSubpaths).forEach((subpath) => {
-    if (subpathIsPresent(as, subpath)) {
-      as = removeSubpath(as, subpath)
+    if (typeof as === 'object') {
+      if (subpathIsPresent(as, subpath)) {
+        as.pathname = removeSubpath(as.pathname, subpath)
+      }
+    } else if (typeof as === 'string') {
+      if (subpathIsPresent(as, subpath)) {
+        as = removeSubpath(as, subpath)
+      }
     }
   })
 
   if (subpathIsRequired(config, currentLanguage)) {
     const basePath = `${href.protocol}//${href.host}`
-    const currentAs = as.replace(basePath, '')
+    let currentAs = ''
+
     const subpath = subpathFromLng(config, currentLanguage)
 
-    as = `/${subpath}${currentAs}`.replace(/\/$/, '')
+    if (typeof as === 'object') {
+      currentAs = as.pathname.replace(basePath, '')
+      as.pathname = `/${subpath}${currentAs}`.replace(/\/$/, '')
+    } else if (typeof as === 'string') {
+      currentAs = as.replace(basePath, '')
+      as = `/${subpath}${currentAs}`.replace(/\/$/, '')
+    }
+
     href.query.lng = currentLanguage
     href.query.subpath = subpath
   }
