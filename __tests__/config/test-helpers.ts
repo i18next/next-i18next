@@ -22,9 +22,10 @@ const userConfig = {
 
 const userConfigClientSide = {
   ...userConfig,
+  clientLocalePath: 'static/locales',
   backend: {
-    loadPath: '/static/translations/{{ns}}/{{lng}}.json',
-    addPath: '/static/translations/{{ns}}/{{lng}}.missing.json',
+    loadPath: '/static/locales/{{ns}}/{{lng}}.json',
+    addPath: '/static/locales/{{ns}}/{{lng}}.missing.json',
   },
 }
 

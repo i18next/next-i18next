@@ -25,6 +25,7 @@ export default (userConfig) => {
     defaultLanguage,
     localeExtension,
     localePath,
+    clientLocalePath,
     localeStructure,
   } = combinedConfig
 
@@ -60,8 +61,8 @@ export default (userConfig) => {
 
     // Set client side backend
     combinedConfig.backend = {
-      loadPath: `/${localePath}/${localeStructure}.${localeExtension}`,
-      addPath: `/${localePath}/${localeStructure}.missing.${localeExtension}`,
+      loadPath: `/${clientLocalePath || localePath}/${localeStructure}.${localeExtension}`,
+      addPath: `/${clientLocalePath || localePath}/${localeStructure}.missing.${localeExtension}`,
     }
 
     combinedConfig.ns = [combinedConfig.defaultNS]
