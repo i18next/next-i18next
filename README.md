@@ -254,7 +254,6 @@ _This table contains options which are specific to next-i18next. All other [i18n
 - [Serverless (e.g. Now 2.0) is not currently supported](https://github.com/isaachinman/next-i18next/issues/274).
 - [To add a `lang` attribute to your top-level html DOM node, you must create a `_document.js` file.](https://github.com/isaachinman/next-i18next/issues/20#issuecomment-443461652)
 - [Localising `next/head` requires special consideration due to NextJs internals](https://github.com/isaachinman/next-i18next/issues/251#issuecomment-479421852).
-- Support for browsers (e.g IE11/Edge) with limited support for modern ES6/7 features may require polyfills until [`#290`](https://github.com/isaachinman/next-i18next/issues/290#issuecomment-488767289) is resolved.
 
 ## Contributors
 
