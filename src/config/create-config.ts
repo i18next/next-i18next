@@ -29,14 +29,25 @@ export default (userConfig) => {
   } = combinedConfig
 
   if (isServer()) {
-
     const fs = eval("require('fs')")
     const path = require('path')
+    const hasStaticDir = fs.existsSync(path.join(process.cwd(), 'static'))
+    const hasPublicDir = fs.existsSync(path.join(process.cwd(), 'public'))
+
+    let staticLegacy = 'static/locales'
+
+    if (hasStaticDir) {
+      console.warn('The static directory has been deprecated in favor of the public directory.')
+    }
+
+    if(hasPublicDir) {
+      staticLegacy = localePath
+    }
 
     // Validate defaultNS
     // https://github.com/isaachinman/next-i18next/issues/358
     if (process.env.NODE_ENV !== 'production' && typeof combinedConfig.defaultNS === 'string') {
-      const defaultNSPath = path.join(process.cwd(), `${localePath}/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`)
+      const defaultNSPath = path.join(process.cwd(), `${staticLegacy}/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`)
       const defaultNSExists = fs.existsSync(defaultNSPath)
       if (!defaultNSExists) {
         throw new Error(`Default namespace not found at ${defaultNSPath}`)
@@ -45,15 +56,15 @@ export default (userConfig) => {
 
     // Set server side backend
     combinedConfig.backend = {
-      loadPath: path.join(process.cwd(), `${localePath}/${localeStructure}.${localeExtension}`),
-      addPath: path.join(process.cwd(), `${localePath}/${localeStructure}.missing.${localeExtension}`),
+      loadPath: path.join(process.cwd(), `${staticLegacy}/${localeStructure}.${localeExtension}`),
+      addPath: path.join(process.cwd(), `${staticLegacy}/${localeStructure}.missing.${localeExtension}`),
     }
 
     // Set server side preload (languages and namespaces)
     combinedConfig.preload = allLanguages
     if (!combinedConfig.ns) {
       const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace(`.${localeExtension}`, ''))
-      combinedConfig.ns = getAllNamespaces(path.join(process.cwd(), `${localePath}/${defaultLanguage}`))
+      combinedConfig.ns = getAllNamespaces(path.join(process.cwd(), `${staticLegacy}/${defaultLanguage}`))
     }
 
   } else {
