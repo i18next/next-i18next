@@ -20,4 +20,5 @@ const localeSubpathVariations = {
 module.exports = new NextI18Next({
   otherLanguages: ['de'],
   localeSubpaths: localeSubpathVariations[localeSubpaths],
+  localePath: typeof window === "undefined" ? "public/locales" : "static/locales",
 })
