@@ -38,7 +38,7 @@ describe('create configuration in non-production environment', () => {
     }))
 
     expect(() => createConfig({})).toThrow(
-      'Default namespace not found at /home/user/static/locales/en/common.json',
+      'Default namespace not found at /home/user/public/static/locales/en/common.json',
     )
   })
 
@@ -55,7 +55,7 @@ describe('create configuration in non-production environment', () => {
       expect(config.otherLanguages).toEqual([])
       expect(config.fallbackLng).toEqual(false)
       expect(config.load).toEqual('currentOnly')
-      expect(config.localePath).toEqual('static/locales')
+      expect(config.localePath).toEqual('public/static/locales')
       expect(config.localeStructure).toEqual('{{lng}}/{{ns}}')
       expect(config.localeSubpaths).toEqual({})
       expect(config.use).toEqual([])
@@ -79,8 +79,8 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.ns).toEqual(['common', 'file1', 'file2'])
 
-      expect(config.backend.loadPath).toEqual('/home/user/static/locales/{{lng}}/{{ns}}.json')
-      expect(config.backend.addPath).toEqual('/home/user/static/locales/{{lng}}/{{ns}}.missing.json')
+      expect(config.backend.loadPath).toEqual('/home/user/public/static/locales/{{lng}}/{{ns}}.json')
+      expect(config.backend.addPath).toEqual('/home/user/public/static/locales/{{lng}}/{{ns}}.missing.json')
     })
 
     it('creates custom non-production configuration', () => {
@@ -95,7 +95,7 @@ describe('create configuration in non-production environment', () => {
       expect(config.otherLanguages).toEqual(['fr', 'it'])
       expect(config.fallbackLng).toEqual('it')
       expect(config.load).toEqual('currentOnly')
-      expect(config.localePath).toEqual('static/translations')
+      expect(config.localePath).toEqual('public/static/translations')
       expect(config.localeStructure).toEqual('{{ns}}/{{lng}}')
       expect(config.localeSubpaths).toEqual(localeSubpathVariations.FOREIGN)
       expect(config.defaultNS).toEqual('universal')
@@ -104,8 +104,8 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.ns).toEqual(['universal', 'file1', 'file2'])
 
-      expect(config.backend.loadPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.json')
-      expect(config.backend.addPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.missing.json')
+      expect(config.backend.loadPath).toEqual('/home/user/public/static/translations/{{ns}}/{{lng}}.json')
+      expect(config.backend.addPath).toEqual('/home/user/public/static/translations/{{ns}}/{{lng}}.missing.json')
     })
 
     it('preserves config.ns, if provided in user configuration', () => {
@@ -123,16 +123,16 @@ describe('create configuration in non-production environment', () => {
     describe('localeExtension config option', () => {
       it('is set to JSON by default', () => {
         const config = createConfig(userConfig)
-        expect(config.backend.loadPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.json')
-        expect(config.backend.addPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.missing.json')
+        expect(config.backend.loadPath).toEqual('/home/user/public/static/translations/{{ns}}/{{lng}}.json')
+        expect(config.backend.addPath).toEqual('/home/user/public/static/translations/{{ns}}/{{lng}}.missing.json')
       })
       it('accepts any string and modifies backend paths', () => {
         const config = createConfig({
           ...userConfig,
           localeExtension: 'test-extension',
         })
-        expect(config.backend.loadPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.test-extension')
-        expect(config.backend.addPath).toEqual('/home/user/static/translations/{{ns}}/{{lng}}.missing.test-extension')
+        expect(config.backend.loadPath).toEqual('/home/user/public/static/translations/{{ns}}/{{lng}}.test-extension')
+        expect(config.backend.addPath).toEqual('/home/user/public/static/translations/{{ns}}/{{lng}}.missing.test-extension')
       })
     })
   })
@@ -146,7 +146,7 @@ describe('create configuration in non-production environment', () => {
       expect(config.otherLanguages).toEqual([])
       expect(config.fallbackLng).toEqual(false)
       expect(config.load).toEqual('currentOnly')
-      expect(config.localePath).toEqual('static/locales')
+      expect(config.localePath).toEqual('public/static/locales')
       expect(config.localeStructure).toEqual('{{lng}}/{{ns}}')
       expect(config.localeSubpaths).toEqual(localeSubpathVariations.NONE)
       expect(config.use).toEqual([])
@@ -170,8 +170,8 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.ns).toEqual(['common'])
 
-      expect(config.backend.loadPath).toEqual('/static/locales/{{lng}}/{{ns}}.json')
-      expect(config.backend.addPath).toEqual('/static/locales/{{lng}}/{{ns}}.missing.json')
+      expect(config.backend.loadPath).toEqual('/public/static/locales/{{lng}}/{{ns}}.json')
+      expect(config.backend.addPath).toEqual('/public/static/locales/{{lng}}/{{ns}}.missing.json')
     })
 
     it('creates custom client-side non-production configuration', () => {
@@ -181,7 +181,7 @@ describe('create configuration in non-production environment', () => {
       expect(config.otherLanguages).toEqual(['fr', 'it'])
       expect(config.fallbackLng).toEqual('it')
       expect(config.load).toEqual('currentOnly')
-      expect(config.localePath).toEqual('static/translations')
+      expect(config.localePath).toEqual('public/static/translations')
       expect(config.localeStructure).toEqual('{{ns}}/{{lng}}')
       expect(config.localeSubpaths).toEqual(localeSubpathVariations.FOREIGN)
       expect(config.defaultNS).toEqual('universal')
@@ -189,23 +189,23 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.ns).toEqual(['universal'])
 
-      expect(config.backend.loadPath).toEqual('/static/translations/{{ns}}/{{lng}}.json')
-      expect(config.backend.addPath).toEqual('/static/translations/{{ns}}/{{lng}}.missing.json')
+      expect(config.backend.loadPath).toEqual('/public/static/translations/{{ns}}/{{lng}}.json')
+      expect(config.backend.addPath).toEqual('/public/static/translations/{{ns}}/{{lng}}.missing.json')
     })
 
     describe('localeExtension config option', () => {
       it('is set to JSON by default', () => {
         const config = createConfig(userConfig)
-        expect(config.backend.loadPath).toEqual('/static/translations/{{ns}}/{{lng}}.json')
-        expect(config.backend.addPath).toEqual('/static/translations/{{ns}}/{{lng}}.missing.json')
+        expect(config.backend.loadPath).toEqual('/public/static/translations/{{ns}}/{{lng}}.json')
+        expect(config.backend.addPath).toEqual('/public/static/translations/{{ns}}/{{lng}}.missing.json')
       })
       it('accepts any string and modifies backend paths', () => {
         const config = createConfig({
           ...userConfig,
           localeExtension: 'test-extension',
         })
-        expect(config.backend.loadPath).toEqual('/static/translations/{{ns}}/{{lng}}.test-extension')
-        expect(config.backend.addPath).toEqual('/static/translations/{{ns}}/{{lng}}.missing.test-extension')
+        expect(config.backend.loadPath).toEqual('/pubic/static/translations/{{ns}}/{{lng}}.test-extension')
+        expect(config.backend.addPath).toEqual('/public/static/translations/{{ns}}/{{lng}}.missing.test-extension')
       })
     })
   }
