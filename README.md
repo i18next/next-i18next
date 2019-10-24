@@ -29,12 +29,13 @@ You need to also have `react` and `next` installed.
 By default, `next-i18next` expects your translations to be organised as such:
 ```
 .
-└── static
-    └── locales
-        ├── en
-        |   └── common.json
-        └── de
-            └── common.json
+└── public
+    └── static
+        └── locales
+            ├── en
+            |   └── common.json
+            └── de
+                └── common.json
 ```
 
 This structure can also be seen in the [simple example](./examples/simple).
@@ -234,10 +235,10 @@ MyPage.getInitialProps = async({ req }) => {
 | `browserLanguageDetection`  | `true`  |
 | `defaultNS` | `'common'`  |
 | `defaultLanguage`  | `'en'`  |
-| `ignoreRoutes`  | `['/_next/', '/static/']`  |
+| `ignoreRoutes`  | `['/_next/', '/public/static/']`  |
 | `otherLanguages` (required) | `[]`  |
 | `localeExtension` | `'json'`  |
-| `localePath` | `'static/locales'`  |
+| `localePath` | `'public/static/locales'`  |
 | `localeStructure` | `'{{lng}}/{{ns}}'`  |
 | `localeSubpaths` | `{}`  |
 | `serverLanguageDetection` | `true`  |
