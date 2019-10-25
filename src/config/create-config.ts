@@ -36,7 +36,10 @@ export default (userConfig) => {
     // Validate defaultNS
     // https://github.com/isaachinman/next-i18next/issues/358
     if (process.env.NODE_ENV !== 'production' && typeof combinedConfig.defaultNS === 'string') {
-      const defaultNSPath = path.join(process.cwd(), `${localePath}/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`)
+      const defaultLocaleStructure = localeStructure
+        .replace("{{lng}}", defaultLanguage)
+        .replace("{{ns}}", combinedConfig.defaultNS)
+      const defaultNSPath = path.join(process.cwd(), `${localePath}/${defaultLocaleStructure}.${localeExtension}`)
       const defaultNSExists = fs.existsSync(defaultNSPath)
       if (!defaultNSExists) {
         throw new Error(`Default namespace not found at ${defaultNSPath}`)
