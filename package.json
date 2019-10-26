@@ -1,6 +1,6 @@
 {
   "name": "next-i18next",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "repository": "git@github.com:isaachinman/next-i18next.git",
   "author": "Isaac Hinman <isaac@isaachinman.com>",
   "main": "dist/commonjs/index.js",
