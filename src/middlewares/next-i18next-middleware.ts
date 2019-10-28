@@ -40,7 +40,7 @@ export default function (nexti18next) {
   /*
     This does the bulk of the i18next work
   */
-  middleware.push(i18nextMiddleware.handle(i18n, { ignoreRoutes }))
+  middleware.push(i18nextMiddleware.handle(i18n))
 
   /*
     This does the locale subpath work

@@ -53,11 +53,7 @@ describe('next-18next middleware', () => {
   it('sets up i18nextMiddleware handle on setup', () => {
     callAllMiddleware()
 
-    expect(i18nextMiddleware.handle)
-      .toBeCalledWith('i18n',
-        expect.objectContaining({
-          ignoreRoutes: expect.arrayContaining(['/_next/', '/static/']),
-        }))
+    expect(i18nextMiddleware.handle).toBeCalledWith('i18n')
   })
 
   it(`does not call any next-i18next middleware if localeSubpaths is "${JSON.stringify(localeSubpathVariations.NONE)}"`, () => {
@@ -77,6 +73,7 @@ describe('next-18next middleware', () => {
       callAllMiddleware()
 
       expect(next).toBeCalled()
+      expect(req.i18n).toBeDefined()
     })
 
     it('adds lng to query parameters and removes from url for i18next processing', () => {
