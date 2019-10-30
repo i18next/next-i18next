@@ -4,6 +4,7 @@
   "repository": "git@github.com:isaachinman/next-i18next.git",
   "author": "Isaac Hinman <isaac@isaachinman.com>",
   "main": "dist/commonjs/index.js",
+  "module": "dist/es/index.js",
   "types": "./types.d.ts",
   "license": "MIT",
   "engines": {
