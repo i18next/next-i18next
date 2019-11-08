@@ -36,7 +36,6 @@ export default function createConsoleLog(messageType, message) {
   const { errorStackTraceLimit, strictMode } = this.config
 
   const prevStackLimit = Error.stackTraceLimit
-  Error.stackTraceLimit = errorStackTraceLimit
 
   let util
 
