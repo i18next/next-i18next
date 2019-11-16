@@ -2,7 +2,7 @@ import isNode from 'detect-node'
 import i18n from 'i18next'
 import i18nextXHRBackend from 'i18next-xhr-backend'
 import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector'
-import serverI18nSetup from './middlewares/server-i18n-setup'
+import serverI18nSetup from './middlewares/i18n-setup'
 
 export default (config) => {
   if (!i18n.isInitialized) {
