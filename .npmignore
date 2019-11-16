@@ -24,6 +24,9 @@ __tests__
 coverage
 jest.*
 
+# Build tools
+tsconfig.json
+
 # Misc
 .circleci
 .all-contributorsrc

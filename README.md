@@ -69,7 +69,18 @@ It's recommended to export this `NextI18Next` instance from a single file in you
 After creating and exporting your `NextI18Next` instance, you need to take the following steps to get things working:
 
 1. Create an `_app.js` file inside your `pages` directory, and wrap it with the `NextI18Next.appWithTranslation` higher order component (HOC). You can see this approach in the [examples/simple/pages/_app.js](./examples/simple/pages/_app.js). 
-2. Create a `server.js` file inside your root directory, initialise an [express](https://www.npmjs.com/package/express) server, and use the `nextI18NextMiddleware` middleware with your `nextI18Next` instance passed in. You can see this approach in the [examples/simple/server.js](./examples/simple/server.js). For more info, see [the NextJs section on custom servers](https://github.com/zeit/next.js#custom-server-and-routing).
+2. Create a `server.js` file inside your root directory, initialise an [express](https://www.npmjs.com/package/express) server, and use the `nextI18NextMiddleware` middleware with your `nextI18Next` instance passed in. You can see this approach in the [examples/simple/server.js](./examples/simple/server.js).
+3. Update the scripts in `package.json` to:
+```
+{
+  "scripts": {
+    "dev": "node server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js"
+  }
+}
+```
+For more info, see [the NextJs section on custom servers](https://github.com/zeit/next.js#custom-server-and-routing).
 
 That's it! Your app is ready to go. You can now use the `NextI18Next.withTranslation` HOC to make your components or pages translatable, based on namespaces:
 
@@ -243,7 +254,6 @@ _This table contains options which are specific to next-i18next. All other [i18n
 - [Serverless (e.g. Now 2.0) is not currently supported](https://github.com/isaachinman/next-i18next/issues/274).
 - [To add a `lang` attribute to your top-level html DOM node, you must create a `_document.js` file.](https://github.com/isaachinman/next-i18next/issues/20#issuecomment-443461652)
 - [Localising `next/head` requires special consideration due to NextJs internals](https://github.com/isaachinman/next-i18next/issues/251#issuecomment-479421852).
-- Support for browsers (e.g IE11/Edge) with limited support for modern ES6/7 features may require polyfills until [`#290`](https://github.com/isaachinman/next-i18next/issues/290#issuecomment-488767289) is resolved.
 
 ## Contributors
 

@@ -5,27 +5,8 @@ import testI18NextConfig from '../test-i18next-config'
 import nextI18nextMiddleware from '../../src/middlewares/server-next-i18next-middleware'
 import { localeSubpathVariations } from '../config/test-helpers'
 
-const redirectWithoutCache: jest.Mock = require('../../src/utils').redirectWithoutCache
-const lngFromReq: jest.Mock = require('../../src/utils').lngFromReq
-const subpathFromLng: jest.Mock = require('../../src/utils').subpathFromLng
-const subpathIsRequired: jest.Mock = require('../../src/utils').subpathIsRequired
-const subpathIsPresent: jest.Mock = require('../../src/utils').subpathIsPresent
-const removeSubpath: jest.Mock = require('../../src/utils').removeSubpath
-const addSubpath: jest.Mock = require('../../src/utils').addSubpath
-
 jest.mock('i18next-express-middleware', () => ({
   handle: jest.fn(() => jest.fn()),
-}))
-
-jest.mock('../../src/utils', () => ({
-  redirectWithoutCache: jest.fn(),
-  subpathIsRequired: jest.fn(),
-  subpathIsPresent: jest.fn(),
-  subpathFromLng: jest.fn(),
-  lngFromReq: jest.fn(),
-  removeSubpath: jest.fn(),
-  isServer: jest.fn(),
-  addSubpath: jest.fn()
 }))
 
 describe('next-18next middleware', () => {
@@ -42,6 +23,7 @@ describe('next-18next middleware', () => {
 
     req = {
       url: '/myapp.com/',
+      i18n: testI18NextConfig
     }
     res = {
       redirect: jest.fn(),
@@ -53,13 +35,6 @@ describe('next-18next middleware', () => {
   afterEach(() => {
     i18nextMiddleware.handle.mockClear()
 
-    redirectWithoutCache.mockReset()
-    subpathIsRequired.mockReset()
-    subpathIsPresent.mockReset()
-    subpathFromLng.mockReset()
-    lngFromReq.mockReset()
-    removeSubpath.mockReset()
-    addSubpath.mockReset()
     res.redirect.mockReset()
     res.header.mockReset()
   })
@@ -78,20 +53,16 @@ describe('next-18next middleware', () => {
   it('sets up i18nextMiddleware handle on setup', () => {
     callAllMiddleware()
 
-    expect(i18nextMiddleware.handle)
-      .toBeCalledWith('i18n',
-        expect.objectContaining({
-          ignoreRoutes: expect.arrayContaining(['/_next/', '/static/']),
-        }))
+    expect(i18nextMiddleware.handle).toBeCalledWith('i18n')
   })
 
-  it(`does not call any next-i18next middleware if localeSubpaths is "${localeSubpathVariations.NONE}"`, () => {
+  it(`does not call any next-i18next middleware if localeSubpaths is "${JSON.stringify(localeSubpathVariations.NONE)}"`, () => {
     nexti18next.config.localeSubpaths = localeSubpathVariations.NONE
 
     callAllMiddleware()
   })
 
-  describe(`localeSubpaths = "${localeSubpathVariations.FOREIGN}"`, () => {
+  describe(`localeSubpaths = "${JSON.stringify(localeSubpathVariations.FOREIGN)}"`, () => {
     beforeEach(() => {
       nexti18next.config.localeSubpaths = localeSubpathVariations.FOREIGN
     })
@@ -102,29 +73,25 @@ describe('next-18next middleware', () => {
       callAllMiddleware()
 
       expect(next).toBeCalled()
+      expect(req.i18n).toBeDefined()
     })
 
     it('adds lng to query parameters and removes from url for i18next processing', () => {
-
       const language = 'de'
       const subpath = 'german'
       req = {
         url: `/${subpath}/page1`,
         query: {},
         i18n: {
+          ...testI18NextConfig,
           options: {
+            ...testI18NextConfig.options,
             localeSubpaths: {
               [language]: subpath,
             }
           }
         }
       }
-
-      subpathIsRequired.mockReturnValue(true)
-      subpathIsPresent.mockReturnValue(true)
-      lngFromReq.mockReturnValue(language)
-      subpathFromLng.mockReturnValue(subpath)
-      removeSubpath.mockReturnValue('/page1')
 
       callAllMiddleware()
 
@@ -134,11 +101,6 @@ describe('next-18next middleware', () => {
         subpath,
       })
 
-      expect(subpathIsRequired).toHaveBeenCalledTimes(1)
-      expect(subpathIsPresent).toHaveBeenCalledTimes(1)
-      expect(lngFromReq).toHaveBeenCalledTimes(1)
-      expect(subpathFromLng).toHaveBeenCalledTimes(1)
-      expect(removeSubpath).toHaveBeenCalledTimes(1)
       expect(next).toBeCalledTimes(1)
     })
 
@@ -150,7 +112,10 @@ describe('next-18next middleware', () => {
         url: `/page1`,
         query: {},
         i18n: {
+          ...testI18NextConfig,
+          languages: [language],
           options: {
+            ...testI18NextConfig.options,
             localeSubpaths: {
               [language]: subpath,
             }
@@ -158,26 +123,40 @@ describe('next-18next middleware', () => {
         }
       }
 
-      subpathIsRequired.mockReturnValue(true)
-      subpathIsPresent.mockReturnValue(false)
-      lngFromReq.mockReturnValue(language)
-      subpathFromLng.mockReturnValue(subpath)
-      addSubpath.mockReturnValue(`/${subpath}/page1`)
-
       callAllMiddleware()
 
       expect(req.url).toBe('/page1')
       expect(req.query).toEqual({})
 
-      expect(removeSubpath).toHaveBeenCalledTimes(0)
-      expect(redirectWithoutCache).toHaveBeenCalledWith(res, '/german/page1')
-      expect(addSubpath).toHaveBeenCalledTimes(1)
-      expect(subpathIsRequired).toHaveBeenCalledTimes(1)
-      expect(subpathIsPresent).toHaveBeenCalledTimes(3)
-      expect(lngFromReq).toHaveBeenCalledTimes(1)
-      expect(subpathFromLng).toHaveBeenCalledTimes(3)
-      expect(removeSubpath).toHaveBeenCalledTimes(0)
+      expect(res.redirect).toHaveBeenCalledWith(302, '/german/page1')
+      expect(res.header).toHaveBeenNthCalledWith(1, 'Cache-Control', 'private, no-cache, no-store, must-revalidate')
+      expect(res.header).toHaveBeenNthCalledWith(2, 'Expires', '-1')
+      expect(res.header).toHaveBeenNthCalledWith(3, 'Pragma', 'no-cache')
       expect(next).toBeCalledTimes(0)
+    })
+
+    it('should not removes lang subpath from url when not required', () => {
+      const language = 'de'
+      const subpath = 'german'
+      const url = `/${subpath}page1`
+      req = {
+        url,
+        query: {},
+        i18n: {
+          ...testI18NextConfig,
+          options: {
+            ...testI18NextConfig.options,
+            localeSubpaths: {
+              [language]: subpath,
+            }
+          }
+        }
+      }
+
+      callAllMiddleware()
+
+      expect(req.url).toBe(url)
+      expect(next).toBeCalledTimes(1)
     })
   })
 })
