@@ -36,7 +36,6 @@ export default function createConsoleLog(messageType, message) {
   const { errorStackTraceLimit, strictMode } = this.config
 
   const prevStackLimit = Error.stackTraceLimit
-  Error.stackTraceLimit = errorStackTraceLimit
 
   let util
 
@@ -52,7 +51,7 @@ export default function createConsoleLog(messageType, message) {
 
   /* Temporarily set the stacktrace to 0 or errorStackTraceLimit,
      in order to only display a message */
-  (Error as any).errorStackTraceLimit = errorStackTraceLimit
+  Error.stackTraceLimit = errorStackTraceLimit
 
   // Make room for new message
   console.log()
