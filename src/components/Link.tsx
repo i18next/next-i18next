@@ -33,6 +33,7 @@ const removeWithTranslationProps = (props) => {
   delete strippedProps.reportNS
   delete strippedProps.t
   delete strippedProps.tReady
+  delete strippedProps.forwardedRef
   return strippedProps
 }
 

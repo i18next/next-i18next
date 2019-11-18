@@ -256,6 +256,7 @@ describe('Link component', () => {
       'reportNS',
       't',
       'tReady',
+      'forwardedRef'
     ]
 
     it('strips withTranslation props before passing props to NextLink', () => {
