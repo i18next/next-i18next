@@ -1,9 +1,11 @@
 import defaultConfig from './default-config'
 import { isServer } from '../utils'
+import { Config } from '../../types'
 
 const deepMergeObjects = ['backend', 'detection']
+const STATIC_LOCALE_PATH = 'static/locales'
 
-export default (userConfig) => {
+export default (userConfig): Config => {
 
   if (typeof userConfig.localeSubpaths === 'string') {
     throw new Error('The localeSubpaths option has been changed to an object. Please refer to documentation.')
@@ -32,6 +34,7 @@ export default (userConfig) => {
 
     const fs = eval("require('fs')")
     const path = require('path')
+    let serverLocalePath = localePath
 
     // Validate defaultNS
     // https://github.com/isaachinman/next-i18next/issues/358
@@ -39,29 +42,39 @@ export default (userConfig) => {
       const defaultNSPath = path.join(process.cwd(), `${localePath}/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`)
       const defaultNSExists = fs.existsSync(defaultNSPath)
       if (!defaultNSExists) {
-        throw new Error(`Default namespace not found at ${defaultNSPath}`)
+        // if defaultNS doesn't exist, try to fall back to the deprecated static folder
+        // https://github.com/isaachinman/next-i18next/issues/523
+        if (fs.existsSync(path.join(process.cwd(), `${STATIC_LOCALE_PATH}/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`))) {
+          console.warn('Deprecation Warning - falling back to /static folder, deprecated in next@9.1.*')
+          serverLocalePath = STATIC_LOCALE_PATH
+        } else {
+          throw new Error(`Default namespace not found at ${defaultNSPath}`)
+        }
       }
     }
 
     // Set server side backend
     combinedConfig.backend = {
-      loadPath: path.join(process.cwd(), `${localePath}/${localeStructure}.${localeExtension}`),
-      addPath: path.join(process.cwd(), `${localePath}/${localeStructure}.missing.${localeExtension}`),
+      loadPath: path.join(process.cwd(), `${serverLocalePath}/${localeStructure}.${localeExtension}`),
+      addPath: path.join(process.cwd(), `${serverLocalePath}/${localeStructure}.missing.${localeExtension}`),
     }
 
     // Set server side preload (languages and namespaces)
     combinedConfig.preload = allLanguages
     if (!combinedConfig.ns) {
-      const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace(`.${localeExtension}`, ''))
-      combinedConfig.ns = getAllNamespaces(path.join(process.cwd(), `${localePath}/${defaultLanguage}`))
+      const getAllNamespaces = (p: string): string[] => fs.readdirSync(p).map((file: string): string => file.replace(`.${localeExtension}`, ''))
+      combinedConfig.ns = getAllNamespaces(path.join(process.cwd(), `${serverLocalePath}/${defaultLanguage}`))
     }
 
   } else {
 
+    // remove public/ prefix from client site config
+    const clientLocalePath = localePath.replace(/^public\//, '')
+
     // Set client side backend
     combinedConfig.backend = {
-      loadPath: `/${localePath}/${localeStructure}.${localeExtension}`,
-      addPath: `/${localePath}/${localeStructure}.missing.${localeExtension}`,
+      loadPath: `/${clientLocalePath}/${localeStructure}.${localeExtension}`,
+      addPath: `/${clientLocalePath}/${localeStructure}.missing.${localeExtension}`,
     }
 
     combinedConfig.ns = [combinedConfig.defaultNS]
@@ -75,7 +88,7 @@ export default (userConfig) => {
   }
 
   // Deep merge with overwrite - goes last
-  deepMergeObjects.forEach((obj) => {
+  deepMergeObjects.forEach((obj: string): void => {
     if (userConfig[obj]) {
       combinedConfig[obj] = {
         ...defaultConfig[obj],

@@ -3,7 +3,7 @@ import { isServer } from '../utils'
 const DEFAULT_LANGUAGE = 'en'
 const OTHER_LANGUAGES = []
 const DEFAULT_NAMESPACE = 'common'
-const LOCALE_PATH = 'static/locales'
+const LOCALE_PATH = 'public/locales'
 const LOCALE_STRUCTURE = '{{lng}}/{{ns}}'
 const LOCALE_EXTENSION = 'json'
 
@@ -20,11 +20,11 @@ const config = {
   interpolation: {
     escapeValue: false,
     formatSeparator: ',',
-    format: (value, format) => (format === 'uppercase' ? value.toUpperCase() : value),
+    format: (value, format): string => (format === 'uppercase' ? value.toUpperCase() : value),
   },
   browserLanguageDetection: true,
   serverLanguageDetection: true,
-  ignoreRoutes: ['/_next/', '/static/'],
+  ignoreRoutes: ['/_next/', '/static/', '/public/'],
   customDetectors: [],
   detection: {
     lookupCookie: 'next-i18next',
@@ -37,7 +37,7 @@ const config = {
   },
   strictMode: true,
   errorStackTraceLimit: 0,
-  get initImmediate() {
+  get initImmediate(): boolean {
     return !isServer()
   }
 }

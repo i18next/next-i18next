@@ -15,7 +15,7 @@ const userConfig = {
   defaultNS: 'universal',
   fallbackLng: 'it',
   otherLanguages: ['fr', 'it'],
-  localePath: 'static/translations',
+  localePath: 'public/translations',
   localeStructure: '{{ns}}/{{lng}}',
   localeSubpaths: localeSubpathVariations.FOREIGN,
 }
@@ -23,26 +23,31 @@ const userConfig = {
 const userConfigClientSide = {
   ...userConfig,
   backend: {
-    loadPath: '/static/translations/{{ns}}/{{lng}}.json',
-    addPath: '/static/translations/{{ns}}/{{lng}}.missing.json',
+    loadPath: '/translations/{{ns}}/{{lng}}.json',
+    addPath: '/translations/{{ns}}/{{lng}}.missing.json',
   },
 }
 
 const userConfigServerSide = {
   ...userConfig,
   backend: {
-    loadPath: '/home/user/static/translations/{{ns}}/{{lng}}.json',
-    addPath: '/home/user/static/translations/{{ns}}/{{lng}}.missing.json',
+    loadPath: '/home/user/public/translations/{{ns}}/{{lng}}.json',
+    addPath: '/home/user/public/translations/{{ns}}/{{lng}}.missing.json',
   },
 }
 
-const setUpTest = () => {
-  const evalFunc = jest.spyOn(global, 'eval').mockImplementation(() => ({
-    readdirSync: jest.fn().mockImplementation(() => ['common', 'file1', 'file2']),
-    existsSync: jest.fn().mockImplementation(() => true),
+interface FileSystemFuncs {
+  evalFunc: jest.SpyInstance;
+  pwd: jest.SpyInstance;
+}
+
+const setUpTest = (): FileSystemFuncs => {
+  const evalFunc = jest.spyOn(global, 'eval').mockImplementation((): {} => ({
+    readdirSync: jest.fn().mockImplementation((): string[] => ['common', 'file1', 'file2']),
+    existsSync: jest.fn().mockImplementation((): boolean => true),
   }))
 
-  const pwd = jest.spyOn(process, 'cwd').mockImplementation(() => '/home/user/')
+  const pwd = jest.spyOn(process, 'cwd').mockImplementation((): string => '/home/user/')
 
   return {
     evalFunc,
@@ -50,7 +55,7 @@ const setUpTest = () => {
   }
 }
 
-const tearDownTest = (evalFunc, pwd) => {
+const tearDownTest = (evalFunc, pwd): void => {
   evalFunc.mockReset()
   evalFunc.mockRestore()
 

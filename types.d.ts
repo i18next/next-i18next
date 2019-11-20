@@ -11,9 +11,21 @@ import { LinkProps } from 'next/link'
 import { SingletonRouter } from 'next/router'
 import i18next from 'i18next'
 
+interface Detection {
+  order?: string[];
+  caches?: string[];
+}
+
+interface Backend {
+  loadPath?: string;
+  addPath?: string;
+}
+
 export type InitConfig = {
   browserLanguageDetection?: boolean;
   serverLanguageDetection?: boolean;
+  detection?: Detection;
+  backend?: Backend;
   strictMode?: boolean;
   defaultLanguage: string;
   ignoreRoutes?: string[];
