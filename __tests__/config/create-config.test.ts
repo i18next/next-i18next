@@ -90,6 +90,7 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.backend.loadPath).toEqual('/home/user/public/static/locales/{{lng}}/{{ns}}.json')
       expect(config.backend.addPath).toEqual('/home/user/public/static/locales/{{lng}}/{{ns}}.missing.json')
+      expect(config.shallowRender).toEqual(false)
     })
 
     it('creates custom non-production configuration', () => {
@@ -213,6 +214,8 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.backend.loadPath).toEqual('/static/translations/{{ns}}/{{lng}}.json')
       expect(config.backend.addPath).toEqual('/static/translations/{{ns}}/{{lng}}.missing.json')
+
+      expect(config.shallowRender).toEqual(true)
     })
 
     describe('localeExtension config option', () => {
