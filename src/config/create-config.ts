@@ -61,7 +61,7 @@ export default (userConfig) => {
     // Set server side preload (languages and namespaces)
     combinedConfig.preload = allLanguages
     if (!combinedConfig.ns) {
-      const getAllNamespaces = (p: string) => fs.readdirSync(p).map((file: string) => file.replace(`.${localeExtension}`, ''))
+      const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace(`.${localeExtension}`, ''))
       combinedConfig.ns = getAllNamespaces(path.join(process.cwd(), `${serverLocalePath}/${defaultLanguage}`))
     }
 
@@ -87,7 +87,7 @@ export default (userConfig) => {
   }
 
   // Deep merge with overwrite - goes last
-  deepMergeObjects.forEach((obj: string) => {
+  deepMergeObjects.forEach((obj) => {
     if (userConfig[obj]) {
       combinedConfig[obj] = {
         ...defaultConfig[obj],

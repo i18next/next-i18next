@@ -108,7 +108,7 @@ describe('create configuration in non-production environment', () => {
       expect(config.backend.addPath).toEqual('/home/user/public/translations/{{ns}}/{{lng}}.missing.json')
     })
 
-    it('falls back to deprecated static folder', (): void => {
+    it('falls back to deprecated static folder', () => {
       isServer.mockReturnValue(true)
       evalFunc.mockImplementation(() => ({
         readdirSync: jest.fn().mockImplementation(() => ['universal', 'file1', 'file2']),
