@@ -1,11 +1,10 @@
 import defaultConfig from './default-config'
 import { isServer } from '../utils'
-import { Config } from '../../types'
 
 const deepMergeObjects = ['backend', 'detection']
 const STATIC_LOCALE_PATH = 'static/locales'
 
-export default (userConfig): Config => {
+export default (userConfig) => {
 
   if (typeof userConfig.localeSubpaths === 'string') {
     throw new Error('The localeSubpaths option has been changed to an object. Please refer to documentation.')
@@ -62,7 +61,7 @@ export default (userConfig): Config => {
     // Set server side preload (languages and namespaces)
     combinedConfig.preload = allLanguages
     if (!combinedConfig.ns) {
-      const getAllNamespaces = (p: string): string[] => fs.readdirSync(p).map((file: string): string => file.replace(`.${localeExtension}`, ''))
+      const getAllNamespaces = (p: string) => fs.readdirSync(p).map((file: string) => file.replace(`.${localeExtension}`, ''))
       combinedConfig.ns = getAllNamespaces(path.join(process.cwd(), `${serverLocalePath}/${defaultLanguage}`))
     }
 
@@ -88,7 +87,7 @@ export default (userConfig): Config => {
   }
 
   // Deep merge with overwrite - goes last
-  deepMergeObjects.forEach((obj: string): void => {
+  deepMergeObjects.forEach((obj: string) => {
     if (userConfig[obj]) {
       combinedConfig[obj] = {
         ...defaultConfig[obj],

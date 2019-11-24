@@ -36,18 +36,13 @@ const userConfigServerSide = {
   },
 }
 
-interface FileSystemFuncs {
-  evalFunc: jest.SpyInstance;
-  pwd: jest.SpyInstance;
-}
-
-const setUpTest = (): FileSystemFuncs => {
-  const evalFunc = jest.spyOn(global, 'eval').mockImplementation((): {} => ({
-    readdirSync: jest.fn().mockImplementation((): string[] => ['common', 'file1', 'file2']),
-    existsSync: jest.fn().mockImplementation((): boolean => true),
+const setUpTest = () => {
+  const evalFunc = jest.spyOn(global, 'eval').mockImplementation(() => ({
+    readdirSync: jest.fn().mockImplementation(() => ['common', 'file1', 'file2']),
+    existsSync: jest.fn().mockImplementation(() => true),
   }))
 
-  const pwd = jest.spyOn(process, 'cwd').mockImplementation((): string => '/home/user/')
+  const pwd = jest.spyOn(process, 'cwd').mockImplementation(() => '/home/user/')
 
   return {
     evalFunc,
@@ -55,7 +50,7 @@ const setUpTest = (): FileSystemFuncs => {
   }
 }
 
-const tearDownTest = (evalFunc, pwd): void => {
+const tearDownTest = (evalFunc, pwd) => {
   evalFunc.mockReset()
   evalFunc.mockRestore()
 

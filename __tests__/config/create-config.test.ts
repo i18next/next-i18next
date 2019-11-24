@@ -6,49 +6,48 @@ import {
   tearDownTest,
   localeSubpathVariations,
 } from './test-helpers'
-import { Config } from '../../types'
 
 import createConfig from '../../src/config/create-config'
 
 const isServer: jest.Mock = require('../../src/utils/is-server')
-jest.mock('../../src/utils/is-server.ts', (): jest.Mock => jest.fn())
+jest.mock('../../src/utils/is-server.ts', () => jest.fn())
 
-describe('create configuration in non-production environment', (): void => {
+describe('create configuration in non-production environment', () => {
   let evalFunc
   let pwd
 
-  beforeEach((): void => {
+  beforeEach(() => {
     ({ evalFunc, pwd } = setUpTest())
   })
 
-  afterEach((): void => {
+  afterEach(() => {
     tearDownTest(evalFunc, pwd)
   })
 
-  it('throws if userConfig.localeSubpaths is a boolean', (): void => {
-    expect((): Config => createConfig({ localeSubpaths: 'string' })).toThrow(
+  it('throws if userConfig.localeSubpaths is a boolean', () => {
+    expect(() => createConfig({ localeSubpaths: 'string' })).toThrow(
       'The localeSubpaths option has been changed to an object. Please refer to documentation.',
     )
   })
 
-  it('throws if defaultNS does not exist', (): void => {
+  it('throws if defaultNS does not exist', () => {
     isServer.mockReturnValue(true)
-    evalFunc.mockImplementation((): {} => ({
-      readdirSync: jest.fn().mockImplementation((): string[] => ['universal', 'file1', 'file2']),
-      existsSync: jest.fn().mockImplementation((): boolean => false),
+    evalFunc.mockImplementation(() => ({
+      readdirSync: jest.fn().mockImplementation(() => ['universal', 'file1', 'file2']),
+      existsSync: jest.fn().mockImplementation(() => false),
     }))
 
-    expect((): Config => createConfig({})).toThrow(
+    expect(() => createConfig({})).toThrow(
       'Default namespace not found at /home/user/public/locales/en/common.json',
     )
   })
 
-  describe('server-side', (): void => {
-    beforeEach((): void => {
+  describe('server-side', () => {
+    beforeEach(() => {
       isServer.mockReturnValue(true)
     })
 
-    it('creates default non-production configuration', (): void => {
+    it('creates default non-production configuration', () => {
       isServer.mockReturnValue(true)
       const config = createConfig({})
 
@@ -84,10 +83,10 @@ describe('create configuration in non-production environment', (): void => {
       expect(config.backend.addPath).toEqual('/home/user/public/locales/{{lng}}/{{ns}}.missing.json')
     })
 
-    it('creates custom non-production configuration', (): void => {
-      evalFunc.mockImplementation((): {} => ({
-        readdirSync: jest.fn().mockImplementation((): string[] => ['universal', 'file1', 'file2']),
-        existsSync: jest.fn().mockImplementation((): boolean => true),
+    it('creates custom non-production configuration', () => {
+      evalFunc.mockImplementation(() => ({
+        readdirSync: jest.fn().mockImplementation(() => ['universal', 'file1', 'file2']),
+        existsSync: jest.fn().mockImplementation(() => true),
       }))
 
       const config = createConfig(userConfigServerSide)
@@ -111,9 +110,9 @@ describe('create configuration in non-production environment', (): void => {
 
     it('falls back to deprecated static folder', (): void => {
       isServer.mockReturnValue(true)
-      evalFunc.mockImplementation((): {} => ({
-        readdirSync: jest.fn().mockImplementation((): string[] => ['universal', 'file1', 'file2']),
-        existsSync: jest.fn().mockImplementationOnce((): boolean => false).mockImplementationOnce((): boolean => true),
+      evalFunc.mockImplementation(() => ({
+        readdirSync: jest.fn().mockImplementation(() => ['universal', 'file1', 'file2']),
+        existsSync: jest.fn().mockImplementationOnce(() => false).mockImplementationOnce(() => true),
       }))
       const config = createConfig({ localePath: 'bogus/path' })
 
@@ -122,11 +121,11 @@ describe('create configuration in non-production environment', (): void => {
       expect(config.ns).toEqual(['universal', 'file1', 'file2'])
     })
 
-    it('preserves config.ns, if provided in user configuration', (): void => {
+    it('preserves config.ns, if provided in user configuration', () => {
       const mockReadDirSync = jest.fn()
-      evalFunc.mockImplementation((): {} => ({
+      evalFunc.mockImplementation(() => ({
         readdirSync: mockReadDirSync,
-        existsSync: jest.fn().mockImplementation((): boolean => true),
+        existsSync: jest.fn().mockImplementation(() => true),
       }))
       const config = createConfig({ ns: ['common', 'ns1', 'ns2'] })
 
@@ -134,13 +133,13 @@ describe('create configuration in non-production environment', (): void => {
       expect(config.ns).toEqual(['common', 'ns1', 'ns2'])
     })
 
-    describe('localeExtension config option', (): void => {
-      it('is set to JSON by default', (): void => {
+    describe('localeExtension config option', () => {
+      it('is set to JSON by default', () => {
         const config = createConfig(userConfig)
         expect(config.backend.loadPath).toEqual('/home/user/public/translations/{{ns}}/{{lng}}.json')
         expect(config.backend.addPath).toEqual('/home/user/public/translations/{{ns}}/{{lng}}.missing.json')
       })
-      it('accepts any string and modifies backend paths', (): void => {
+      it('accepts any string and modifies backend paths', () => {
         const config = createConfig({
           ...userConfig,
           localeExtension: 'test-extension',
@@ -151,8 +150,8 @@ describe('create configuration in non-production environment', (): void => {
     })
   })
 
-  const runClientSideTests = (): void => {
-    it('creates default non-production configuration if process.browser === true', (): void => {
+  const runClientSideTests = () => {
+    it('creates default non-production configuration if process.browser === true', () => {
       isServer.mockReturnValue(false)
       const config = createConfig({})
 
@@ -188,7 +187,7 @@ describe('create configuration in non-production environment', (): void => {
       expect(config.backend.addPath).toEqual('/locales/{{lng}}/{{ns}}.missing.json')
     })
 
-    it('creates custom client-side non-production configuration', (): void => {
+    it('creates custom client-side non-production configuration', () => {
       const config = createConfig(userConfigClientSide)
 
       expect(config.defaultLanguage).toEqual('de')
@@ -207,13 +206,13 @@ describe('create configuration in non-production environment', (): void => {
       expect(config.backend.addPath).toEqual('/translations/{{ns}}/{{lng}}.missing.json')
     })
 
-    describe('localeExtension config option', (): void => {
-      it('is set to JSON by default', (): void => {
+    describe('localeExtension config option', () => {
+      it('is set to JSON by default', () => {
         const config = createConfig(userConfig)
         expect(config.backend.loadPath).toEqual('/translations/{{ns}}/{{lng}}.json')
         expect(config.backend.addPath).toEqual('/translations/{{ns}}/{{lng}}.missing.json')
       })
-      it('accepts any string and modifies backend paths', (): void => {
+      it('accepts any string and modifies backend paths', () => {
         const config = createConfig({
           ...userConfig,
           localeExtension: 'test-extension',
@@ -227,24 +226,24 @@ describe('create configuration in non-production environment', (): void => {
   // there are two definitions of being client side
   // 1. isNode is falsy; or
   // 2. isNode is truthy and typeof window !== 'undefined'
-  describe('client-side', (): void => {
-    beforeEach((): void => {
+  describe('client-side', () => {
+    beforeEach(() => {
       isServer.mockReturnValue(false)
     })
 
     runClientSideTests()
   })
 
-  describe('https://github.com/isaachinman/next-i18next/issues/134', (): void => {
-    describe('if user specifies a default language and not a fallbackLng', (): void => {
+  describe('https://github.com/isaachinman/next-i18next/issues/134', () => {
+    describe('if user specifies a default language and not a fallbackLng', () => {
       let userConfigDeNoFallback
 
-      beforeEach((): void => {
+      beforeEach(() => {
         userConfigDeNoFallback = { ...userConfigClientSide, defaultLanguage: 'de' }
         delete userConfigDeNoFallback.fallbackLng
       })
 
-      it('fallbackLng === false in development', (): void => {
+      it('fallbackLng === false in development', () => {
         isServer.mockReturnValue(true)
 
         const config = createConfig(userConfigDeNoFallback)
@@ -252,7 +251,7 @@ describe('create configuration in non-production environment', (): void => {
         expect(config.fallbackLng).toEqual(false)
       })
 
-      it('fallbackLng === user-specified default language in production', (): void => {
+      it('fallbackLng === user-specified default language in production', () => {
         process.env.NODE_ENV = 'production'
         isServer.mockReturnValue(true)
 
