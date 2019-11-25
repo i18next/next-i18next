@@ -49,7 +49,6 @@ describe('create configuration in non-production environment', () => {
     expect(config.allLanguages).toEqual(['de', 'en'])
   })
 
-
   describe('server-side', () => {
     beforeEach(() => {
       isServer.mockReturnValue(true)
