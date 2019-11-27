@@ -42,6 +42,13 @@ describe('create configuration in non-production environment', () => {
     )
   })
 
+  it('Removes duplicate language keys', () => {
+    let config = createConfig({ otherLanguages: ['de', 'fr', 'en', 'en'] })
+    expect(config.allLanguages).toEqual(['de', 'fr', 'en'])
+    config = createConfig({ otherLanguages: ['de', 'en'], defaultLanguage: 'en' })
+    expect(config.allLanguages).toEqual(['de', 'en'])
+  })
+
   describe('server-side', () => {
     beforeEach(() => {
       isServer.mockReturnValue(true)
