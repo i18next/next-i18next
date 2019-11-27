@@ -39,12 +39,13 @@ export default (userConfig) => {
     // Validate defaultNS
     // https://github.com/isaachinman/next-i18next/issues/358
     if (process.env.NODE_ENV !== 'production' && typeof combinedConfig.defaultNS === 'string') {
-      const defaultNSPath = path.join(process.cwd(), `${localePath}/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`)
+      const defaultFile = `/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`
+      const defaultNSPath = path.join(process.cwd(), localePath, defaultFile)
       const defaultNSExists = fs.existsSync(defaultNSPath)
       if (!defaultNSExists) {
         // if defaultNS doesn't exist, try to fall back to the deprecated static folder
         // https://github.com/isaachinman/next-i18next/issues/523
-        const staticDirPath = path.join(process.cwd(), `${STATIC_LOCALE_PATH}/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`)
+        const staticDirPath = path.join(process.cwd(), STATIC_LOCALE_PATH, defaultFile)
         const staticDirExists = fs.existsSync(staticDirPath)
         if (staticDirExists) {
           consoleMessage('warn', 'Falling back to /static folder, deprecated in next@9.1.*', combinedConfig)
