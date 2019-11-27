@@ -6,6 +6,7 @@ export default (url: string, subpath: string) => {
   }
 
   const { pathname } = parseUrl(url)
+  if (!pathname) return false
   return (
     (pathname.length === subpath.length + 1 && pathname === `/${subpath}`) ||
     (pathname.startsWith(`/${subpath}/`))
