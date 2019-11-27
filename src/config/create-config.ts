@@ -1,5 +1,5 @@
 import defaultConfig from './default-config'
-import { isServer } from '../utils'
+import { consoleMessage, isServer } from '../utils'
 
 const deepMergeObjects = ['backend', 'detection']
 const STATIC_LOCALE_PATH = 'static/locales'
@@ -43,8 +43,10 @@ export default (userConfig) => {
       if (!defaultNSExists) {
         // if defaultNS doesn't exist, try to fall back to the deprecated static folder
         // https://github.com/isaachinman/next-i18next/issues/523
-        if (fs.existsSync(path.join(process.cwd(), `${STATIC_LOCALE_PATH}/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`))) {
-          console.warn('Deprecation Warning - falling back to /static folder, deprecated in next@9.1.*')
+        const staticDirPath = path.join(process.cwd(), `${STATIC_LOCALE_PATH}/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`)
+        const staticDirExists = fs.existsSync(staticDirPath)
+        if (staticDirExists) {
+          consoleMessage('warn', 'Falling back to /static folder, deprecated in next@9.1.*', combinedConfig)
           serverLocalePath = STATIC_LOCALE_PATH
         } else {
           throw new Error(`Default namespace not found at ${defaultNSPath}`)
@@ -67,8 +69,11 @@ export default (userConfig) => {
 
   } else {
 
+    let clientLocalePath = localePath
     // remove public/ prefix from client site config
-    const clientLocalePath = localePath.replace(/^public\//, '')
+    if (localePath.startsWith('public/')) {
+      clientLocalePath = localePath.replace(/^public\//, '')
+    }
 
     // Set client side backend
     combinedConfig.backend = {

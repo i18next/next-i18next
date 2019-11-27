@@ -14,6 +14,10 @@
   "devDependencies": {},
   "dependencies": {
     "express": "^4.16.4",
-    "next-i18next": "link:../../"
+    "i18next": "^14.0.1",
+    "next": "^9.0.3",
+    "next-i18next": "link:../../",
+    "react": "link:../../node_modules/react",
+    "react-dom": "link:../../node_modules/react-dom"
   }
 }

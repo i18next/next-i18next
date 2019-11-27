@@ -38,7 +38,7 @@ describe('create configuration in non-production environment', () => {
     }))
 
     expect(() => createConfig({})).toThrow(
-      'Default namespace not found at /home/user/public/locales/en/common.json',
+      'Default namespace not found at /home/user/public/static/locales/en/common.json',
     )
   })
 
@@ -55,7 +55,7 @@ describe('create configuration in non-production environment', () => {
       expect(config.otherLanguages).toEqual([])
       expect(config.fallbackLng).toEqual(false)
       expect(config.load).toEqual('currentOnly')
-      expect(config.localePath).toEqual('public/locales')
+      expect(config.localePath).toEqual('public/static/locales')
       expect(config.localeStructure).toEqual('{{lng}}/{{ns}}')
       expect(config.localeSubpaths).toEqual({})
       expect(config.use).toEqual([])
@@ -79,8 +79,8 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.ns).toEqual(['common', 'file1', 'file2'])
 
-      expect(config.backend.loadPath).toEqual('/home/user/public/locales/{{lng}}/{{ns}}.json')
-      expect(config.backend.addPath).toEqual('/home/user/public/locales/{{lng}}/{{ns}}.missing.json')
+      expect(config.backend.loadPath).toEqual('/home/user/public/static/locales/{{lng}}/{{ns}}.json')
+      expect(config.backend.addPath).toEqual('/home/user/public/static/locales/{{lng}}/{{ns}}.missing.json')
     })
 
     it('creates custom non-production configuration', () => {
@@ -159,7 +159,7 @@ describe('create configuration in non-production environment', () => {
       expect(config.otherLanguages).toEqual([])
       expect(config.fallbackLng).toEqual(false)
       expect(config.load).toEqual('currentOnly')
-      expect(config.localePath).toEqual('public/locales')
+      expect(config.localePath).toEqual('public/static/locales')
       expect(config.localeStructure).toEqual('{{lng}}/{{ns}}')
       expect(config.localeSubpaths).toEqual(localeSubpathVariations.NONE)
       expect(config.use).toEqual([])
@@ -183,8 +183,8 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.ns).toEqual(['common'])
 
-      expect(config.backend.loadPath).toEqual('/locales/{{lng}}/{{ns}}.json')
-      expect(config.backend.addPath).toEqual('/locales/{{lng}}/{{ns}}.missing.json')
+      expect(config.backend.loadPath).toEqual('/static/locales/{{lng}}/{{ns}}.json')
+      expect(config.backend.addPath).toEqual('/static/locales/{{lng}}/{{ns}}.missing.json')
     })
 
     it('creates custom client-side non-production configuration', () => {

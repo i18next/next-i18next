@@ -31,9 +31,9 @@ function logMessage(messageType, message) {
  * @param {String} message
  * @param {Object} options
  */
-export default function createConsoleLog(messageType, message) {
+export default function createConsoleLog(messageType, message, config = this.config) {
 
-  const { errorStackTraceLimit, strictMode } = this.config
+  const { errorStackTraceLimit, strictMode } = config
 
   const prevStackLimit = Error.stackTraceLimit
 
