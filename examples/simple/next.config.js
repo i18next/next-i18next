@@ -1,7 +1,10 @@
+require('dotenv').config()
+
 module.exports = {
-  publicRuntimeConfig: {
-    localeSubpaths: typeof process.env.LOCALE_SUBPATHS === 'string'
-      ? process.env.LOCALE_SUBPATHS
-      : 'none',
+  webpack: (config) => {
+    return config
   },
+  env: {
+    LOCALE_SUBPATHS: typeof process.env.LOCALE_SUBPATHS === 'string' ? process.env.LOCALE_SUBPATHS : 'none'
+  }
 }
