@@ -15,7 +15,7 @@ const userConfig = {
   defaultNS: 'universal',
   fallbackLng: 'it',
   otherLanguages: ['fr', 'it'],
-  localePath: 'public/translations',
+  localePath: 'public/static/translations',
   localeStructure: '{{ns}}/{{lng}}',
   localeSubpaths: localeSubpathVariations.FOREIGN,
 }
