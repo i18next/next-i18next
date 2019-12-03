@@ -23,8 +23,8 @@ const userConfig = {
 const userConfigClientSide = {
   ...userConfig,
   backend: {
-    loadPath: '/translations/{{ns}}/{{lng}}.json',
-    addPath: '/translations/{{ns}}/{{lng}}.missing.json',
+    loadPath: '/static/translations/{{ns}}/{{lng}}.json',
+    addPath: '/static/translations/{{ns}}/{{lng}}.missing.json',
   },
 }
 
