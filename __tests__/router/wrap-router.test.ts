@@ -1,4 +1,4 @@
-import wrapRouter from '../../src/router/wrap-router'
+import { wrapRouter } from '../../src/router/wrap-router'
 import { Router } from 'next/router'
 import { localeSubpathVariations } from '../config/test-helpers'
 

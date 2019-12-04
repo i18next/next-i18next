@@ -1,4 +1,4 @@
-export default (initialLng, fallbackLng, otherLanguages?) => {
+export const lngsToLoad = (initialLng, fallbackLng, otherLanguages?) => {
   const languages = []
 
   if (initialLng) {

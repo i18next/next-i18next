@@ -1,9 +1,12 @@
 import { format as formatUrl, parse as parseUrl } from 'url'
 
 import { Config } from '../../types'
-import { removeSubpath, subpathIsPresent } from './index'
-import subpathIsRequired from './subpath-is-required'
-import subpathFromLng from './subpath-from-lng'
+import {
+  removeSubpath,
+  subpathIsPresent,
+  subpathIsRequired,
+  subpathFromLng,
+} from './index'
 
 const parseAs = (originalAs, href) => {
   const asType = typeof originalAs
@@ -36,7 +39,7 @@ const parseHref = (originalHref) => {
   return href
 }
 
-export default (config: Config, currentRoute, currentLanguage) => {
+export const lngPathCorrector = (config: Config, currentRoute, currentLanguage) => {
   const { allLanguages, localeSubpaths } = config
   const { as: originalAs, href: originalHref } = currentRoute
 

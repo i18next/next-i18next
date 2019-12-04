@@ -1,4 +1,4 @@
-import defaultConfig from '../src/config/default-config'
+import { defaultConfig } from '../src/config/default-config'
 
 export default {
   changeLanguage: jest.fn(),

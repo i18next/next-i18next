@@ -1,6 +1,6 @@
 import { Config } from '../../types'
 
-export default (config: Config, language: string) => {
+export const subpathFromLng = (config: Config, language: string) => {
 
   if (typeof language !== 'string') {
     return null

@@ -7,7 +7,7 @@ const LOCALE_PATH = 'static/locales'
 const LOCALE_STRUCTURE = '{{lng}}/{{ns}}'
 const LOCALE_EXTENSION = 'json'
 
-const config = {
+export const defaultConfig = {
   defaultLanguage: DEFAULT_LANGUAGE,
   otherLanguages: OTHER_LANGUAGES,
   load: 'currentOnly',
@@ -41,5 +41,3 @@ const config = {
     return !isServer()
   }
 }
-
-export default config
