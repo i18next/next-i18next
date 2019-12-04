@@ -1,10 +1,10 @@
-import defaultConfig from './default-config'
-import { isServer } from '../utils'
+import { defaultConfig } from './default-config'
+import { isServer } from '../utils/is-server'
 
 const deepMergeObjects = ['backend', 'detection']
-const dedupe = (names) => names.filter((v,i) => names.indexOf(v) === i)
+const dedupe = (names: string[]) => names.filter((v,i) => names.indexOf(v) === i)
 
-export default (userConfig) => {
+export const createConfig = (userConfig) => {
 
   if (typeof userConfig.localeSubpaths === 'string') {
     throw new Error('The localeSubpaths option has been changed to an object. Please refer to documentation.')

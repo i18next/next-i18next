@@ -1,6 +1,6 @@
 import { Request } from 'express'
 
-export default (req: Request) => {
+export const lngFromReq = (req: Request) => {
 
   if (!req.i18n) {
     return null

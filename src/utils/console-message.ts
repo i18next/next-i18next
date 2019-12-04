@@ -1,9 +1,7 @@
 /* eslint-disable no-console */
 
-/**
-  * @readonly
-  * @enum {String} A console.log type
-  */
+type MessageType = 'error' | 'info' | 'warn'
+
 const messageTypes = {
   error: 'error',
   info: 'info',
@@ -12,12 +10,7 @@ const messageTypes = {
 
 Object.freeze(messageTypes)
 
-/**
- *  Logs a custom message to console
- * @param {messageTypes} messageType One of: error, warn or info
- * @param {String} message
- */
-function logMessage(messageType, message) {
+const logMessage = (messageType: MessageType, message: string) => {
   if (Object.values(messageTypes).includes(messageType)) {
     console[messageType](message)
   } else {
@@ -25,13 +18,7 @@ function logMessage(messageType, message) {
   }
 }
 
-/**
- * Create a console log with specified log type, a message and options
- * @param {messageTypes} messageType One of: error, warn or info
- * @param {String} message
- * @param {Object} options
- */
-export default function createConsoleLog(messageType, message) {
+export const consoleMessage = function (messageType: MessageType, message: string) {
 
   const { errorStackTraceLimit, strictMode } = this.config
 
@@ -49,14 +36,20 @@ export default function createConsoleLog(messageType, message) {
     return
   }
 
-  /* Temporarily set the stacktrace to 0 or errorStackTraceLimit,
-     in order to only display a message */
+  /*
+    Temporarily set the stacktrace to 0 or errorStackTraceLimit,
+    in order to only display a message
+  */
   Error.stackTraceLimit = errorStackTraceLimit
 
-  // Make room for new message
+  /*
+    Make room for new message
+  */
   console.log()
 
-  // Make sure the message is a string
+  /*
+    Make sure the message is a string
+  */
   if (typeof message !== 'string') {
     const metaError = new Error()
     metaError.name = 'Meta'
@@ -73,10 +66,14 @@ export default function createConsoleLog(messageType, message) {
     return
   }
 
-  // Log the message to console
+  /*
+    Log the message to console
+  */
   logMessage(messageType, message)
 
-  // Reset stack limit
+  /*
+    Reset stack limit
+  */
   Error.stackTraceLimit = prevStackLimit
 
 }

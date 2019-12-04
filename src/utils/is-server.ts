@@ -1,3 +1,3 @@
 import isNode from 'detect-node'
 
-export default () => isNode && typeof window === 'undefined'
+export const isServer = () => isNode && typeof window === 'undefined'

@@ -16,7 +16,7 @@ const propertyFields = ['pathname', 'route', 'query', 'asPath', 'components', 'e
 const coreMethods = ['reload', 'back', 'beforePopState', 'ready', 'prefetch']
 const wrappedMethods = ['push', 'replace']
 
-export default function (nextI18NextInternals) {
+export const wrapRouter = (nextI18NextInternals) => {
   const Router = {} as SingletonRouter
 
   propertyFields.forEach((field) => {

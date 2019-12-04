@@ -7,11 +7,13 @@ import NextApp, { Container } from 'next/app'
 import { appWithTranslation } from '../../src/hocs'
 import { localeSubpathVariations } from '../config/test-helpers'
 
-const isServer: jest.Mock = require('../../src/utils/is-server')
+const isServer: jest.Mock = require('../../src/utils/is-server').isServer
 
 const mockRouterFn = jest.fn()
 
-jest.mock('../../src/utils/is-server.ts', () => jest.fn())
+jest.mock('../../src/utils/is-server.ts', () => ({
+  isServer: jest.fn()
+}))
 
 const defaultConfig = {
   localeSubpaths: localeSubpathVariations.NONE,
