@@ -2,6 +2,7 @@ import defaultConfig from './default-config'
 import { isServer } from '../utils'
 
 const deepMergeObjects = ['backend', 'detection']
+const dedupe = (names) => names.filter((v,i) => names.indexOf(v) === i)
 
 export default (userConfig) => {
 
@@ -16,8 +17,8 @@ export default (userConfig) => {
   }
 
   // Sensible defaults to prevent user duplication
-  combinedConfig.allLanguages = combinedConfig.otherLanguages
-    .concat([combinedConfig.defaultLanguage])
+  combinedConfig.allLanguages = dedupe(combinedConfig.otherLanguages
+    .concat([combinedConfig.defaultLanguage]))
   combinedConfig.whitelist = combinedConfig.allLanguages
 
   const {
