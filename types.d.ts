@@ -9,7 +9,9 @@ import {
 } from 'react-i18next'
 import { LinkProps } from 'next/link'
 import { SingletonRouter } from 'next/router'
-import { InitOptions, i18n, TFunction as I18NextTFunction } from 'i18next'
+import i18next, { InitOptions, i18n, TFunction as I18NextTFunction } from 'i18next'
+import { NextComponentType, NextPageContext } from 'next-server/dist/lib/utils'
+import { WithRouterProps } from 'next/dist/client/with-router'
 
 export type InitConfig = {
   browserLanguageDetection?: boolean;
@@ -36,6 +38,10 @@ export interface NextI18NextInternals {
   config: Config;
   i18n: I18n;
 }
+
+export type UseRouterHook = () => SingletonRouter
+
+export type WithRouterHoC = <P extends WithRouterProps, C = NextPageContext>(ComposedComponent: NextComponentType<C, any, P>) => React.ComponentType<Pick<P, Exclude<keyof P, "router">>>
 
 export type Trans = (props: TransProps) => any
 export type Link = React.ComponentClass<LinkProps>

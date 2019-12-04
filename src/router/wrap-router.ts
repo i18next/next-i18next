@@ -11,12 +11,13 @@
 */
 import NextRouter, { SingletonRouter} from 'next/router'
 import { lngPathCorrector, subpathIsRequired } from '../utils'
+import { NextI18NextInternals } from '../../types'
 
 const propertyFields = ['pathname', 'route', 'query', 'asPath', 'components', 'events']
 const coreMethods = ['reload', 'back', 'beforePopState', 'ready', 'prefetch']
 const wrappedMethods = ['push', 'replace']
 
-export const wrapRouter = (nextI18NextInternals) => {
+export const wrapRouter = (nextI18NextInternals: NextI18NextInternals): SingletonRouter => {
   const Router = {} as SingletonRouter
 
   propertyFields.forEach((field) => {
