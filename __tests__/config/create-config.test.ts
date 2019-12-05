@@ -113,8 +113,8 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.ns).toEqual(['universal', 'file1', 'file2'])
 
-      expect(config.backend.loadPath).toEqual('/home/user/public/translations/{{ns}}/{{lng}}.json')
-      expect(config.backend.addPath).toEqual('/home/user/public/translations/{{ns}}/{{lng}}.missing.json')
+      expect(config.backend.loadPath).toEqual('/home/user/public/static/translations/{{ns}}/{{lng}}.json')
+      expect(config.backend.addPath).toEqual('/home/user/public/static/translations/{{ns}}/{{lng}}.missing.json')
     })
 
     it('falls back to deprecated static folder', () => {
