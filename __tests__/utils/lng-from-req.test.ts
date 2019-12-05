@@ -1,4 +1,4 @@
-import lngFromReq from '../../src/utils/lng-from-req'
+import { lngFromReq } from '../../src/utils/lng-from-req'
 
 describe('lngFromReq utility function', () => {
   let req

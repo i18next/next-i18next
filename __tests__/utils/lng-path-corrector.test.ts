@@ -1,6 +1,6 @@
 import { format } from 'url'
 
-import lngPathCorrector from '../../src/utils/lng-path-corrector'
+import { lngPathCorrector } from '../../src/utils/lng-path-corrector'
 import { localeSubpathVariations } from '../config/test-helpers'
 
 describe('lngPathCorrector utility function', () => {

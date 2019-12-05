@@ -1,6 +1,6 @@
 import { parse as parseUrl } from 'url'
 
-export default (url: string, subpath: string) => {
+export const subpathIsPresent = (url: string, subpath: string) => {
   if (typeof url !== 'string' || typeof subpath !== 'string') {
     return false
   }

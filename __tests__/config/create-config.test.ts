@@ -7,10 +7,12 @@ import {
   localeSubpathVariations,
 } from './test-helpers'
 
-import createConfig from '../../src/config/create-config'
+import { createConfig } from '../../src/config/create-config'
 
-const isServer: jest.Mock = require('../../src/utils/is-server')
-jest.mock('../../src/utils/is-server.ts', () => jest.fn())
+const isServer: jest.Mock = require('../../src/utils/is-server').isServer
+jest.mock('../../src/utils/is-server.ts', () => ({
+  isServer: jest.fn()
+}))
 
 describe('create configuration in non-production environment', () => {
   let evalFunc

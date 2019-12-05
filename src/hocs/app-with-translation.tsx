@@ -4,7 +4,7 @@ import { withRouter } from 'next/router'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import { I18nextProvider, withSSR } from 'react-i18next'
 
-import { lngFromReq, lngPathCorrector, lngsToLoad, subpathIsRequired } from '../utils'
+import { lngFromReq, lngPathCorrector, lngsToLoad } from '../utils'
 import { NextStaticProvider } from '../components'
 import { isServer } from '../utils'
 interface Props {
@@ -19,12 +19,12 @@ interface WrappedComponentProps {
   };
 }
 
-export default function (WrappedComponent) {
+export const appWithTranslation = function (WrappedComponent) {
 
   const WrappedComponentWithSSR = withSSR()(WrappedComponent)
   const { config, consoleMessage, i18n } = this
 
-  const clientLoadNamespaces = (lng, namespaces) => Promise.all(
+  const clientLoadNamespaces = (lng: string, namespaces: string[]) => Promise.all(
     namespaces
       .filter(ns => !i18n.hasResourceBundle(lng, ns))
       .map(ns => i18n.reloadResources(lng, ns)),
@@ -36,7 +36,7 @@ export default function (WrappedComponent) {
       super(props)
       if (!isServer()) {
 
-        const changeLanguageCallback = (prevLng, newLng) => {
+        const changeLanguageCallback = (prevLng: string, newLng: string) => {
           const { router } = props
           const { pathname, asPath, query } = router
           const routeInfo = { pathname, query }
@@ -48,7 +48,7 @@ export default function (WrappedComponent) {
         }
 
         const changeLanguage = i18n.changeLanguage.bind(i18n)
-        i18n.changeLanguage = async (newLng, callback = () => null) => {
+        i18n.changeLanguage = async (newLng: string, callback = () => null) => {
           const prevLng = i18n.language
           if (typeof newLng === 'string' && i18n.initializedLanguageOnce === true) {
             const usedNamespaces = Object.entries(i18n.reportNamespaces.usedNamespaces)
@@ -78,25 +78,33 @@ export default function (WrappedComponent) {
         )
       }
 
-      // Initiate vars to return
+      /*
+        Initiate vars to return
+      */
       const { req } = ctx.ctx
       let initialI18nStore = {}
       let initialLanguage = null
       let i18nServerInstance = null
 
-      // Step 1: Determine initial language
+      /*
+        Step 1: Determine initial language
+      */
       if (req && req.i18n) {
 
         initialLanguage = lngFromReq(req)
 
-        // Perform a lang change in case we're not on the right lang
+        /*
+          Perform a lang change in case we're not on the right lang
+        */
         await req.i18n.changeLanguage(initialLanguage)
 
       } else if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
         initialLanguage = i18n.language
       }
 
-      // Step 2: Determine namespace dependencies
+      /*
+        Step 2: Determine namespace dependencies
+      */
       let namespacesRequired = config.ns
       if (Array.isArray(wrappedComponentProps.pageProps.namespacesRequired)) {
         ({ namespacesRequired } = wrappedComponentProps.pageProps)
@@ -107,23 +115,31 @@ export default function (WrappedComponent) {
         )
       }
 
-      // We must always send down the defaultNS, otherwise
-      // the client will trigger a request for it and issue
-      // the "Did not expect server HTML to contain a <h1> in <div>"
-      // error
+      /*
+        We must always send down the defaultNS, otherwise
+        the client will trigger a request for it and issue
+        the "Did not expect server HTML to contain a <h1> in <div>"
+        error
+      */
       if (typeof config.defaultNS === 'string' && !namespacesRequired.includes(config.defaultNS)) {
         namespacesRequired.push(config.defaultNS)
       }
 
-      // Step 3: Perform data fetching, depending on environment
+      /*
+        Step 3: Perform data fetching, depending on environment
+      */
       if (req && req.i18n) {
 
-        // Detect the languages to load based upon the fallbackLng configuration
+        /*
+          Detect the languages to load based upon the fallbackLng configuration
+        */
         const { fallbackLng } = config
         const languagesToLoad = lngsToLoad(initialLanguage, fallbackLng, config.otherLanguages)
 
-        // Initialise the store with the languagesToLoad and
-        // necessary namespaces needed to render this specific tree
+        /*
+          Initialise the store with the languagesToLoad and
+          necessary namespaces needed to render this specific tree
+        */
         languagesToLoad.forEach((lng) => {
           initialI18nStore[lng] = {}
           namespacesRequired.forEach((ns) => {
@@ -134,19 +150,25 @@ export default function (WrappedComponent) {
         })
       } else if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
 
-        // Load newly-required translations if changing route clientside
+        /*
+          Load newly-required translations if changing route clientside
+        */
         await clientLoadNamespaces(i18n.languages[0], namespacesRequired)
 
         initialI18nStore = i18n.store.data
       }
 
-      // Step 4: Overwrite i18n.toJSON method to be able to serialize the instance
+      /*
+        Step 4: Overwrite i18n.toJSON method to be able to serialize the instance
+      */
       if (req && req.i18n) {
         req.i18n.toJSON = () => null
         i18nServerInstance = req.i18n
       }
 
-      // `pageProps` will get serialized automatically by NextJs
+      /*
+        `pageProps` will get serialized automatically by NextJs
+      */
       return {
         initialI18nStore,
         initialLanguage,

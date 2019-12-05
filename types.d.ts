@@ -32,6 +32,11 @@ export type Config = {
   preload: string[];
 } & InitConfig
 
+export interface NextI18NextInternals {
+  config: Config;
+  i18n: I18n;
+}
+
 export type Trans = (props: TransProps) => any
 export type Link = React.ComponentClass<LinkProps>
 export type Router = SingletonRouter
