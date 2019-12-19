@@ -3,6 +3,10 @@
   "version": "2.1.2",
   "repository": "git@github.com:isaachinman/next-i18next.git",
   "author": "Isaac Hinman <isaac@isaachinman.com>",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/isaachinman"
+  },
   "main": "dist/commonjs/index.js",
   "types": "./types.d.ts",
   "license": "MIT",
@@ -36,8 +40,7 @@
     "test": "yarn check-types && yarn build && yarn build:examples/simple && bundlesize && NODE_ENV=test jest --maxWorkers=1 --silent",
     "contributors:check": "all-contributors check",
     "contributors:add": "all-contributors add",
-    "contributors:generate": "all-contributors generate",
-    "postinstall": "echo 'If you are using next-i18next in production, please consider sponsoring the package with any amount you think appropriate: https://github.com/sponsors/isaachinman'"
+    "contributors:generate": "all-contributors generate"
   },
   "husky": {
     "hooks": {
