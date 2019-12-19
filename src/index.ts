@@ -6,22 +6,22 @@ import createI18NextClient from './create-i18next-client'
 
 import { appWithTranslation, withInternals } from './hocs'
 import { consoleMessage } from './utils'
-import { Link } from './components';
-import { wrapRouter } from './router';
+import { Link } from './components'
+import { wrapRouter } from './router'
 
 import { AppWithTranslation, Config, InitConfig, Trans as TransType, Link as LinkType, I18n, UseTranslation, WithTranslationHocType, Router } from '../types'
 
 export { withTranslation } from 'react-i18next'
 
 export default class NextI18Next {
-  readonly Trans: TransType;
-  readonly Link: LinkType;
-  readonly Router: Router;
-  readonly i18n: I18n;
-  readonly config: Config;
-  readonly useTranslation: UseTranslation;
-  readonly withTranslation: WithTranslationHocType;
-  readonly appWithTranslation: AppWithTranslation;
+  readonly Trans: TransType
+  readonly Link: LinkType
+  readonly Router: Router
+  readonly i18n: I18n
+  readonly config: Config
+  readonly useTranslation: UseTranslation
+  readonly withTranslation: WithTranslationHocType
+  readonly appWithTranslation: AppWithTranslation
 
   readonly consoleMessage: () => void
   readonly withNamespaces: () => void
