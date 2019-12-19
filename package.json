@@ -36,7 +36,8 @@
     "test": "yarn check-types && yarn build && yarn build:examples/simple && bundlesize && NODE_ENV=test jest --maxWorkers=1 --silent",
     "contributors:check": "all-contributors check",
     "contributors:add": "all-contributors add",
-    "contributors:generate": "all-contributors generate"
+    "contributors:generate": "all-contributors generate",
+    "postinstall": "echo 'If you are using next-i18next in production, please consider sponsoring the package with any amount you think appropriate: https://github.com/sponsors/isaachinman'"
   },
   "husky": {
     "hooks": {
