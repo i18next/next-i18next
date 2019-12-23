@@ -38,7 +38,7 @@ export const createConfig = (userConfig) => {
 
     // Validate defaultNS
     // https://github.com/isaachinman/next-i18next/issues/358
-    if (process.env.NODE_ENV !== 'production' && typeof combinedConfig.defaultNS === 'string') {
+    if (typeof combinedConfig.defaultNS === 'string') {
       const defaultFile = `/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`
       const defaultNSPath = path.join(process.cwd(), localePath, defaultFile)
       const defaultNSExists = fs.existsSync(defaultNSPath)
@@ -50,7 +50,7 @@ export const createConfig = (userConfig) => {
         if (staticDirExists) {
           consoleMessage('warn', 'Falling back to /static folder, deprecated in next@9.1.*', combinedConfig)
           serverLocalePath = STATIC_LOCALE_PATH
-        } else {
+        } else if (process.env.NODE_ENV !== 'production') {
           throw new Error(`Default namespace not found at ${defaultNSPath}`)
         }
       }
