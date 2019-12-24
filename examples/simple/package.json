@@ -15,9 +15,7 @@
   "dependencies": {
     "express": "^4.16.4",
     "i18next": "^14.0.1",
-    "next": "^9.0.3",
-    "next-i18next": "link:../../",
-    "react": "link:../../node_modules/react",
-    "react-dom": "link:../../node_modules/react-dom"
+    "next": "^9.1.6",
+    "next-i18next": "link:../../"
   }
 }
