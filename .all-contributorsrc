@@ -61,6 +61,18 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "nathanfriemel",
+      "name": "Nathan Friemel",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1325835?v=4",
+      "profile": "http://nathanfriemel.com",
+      "contributions": [
+        "code",
+        "doc",
+        "example",
+        "ideas"
+      ]
     }
   ]
 }
