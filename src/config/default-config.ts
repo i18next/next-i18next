@@ -3,7 +3,7 @@ import { isServer } from '../utils'
 const DEFAULT_LANGUAGE = 'en'
 const OTHER_LANGUAGES = []
 const DEFAULT_NAMESPACE = 'common'
-const LOCALE_PATH = 'static/locales'
+const LOCALE_PATH = 'public/static/locales'
 const LOCALE_STRUCTURE = '{{lng}}/{{ns}}'
 const LOCALE_EXTENSION = 'json'
 
@@ -24,7 +24,7 @@ export const defaultConfig = {
   },
   browserLanguageDetection: true,
   serverLanguageDetection: true,
-  ignoreRoutes: ['/_next/', '/static/'],
+  ignoreRoutes: ['/_next/', '/static/', '/public/'],
   customDetectors: [],
   detection: {
     lookupCookie: 'next-i18next',

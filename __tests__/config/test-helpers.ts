@@ -15,7 +15,7 @@ const userConfig = {
   defaultNS: 'universal',
   fallbackLng: 'it',
   otherLanguages: ['fr', 'it'],
-  localePath: 'static/translations',
+  localePath: 'public/static/translations',
   localeStructure: '{{ns}}/{{lng}}',
   localeSubpaths: localeSubpathVariations.FOREIGN,
 }
@@ -31,8 +31,8 @@ const userConfigClientSide = {
 const userConfigServerSide = {
   ...userConfig,
   backend: {
-    loadPath: '/home/user/static/translations/{{ns}}/{{lng}}.json',
-    addPath: '/home/user/static/translations/{{ns}}/{{lng}}.missing.json',
+    loadPath: '/home/user/public/static/translations/{{ns}}/{{lng}}.json',
+    addPath: '/home/user/public/static/translations/{{ns}}/{{lng}}.missing.json',
   },
 }
 

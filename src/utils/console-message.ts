@@ -18,9 +18,9 @@ const logMessage = (messageType: MessageType, message: string) => {
   }
 }
 
-export const consoleMessage = function (messageType: MessageType, message: string) {
+export const consoleMessage = function (messageType: MessageType, message: string, config = this.config) {
 
-  const { errorStackTraceLimit, strictMode } = this.config
+  const { errorStackTraceLimit, strictMode } = config
 
   const prevStackLimit = Error.stackTraceLimit
 

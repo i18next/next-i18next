@@ -31,17 +31,20 @@ You need to also have `react` and `next` installed.
 By default, `next-i18next` expects your translations to be organised as such:
 ```
 .
-└── static
-    └── locales
-        ├── en
-        |   └── common.json
-        └── de
-            └── common.json
+└── public
+    └── static
+        └── locales
+            ├── en
+            |   └── common.json
+            └── de
+                └── common.json
 ```
 
 This structure can also be seen in the [simple example](./examples/simple).
 
 If you want to structure your translations/namespaces in a custom way, you will need to pass modified `localePath` and `localeStructure` values into the initialisation config.
+
+If translations are not found in `config.localePath` or `public/static/locales` an attempt will be made to find the locales in `static/locales`, if found a deprecation warning will be logged.
 
 ### 3. Project setup
 
@@ -236,10 +239,10 @@ MyPage.getInitialProps = async({ req }) => {
 | `browserLanguageDetection`  | `true`  |
 | `defaultNS` | `'common'`  |
 | `defaultLanguage`  | `'en'`  |
-| `ignoreRoutes`  | `['/_next/', '/static/']`  |
+| `ignoreRoutes`  | `['/_next/', '/static/', '/public/']`  |
 | `otherLanguages` (required) | `[]`  |
 | `localeExtension` | `'json'`  |
-| `localePath` | `'static/locales'`  |
+| `localePath` | `'public/static/locales'`  |
 | `localeStructure` | `'{{lng}}/{{ns}}'`  |
 | `localeSubpaths` | `{}`  |
 | `serverLanguageDetection` | `true`  |
