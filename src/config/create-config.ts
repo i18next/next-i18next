@@ -11,13 +11,17 @@ export const createConfig = (userConfig) => {
     throw new Error('The localeSubpaths option has been changed to an object. Please refer to documentation.')
   }
 
-  // Initial merge of default and user-provided config
+  /*
+    Initial merge of default and user-provided config
+  */
   const combinedConfig = {
     ...defaultConfig,
     ...userConfig,
   }
 
-  // Sensible defaults to prevent user duplication
+  /*
+    Sensible defaults to prevent user duplication
+  */
   combinedConfig.allLanguages = dedupe(combinedConfig.otherLanguages
     .concat([combinedConfig.defaultLanguage]))
   combinedConfig.whitelist = combinedConfig.allLanguages
@@ -36,19 +40,25 @@ export const createConfig = (userConfig) => {
     const path = require('path')
     let serverLocalePath = localePath
 
-    // Validate defaultNS
-    // https://github.com/isaachinman/next-i18next/issues/358
+    /*
+      Validate defaultNS
+      https://github.com/isaachinman/next-i18next/issues/358
+    */
     if (typeof combinedConfig.defaultNS === 'string') {
       const defaultFile = `/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`
       const defaultNSPath = path.join(process.cwd(), localePath, defaultFile)
       const defaultNSExists = fs.existsSync(defaultNSPath)
       if (!defaultNSExists) {
-        // if defaultNS doesn't exist, try to fall back to the deprecated static folder
-        // https://github.com/isaachinman/next-i18next/issues/523
+
+        /*
+          If defaultNS doesn't exist, try to fall back to the deprecated static folder
+          https://github.com/isaachinman/next-i18next/issues/523
+        */
         const staticDirPath = path.join(process.cwd(), STATIC_LOCALE_PATH, defaultFile)
         const staticDirExists = fs.existsSync(staticDirPath)
+
         if (staticDirExists) {
-          consoleMessage('warn', 'Falling back to /static folder, deprecated in next@9.1.*', combinedConfig)
+          consoleMessage('warn', 'next-i18next: Falling back to /static folder, deprecated in next@9.1.*', combinedConfig)
           serverLocalePath = STATIC_LOCALE_PATH
         } else if (process.env.NODE_ENV !== 'production') {
           throw new Error(`Default namespace not found at ${defaultNSPath}`)
@@ -56,13 +66,17 @@ export const createConfig = (userConfig) => {
       }
     }
 
-    // Set server side backend
+    /*
+      Set server side backend
+    */
     combinedConfig.backend = {
       loadPath: path.join(process.cwd(), `${serverLocalePath}/${localeStructure}.${localeExtension}`),
       addPath: path.join(process.cwd(), `${serverLocalePath}/${localeStructure}.missing.${localeExtension}`),
     }
 
-    // Set server side preload (languages and namespaces)
+    /*
+      Set server side preload (languages and namespaces)
+    */
     combinedConfig.preload = allLanguages
     if (!combinedConfig.ns) {
       const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace(`.${localeExtension}`, ''))
@@ -72,12 +86,17 @@ export const createConfig = (userConfig) => {
   } else {
 
     let clientLocalePath = localePath
-    // remove public/ prefix from client site config
+    
+    /*
+      Remove public prefix from client site config
+    */
     if (localePath.startsWith('public/')) {
       clientLocalePath = localePath.replace(/^public\//, '')
     }
 
-    // Set client side backend
+    /*
+      Set client side backend
+    */
     combinedConfig.backend = {
       loadPath: `/${clientLocalePath}/${localeStructure}.${localeExtension}`,
       addPath: `/${clientLocalePath}/${localeStructure}.missing.${localeExtension}`,
@@ -86,14 +105,18 @@ export const createConfig = (userConfig) => {
     combinedConfig.ns = [combinedConfig.defaultNS]
   }
 
-  // Set fallback language to defaultLanguage in production
+  /*
+    Set fallback language to defaultLanguage in production
+  */
   if (!userConfig.fallbackLng) {
     combinedConfig.fallbackLng = process.env.NODE_ENV === 'production'
       ? combinedConfig.defaultLanguage
       : false
   }
 
-  // Deep merge with overwrite - goes last
+  /*
+    Deep merge with overwrite - goes last
+  */
   deepMergeObjects.forEach((obj) => {
     if (userConfig[obj]) {
       combinedConfig[obj] = {
@@ -104,5 +127,4 @@ export const createConfig = (userConfig) => {
   })
 
   return combinedConfig
-
 }

@@ -95,8 +95,8 @@
     "jsdom-global": "^3.0.2",
     "next": "^9.0.1",
     "puppeteer": "^1.11.0",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
     "typescript": "^3.5.3"
   },
   "dependencies": {
@@ -112,10 +112,6 @@
     "prop-types": "^15.6.2",
     "react-i18next": "^11.0.0",
     "url": "^0.11.0"
-  },
-  "resolutions": {
-    "**/react": "^16.8.6",
-    "**/react-dom": "^16.8.6"
   },
   "peerDependencies": {
     "next": ">= 7.0.0",
