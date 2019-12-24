@@ -58,7 +58,7 @@ export const createConfig = (userConfig) => {
         const staticDirExists = fs.existsSync(staticDirPath)
 
         if (staticDirExists) {
-          consoleMessage('warn', 'Falling back to /static folder, deprecated in next@9.1.*', combinedConfig)
+          consoleMessage('warn', 'next-i18next: Falling back to /static folder, deprecated in next@9.1.*', combinedConfig)
           serverLocalePath = STATIC_LOCALE_PATH
         } else if (process.env.NODE_ENV !== 'production') {
           throw new Error(`Default namespace not found at ${defaultNSPath}`)
