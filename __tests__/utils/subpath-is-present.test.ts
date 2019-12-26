@@ -17,6 +17,10 @@ describe('subpathIsPresent utility function', () => {
     expect(subpathIsPresent(undefined, undefined)).toBe(false)
   })
 
+  it('returns false if pathname is not parsable', () => {
+    expect(subpathIsPresent('#', subpath)).toBe(false)
+  })
+
   it('returns false if basic url does not contain subpath', () => {
     expect(subpathIsPresent('/product', subpath)).toBe(false)
   })
