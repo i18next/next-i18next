@@ -9,7 +9,7 @@ import {
 } from 'react-i18next'
 import { LinkProps } from 'next/link'
 import { SingletonRouter } from 'next/router'
-import i18next from 'i18next'
+import { InitOptions, i18n, TFunction as I18NextTFunction } from 'i18next'
 
 export type InitConfig = {
   browserLanguageDetection?: boolean;
@@ -23,7 +23,7 @@ export type InitConfig = {
   localeSubpaths?: Record<string, string>;
   use?: any[];
   customDetectors?: any[];
-} & i18next.InitOptions
+} & InitOptions
 
 export type Config = {
   fallbackLng: boolean;
@@ -42,8 +42,8 @@ export type Link = React.ComponentClass<LinkProps>
 export type Router = SingletonRouter
 export type UseTranslation = typeof useTranslation
 export type AppWithTranslation = <P extends object>(Component: React.ComponentType<P> | React.ElementType<P>) => any
-export type TFunction = i18next.TFunction
-export type I18n = i18next.i18n
+export type TFunction = I18NextTFunction
+export type I18n = i18n
 export type WithTranslationHocType = typeof withTranslation
 export type WithTranslation = ReactI18nextWithTranslation
 
