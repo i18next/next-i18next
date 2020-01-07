@@ -9,7 +9,7 @@ import {
 } from 'react-i18next'
 import { LinkProps } from 'next/link'
 import { SingletonRouter } from 'next/router'
-import i18next from 'i18next'
+import * as i18next from 'i18next'
 
 export type InitConfig = {
   browserLanguageDetection?: boolean;
