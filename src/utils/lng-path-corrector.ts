@@ -60,7 +60,7 @@ export const lngPathCorrector = (config: Config, currentRoute, currentLanguage) 
   /*
     Strip any/all subpaths from the `as` value
   */
-  Object.values(localeSubpaths).forEach((subpath) => {
+  Object.values(localeSubpaths).forEach((subpath: string) => {
     if (subpathIsPresent(as, subpath)) {
       as = removeSubpath(as, subpath)
     }
