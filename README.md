@@ -239,7 +239,7 @@ MyPage.getInitialProps = async({ req }) => {
 | `browserLanguageDetection`  | `true`  |
 | `defaultNS` | `'common'`  |
 | `defaultLanguage`  | `'en'`  |
-| `ignoreRoutes`  | `['/_next/', '/static/', '/public/']`  |
+| `ignoreRoutes`  | `['/_next/', '/static/', '/public/', '/api/']`  |
 | `otherLanguages` (required) | `[]`  |
 | `localeExtension` | `'json'`  |
 | `localePath` | `'public/static/locales'`  |

@@ -8,7 +8,7 @@ export default {
     allLanguages: ['en', 'de'],
     defaultLanguage: 'en',
     otherLanguages: ['de'],
-    ignoreRoutes: ['/_next/', '/static/', '/public/'],
+    ignoreRoutes: ['/_next/', '/static/', '/public/', '/api/'],
     serverLanguageDetection: true,
   },
 }

@@ -24,7 +24,7 @@ export const defaultConfig = {
   },
   browserLanguageDetection: true,
   serverLanguageDetection: true,
-  ignoreRoutes: ['/_next/', '/static/', '/public/'],
+  ignoreRoutes: ['/_next/', '/static/', '/public/', '/api/'],
   customDetectors: [],
   detection: {
     lookupCookie: 'next-i18next',
