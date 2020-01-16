@@ -46,6 +46,7 @@ export type TFunction = I18NextTFunction
 export type I18n = i18n
 export type WithTranslationHocType = typeof withTranslation
 export type WithTranslation = ReactI18nextWithTranslation
+export type InitPromise = Promise<TFunction>
 
 declare class NextI18Next {
   constructor(config: InitConfig);
@@ -53,6 +54,7 @@ declare class NextI18Next {
   Link: Link
   Router: Router
   i18n: I18n
+  initPromise: InitPromise
   config: Config
   useTranslation: UseTranslation
   withTranslation: WithTranslationHocType

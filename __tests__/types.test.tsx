@@ -5,6 +5,7 @@ import NextI18Next, {
   AppWithTranslation,
   Config,
   I18n,
+  InitPromise,
   InitConfig,
   TFunction,
   WithTranslation,
