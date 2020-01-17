@@ -3,7 +3,11 @@ import i18n from 'i18next'
 import i18nextXHRBackend from 'i18next-xhr-backend'
 import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector'
 
+import { InitPromise } from '../types'
+
 export default (config) => {
+  let initPromise: InitPromise
+
   if (!i18n.isInitialized) {
 
     if (isNode) {
@@ -25,8 +29,8 @@ export default (config) => {
     }
 
     config.use.forEach(x => i18n.use(x))
-    i18n.init(config)
+    initPromise = i18n.init(config)
 
   }
-  return i18n
+  return { i18n, initPromise }
 }

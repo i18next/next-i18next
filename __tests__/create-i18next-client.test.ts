@@ -5,7 +5,7 @@ import createI18nextClient from '../src/create-i18next-client'
 const i18nextMiddleware = require('i18next-express-middleware')
 
 jest.mock('i18next', () => ({
-  init: jest.fn(),
+  init: jest.fn(() => new Promise(resolve => setTimeout(() => resolve(), 0))),
   use: jest.fn(),
 }))
 
@@ -24,6 +24,15 @@ describe('initializing i18n', () => {
     (i18next.init as jest.Mock).mockClear();
     (i18next.use as jest.Mock).mockClear()
     i18nextMiddleware.LanguageDetector.mockClear()
+  })
+
+  it('should return both the i18n object and an initPromise', async () => {
+    const { i18n, initPromise } = createI18nextClient({
+      use: [],
+      customDetectors: [],
+    })
+    expect(typeof i18n.isInitialized).toBe('boolean')
+    expect(typeof initPromise.then).toBe('function')
   })
 
   it('should not initialize i18n if i18n is already initialized', () => {

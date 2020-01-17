@@ -9,7 +9,7 @@ import { consoleMessage } from './utils'
 import { Link } from './components'
 import { wrapRouter } from './router'
 
-import { AppWithTranslation, Config, InitConfig, Trans as TransType, Link as LinkType, I18n, UseTranslation, WithTranslationHocType, Router } from '../types'
+import { AppWithTranslation, Config, InitConfig, Trans as TransType, Link as LinkType, I18n, InitPromise, UseTranslation, WithTranslationHocType, Router } from '../types'
 
 export { withTranslation } from 'react-i18next'
 
@@ -18,6 +18,7 @@ export default class NextI18Next {
   readonly Link: LinkType
   readonly Router: Router
   readonly i18n: I18n
+  readonly initPromise: InitPromise
   readonly config: Config
   readonly useTranslation: UseTranslation
   readonly withTranslation: WithTranslationHocType
@@ -38,7 +39,10 @@ export default class NextI18Next {
       throw new Error('next-i18next has upgraded to react-i18next v10 - please rename withNamespaces to withTranslation.')
     }
 
-    this.i18n = createI18NextClient(this.config)
+    const { i18n, initPromise } = createI18NextClient(this.config)
+    this.i18n = i18n
+    this.initPromise = initPromise
+
     this.appWithTranslation = appWithTranslation.bind(this)
     this.withTranslation = (namespace, options) => Component => hoistNonReactStatics(
       withTranslation(namespace, options)(Component), Component)
