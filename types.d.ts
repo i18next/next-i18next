@@ -9,7 +9,7 @@ import {
 } from 'react-i18next'
 import { LinkProps } from 'next/link'
 import { SingletonRouter } from 'next/router'
-import i18next, { InitOptions, i18n, TFunction as I18NextTFunction } from 'i18next'
+import { InitOptions, i18n, TFunction as I18NextTFunction } from 'i18next'
 import { NextComponentType, NextPageContext } from 'next-server/dist/lib/utils'
 import { WithRouterProps } from 'next/dist/client/with-router'
 
