@@ -73,7 +73,7 @@ It's recommended to export this `NextI18Next` instance from a single file in you
 
 After creating and exporting your `NextI18Next` instance, you need to take the following steps to get things working:
 
-1. Create an `_app.js` file inside your `pages` directory, and wrap it with the `NextI18Next.appWithTranslation` higher order component (HOC). You can see this approach in the [examples/simple/pages/_app.js](./examples/simple/pages/_app.js). 
+1. Create an `_app.js` file inside your `pages` directory, and wrap it with the `NextI18Next.appWithTranslation` higher order component (HOC). You can see this approach in the [examples/simple/pages/_app.js](./examples/simple/pages/_app.js).
 2. Create a `server.js` file inside your root directory, initialise an [express](https://www.npmjs.com/package/express) server, and use the `nextI18NextMiddleware` middleware with your `nextI18Next` instance passed in. You can see this approach in the [examples/simple/server.js](./examples/simple/server.js).
 3. Update the scripts in `package.json` to:
 ```
@@ -215,6 +215,20 @@ server.get('/products/:id', (req, res) => {
 
 /* Third, add catch-all GET for non-custom routes */
 server.get('*', (req, res) => handle(req, res))
+```
+
+## Access the Router object
+
+This library exposes a modified version on Next.js's `Router` object that can be exposed in various forms from the `nextI18next` object.
+
+Their use is similar to Next.js's [`Router`](https://nextjs.org/docs/api-reference/next/router#router-api), [`useRouter`](https://nextjs.org/docs/api-reference/next/router#userouter) and [`withRouter`](https://nextjs.org/docs/api-reference/next/router#withrouter).
+
+```jsx
+export const {
+  Router,
+  useRouter,
+  withRouter
+} = NextI18NextInstance
 ```
 
 ## Accessing the Current Language
