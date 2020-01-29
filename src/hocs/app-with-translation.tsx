@@ -3,6 +3,7 @@ import { withRouter } from 'next/router'
 
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import { I18nextProvider, withSSR } from 'react-i18next'
+import {i18n as I18Next} from 'i18next'
 
 import { lngFromReq, lngPathCorrector, lngsToLoad } from '../utils'
 import { NextStaticProvider } from '../components'
@@ -28,6 +29,10 @@ export const appWithTranslation = function (WrappedComponent) {
     namespaces
       .filter(ns => !i18n.hasResourceBundle(lng, ns))
       .map(ns => i18n.reloadResources(lng, ns)),
+  )
+
+  const forceLoadNamespaces = (lng: string, namespaces: string[], i18nextInstance: I18Next) => Promise.all(
+    namespaces.map(ns => i18nextInstance.reloadResources(lng, ns))
   )
 
   class AppWithTranslation extends React.Component<Props> {
@@ -128,6 +133,7 @@ export const appWithTranslation = function (WrappedComponent) {
       /*
         Step 3: Perform data fetching, depending on environment
       */
+      const isDev = process.env.NODE_ENV !== 'production'
       if (req && req.i18n) {
 
         /*
@@ -135,6 +141,17 @@ export const appWithTranslation = function (WrappedComponent) {
         */
         const { fallbackLng } = config
         const languagesToLoad = lngsToLoad(initialLanguage, fallbackLng, config.otherLanguages)
+
+        if (isDev) {
+
+          /*
+            Always force to load fresh translations in development
+          */
+
+          await Promise.all(
+            languagesToLoad.map(async lng => await forceLoadNamespaces(lng, namespacesRequired, req.i18n))
+          )
+        }
 
         /*
           Initialise the store with the languagesToLoad and
@@ -150,10 +167,19 @@ export const appWithTranslation = function (WrappedComponent) {
         })
       } else if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
 
-        /*
-          Load newly-required translations if changing route clientside
-        */
-        await clientLoadNamespaces(i18n.languages[0], namespacesRequired)
+        if (isDev) {
+
+          /*
+            Always force to load fresh translations in development
+          */
+          await forceLoadNamespaces(i18n.languages[0], namespacesRequired, i18n)
+        } else {
+
+          /*
+            Load newly-required translations if changing route clientside
+          */
+          await clientLoadNamespaces(i18n.languages[0], namespacesRequired)
+        }
 
         initialI18nStore = i18n.store.data
       }

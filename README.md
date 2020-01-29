@@ -198,6 +198,13 @@ const SomeButton = () => (
 )
 ```
 
+### 6. Performance considerations
+
+In order to provide a better developer experience this package always attempts to load the fresh translations
+if your enviromental variable `NODE_ENV` does not equal to `production`. This allows to always see the current
+version of the translated content. However it also means that if you are not running with `NODE_ENV=production` in
+the production environment you might encounter performance issues.
+
 ## Custom Routing
 
 Custom routing can be achieved via the `app.render` method:
