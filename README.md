@@ -87,6 +87,8 @@ After creating and exporting your `NextI18Next` instance, you need to take the f
 ```
 For more info, see [the NextJs section on custom servers](https://github.com/zeit/next.js#custom-server-and-routing).
 
+Note: You can pass `shallowRender: true` into config options to avoid triggering getInitialProps when `changeLanguage` method is invoked.
+
 That's it! Your app is ready to go. You can now use the `NextI18Next.withTranslation` HOC to make your components or pages translatable, based on namespaces:
 
 ```jsx
@@ -249,6 +251,7 @@ MyPage.getInitialProps = async({ req }) => {
 | `strictMode` | `true`  |
 | `use` (for plugins) | `[]`  |
 | `customDetectors` | `[]`  |
+| `shallowRender` | `false`  |
 
 _This table contains options which are specific to next-i18next. All other [i18next options](https://www.i18next.com/overview/configuration-options) can be passed in as well._
 

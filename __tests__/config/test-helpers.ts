@@ -18,6 +18,7 @@ const userConfig = {
   localePath: 'public/static/translations',
   localeStructure: '{{ns}}/{{lng}}',
   localeSubpaths: localeSubpathVariations.FOREIGN,
+  shallowRender: true
 }
 
 const userConfigClientSide = {

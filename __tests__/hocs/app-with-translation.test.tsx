@@ -23,6 +23,7 @@ const defaultConfig = {
     wait: true,
     useSuspense: false,
   },
+  shallowRender: false
 }
 const defaultProps = {
   Component: () => (
@@ -88,5 +89,29 @@ describe('appWithTranslation', () => {
     (i18n as any).initializedLanguageOnce = false
     await i18n.changeLanguage('de')
     expect(mockRouterFn).toHaveBeenCalledTimes(0)
+  })
+
+  it('will call change language with shallow routing if shallowRender is true', async () => {
+    isServer.mockReturnValue(false)
+    const { i18n } = await createApp({ ...defaultConfig, shallowRender: true });
+    (i18n as any).initializedLanguageOnce = true
+    await i18n.changeLanguage('de')
+    expect(mockRouterFn).toHaveBeenCalledWith(
+      { "pathname": defaultProps.router.pathname, "query": {} },
+      defaultProps.router.pathname,
+      { shallow: true }
+    )
+  })
+
+  it('will not call change language with shallow routing if shallowRender is false', async () => {
+    isServer.mockReturnValue(false)
+    const { i18n } = await createApp();
+    (i18n as any).initializedLanguageOnce = true
+    await i18n.changeLanguage('de')
+    expect(mockRouterFn).toHaveBeenCalledWith(
+      { "pathname": defaultProps.router.pathname, "query": {} },
+      defaultProps.router.pathname,
+      { shallow: false }
+    )
   })
 })
