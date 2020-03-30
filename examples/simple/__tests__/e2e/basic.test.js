@@ -38,6 +38,11 @@ describe('example project', () => {
       await expect(page).toMatch('Ein einfaches Beispiel')
     })
 
+    it(`should <html>'s lang to "${testLanguageSecondary}"`, async () => {
+      const langAttribute = await page.evaluate('document.querySelector("html").getAttribute("lang")')
+      await expect(langAttribute).toBe(testLanguageSecondary)
+    })
+
     it('should navigate to the second page and back', async () => {
       await expect(page).toClick('button', { text: 'Zur zweiten Seite' })
       await expect(page).toMatch('Eine zweite Seite')
@@ -50,6 +55,9 @@ describe('example project', () => {
       await expect(page).toClick('button', { text: 'Wechseln Locale' })
 
       await expect(page).toMatch('A simple example')
+
+      const langAttribute = await page.evaluate('document.querySelector("html").getAttribute("lang")')
+      await expect(langAttribute).toBe(testLanguage)
     })
   })
 })
