@@ -6,7 +6,7 @@ import { I18nextProvider, withSSR } from 'react-i18next'
 
 import { lngFromReq, lngPathCorrector, lngsToLoad } from '../utils'
 import { NextStaticProvider } from '../components'
-import { isServer } from '../utils'
+import { isServer, changeHtmlLangAttribute } from '../utils'
 interface Props {
   initialLanguage: string;
   initialI18nStore: any;
@@ -45,9 +45,7 @@ export const appWithTranslation = function (WrappedComponent) {
             const { as, href } = lngPathCorrector(config, { as: asPath, href: routeInfo }, newLng)
             router.replace(href, as, { shallow: config.shallowRender })
 
-            // Update <html>'s lang attribute
-            const html = document.querySelector('html')
-            if (html) html.setAttribute('lang', newLng)
+            changeHtmlLangAttribute(newLng)
           }
         }
 
