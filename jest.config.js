@@ -1,5 +1,19 @@
 /* eslint-disable array-element-newline */
 module.exports = {
+  transform: {
+    '^.+\\.(t|j)sx?$': 'ts-jest'
+  },
+
+  globals: {
+    'ts-jest': {
+      tsConfig: {
+        jsx: 'react',
+        noEmit: true,
+        target: 'es5'
+      }
+    }
+  },
+
   automock: false,
   collectCoverage: true,
   collectCoverageFrom: [
@@ -12,11 +26,15 @@ module.exports = {
     '!src/router/index.ts',
   ],
 
-  setupFiles: ['<rootDir>/jest.setup.js'],
+  setupFiles: ['<rootDir>/jest.setup.ts'],
 
   preset: 'jest-puppeteer',
+  globalSetup: 'jest-environment-puppeteer/setup',
+  globalTeardown: 'jest-environment-puppeteer/teardown',
+  testEnvironment: 'jest-environment-puppeteer',
 
   testPathIgnorePatterns: [
+    '<rootDir>/dist/',
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
     '<rootDir>/__tests__/test-i18next-config.ts',

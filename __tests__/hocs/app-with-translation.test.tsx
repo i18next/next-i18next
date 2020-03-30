@@ -44,6 +44,7 @@ const createApp = async (config = defaultConfig, props = defaultProps) => {
     config,
     i18n,
   })
+
   const App = appWithTranslationAndContext(class MyApp extends NextApp {
     render() {
       const { Component, pageProps } = this.props

@@ -1,13 +1,17 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "noEmit": true,
     "lib": ["esnext", "dom"],
-    "target": "es5",
-    "jsx": "react"
+    "module": "commonjs",
+    "jsx": "react",
+    "allowJs": true,
+    "outDir": "dist/tmp"
   },
   "include": [
-    "__tests__/types.test.tsx",
     "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
   ]
 }
