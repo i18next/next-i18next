@@ -15,7 +15,7 @@
   "dependencies": {
     "express": "^4.16.4",
     "i18next": "^14.0.1",
-    "next": "^9.1.6",
+    "next": "^9.3.2",
     "next-i18next": "link:../../"
   }
 }
