@@ -1,6 +1,6 @@
-import { Request } from 'express'
+import { NextI18NextRequest } from '../../types'
 
-export const lngFromReq = (req: Request) => {
+export const lngFromReq = (req: NextI18NextRequest) => {
 
   if (!req.i18n) {
     return null

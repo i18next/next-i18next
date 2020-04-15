@@ -2773,10 +2773,10 @@ i18next-browser-languagedetector@^4.0.0:
   dependencies:
     "@babel/runtime" "^7.5.5"
 
-i18next-express-middleware@^1.5.0:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/i18next-express-middleware/-/i18next-express-middleware-1.8.0.tgz#8ef73a56036b404b162d81d4aec23cfa0ab2a609"
-  integrity sha512-vbEV+YbGoXNpv59WM7MHvdbBpPUS6itMIgpX21mjmu8/naS/NlmZe6vMNFGUIWs5PbXGnKWm7ucKxYmc2RV8vA==
+i18next-express-middleware@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/i18next-express-middleware/-/i18next-express-middleware-1.9.1.tgz#71759c3bf751ecd483b41c6dfa488a6b6bc540a6"
+  integrity sha512-cLMO8pUC7sU6dfFvkREcim7fXOHVtGSZu3Lt8d1Ty7Z0nZiYs57Lb3CjDrXb671ibCnY2s/RCATsXlaujYwUQg==
   dependencies:
     cookies "0.7.1"
 
