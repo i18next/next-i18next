@@ -11,6 +11,7 @@ import {
   subpathIsPresent,
   subpathIsRequired,
 } from '../utils'
+import { NextI18NextRequest } from '../../types'
 
 const route = pathMatch()
 
@@ -29,7 +30,7 @@ export default function (nexti18next) {
     each request
   */
   if (!config.serverLanguageDetection) {
-    middleware.push((req: Request, _res: Response, next: NextFunction) => {
+    middleware.push((req: NextI18NextRequest, _res: Response, next: NextFunction) => {
       if (isI18nRoute(req)) {
         req.lng = config.defaultLanguage
       }
@@ -45,7 +46,7 @@ export default function (nexti18next) {
   /*
     This does the locale subpath work
   */
-  middleware.push((req: Request, res: Response, next: NextFunction) => {
+  middleware.push((req: NextI18NextRequest, res: Response, next: NextFunction) => {
     if (isI18nRoute(req) && req.i18n) {
       let currentLng = lngFromReq(req)
       const currentLngSubpath = subpathFromLng(config, currentLng)

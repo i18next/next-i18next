@@ -8,6 +8,7 @@ import {
   WithTranslation as ReactI18nextWithTranslation
 } from 'react-i18next'
 import { LinkProps } from 'next/link'
+import { Request } from 'express'
 import { SingletonRouter } from 'next/router'
 import { InitOptions, i18n, TFunction as I18NextTFunction } from 'i18next'
 
@@ -62,15 +63,11 @@ declare class NextI18Next {
   appWithTranslation: AppWithTranslation
 }
 
-declare global {
-  namespace Express {
-    interface Request {
-      i18n?: I18n & {
-        options: Config;
-      };
-      lng?: string;
-    }
-  }
+export type NextI18NextRequest = Request & {
+  i18n?: I18n & {
+    options: Config;
+  };
+  lng?: string;
 }
 
 export default NextI18Next
