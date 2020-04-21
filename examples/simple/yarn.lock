@@ -848,13 +848,6 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/runtime@^7.4.5":
-  version "7.5.4"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.4.tgz#cb7d1ad7c6d65676e66b47186577930465b5271b"
-  integrity sha512-Na84uwyImZZc3FKf4aUF1tysApzwf3p2yuFBIyBfbzT5glzKTdvYI4KVW4kcgjrzoGUjC7w3YyCHcJKaRxsr2Q==
-  dependencies:
-    regenerator-runtime "^0.13.2"
-
 "@babel/runtime@^7.5.5":
   version "7.6.3"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.6.3.tgz#935122c74c73d2240cafd32ddb5fc2a6cd35cf1f"
@@ -2765,25 +2758,22 @@ i18next-browser-languagedetector@^4.0.0:
   dependencies:
     "@babel/runtime" "^7.5.5"
 
+i18next-fs-backend@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/i18next-fs-backend/-/i18next-fs-backend-1.0.1.tgz#f119cf1da0b03cb14040719cd938a8ddb69b2124"
+  integrity sha512-Ek+I44Ijrfcpqfd+LtNB4l+hw1Vt7zAPyzpHcXjFNr+02zL/fh/ue07cQEbRfsZyvwGNJ+soCSPW3OwfFHRLpQ==
+
+i18next-http-backend@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/i18next-http-backend/-/i18next-http-backend-1.0.4.tgz#3845d1eae6c75853cc89b93803b9e326c7fd5f20"
+  integrity sha512-nnaCLtUIarFoQv1NNzN1I/TPyDRbHnq2gb5Lnf/rZBiWNJ6BdPXY0kpY1oxLIFTkwHvXJLoD9O6vVUDSXhnUjQ==
+  dependencies:
+    node-fetch "2.6.0"
+
 i18next-http-middleware@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/i18next-http-middleware/-/i18next-http-middleware-1.0.0.tgz#a42ee29c57cda03f24af9604375b2cffbb0d723c"
   integrity sha512-4ZTx6uDOwO2WiLi7srcOkonovvOVjeaOLw3EPBmtNSIPxLU1IEbIaWs0yCZ9MPrTgm3du33qOdpbg6qM9wHtXg==
-
-i18next-node-fs-backend@^2.1.0:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/i18next-node-fs-backend/-/i18next-node-fs-backend-2.1.3.tgz#483fa9eda4c152d62a3a55bcae2a5727ba887559"
-  integrity sha512-CreMFiVl3ChlMc5ys/e0QfuLFOZyFcL40Jj6jaKD6DxZ/GCUMxPI9BpU43QMWUgC7r+PClpxg2cGXAl0CjG04g==
-  dependencies:
-    js-yaml "3.13.1"
-    json5 "2.0.0"
-
-i18next-xhr-backend@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/i18next-xhr-backend/-/i18next-xhr-backend-3.0.0.tgz#75235870c920291dbfd32043505b7ede0dc87da3"
-  integrity sha512-Pi/X91Zk2nEqdEHTV+FG6VeMHRcMcPKRsYW/A0wlaCfKsoJc3TI7A75Tqse/d5LVGN2Ymzx0FT+R+gLag9Eb2g==
-  dependencies:
-    "@babel/runtime" "^7.4.5"
 
 i18next@^14.0.1:
   version "14.1.1"
@@ -3122,7 +3112,7 @@ js-tokens@^3.0.2:
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
   integrity sha1-mGbfOVECEw449/mWvOtlRDIJwls=
 
-js-yaml@3.13.1, js-yaml@^3.13.1:
+js-yaml@^3.13.1:
   version "3.13.1"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.13.1.tgz#aff151b30bfdfa8e49e05da22e7415e9dfa37847"
   integrity sha512-YfbcO7jXDdyj0DGxYVSlSeQNHbD7XPWvrVWeVUujrQEoZzWJIRrCPoyk6kL6IAjAG2IolMK4T0hNUe0HOUs5Jw==
@@ -3154,13 +3144,6 @@ json-schema-typed@^7.0.0:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/json-schema-typed/-/json-schema-typed-7.0.3.tgz#23ff481b8b4eebcd2ca123b4fa0409e66469a2d9"
   integrity sha512-7DE8mpG+/fVw+dTpjbxnx47TaMnDfOI1jwft9g1VybltZCduyRQPJPvc+zzKY9WPHxhPWczyFuYa6I8Mw4iU5A==
-
-json5@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/json5/-/json5-2.0.0.tgz#b61abf97aa178c4b5853a66cc8eecafd03045d78"
-  integrity sha512-0EdQvHuLm7yJ7lyG5dp7Q3X2ku++BG5ZHaJ5FTnaXpKqDrw4pMxel5Bt3oAYMthnrthFBdnZ1FcsXTPyrQlV0w==
-  dependencies:
-    minimist "^1.2.0"
 
 json5@2.1.1, json5@^2.1.0:
   version "2.1.1"
