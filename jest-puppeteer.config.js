@@ -20,17 +20,17 @@ module.exports = {
     {
       ...e2eTests.BASIC,
       ...defaults,
-      command: `cd examples/simple && PORT=${e2eTests.BASIC.port} NODE_ENV=production node index.js`,
+      command: `pwd && ls examples/simple && PORT=${e2eTests.BASIC.port} yarn --cwd examples/simple start`,
     },
     {
       ...e2eTests.LOCALE_SUBPATHS_FOREIGN,
       ...defaults,
-      command: `cd examples/simple && LOCALE_SUBPATHS=foreign PORT=${e2eTests.LOCALE_SUBPATHS_FOREIGN.port} NODE_ENV=production node index.js`,
+      command: `ls .e2e/locale-subpaths-foreign && yarn --cwd .e2e/locale-subpaths-foreign && yarn --cwd .e2e/locale-subpaths-foreign build && PORT=${e2eTests.LOCALE_SUBPATHS_FOREIGN.port} yarn --cwd .e2e/locale-subpaths-foreign start`,
     },
     {
       ...e2eTests.LOCALE_SUBPATHS_ALL,
       ...defaults,
-      command: `cd examples/simple && LOCALE_SUBPATHS=all PORT=${e2eTests.LOCALE_SUBPATHS_ALL.port} NODE_ENV=production node index.js`,
+      command: `ls .e2e/locale-subpaths-all && yarn --cwd .e2e/locale-subpaths-all && yarn --cwd .e2e/locale-subpaths-all build && PORT=${e2eTests.LOCALE_SUBPATHS_ALL.port} yarn --cwd .e2e/locale-subpaths-all start`,
     },
   ],
 }

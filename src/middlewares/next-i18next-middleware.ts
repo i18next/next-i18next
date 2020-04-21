@@ -1,26 +1,21 @@
 import { NextFunction, Request, Response } from 'express'
 import i18nextMiddleware from 'i18next-http-middleware'
-import pathMatch from 'path-match'
 
 import {
   addSubpath,
   lngFromReq,
   redirectWithoutCache,
-  removeSubpath,
   subpathFromLng,
   subpathIsPresent,
   subpathIsRequired,
 } from '../utils'
 import { NextI18NextRequest } from '../../types'
 
-const route = pathMatch()
-
 export default function (nexti18next) {
   const { config, i18n } = nexti18next
-  const { allLanguages, ignoreRoutes, localeSubpaths } = config
+  const { allLanguages, ignoreRoutes } = config
 
   const isI18nRoute = (req: Request) => ignoreRoutes.every(x => !req.url.startsWith(x))
-  const localeSubpathRoute = route(`/:subpath(${Object.values(localeSubpaths).join('|')})(.*)`)
 
   const middleware = []
 
@@ -73,20 +68,6 @@ export default function (nexti18next) {
         */
         return redirectWithoutCache(res, addSubpath(req.url, currentLngSubpath))
 
-      }
-
-      /*
-        If a locale subpath is present in the URL,
-        modify req.url in place so that NextJs will
-        render the correct route
-      */
-      if (typeof lngFromCurrentSubpath === 'string') {
-        const params = localeSubpathRoute(req.url)
-        if (params !== false) {
-          const { subpath } = params
-          req.query = { ...req.query, subpath, lng: currentLng }
-          req.url = removeSubpath(req.url, subpath)
-        }
       }
     }
 

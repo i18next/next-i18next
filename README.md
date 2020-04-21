@@ -74,19 +74,8 @@ It's recommended to export this `NextI18Next` instance from a single file in you
 After creating and exporting your `NextI18Next` instance, you need to take the following steps to get things working:
 
 1. Create an `_app.js` file inside your `pages` directory, and wrap it with the `NextI18Next.appWithTranslation` higher order component (HOC). You can see this approach in the [examples/simple/pages/_app.js](./examples/simple/pages/_app.js).
-Your app component must either extend `App` if it's a class component or define a `getInitialProps` if it's a function component [(explanation here)](https://github.com/isaachinman/next-i18next/issues/615#issuecomment-575578375).
-2. Create a `server.js` file inside your root directory, initialise an [express](https://www.npmjs.com/package/express) server, and use the `nextI18NextMiddleware` middleware with your `nextI18Next` instance passed in. You can see this approach in the [examples/simple/server.js](./examples/simple/server.js).
-3. Update the scripts in `package.json` to:
-```
-{
-  "scripts": {
-    "dev": "node server.js",
-    "build": "next build",
-    "start": "NODE_ENV=production node server.js"
-  }
-}
-```
-For more info, see [the NextJs section on custom servers](https://github.com/zeit/next.js#custom-server-and-routing).
+Your app component must either extend `App` if it's a class component or define a `getInitialProps` if it's a functional component [(explanation here)](https://github.com/isaachinman/next-i18next/issues/615#issuecomment-575578375).
+2. Create a `next.config.js` file inside your root directory if you want to use locale subpaths. You can see this approach in the [examples/simple/next.config.js](./examples/simple/next.config.js).
 
 Note: You can pass `shallowRender: true` into config options to avoid triggering getInitialProps when `changeLanguage` method is invoked.
 
@@ -138,6 +127,8 @@ new NextI18Next({
 })
 ```
 
+The `localeSubpaths` object must also be passed into `next.config.js`, via the `nextI18NextRewrites` util, which you can import from `next-i18next/rewrites`.
+
 The `localeSubpaths` option is a key/value mapping, where keys are the locale itself (case sensitive) and values are the subpath without slashes.
 
 Now, all your page routes will be duplicated across all your locale subpaths. Here's an example:
@@ -158,7 +149,7 @@ myapp.com/german
 myapp.com/eng
 ```
 
-When using the localeSubpaths option, our middleware may redirect without calling any subsequent middleware.  Therefore, if there are any critical middleware that must run before this redirect, ensure that you place it before the `nextI18NextMiddleware` middleware.
+When using the localeSubpaths option, our middleware will redirect as needed in the wrapped `getInitialProps` one level above your `_app`, so none of your code will be called.
 
 The main "gotcha" with locale subpaths is routing. We want to be able to route to "naked" routes, and not have to worry about the locale subpath part of the route:
 
@@ -183,8 +174,7 @@ const SomeLink = () => (
 )
 ```
 
-We can also navigate imperatively with locale subpaths by importing `Router` from your `NextI18Next` instance.
-The exported Router shares the same API as the native Next Router. The push, replace, and prefetch functions will automatically prepend locale subpaths.
+We can also navigate imperatively with locale subpaths by importing `Router` from your `NextI18Next` instance. The exported Router shares the same API as the native Next Router. The push, replace, and prefetch functions will automatically prepend locale subpaths.
 
 ```jsx
 import React from 'react'
@@ -259,7 +249,6 @@ _This table contains options which are specific to next-i18next. All other [i18n
 ## Notes
 
 - [`next export` will result in a _client-side only_ React application.](https://github.com/isaachinman/next-i18next/issues/10)
-- [Serverless (e.g. Now 2.0) is not currently supported](https://github.com/isaachinman/next-i18next/issues/274).
 - [To add a `lang` attribute to your top-level html DOM node, you must create a `_document.js` file.](https://github.com/isaachinman/next-i18next/issues/20#issuecomment-443461652)
 - [Localising `next/head` requires special consideration due to NextJs internals](https://github.com/isaachinman/next-i18next/issues/251#issuecomment-479421852).
 

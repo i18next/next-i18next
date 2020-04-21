@@ -3,6 +3,9 @@ commands:
   build-and-test:
     steps:
       - checkout
+      - run:
+          name: Install rsync
+          command: sudo apt install rsync
       - restore_cache:
           name: Restore cache (main)
           keys:
@@ -38,19 +41,19 @@ commands:
           command: yarn test
 
 jobs:
-  node-v8:
-    docker:
-      - image: circleci/node:8-browsers
-    steps:
-      - build-and-test
   node-v10:
     docker:
       - image: circleci/node:10-browsers
+    steps:
+      - build-and-test
+  node-v12:
+    docker:
+      - image: circleci/node:12-browsers
     steps:
       - build-and-test
 
 workflows:
   node-multi-build:
     jobs:
-      - node-v8
       - node-v10
+      - node-v12
