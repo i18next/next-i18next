@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import i18nextMiddleware from 'i18next-express-middleware'
+import i18nextMiddleware from 'i18next-http-middleware'
 import pathMatch from 'path-match'
 
 import {

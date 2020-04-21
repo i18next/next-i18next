@@ -1,11 +1,11 @@
-import i18nextMiddleware from 'i18next-express-middleware'
+import i18nextMiddleware from 'i18next-http-middleware'
 
 import testI18NextConfig from '../test-i18next-config'
 
 import nextI18nextMiddleware from '../../src/middlewares/next-i18next-middleware'
 import { localeSubpathVariations } from '../config/test-helpers'
 
-jest.mock('i18next-express-middleware', () => ({
+jest.mock('i18next-http-middleware', () => ({
   handle: jest.fn(() => jest.fn()),
 }))
 

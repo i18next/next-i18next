@@ -105,7 +105,7 @@
     "hoist-non-react-statics": "^3.2.0",
     "i18next": "^19.0.3",
     "i18next-browser-languagedetector": "^4.0.0",
-    "i18next-express-middleware": "^1.9.1",
+    "i18next-http-middleware": "^1.0.0",
     "i18next-node-fs-backend": "^2.1.0",
     "i18next-xhr-backend": "^3.0.0",
     "path-match": "^1.2.4",
