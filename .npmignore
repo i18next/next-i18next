@@ -23,6 +23,7 @@ runtime.log
 __tests__
 coverage
 jest.*
+.e2e
 
 # Build tools
 tsconfig.json
