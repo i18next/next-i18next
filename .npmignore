@@ -36,3 +36,4 @@ jest-puppeteer.config.js
 .github
 Procfile
 *.md
+scripts
