@@ -26,8 +26,9 @@ describe('next-18next middleware', () => {
       i18n: testI18NextConfig
     }
     res = {
-      redirect: jest.fn(),
-      header: jest.fn()
+      end: jest.fn(),
+      writeHead: jest.fn(),
+      setHeader: jest.fn()
     }
     next = jest.fn()
   })
@@ -35,8 +36,8 @@ describe('next-18next middleware', () => {
   afterEach(() => {
     i18nextMiddleware.handle.mockClear()
 
-    res.redirect.mockReset()
-    res.header.mockReset()
+    res.writeHead.mockReset()
+    res.setHeader.mockReset()
   })
 
   const callAllMiddleware = () => {
@@ -76,7 +77,7 @@ describe('next-18next middleware', () => {
       expect(req.i18n).toBeDefined()
     })
 
-    it('adds lng to query parameters and removes from url for i18next processing', () => {
+    it('adds lng to query parameters', () => {
       const language = 'de'
       const subpath = 'german'
       req = {
@@ -95,11 +96,7 @@ describe('next-18next middleware', () => {
 
       callAllMiddleware()
 
-      expect(req.url).toBe('/page1')
-      expect(req.query).toEqual({
-        lng: language,
-        subpath,
-      })
+      expect(req.url).toBe('/german/page1')
 
       expect(next).toBeCalledTimes(1)
     })
@@ -128,10 +125,10 @@ describe('next-18next middleware', () => {
       expect(req.url).toBe('/page1')
       expect(req.query).toEqual({})
 
-      expect(res.redirect).toHaveBeenCalledWith(302, '/german/page1')
-      expect(res.header).toHaveBeenNthCalledWith(1, 'Cache-Control', 'private, no-cache, no-store, must-revalidate')
-      expect(res.header).toHaveBeenNthCalledWith(2, 'Expires', '-1')
-      expect(res.header).toHaveBeenNthCalledWith(3, 'Pragma', 'no-cache')
+      expect(res.writeHead).toHaveBeenCalledWith(302, { Location: '/german/page1' })
+      expect(res.setHeader).toHaveBeenNthCalledWith(1, 'Cache-Control', 'private, no-cache, no-store, must-revalidate')
+      expect(res.setHeader).toHaveBeenNthCalledWith(2, 'Expires', '-1')
+      expect(res.setHeader).toHaveBeenNthCalledWith(3, 'Pragma', 'no-cache')
       expect(next).toBeCalledTimes(0)
     })
 

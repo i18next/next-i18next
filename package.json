@@ -11,7 +11,7 @@
   "types": "./types.d.ts",
   "license": "MIT",
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "description": "The easiest way to translate your NextJs apps.",
   "keywords": [
@@ -37,7 +37,7 @@
     "prepublishOnly": "yarn build",
     "run-example": "yarn build && cd examples/simple && yarn && yarn dev",
     "run-example:prod": "yarn --cwd examples/simple start",
-    "test": "yarn check-types && yarn build && yarn build:examples/simple && bundlesize && NODE_ENV=test jest --maxWorkers=1 --silent",
+    "test": "yarn check-types && yarn build && yarn build:examples/simple && ./scripts/setup-e2e.sh && bundlesize && NODE_ENV=test jest --maxWorkers=1 --silent",
     "contributors:check": "all-contributors check",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate"
@@ -114,7 +114,7 @@
     "url": "^0.11.0"
   },
   "peerDependencies": {
-    "next": ">= 7.0.0",
+    "next": ">= 9.3.0",
     "react": ">= 16.8.0"
   }
 }
