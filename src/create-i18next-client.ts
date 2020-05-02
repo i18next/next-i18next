@@ -11,8 +11,8 @@ export default (config) => {
   if (!i18n.isInitialized) {
 
     if (isNode) {
-      const i18nextFSBackend = eval("require('i18next-fs-backend')")
-      const i18nextMiddleware = eval("require('i18next-http-middleware')")
+      const i18nextFSBackend = eval("require('i18next-fs-backend/cjs')")
+      const i18nextMiddleware = eval("require('i18next-http-middleware/cjs')")
       i18n.use(i18nextFSBackend)
       if (config.serverLanguageDetection) {
         const serverDetectors = new i18nextMiddleware.LanguageDetector()
