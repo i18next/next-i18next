@@ -1,6 +1,6 @@
 import isNode from 'detect-node'
 import i18n from 'i18next'
-import i18nextHTTPBackend from 'i18next-http-backend'
+import i18nextHTTPBackend from 'i18next-http-backend/cjs'
 import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector'
 
 import { InitPromise } from '../types'
