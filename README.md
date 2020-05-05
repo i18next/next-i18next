@@ -51,20 +51,12 @@ If translations are not found in `config.localePath` or `public/static/locales` 
 The default export of `next-i18next` is a class constructor, into which you pass your config options. The resulting class has all the methods you will need to translate your app:
 
 ```jsx
-import NextI18Next from 'next-i18next'
+const NextI18Next = require('next-i18next').default
 
-const NextI18NextInstance = new NextI18Next({
+module.exports = new NextI18Next({
   defaultLanguage: 'en',
   otherLanguages: ['de']
 })
-
-export default NextI18NextInstance
-
-/* Optionally, export class methods as named exports */
-export const {
-  appWithTranslation,
-  withTranslation,
-} = NextI18NextInstance
 ```
 
 [A full list of options can be seen here](#options).

@@ -1,5 +1,5 @@
 /*
-  Do not copy/paste this file. It is used internally
+  Do not copy/paste this code. It is used internally
   to manage end-to-end test suites.
 */
 
