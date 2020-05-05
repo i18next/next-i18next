@@ -48,7 +48,7 @@ If translations are not found in `config.localePath` or `public/static/locales` 
 
 ### 3. Project setup
 
-The export of `next-i18next` is a class constructor, into which you pass your config options. The resulting class has all the methods you will need to translate your app:
+The default export of `next-i18next` is a class constructor, into which you pass your config options. The resulting class has all the methods you will need to translate your app:
 
 ```jsx
 const NextI18Next = require('next-i18next').default

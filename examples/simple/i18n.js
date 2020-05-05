@@ -21,21 +21,3 @@ module.exports = new NextI18Next({
   otherLanguages: ['de'],
   localeSubpaths: localeSubpathVariations[localeSubpaths],
 })
-
-
-/*
-  Uncomment the code below to run the example in your local environment
-*/
-
-/*
-const NextI18Next = require('next-i18next').default
-
-module.exports = new NextI18Next({
-  defaultLanguage: 'en',
-  otherLanguages: ['de'],
-  localeSubpaths: {
-    de: 'de',
-    en: 'en'
-  }
-})
-*/
