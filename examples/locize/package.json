@@ -1,0 +1,27 @@
+{
+  "name": "-",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "license": "MIT",
+  "engines": {
+    "node": ">=8"
+  },
+  "scripts": {
+    "downloadLocales": "locize download --project-id=d3b405cf-2532-46ae-adb8-99e88d876733 --ver=latest --clean=true --path=./public/static/locales",
+    "dev": "next",
+    "build": "next build",
+    "start": "next start -p ${PORT:=3000}"
+  },
+  "devDependencies": {
+    "locize-cli": "^7.2.0"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "i18next": "^19.4.4",
+    "i18next-locize-backend": "4.0.7",
+    "next": "^9.3.5",
+    "next-i18next": "^5.0.0-beta.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
