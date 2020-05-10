@@ -47,7 +47,7 @@ export const lngPathCorrector = (config: Config, currentRoute, currentLanguage) 
     throw new Error('Invalid configuration: Current language is not included in all languages array')
   }
 
-  let href = parseHref(originalHref)
+  const href = parseHref(originalHref)
   let as = parseAs(originalAs, href)
 
   /*
