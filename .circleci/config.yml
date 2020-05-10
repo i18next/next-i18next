@@ -13,7 +13,7 @@ commands:
             - v1-dependencies-{{ checksum "examples/simple/package.json" }}
       - run:
           name: Install dependencies (main)
-          command: yarn install
+          command: yarn install --ignore-engines
       - run:
           name: Build source (main)
           command: yarn build
