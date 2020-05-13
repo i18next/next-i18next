@@ -69,7 +69,6 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
-    "@types/express": "^4.16.1",
     "@types/jest": "^24.0.16",
     "@types/jest-environment-puppeteer": "^4.0.0",
     "@types/react": "^16.8.4",
@@ -100,6 +99,7 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
+    "@types/express": "^4.16.1",
     "core-js": "^2",
     "detect-node": "^2.0.4",
     "hoist-non-react-statics": "^3.2.0",
