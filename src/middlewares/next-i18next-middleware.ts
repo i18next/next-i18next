@@ -18,7 +18,11 @@ export default function (nexti18next) {
   const isI18nRoute = (req: Request) => ignoreRoutes.every(x => !req.url.startsWith(x))
 
   const middleware = []
-
+  
+  middleware.push((req: NextI18NextRequest, res: Response, next: NextFunction) => {
+    if (!res.locals) res.locals = {} // mimic Express res.locals
+    next()
+  })
   /*
     If not using server side language detection,
     we need to manually set the language for
