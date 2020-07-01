@@ -18,6 +18,7 @@ export type InitConfig = {
   strictMode?: boolean;
   defaultLanguage: string;
   ignoreRoutes?: string[];
+  localeExtension?: string;
   localePath?: string;
   localeStructure?: string;
   otherLanguages: string[];
