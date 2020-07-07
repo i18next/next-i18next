@@ -13,6 +13,7 @@ import { SingletonRouter } from 'next/router'
 import { InitOptions, i18n, TFunction as I18NextTFunction } from 'i18next'
 
 export type InitConfig = {
+  assetPrefix?: string;
   browserLanguageDetection?: boolean;
   serverLanguageDetection?: boolean;
   strictMode?: boolean;

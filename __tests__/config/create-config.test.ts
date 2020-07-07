@@ -158,6 +158,17 @@ describe('create configuration in non-production environment', () => {
         expect(config.backend.addPath).toEqual('/home/user/public/static/translations/{{ns}}/{{lng}}.missing.test-extension')
       })
     })
+
+    describe('assetPrefix', () => {
+      it('ignores asset prefix option on server', () => {
+        const config = createConfig({
+          ...userConfig,
+          assetPrefix: 'assetPrefix/'
+        })
+        expect(config.backend.loadPath).toEqual('/home/user/public/static/translations/{{ns}}/{{lng}}.json')
+        expect(config.backend.addPath).toEqual('/home/user/public/static/translations/{{ns}}/{{lng}}.missing.json')
+      })
+    })
   })
 
   const runClientSideTests = () => {
@@ -231,6 +242,17 @@ describe('create configuration in non-production environment', () => {
         })
         expect(config.backend.loadPath).toEqual('/static/translations/{{ns}}/{{lng}}.test-extension')
         expect(config.backend.addPath).toEqual('/static/translations/{{ns}}/{{lng}}.missing.test-extension')
+      })
+    })
+
+    describe('assetPrefix config option', () => {
+      it('prepends assetPrefix to clientLoadPath', () => {
+        const config = createConfig({
+          ...userConfig,
+          assetPrefix: 'assetPrefix/'
+        }) 
+        expect(config.backend.loadPath).toEqual('/assetPrefix/static/translations/{{ns}}/{{lng}}.json')
+        expect(config.backend.addPath).toEqual('/assetPrefix/static/translations/{{ns}}/{{lng}}.missing.json')
       })
     })
   }
