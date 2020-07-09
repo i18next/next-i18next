@@ -12,7 +12,9 @@
             }
           }
         ],
-        ["@babel/preset-react"]
+        [
+          "@babel/preset-react"
+        ]
       ]
     },
     "cjs": {
@@ -28,7 +30,7 @@
           }
         ],
         [
-          "next/babel", 
+          "next/babel",
           {
             "transform-runtime": {
               "corejs": false,
@@ -61,7 +63,9 @@
             "modules": "commonjs"
           }
         ],
-        ["@babel/preset-react"]
+        [
+          "@babel/preset-react"
+        ]
       ],
       "plugins": [
         "@babel/proposal-class-properties",

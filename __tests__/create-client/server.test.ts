@@ -1,6 +1,6 @@
 import i18next from 'i18next'
 import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector'
-import createI18nextClient from '../src/create-i18next-client'
+import createI18nextClient from '../../src/create-client/node'
 
 const i18nextMiddleware = require('i18next-http-middleware')
 
