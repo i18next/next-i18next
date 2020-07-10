@@ -13,7 +13,6 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "express": "^4.16.4",
     "i18next": "^14.0.1",
     "next": "^9.3.5",
     "next-i18next": "link:../../"

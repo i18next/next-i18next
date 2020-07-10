@@ -1,13 +1,10 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-
 import { withTranslation, Link } from '../i18n'
-
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
 const SecondPage = ({ t }) => (
-  <React.Fragment>
+  <>
     <main>
       <Header title={t('h1')} />
       <Link href='/'>
@@ -19,7 +16,7 @@ const SecondPage = ({ t }) => (
       </Link>
     </main>
     <Footer />
-  </React.Fragment>
+  </>
 )
 
 SecondPage.getInitialProps = async () => ({

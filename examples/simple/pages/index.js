@@ -1,13 +1,10 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-
 import { i18n, Link, withTranslation } from '../i18n'
-
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
 const Homepage = ({ t }) => (
-  <React.Fragment>
+  <>
     <main>
       <Header title={t('h1')} />
       <div>
@@ -27,7 +24,7 @@ const Homepage = ({ t }) => (
       </div>
     </main>
     <Footer />
-  </React.Fragment>
+  </>
 )
 
 Homepage.getInitialProps = async () => ({
