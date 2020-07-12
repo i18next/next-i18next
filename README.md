@@ -14,7 +14,7 @@ If you are using next-i18next in production, please consider [sponsoring the pac
 
 While `next-i18next` uses [i18next](https://www.i18next.com/) and [react-i18next](https://github.com/i18next/react-i18next) under the hood, users of `next-i18next` simply need to include their translation content as JSON files and don't have to worry about much else.
 
-A live demo is [available here](http://next-i18next.com/). Please be aware this is hosted on a free Heroku dyno and therefore may go to sleep during periods of inactivity. This demo app is the [simple example](./examples/simple/) - nothing more, nothing less.
+A live demo is [available here](http://next-i18next.com/). This demo app is the [simple example](./examples/simple/) - nothing more, nothing less.
 
 ## Setup
 
@@ -44,20 +44,23 @@ This structure can also be seen in the [simple example](./examples/simple).
 
 If you want to structure your translations/namespaces in a custom way, you will need to pass modified `localePath` and `localeStructure` values into the initialisation config.
 
-If translations are not found in `config.localePath` or `public/static/locales` an attempt will be made to find the locales in `static/locales`, if found a deprecation warning will be logged.
-
 ### 3. Project setup
 
 The default export of `next-i18next` is a class constructor, into which you pass your config options. The resulting class has all the methods you will need to translate your app:
 
 ```jsx
 const NextI18Next = require('next-i18next').default
+const { localeSubpaths } = require('next/config').default().publicRuntimeConfig
+const path = require('path')
 
 module.exports = new NextI18Next({
-  defaultLanguage: 'en',
-  otherLanguages: ['de']
+  otherLanguages: ['de'],
+  localeSubpaths,
+  localePath: path.resolve('./public/static/locales')
 })
 ```
+
+Note that `localePath` is required, and must be an absolute path.
 
 [A full list of options can be seen here](#options).
 
@@ -74,18 +77,16 @@ Note: You can pass `shallowRender: true` into config options to avoid triggering
 That's it! Your app is ready to go. You can now use the `NextI18Next.withTranslation` HOC to make your components or pages translatable, based on namespaces:
 
 ```jsx
-import React from 'react'
-
 // This is our initialised `NextI18Next` instance
 import { withTranslation } from '../i18n'
 
-class Footer extends React.Component {
-  render() {
-    return (
-      <footer>{this.props.t('description')}</footer>
-    )
-  }
-}
+const Footer = ({ t }) => (
+  <footer>
+    <p>
+      {t('description')}
+    </p>
+  </footer>
+)
 
 export default withTranslation('footer')(Footer)
 ```
@@ -154,8 +155,6 @@ With this link, we would expect someone whose language is set to French to autom
 To do that, we must import `Link` from your `NextI18Next` instance, **not next/router**:
 
 ```jsx
-import React from 'react'
-
 // This is our initialised `NextI18Next` instance
 import { Link } from '../i18n'
 
@@ -169,8 +168,6 @@ const SomeLink = () => (
 We can also navigate imperatively with locale subpaths by importing `Router` from your `NextI18Next` instance. The exported Router shares the same API as the native Next Router. The push, replace, and prefetch functions will automatically prepend locale subpaths.
 
 ```jsx
-import React from 'react'
-
 // This is our initialised `NextI18Next` instance
 import { Router } from '../i18n'
 
@@ -181,25 +178,6 @@ const SomeButton = () => (
     This will magically prepend locale subpaths
   </button>
 )
-```
-
-## Custom Routing
-
-Custom routing can be achieved via the `app.render` method:
-
-```jsx
-/* First, use middleware */
-server.use(nextI18NextMiddleware(nextI18next))
-
-/* Second, declare custom routes */
-server.get('/products/:id', (req, res) => {
-  const { query, params } = req
-
-  return app.render(req, res, '/product-page', { ...query, id: params.id })
-})
-
-/* Third, add catch-all GET for non-custom routes */
-server.get('*', (req, res) => handle(req, res))
 ```
 
 ## Accessing the Current Language
@@ -227,7 +205,7 @@ MyPage.getInitialProps = async({ req }) => {
 | `ignoreRoutes`  | `['/_next/', '/static/', '/public/', '/api/']`  |
 | `otherLanguages` (required) | `[]`  |
 | `localeExtension` | `'json'`  |
-| `localePath` | `'public/static/locales'`  |
+| `localePath` (required) | `'/public/static/locales'`  |
 | `localeStructure` | `'{{lng}}/{{ns}}'`  |
 | `localeSubpaths` | `{}`  |
 | `serverLanguageDetection` | `true`  |
