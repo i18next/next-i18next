@@ -50,11 +50,11 @@
   "bundlesize": [
     {
       "path": "./examples/simple/.next/static/chunks/commons*.js",
-      "maxSize": "106 kB"
+      "maxSize": "62 kB"
     },
     {
       "path": "./examples/simple/.next/static/runtime/main*.js",
-      "maxSize": "8 kB"
+      "maxSize": "6 kB"
     },
     {
       "path": "./examples/simple/.next/static/runtime/webpack*.js",
@@ -100,7 +100,7 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "core-js": "^2",
+    "core-js": "^3",
     "detect-node": "^2.0.4",
     "hoist-non-react-statics": "^3.2.0",
     "i18next": "^19.0.3",
