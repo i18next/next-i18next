@@ -50,15 +50,15 @@
   "bundlesize": [
     {
       "path": "./examples/simple/.next/static/chunks/commons*.js",
-      "maxSize": "62 kB"
+      "maxSize": "65 kB"
     },
     {
-      "path": "./examples/simple/.next/static/runtime/main*.js",
-      "maxSize": "6 kB"
+      "path": "./examples/simple/.next/static/chunks/main*.js",
+      "maxSize": "7 kB"
     },
     {
-      "path": "./examples/simple/.next/static/runtime/webpack*.js",
-      "maxSize": "750 B"
+      "path": "./examples/simple/.next/static/chunks/webpack*.js",
+      "maxSize": "760 B"
     }
   ],
   "devDependencies": {
@@ -114,7 +114,7 @@
     "url": "^0.11.0"
   },
   "peerDependencies": {
-    "next": ">= 9.3.0",
+    "next": ">= 9.5.0",
     "react": ">= 16.8.0"
   }
 }
