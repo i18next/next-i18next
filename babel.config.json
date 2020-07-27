@@ -37,7 +37,7 @@
               "helpers": true,
               "regenerator": true,
               "useESModules": false
-            },
+            }
           }
         ]
       ],
@@ -76,6 +76,6 @@
           }
         ]
       ]
-    },
+    }
   }
 }
