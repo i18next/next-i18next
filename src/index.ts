@@ -32,9 +32,6 @@ export default class NextI18Next {
     this.consoleMessage = consoleMessage.bind(this)
 
     /* Validation */
-    if (this.config.otherLanguages.length <= 0) {
-      throw new Error('To properly initialise a next-i18next instance you must provide one or more locale codes in config.otherLanguages.')
-    }
     this.withNamespaces = () => {
       throw new Error('next-i18next has upgraded to react-i18next v10 - please rename withNamespaces to withTranslation.')
     }
