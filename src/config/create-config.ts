@@ -46,7 +46,7 @@ export const createConfig = (userConfig) => {
     */
     if (typeof combinedConfig.defaultNS === 'string') {
       const defaultFile = `/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`
-      const defaultNSPath = path.join(process.cwd(), localePath, defaultFile)
+      const defaultNSPath = path.join(localePath, defaultFile)
       const defaultNSExists = fs.existsSync(defaultNSPath)
       if (!defaultNSExists) {
 
@@ -54,7 +54,7 @@ export const createConfig = (userConfig) => {
           If defaultNS doesn't exist, try to fall back to the deprecated static folder
           https://github.com/isaachinman/next-i18next/issues/523
         */
-        const staticDirPath = path.join(process.cwd(), STATIC_LOCALE_PATH, defaultFile)
+        const staticDirPath = path.resolve(process.cwd(), STATIC_LOCALE_PATH, defaultFile)
         const staticDirExists = fs.existsSync(staticDirPath)
 
         if (staticDirExists) {
@@ -70,8 +70,8 @@ export const createConfig = (userConfig) => {
       Set server side backend
     */
     combinedConfig.backend = {
-      loadPath: path.join(process.cwd(), `${serverLocalePath}/${localeStructure}.${localeExtension}`),
-      addPath: path.join(process.cwd(), `${serverLocalePath}/${localeStructure}.missing.${localeExtension}`),
+      loadPath: path.resolve(process.cwd(), `${serverLocalePath}/${localeStructure}.${localeExtension}`),
+      addPath: path.resolve(process.cwd(), `${serverLocalePath}/${localeStructure}.missing.${localeExtension}`),
     }
 
     /*
@@ -80,7 +80,7 @@ export const createConfig = (userConfig) => {
     combinedConfig.preload = allLanguages
     if (!combinedConfig.ns) {
       const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace(`.${localeExtension}`, ''))
-      combinedConfig.ns = getAllNamespaces(path.join(process.cwd(), `${serverLocalePath}/${defaultLanguage}`))
+      combinedConfig.ns = getAllNamespaces(path.resolve(process.cwd(), `${serverLocalePath}/${defaultLanguage}`))
     }
 
   } else {
@@ -90,16 +90,16 @@ export const createConfig = (userConfig) => {
     /*
       Remove public prefix from client site config
     */
-    if (localePath.startsWith('public/')) {
-      clientLocalePath = localePath.replace(/^public\//, '')
+    if (localePath.startsWith('/public/')) {
+      clientLocalePath = localePath.replace(/^\/public/, '')
     }
 
     /*
       Set client side backend
     */
     combinedConfig.backend = {
-      loadPath: `/${clientLocalePath}/${localeStructure}.${localeExtension}`,
-      addPath: `/${clientLocalePath}/${localeStructure}.missing.${localeExtension}`,
+      loadPath: `${clientLocalePath}/${localeStructure}.${localeExtension}`,
+      addPath: `${clientLocalePath}/${localeStructure}.missing.${localeExtension}`,
     }
 
     combinedConfig.ns = [combinedConfig.defaultNS]

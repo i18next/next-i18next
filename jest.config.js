@@ -22,5 +22,8 @@ module.exports = {
     '<rootDir>/__tests__/test-i18next-config.ts',
     '<rootDir>/__tests__/types.test.ts',
     '<rootDir>/__tests__/config/test-helpers.ts',
+    '<rootDir>/.e2e',
+    '<rootDir>/examples/simple/__tests__/e2e/locale-subpaths-all.config.js',
+    '<rootDir>/examples/simple/__tests__/e2e/locale-subpaths-foreign.config.js',
   ],
 }

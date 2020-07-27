@@ -18,6 +18,7 @@ out
 
 # Testing
 coverage/
+.e2e
 
 # npm
 package-lock.json

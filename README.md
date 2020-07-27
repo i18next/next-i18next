@@ -13,7 +13,7 @@ If you are using next-i18next in production, please consider [sponsoring the pac
 
 While `next-i18next` uses [i18next](https://www.i18next.com/) and [react-i18next](https://github.com/i18next/react-i18next) under the hood, users of `next-i18next` simply need to include their translation content as JSON files and don't have to worry about much else.
 
-A live demo is [available here](http://next-i18next.com/). Please be aware this is hosted on a free Heroku dyno and therefore may go to sleep during periods of inactivity. This demo app is the [simple example](./examples/simple/) - nothing more, nothing less.
+A live demo is [available here](http://next-i18next.com/). This demo app is the [simple example](./examples/simple/) - nothing more, nothing less.
 
 ## Setup
 
@@ -43,20 +43,23 @@ This structure can also be seen in the [simple example](./examples/simple).
 
 If you want to structure your translations/namespaces in a custom way, you will need to pass modified `localePath` and `localeStructure` values into the initialisation config.
 
-If translations are not found in `config.localePath` or `public/static/locales` an attempt will be made to find the locales in `static/locales`, if found a deprecation warning will be logged.
-
 ### 3. Project setup
 
 The default export of `next-i18next` is a class constructor, into which you pass your config options. The resulting class has all the methods you will need to translate your app:
 
 ```jsx
 const NextI18Next = require('next-i18next').default
+const { localeSubpaths } = require('next/config').default().publicRuntimeConfig
+const path = require('path')
 
 module.exports = new NextI18Next({
-  defaultLanguage: 'en',
-  otherLanguages: ['de']
+  otherLanguages: ['de'],
+  localeSubpaths,
+  localePath: path.resolve('./public/static/locales')
 })
 ```
+
+Note that `localePath` is required, and must be an absolute path.
 
 [A full list of options can be seen here](#options).
 
@@ -65,37 +68,24 @@ It's recommended to export this `NextI18Next` instance from a single file in you
 After creating and exporting your `NextI18Next` instance, you need to take the following steps to get things working:
 
 1. Create an `_app.js` file inside your `pages` directory, and wrap it with the `NextI18Next.appWithTranslation` higher order component (HOC). You can see this approach in the [examples/simple/pages/_app.js](./examples/simple/pages/_app.js).
-Your app component must either extend `App` if it's a class component or define a `getInitialProps` if it's a function component [(explanation here)](https://github.com/isaachinman/next-i18next/issues/615#issuecomment-575578375).
-2. Create a `server.js` file inside your root directory, initialise an [express](https://www.npmjs.com/package/express) server, and use the `nextI18NextMiddleware` middleware with your `nextI18Next` instance passed in. You can see this approach in the [examples/simple/server.js](./examples/simple/server.js).
-3. Update the scripts in `package.json` to:
-```
-{
-  "scripts": {
-    "dev": "node server.js",
-    "build": "next build",
-    "start": "NODE_ENV=production node server.js"
-  }
-}
-```
-For more info, see [the NextJs section on custom servers](https://github.com/zeit/next.js#custom-server-and-routing).
+Your app component must either extend `App` if it's a class component or define a `getInitialProps` if it's a functional component [(explanation here)](https://github.com/isaachinman/next-i18next/issues/615#issuecomment-575578375).
+2. Create a `next.config.js` file inside your root directory if you want to use locale subpaths. You can see this approach in the [examples/simple/next.config.js](./examples/simple/next.config.js).
 
 Note: You can pass `shallowRender: true` into config options to avoid triggering getInitialProps when `changeLanguage` method is invoked.
 
 That's it! Your app is ready to go. You can now use the `NextI18Next.withTranslation` HOC to make your components or pages translatable, based on namespaces:
 
 ```jsx
-import React from 'react'
-
 // This is our initialised `NextI18Next` instance
 import { withTranslation } from '../i18n'
 
-class Footer extends React.Component {
-  render() {
-    return (
-      <footer>{this.props.t('description')}</footer>
-    )
-  }
-}
+const Footer = ({ t }) => (
+  <footer>
+    <p>
+      {t('description')}
+    </p>
+  </footer>
+)
 
 export default withTranslation('footer')(Footer)
 ```
@@ -129,6 +119,8 @@ new NextI18Next({
 })
 ```
 
+The `localeSubpaths` object must also be passed into `next.config.js`, via the `nextI18NextRewrites` util, which you can import from `next-i18next/rewrites`.
+
 The `localeSubpaths` option is a key/value mapping, where keys are the locale itself (case sensitive) and values are the subpath without slashes.
 
 Now, all your page routes will be duplicated across all your locale subpaths. Here's an example:
@@ -149,7 +141,7 @@ myapp.com/german
 myapp.com/eng
 ```
 
-When using the localeSubpaths option, our middleware may redirect without calling any subsequent middleware.  Therefore, if there are any critical middleware that must run before this redirect, ensure that you place it before the `nextI18NextMiddleware` middleware.
+When using the localeSubpaths option, our middleware will redirect as needed in the wrapped `getInitialProps` one level above your `_app`, so none of your code will be called.
 
 The main "gotcha" with locale subpaths is routing. We want to be able to route to "naked" routes, and not have to worry about the locale subpath part of the route:
 
@@ -162,8 +154,6 @@ With this link, we would expect someone whose language is set to French to autom
 To do that, we must import `Link` from your `NextI18Next` instance, **not next/router**:
 
 ```jsx
-import React from 'react'
-
 // This is our initialised `NextI18Next` instance
 import { Link } from '../i18n'
 
@@ -174,12 +164,9 @@ const SomeLink = () => (
 )
 ```
 
-We can also navigate imperatively with locale subpaths by importing `Router` from your `NextI18Next` instance.
-The exported Router shares the same API as the native Next Router. The push, replace, and prefetch functions will automatically prepend locale subpaths.
+We can also navigate imperatively with locale subpaths by importing `Router` from your `NextI18Next` instance. The exported Router shares the same API as the native Next Router. The push, replace, and prefetch functions will automatically prepend locale subpaths.
 
 ```jsx
-import React from 'react'
-
 // This is our initialised `NextI18Next` instance
 import { Router } from '../i18n'
 
@@ -190,25 +177,6 @@ const SomeButton = () => (
     This will magically prepend locale subpaths
   </button>
 )
-```
-
-## Custom Routing
-
-Custom routing can be achieved via the `app.render` method:
-
-```jsx
-/* First, use middleware */
-server.use(nextI18NextMiddleware(nextI18next))
-
-/* Second, declare custom routes */
-server.get('/products/:id', (req, res) => {
-  const { query, params } = req
-
-  return app.render(req, res, '/product-page', { ...query, id: params.id })
-})
-
-/* Third, add catch-all GET for non-custom routes */
-server.get('*', (req, res) => handle(req, res))
 ```
 
 ## Accessing the Current Language
@@ -236,7 +204,7 @@ MyPage.getInitialProps = async({ req }) => {
 | `ignoreRoutes`  | `['/_next/', '/static/', '/public/', '/api/']`  |
 | `otherLanguages` (required) | `[]`  |
 | `localeExtension` | `'json'`  |
-| `localePath` | `'public/static/locales'`  |
+| `localePath` (required) | `'/public/static/locales'`  |
 | `localeStructure` | `'{{lng}}/{{ns}}'`  |
 | `localeSubpaths` | `{}`  |
 | `serverLanguageDetection` | `true`  |
@@ -250,7 +218,6 @@ _This table contains options which are specific to next-i18next. All other [i18n
 ## Notes
 
 - [`next export` will result in a _client-side only_ React application.](https://github.com/isaachinman/next-i18next/issues/10)
-- [Serverless (e.g. Now 2.0) is not currently supported](https://github.com/isaachinman/next-i18next/issues/274).
 - [To add a `lang` attribute to your top-level html DOM node, you must create a `_document.js` file.](https://github.com/isaachinman/next-i18next/issues/20#issuecomment-443461652)
 - [Localising `next/head` requires special consideration due to NextJs internals](https://github.com/isaachinman/next-i18next/issues/251#issuecomment-479421852).
 

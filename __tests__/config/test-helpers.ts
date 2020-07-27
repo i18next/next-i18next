@@ -15,7 +15,6 @@ const userConfig = {
   defaultNS: 'universal',
   fallbackLng: 'it',
   otherLanguages: ['fr', 'it'],
-  localePath: 'public/static/translations',
   localeStructure: '{{ns}}/{{lng}}',
   localeSubpaths: localeSubpathVariations.FOREIGN,
   shallowRender: true
@@ -23,18 +22,12 @@ const userConfig = {
 
 const userConfigClientSide = {
   ...userConfig,
-  backend: {
-    loadPath: '/static/translations/{{ns}}/{{lng}}.json',
-    addPath: '/static/translations/{{ns}}/{{lng}}.missing.json',
-  },
+  localePath: '/public/static/locales',
 }
 
 const userConfigServerSide = {
   ...userConfig,
-  backend: {
-    loadPath: '/home/user/public/static/translations/{{ns}}/{{lng}}.json',
-    addPath: '/home/user/public/static/translations/{{ns}}/{{lng}}.missing.json',
-  },
+  localePath: '/home/user/public/static/locales',
 }
 
 const setUpTest = () => {

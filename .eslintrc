@@ -13,9 +13,15 @@
     "browser": true
   },
   "rules": {
-    "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/indent": [
+      "error",
+      2
+    ],
     "semi": "off",
-    "@typescript-eslint/semi": ["error", "never"],
+    "@typescript-eslint/semi": [
+      "error",
+      "never"
+    ],
     "@typescript-eslint/no-var-requires": 0,
     "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/explicit-function-return-type": 0,
@@ -33,11 +39,17 @@
     "react/display-name": 0,
     "react/jsx-filename-extension": 0,
     "react/prefer-stateless-function": 0,
+    "react/react-in-jsx-scope": 0,
     "no-restricted-syntax": 0,
     "no-useless-escape": 0,
-    "no-eval": 0,
-    "no-console": ["error", {
-      "allow": ["warn", "error"]
-    }]
+    "no-console": [
+      "error",
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ]
   }
 }

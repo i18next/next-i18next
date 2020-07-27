@@ -1,10 +1,8 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-
 import Head from 'next/head'
 
 const Header = ({ title }) => (
-  <React.Fragment>
+  <>
     <Head>
       <title>next-i18next</title>
 
@@ -28,7 +26,7 @@ const Header = ({ title }) => (
     >
       <i className="typcn typcn-social-github-circular" />
     </a>
-  </React.Fragment>
+  </>
 )
 
 Header.propTypes = {

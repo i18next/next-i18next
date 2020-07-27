@@ -4,6 +4,7 @@ import { withRouter } from 'next/router'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import { I18nextProvider, withSSR } from 'react-i18next'
 
+import { nextI18NextMiddleware } from '../middlewares'
 import { lngFromReq, lngPathCorrector, lngsToLoad } from '../utils'
 import { NextStaticProvider } from '../components'
 import { isServer } from '../utils'
@@ -22,7 +23,8 @@ interface WrappedComponentProps {
 export const appWithTranslation = function (WrappedComponent) {
 
   const WrappedComponentWithSSR = withSSR()(WrappedComponent)
-  const { config, consoleMessage, i18n } = this
+  const nextI18Next = this
+  const { config, consoleMessage, i18n, initPromise } = nextI18Next
 
   const clientLoadNamespaces = (lng: string, namespaces: string[]) => Promise.all(
     namespaces
@@ -67,6 +69,8 @@ export const appWithTranslation = function (WrappedComponent) {
 
     static async getInitialProps(ctx) {
 
+      await initPromise
+
       let wrappedComponentProps: WrappedComponentProps = { pageProps: {} }
       if (WrappedComponent.getInitialProps) {
         wrappedComponentProps = await WrappedComponent.getInitialProps(ctx)
@@ -81,10 +85,20 @@ export const appWithTranslation = function (WrappedComponent) {
       /*
         Initiate vars to return
       */
-      const { req } = ctx.ctx
+      const { req, res } = ctx.ctx
       let initialI18nStore = {}
       let initialLanguage = null
       let i18nServerInstance = null
+
+      /*
+        Preprocess the req via next-i18next and i18next middlewares
+      */
+      if (req && res) {
+        const middlewares = nextI18NextMiddleware(nextI18Next)
+        for (const middleware of middlewares) {
+          await new Promise((resolve) => middleware(req, res, resolve))
+        }
+      }
 
       /*
         Step 1: Determine initial language
