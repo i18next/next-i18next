@@ -183,15 +183,12 @@ const SomeButton = () => (
 
 In many cases, you'll need to know the currently active language. Most of the time, to accomplish this, you should use the `withTranslation` HOC, which will pass an `i18n` prop to the wrapped component and further asserts your component will get re-rendered on language change or changes to the translation catalog itself (loaded translations). More info can be found [here](https://react.i18next.com/latest/withtranslation-hoc).
 
-If for some reason you need to access the current language inside `getInitialProps`, you'll need to switch over server and client contexts. For example:
+If for some reason you need to access the current language and `withTranslation` doesn't suit your needs, you can use the `I18nContext`:
 
 ```jsx
-// This is our initialised `NextI18Next` instance
-import { i18n } from '../i18n'
+import { I18nContext } from 'next-i18next'
 
-MyPage.getInitialProps = async({ req }) => {
-  const currentLanguage = req ? req.language : i18n.language
-}
+const { i18n: { language } } = useContext(I18nContext)
 ```
 
 ## Options
