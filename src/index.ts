@@ -11,7 +11,7 @@ import { wrapRouter } from './router'
 
 import { AppWithTranslation, Config, InitConfig, Trans as TransType, Link as LinkType, I18n, InitPromise, UseTranslation, WithTranslationHocType, Router } from '../types'
 
-export { withTranslation } from 'react-i18next'
+export { I18nContext, withTranslation } from 'react-i18next'
 
 export default class NextI18Next {
   readonly Trans: TransType
