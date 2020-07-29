@@ -27,9 +27,10 @@ export const defaultConfig = {
   ignoreRoutes: ['/_next/', '/static/', '/public/', '/api/'],
   customDetectors: [],
   detection: {
+    caches: ['cookie'],
+    cookieSameSite: 'strict',
     lookupCookie: 'next-i18next',
     order: ['cookie', 'header', 'querystring'],
-    caches: ['cookie'],
   },
   react: {
     wait: true,
