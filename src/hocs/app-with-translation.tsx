@@ -71,17 +71,6 @@ export const appWithTranslation = function (WrappedComponent) {
 
       await initPromise
 
-      let wrappedComponentProps: WrappedComponentProps = { pageProps: {} }
-      if (WrappedComponent.getInitialProps) {
-        wrappedComponentProps = await WrappedComponent.getInitialProps(ctx)
-      }
-      if (typeof wrappedComponentProps.pageProps === 'undefined') {
-        consoleMessage(
-          'error',
-          'If you have a getInitialProps method in your custom _app.js file, you must explicitly return pageProps. For more information, see: https://github.com/zeit/next.js#custom-app',
-        )
-      }
-
       /*
         Initiate vars to return
       */
@@ -98,6 +87,18 @@ export const appWithTranslation = function (WrappedComponent) {
         for (const middleware of middlewares) {
           await new Promise((resolve) => middleware(req, res, resolve))
         }
+      }
+
+      /* Call getInitialProps on our wrapped _app */
+      let wrappedComponentProps: WrappedComponentProps = { pageProps: {} }
+      if (WrappedComponent.getInitialProps) {
+        wrappedComponentProps = await WrappedComponent.getInitialProps(ctx)
+      }
+      if (typeof wrappedComponentProps.pageProps === 'undefined') {
+        consoleMessage(
+          'error',
+          'If you have a getInitialProps method in your custom _app.js file, you must explicitly return pageProps. For more information, see: https://github.com/zeit/next.js#custom-app',
+        )
       }
 
       /*
