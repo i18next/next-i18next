@@ -101,7 +101,6 @@
   "dependencies": {
     "@types/express": "^4.16.1",
     "core-js": "^3",
-    "detect-node": "^2.0.4",
     "hoist-non-react-statics": "^3.2.0",
     "i18next": "^19.6.3",
     "i18next-browser-languagedetector": "^5.0.0",
