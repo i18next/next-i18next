@@ -81,6 +81,7 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.detection.order).toEqual(['cookie', 'header', 'querystring'])
       expect(config.detection.caches).toEqual(['cookie'])
+      expect(config.detection.cookieSameSite).toEqual('strict')
 
       expect(config.react.wait).toEqual(true)
 
@@ -183,6 +184,7 @@ describe('create configuration in non-production environment', () => {
 
       expect(config.detection.order).toEqual(['cookie', 'header', 'querystring'])
       expect(config.detection.caches).toEqual(['cookie'])
+      expect(config.detection.cookieSameSite).toEqual('strict')
 
       expect(config.react.wait).toEqual(true)
 
