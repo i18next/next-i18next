@@ -10,7 +10,6 @@ export const localeSubpathVariations = {
 }
 
 const userConfig = {
-  browserLanguageDetection: false,
   defaultLanguage: 'de',
   defaultNS: 'universal',
   fallbackLng: 'it',

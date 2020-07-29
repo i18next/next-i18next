@@ -1,5 +1,4 @@
 import i18next from 'i18next'
-import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector'
 import createI18nextClient from '../../src/create-client/node'
 
 const i18nextMiddleware = require('i18next-http-middleware')
@@ -12,8 +11,6 @@ jest.mock('i18next', () => ({
 jest.mock('i18next-http-middleware', () => ({
   LanguageDetector: jest.fn(),
 }))
-
-jest.mock('i18next-browser-languagedetector', () => jest.fn())
 
 describe('initializing i18n', () => {
   beforeEach(() => {
@@ -42,7 +39,6 @@ describe('initializing i18n', () => {
       use: [],
       customDetectors: [],
       serverLanguageDetection: true,
-      browserLanguageDetection: true,
     })
 
     expect(i18next.init).not.toBeCalled()
@@ -56,7 +52,6 @@ describe('initializing i18n', () => {
       use: [],
       customDetectors: [],
       serverLanguageDetection: true,
-      browserLanguageDetection: true,
     })
 
     expect(i18next.use).toBeCalledTimes(2)
@@ -73,7 +68,6 @@ describe('initializing i18n', () => {
     })
 
     expect(i18nextMiddleware.LanguageDetector).toBeCalled()
-    expect(I18nextBrowserLanguageDetector).not.toBeCalled()
     expect(i18next.use).toBeCalledTimes(2)
     expect(i18next.init).toBeCalled()
   })
@@ -91,7 +85,6 @@ describe('initializing i18n', () => {
       serverLanguageDetection: true,
     })
     expect(i18nextMiddleware.LanguageDetector).toBeCalled()
-    expect(I18nextBrowserLanguageDetector).not.toBeCalled()
     expect(addDetector).toBeCalledWith('test_custom_detector')
     expect(i18next.use).toBeCalledTimes(2)
     expect(i18next.init).toBeCalledTimes(1)
@@ -110,7 +103,6 @@ describe('initializing i18n', () => {
       serverLanguageDetection: false,
     })
     expect(i18nextMiddleware.LanguageDetector).not.toBeCalled()
-    expect(I18nextBrowserLanguageDetector).not.toBeCalled()
     expect(addDetector).not.toBeCalled()
     expect(i18next.use).toBeCalledTimes(1)
     expect(i18next.init).toBeCalledTimes(1)

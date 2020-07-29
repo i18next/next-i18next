@@ -79,8 +79,6 @@ describe('create configuration in non-production environment', () => {
       expect(config.interpolation.format('format me', 'uppercase')).toEqual('FORMAT ME')
       expect(config.interpolation.format('format me')).toEqual('format me')
 
-      expect(config.browserLanguageDetection).toEqual(true)
-
       expect(config.detection.order).toEqual(['cookie', 'header', 'querystring'])
       expect(config.detection.caches).toEqual(['cookie'])
 
@@ -113,7 +111,6 @@ describe('create configuration in non-production environment', () => {
       expect(config.localeStructure).toEqual('{{ns}}/{{lng}}')
       expect(config.localeSubpaths).toEqual(localeSubpathVariations.FOREIGN)
       expect(config.defaultNS).toEqual('universal')
-      expect(config.browserLanguageDetection).toEqual(false)
       expect(config.preload).toEqual(['fr', 'it', 'de'])
 
       expect(config.ns).toEqual(['universal', 'file1', 'file2'])
@@ -184,8 +181,6 @@ describe('create configuration in non-production environment', () => {
       expect(config.interpolation.format('format me', 'uppercase')).toEqual('FORMAT ME')
       expect(config.interpolation.format('format me')).toEqual('format me')
 
-      expect(config.browserLanguageDetection).toEqual(true)
-
       expect(config.detection.order).toEqual(['cookie', 'header', 'querystring'])
       expect(config.detection.caches).toEqual(['cookie'])
 
@@ -212,7 +207,6 @@ describe('create configuration in non-production environment', () => {
       expect(config.localeStructure).toEqual('{{ns}}/{{lng}}')
       expect(config.localeSubpaths).toEqual(localeSubpathVariations.FOREIGN)
       expect(config.defaultNS).toEqual('universal')
-      expect(config.browserLanguageDetection).toEqual(false)
 
       expect(config.ns).toEqual(['universal'])
 

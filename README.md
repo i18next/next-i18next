@@ -195,7 +195,6 @@ const { i18n: { language } } = useContext(I18nContext)
 
 | Key  | Default value |
 | ------------- | ------------- |
-| `browserLanguageDetection`  | `true`  |
 | `defaultNS` | `'common'`  |
 | `defaultLanguage`  | `'en'`  |
 | `ignoreRoutes`  | `['/_next/', '/static/', '/public/', '/api/']`  |
