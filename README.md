@@ -69,7 +69,7 @@ After creating and exporting your `NextI18Next` instance, you need to take the f
 
 1. Create an `_app.js` file inside your `pages` directory, and wrap it with the `NextI18Next.appWithTranslation` higher order component (HOC). You can see this approach in the [examples/simple/pages/_app.js](./examples/simple/pages/_app.js).
 Your app component must either extend `App` if it's a class component or define a `getInitialProps` if it's a functional component [(explanation here)](https://github.com/isaachinman/next-i18next/issues/615#issuecomment-575578375).
-2. Create a `next.config.js` file inside your root directory if you want to use locale subpaths. You can see this approach in the [examples/simple/next.config.js](./examples/simple/next.config.js).
+2. Create a `next.config.js` file inside your root directory if you want to use locale subpaths. You can see this approach in the [examples/simple/next.config.js](./examples/simple/next.config.js) (Next.js 9.5+ required).
 
 Note: You can pass `shallowRender: true` into config options to avoid triggering getInitialProps when `changeLanguage` method is invoked.
 
