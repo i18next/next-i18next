@@ -212,6 +212,40 @@ const { i18n: { language } } = useContext(I18nContext)
 
 _This table contains options which are specific to next-i18next. All other [i18next options](https://www.i18next.com/overview/configuration-options) can be passed in as well._
 
+## Usage with TypeScript
+
+`next-i18next` is written in TypeScript and fully supports it. Types are included in the `next-i18next` package.
+
+To type the [t function](https://www.i18next.com/overview/api), use the `TFunction` type provided by `next-i18next`:
+```tsx
+// this is the same TFunction from 'i18next'
+import { TFunction } from 'next-i18next';
+
+const Heading = ({ t }: { readonly t: TFunction} ) => <h1>{t('heading')}</h1>
+```
+
+Typing a [page](https://nextjs.org/docs/basic-features/pages) with the t function as the singular prop is the same as JS.
+```tsx
+import { TFunction } from 'next-i18next';
+import PropTypes from 'prop-types';
+import { withTranslation } from '../i18n';
+
+const Page = ({ t }: { readonly t: TFunction} ) => <div><h1>{t('heading')}</h1></div>
+
+Page.getInitialProps = async () => ({
+  namespacesRequired: ['common'],
+});
+
+Page.propTypes = {
+  t: PropTypes.func.isRequired,
+};
+
+export default withTranslation('common')(Page);
+```
+
+ As an additional reference, the complete list of exported types can be found [here](./types.d.ts).
+
+
 ## Notes
 
 - [`next export` is not supported.](https://github.com/isaachinman/next-i18next/issues/780)
