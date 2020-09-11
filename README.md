@@ -224,10 +224,12 @@ import { TFunction } from 'next-i18next';
 const Heading = ({ t }: { readonly t: TFunction} ) => <h1>{t('heading')}</h1>
 ```
 
-Typing a [page](https://nextjs.org/docs/basic-features/pages) with the t function as the singular prop is the same as JS.
+Typing a [page](https://nextjs.org/docs/basic-features/pages) with the t function as the singular prop is similar to JS, but with TS instead of `prop-types`.
+TypeScript validates at _compile time_ while [`prop-types`](https://github.com/facebook/prop-types) validates at _runtime_.
+Although `prop-types` can do things that TS can't like value validation, TS alone will suffice in most cases.
+
 ```tsx
 import { TFunction } from 'next-i18next';
-import PropTypes from 'prop-types';
 import { withTranslation } from '../i18n';
 
 const Page = ({ t }: { readonly t: TFunction} ) => <div><h1>{t('heading')}</h1></div>
@@ -235,10 +237,6 @@ const Page = ({ t }: { readonly t: TFunction} ) => <div><h1>{t('heading')}</h1><
 Page.getInitialProps = async () => ({
   namespacesRequired: ['common'],
 });
-
-Page.propTypes = {
-  t: PropTypes.func.isRequired,
-};
 
 export default withTranslation('common')(Page);
 ```
