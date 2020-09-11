@@ -1,5 +1,4 @@
 # next-i18next
-
 [![npm version](https://badge.fury.io/js/next-i18next.svg)](https://badge.fury.io/js/next-i18next)
 [![CircleCI](https://circleci.com/gh/isaachinman/next-i18next.svg?style=shield)](https://circleci.com/gh/isaachinman/next-i18next)
 [![Package Quality](https://npm.packagequality.com/shield/next-i18next.svg)](https://packagequality.com/#?package=next-i18next)
@@ -29,7 +28,6 @@ You need to also have `react` and `next` installed.
 ### 2. Translation content
 
 By default, `next-i18next` expects your translations to be organised as such:
-
 ```
 .
 └── public
@@ -50,15 +48,15 @@ If you want to structure your translations/namespaces in a custom way, you will 
 The default export of `next-i18next` is a class constructor, into which you pass your config options. The resulting class has all the methods you will need to translate your app:
 
 ```jsx
-const NextI18Next = require('next-i18next').default;
-const { localeSubpaths } = require('next/config').default().publicRuntimeConfig;
-const path = require('path');
+const NextI18Next = require('next-i18next').default
+const { localeSubpaths } = require('next/config').default().publicRuntimeConfig
+const path = require('path')
 
 module.exports = new NextI18Next({
   otherLanguages: ['de'],
   localeSubpaths,
-  localePath: path.resolve('./public/static/locales'),
-});
+  localePath: path.resolve('./public/static/locales')
+})
 ```
 
 Note that `localePath` is required, and must be an absolute path.
@@ -69,8 +67,8 @@ It's recommended to export this `NextI18Next` instance from a single file in you
 
 After creating and exporting your `NextI18Next` instance, you need to take the following steps to get things working:
 
-1. Create an `_app.js` file inside your `pages` directory, and wrap it with the `NextI18Next.appWithTranslation` higher order component (HOC). You can see this approach in the [examples/simple/pages/\_app.js](./examples/simple/pages/_app.js).
-   Your app component must either extend `App` if it's a class component or define a `getInitialProps` if it's a functional component [(explanation here)](https://github.com/isaachinman/next-i18next/issues/615#issuecomment-575578375).
+1. Create an `_app.js` file inside your `pages` directory, and wrap it with the `NextI18Next.appWithTranslation` higher order component (HOC). You can see this approach in the [examples/simple/pages/_app.js](./examples/simple/pages/_app.js).
+Your app component must either extend `App` if it's a class component or define a `getInitialProps` if it's a functional component [(explanation here)](https://github.com/isaachinman/next-i18next/issues/615#issuecomment-575578375).
 2. Create a `next.config.js` file inside your root directory if you want to use locale subpaths. You can see this approach in the [examples/simple/next.config.js](./examples/simple/next.config.js) (Next.js 9.5+ required).
 
 Note: You can pass `shallowRender: true` into config options to avoid triggering getInitialProps when `changeLanguage` method is invoked.
@@ -79,15 +77,17 @@ That's it! Your app is ready to go. You can now use the `NextI18Next.withTransla
 
 ```jsx
 // This is our initialised `NextI18Next` instance
-import { withTranslation } from '../i18n';
+import { withTranslation } from '../i18n'
 
 const Footer = ({ t }) => (
   <footer>
-    <p>{t('description')}</p>
+    <p>
+      {t('description')}
+    </p>
   </footer>
-);
+)
 
-export default withTranslation('footer')(Footer);
+export default withTranslation('footer')(Footer)
 ```
 
 ### 4. Declaring namespace dependencies
@@ -114,9 +114,9 @@ This functionality is not enabled by default, and must be passed as an option in
 ```jsx
 new NextI18Next({
   localeSubpaths: {
-    de: 'de',
-  },
-});
+    de: 'de'
+  }
+})
 ```
 
 The `localeSubpaths` object must also be passed into `next.config.js`, via the `nextI18NextRewrites` util, which you can import from `next-i18next/rewrites`.
@@ -126,18 +126,19 @@ The `localeSubpaths` option is a key/value mapping, where keys are the locale it
 Now, all your page routes will be duplicated across all your locale subpaths. Here's an example:
 
 ```jsx
------Config---- -
-  new NextI18Next({
-    localeSubpaths: {
-      fr: 'fr',
-      de: 'german',
-      en: 'eng',
-    },
-  });
+----- Config -----
+new NextI18Next({
+  localeSubpaths: {
+    fr: 'fr',
+    de: 'german',
+    en: 'eng',
+  }
+})
 
------Output---- - myapp.com / fr;
-myapp.com / german;
-myapp.com / eng;
+----- Output -----
+myapp.com/fr
+myapp.com/german
+myapp.com/eng
 ```
 
 When using the localeSubpaths option, our middleware will redirect as needed in the wrapped `getInitialProps` one level above your `_app`, so none of your code will be called.
@@ -154,20 +155,28 @@ To do that, we must import `Link` from your `NextI18Next` instance, **not next/r
 
 ```jsx
 // This is our initialised `NextI18Next` instance
-import { Link } from '../i18n';
+import { Link } from '../i18n'
 
-const SomeLink = () => <Link href="/some-page">This will magically prepend locale subpaths</Link>;
+const SomeLink = () => (
+  <Link href='/some-page'>
+    This will magically prepend locale subpaths
+  </Link>
+)
 ```
 
 We can also navigate imperatively with locale subpaths by importing `Router` from your `NextI18Next` instance. The exported Router shares the same API as the native Next Router. The push, replace, and prefetch functions will automatically prepend locale subpaths.
 
 ```jsx
 // This is our initialised `NextI18Next` instance
-import { Router } from '../i18n';
+import { Router } from '../i18n'
 
 const SomeButton = () => (
-  <button onClick={() => Router.push('/some-page')}>This will magically prepend locale subpaths</button>
-);
+  <button
+    onClick={() => Router.push('/some-page')}
+  >
+    This will magically prepend locale subpaths
+  </button>
+)
 ```
 
 ## Accessing the Current Language
@@ -177,31 +186,29 @@ In many cases, you'll need to know the currently active language. Most of the ti
 If for some reason you need to access the current language and `withTranslation` doesn't suit your needs, you can use the `I18nContext`:
 
 ```jsx
-import { I18nContext } from 'next-i18next';
+import { I18nContext } from 'next-i18next'
 
-const {
-  i18n: { language },
-} = useContext(I18nContext);
+const { i18n: { language } } = useContext(I18nContext)
 ```
 
 ## Options
 
-| Key                         | Default value                                  |
-| --------------------------- | ---------------------------------------------- |
-| `browserLanguageDetection`  | `true`                                         |
-| `defaultNS`                 | `'common'`                                     |
-| `defaultLanguage`           | `'en'`                                         |
-| `ignoreRoutes`              | `['/_next/', '/static/', '/public/', '/api/']` |
-| `otherLanguages` (required) | `[]`                                           |
-| `localeExtension`           | `'json'`                                       |
-| `localePath` (required)     | `'/public/static/locales'`                     |
-| `localeStructure`           | `'{{lng}}/{{ns}}'`                             |
-| `localeSubpaths`            | `{}`                                           |
-| `serverLanguageDetection`   | `true`                                         |
-| `strictMode`                | `true`                                         |
-| `use` (for plugins)         | `[]`                                           |
-| `customDetectors`           | `[]`                                           |
-| `shallowRender`             | `false`                                        |
+| Key  | Default value |
+| ------------- | ------------- |
+| `browserLanguageDetection`  | `true`  |
+| `defaultNS` | `'common'`  |
+| `defaultLanguage`  | `'en'`  |
+| `ignoreRoutes`  | `['/_next/', '/static/', '/public/', '/api/']`  |
+| `otherLanguages` (required) | `[]`  |
+| `localeExtension` | `'json'`  |
+| `localePath` (required) | `'/public/static/locales'`  |
+| `localeStructure` | `'{{lng}}/{{ns}}'`  |
+| `localeSubpaths` | `{}`  |
+| `serverLanguageDetection` | `true`  |
+| `strictMode` | `true`  |
+| `use` (for plugins) | `[]`  |
+| `customDetectors` | `[]`  |
+| `shallowRender` | `false`  |
 
 _This table contains options which are specific to next-i18next. All other [i18next options](https://www.i18next.com/overview/configuration-options) can be passed in as well._
 
@@ -211,6 +218,10 @@ _This table contains options which are specific to next-i18next. All other [i18n
 - [To add a `lang` attribute to your top-level html DOM node, you must create a `_document.js` file.](https://github.com/isaachinman/next-i18next/issues/20#issuecomment-443461652)
 - [Localising `next/head` requires special consideration due to NextJs internals](https://github.com/isaachinman/next-i18next/issues/251#issuecomment-479421852).
 - [How to use multiple namespaces in the same component](https://github.com/isaachinman/next-i18next/issues/762#issuecomment-661348457)
+
+## Usage with TypeScript
+
+`next-i18next` is written in TypeScript and has full support for it. Refer to the usage guide [here](./TYPESCRIPT.md).
 
 ## Contributors
 
@@ -224,7 +235,6 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
 
 ## Supported by BrowserStack
-
 Thanks to [BrowserStack](https://browserstack.com/) for their support of this open-source project.
 
 <img src="https://3fxtqy18kygf3on3bu39kh93-wpengine.netdna-ssl.com/wp-content/themes/browserstack/img/browserstack-logo.svg" width="150">

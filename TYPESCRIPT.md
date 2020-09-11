@@ -1,6 +1,6 @@
 # Usage with TypeScript
 
-`next-i18next` is written in TypeScript and fully supports it. Types are included in the `next-i18next` package.
+`next-i18next` has full support for TypeScript. Types are included with the `next-i18next` package.
 
 ## Usage with components
 
