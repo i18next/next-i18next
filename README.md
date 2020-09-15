@@ -219,6 +219,10 @@ _This table contains options which are specific to next-i18next. All other [i18n
 - [Localising `next/head` requires special consideration due to NextJs internals](https://github.com/isaachinman/next-i18next/issues/251#issuecomment-479421852).
 - [How to use multiple namespaces in the same component](https://github.com/isaachinman/next-i18next/issues/762#issuecomment-661348457)
 
+## Usage with TypeScript
+
+`next-i18next` is written in TypeScript and has full support for it. Refer to the usage guide [here](./TYPESCRIPT.md).
+
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
