@@ -337,7 +337,7 @@ export const appWithTranslation = function (WrappedComponent) {
   }
 
   return hoistNonReactStatics(
-    withRouter(AppWithTranslation), WrappedComponent, { getStaticProps: true, getServerSideProps: true },
+    withRouter(AppWithTranslation), WrappedComponent,
   )
 
 }
