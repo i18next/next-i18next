@@ -45,13 +45,17 @@ export type Trans = (props: TransProps) => any
 export type Link = React.ComponentClass<LinkProps>
 export type Router = SingletonRouter
 export type UseTranslation = typeof useTranslation
-export type I18nContext = typeof I18nContext
 export type AppWithTranslation = <P extends object>(Component: React.ComponentType<P> | React.ElementType<P>) => any
 export type TFunction = I18NextTFunction
 export type I18n = i18n
 export type WithTranslationHocType = typeof withTranslation
 export type WithTranslation = ReactI18nextWithTranslation
 export type InitPromise = Promise<TFunction>
+
+export {
+  I18nContext,
+  withTranslation,
+}
 
 declare class NextI18Next {
   constructor(config: InitConfig);

@@ -109,7 +109,7 @@
     "i18next-http-middleware": "^3.0.2",
     "path-match": "^1.2.4",
     "prop-types": "^15.6.2",
-    "react-i18next": "^11.7.0",
+    "react-i18next": "^11.7.3",
     "url": "^0.11.0"
   },
   "peerDependencies": {
