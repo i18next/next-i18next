@@ -34,11 +34,19 @@ export const createConfig = (userConfig) => {
     localeStructure,
   } = combinedConfig
 
+  let {
+    serverLocalePath,
+    clientLocalePath,
+  } = combinedConfig
+
   if (isServer()) {
 
     const fs = eval("require('fs')")
     const path = require('path')
-    let serverLocalePath = localePath
+
+    if (!serverLocalePath) {
+      serverLocalePath = localePath
+    }
 
     /*
       Validate defaultNS
@@ -46,7 +54,7 @@ export const createConfig = (userConfig) => {
     */
     if (typeof combinedConfig.defaultNS === 'string') {
       const defaultFile = `/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`
-      const defaultNSPath = path.join(localePath, defaultFile)
+      const defaultNSPath = path.join(serverLocalePath, defaultFile)
       const defaultNSExists = fs.existsSync(defaultNSPath)
       if (!defaultNSExists) {
 
@@ -85,7 +93,9 @@ export const createConfig = (userConfig) => {
 
   } else {
 
-    let clientLocalePath = localePath
+    if (!clientLocalePath) {
+      clientLocalePath = localePath
+    }
     
     /*
       Remove public prefix from client site config
