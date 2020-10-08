@@ -14,7 +14,7 @@
   "devDependencies": {},
   "dependencies": {
     "i18next": "^14.0.1",
-    "next": "^9.5.0",
+    "next": "^9.5.4",
     "next-i18next": "link:../../"
   }
 }
