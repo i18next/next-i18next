@@ -1,5 +1,6 @@
 import { defaultConfig } from './default-config'
 import { consoleMessage, isServer } from '../utils'
+import { isCIMode } from '../utils/is-cimode'
 
 const deepMergeObjects = ['backend', 'detection']
 const dedupe = (names: string[]) => names.filter((v,i) => names.indexOf(v) === i)
@@ -33,6 +34,11 @@ export const createConfig = (userConfig) => {
     localePath,
     localeStructure,
   } = combinedConfig
+
+
+  if (isCIMode(defaultLanguage)) {
+    return combinedConfig
+  }
 
   if (isServer()) {
 
