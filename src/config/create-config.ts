@@ -1,6 +1,5 @@
 import { defaultConfig } from './default-config'
-import { consoleMessage, isServer } from '../utils'
-import { isCIMode } from '../utils/is-cimode'
+import { consoleMessage, isServer, isCIMode } from '../utils'
 
 const deepMergeObjects = ['backend', 'detection']
 const dedupe = (names: string[]) => names.filter((v,i) => names.indexOf(v) === i)

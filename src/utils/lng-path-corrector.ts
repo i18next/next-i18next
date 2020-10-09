@@ -6,8 +6,8 @@ import {
   subpathIsPresent,
   subpathIsRequired,
   subpathFromLng,
+  isCIMode,
 } from './index'
-import { isCIMode } from './is-cimode'
 
 const parseAs = (originalAs, href) => {
   const asType = typeof originalAs
