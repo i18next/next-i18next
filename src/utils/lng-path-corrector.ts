@@ -6,6 +6,7 @@ import {
   subpathIsPresent,
   subpathIsRequired,
   subpathFromLng,
+  isCIMode,
 } from './index'
 
 const parseAs = (originalAs, href) => {
@@ -43,7 +44,7 @@ export const lngPathCorrector = (config: Config, currentRoute, currentLanguage) 
   const { allLanguages, localeSubpaths } = config
   const { as: originalAs, href: originalHref } = currentRoute
 
-  if (!allLanguages.includes(currentLanguage)) {
+  if (!isCIMode(currentLanguage) && !allLanguages.includes(currentLanguage)) {
     throw new Error('Invalid configuration: Current language is not included in all languages array')
   }
 

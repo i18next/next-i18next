@@ -1,5 +1,5 @@
 import { defaultConfig } from './default-config'
-import { consoleMessage, isServer } from '../utils'
+import { consoleMessage, isServer, isCIMode } from '../utils'
 
 const deepMergeObjects = ['backend', 'detection']
 const dedupe = (names: string[]) => names.filter((v,i) => names.indexOf(v) === i)
@@ -33,6 +33,16 @@ export const createConfig = (userConfig) => {
     localePath,
     localeStructure,
   } = combinedConfig
+
+
+
+  /** 
+   * Skips translation file resolution while in cimode
+   * https://github.com/isaachinman/next-i18next/pull/851#discussion_r503113620
+  */
+  if (isCIMode(defaultLanguage)) {
+    return combinedConfig
+  }
 
   if (isServer()) {
 
