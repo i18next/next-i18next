@@ -118,7 +118,7 @@ export const createConfig = (userConfig) => {
   /*
     Set fallback language to defaultLanguage in production
   */
-  if (!userConfig.fallbackLng) {
+  if (userConfig.fallbackLng === undefined) {
     combinedConfig.fallbackLng = process.env.NODE_ENV === 'production'
       ? combinedConfig.defaultLanguage
       : false
