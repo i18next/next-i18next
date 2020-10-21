@@ -39,7 +39,7 @@ export const createConfig = (userConfig) => {
   } = combinedConfig
 
   /*
-    Set server side preload (languages)
+    preload (languages)
   */
   combinedConfig.preload = allLanguages
 
