@@ -32,7 +32,11 @@ export type InitConfig = {
 export type Config = {
   fallbackLng: boolean;
   allLanguages: string[];
+  // https://github.com/i18next/i18next/blob/master/CHANGELOG.md#1950
+  supportedLngs: string[];
+  // temporal backwards compatibility WHITELIST REMOVAL
   whitelist: string[];
+  // end temporal backwards compatibility WHITELIST REMOVAL
   preload: string[];
 } & InitConfig
 

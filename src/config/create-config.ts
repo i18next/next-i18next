@@ -24,7 +24,11 @@ export const createConfig = (userConfig) => {
   */
   combinedConfig.allLanguages = dedupe(combinedConfig.otherLanguages
     .concat([combinedConfig.defaultLanguage]))
+  // https://github.com/i18next/i18next/blob/master/CHANGELOG.md#1950
+  combinedConfig.supportedLngs = combinedConfig.allLanguages
+  // temporal backwards compatibility WHITELIST REMOVAL
   combinedConfig.whitelist = combinedConfig.allLanguages
+  // end temporal backwards compatibility WHITELIST REMOVAL
 
   const {
     allLanguages,
@@ -33,6 +37,11 @@ export const createConfig = (userConfig) => {
     localePath,
     localeStructure,
   } = combinedConfig
+
+  /*
+    Set server side preload (languages)
+  */
+  combinedConfig.preload = allLanguages
 
   /** 
    * Skips translation file resolution while in cimode
@@ -84,9 +93,8 @@ export const createConfig = (userConfig) => {
     }
 
     /*
-      Set server side preload (languages and namespaces)
+      Set server side preload (namespaces)
     */
-    combinedConfig.preload = allLanguages
     if (!combinedConfig.ns) {
       const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace(`.${localeExtension}`, ''))
       combinedConfig.ns = getAllNamespaces(path.resolve(process.cwd(), `${serverLocalePath}/${defaultLanguage}`))
