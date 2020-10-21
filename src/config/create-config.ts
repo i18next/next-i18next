@@ -42,7 +42,7 @@ export const createConfig = (userConfig) => {
     return combinedConfig
   }
 
-  const hasCustomBackend = combinedConfig.use && combinedConfig.use.find((b) => b.type === 'backend')
+  const hasCustomBackend = userConfig.use && userConfig.use.find((b) => b.type === 'backend')
   if (isServer() && !hasCustomBackend) {
 
     const fs = eval("require('fs')")
