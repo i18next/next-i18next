@@ -38,10 +38,12 @@ export const createConfig = (userConfig) => {
     localeStructure,
   } = combinedConfig
 
-  /*
-    preload (languages)
-  */
-  combinedConfig.preload = allLanguages
+  if (isServer()) {
+    /*
+      On Server side preload (languages)
+    */
+    combinedConfig.preload = allLanguages
+  }
 
   /** 
    * Skips translation file resolution while in cimode
