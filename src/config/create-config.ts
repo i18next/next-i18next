@@ -34,8 +34,6 @@ export const createConfig = (userConfig) => {
     localeStructure,
   } = combinedConfig
 
-
-
   /** 
    * Skips translation file resolution while in cimode
    * https://github.com/isaachinman/next-i18next/pull/851#discussion_r503113620
@@ -44,7 +42,8 @@ export const createConfig = (userConfig) => {
     return combinedConfig
   }
 
-  if (isServer()) {
+  const hasCustomBackend = combinedConfig.use && combinedConfig.use.find((b) => b.type === 'backend')
+  if (isServer() && !hasCustomBackend) {
 
     const fs = eval("require('fs')")
     const path = require('path')
