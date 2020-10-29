@@ -24,7 +24,11 @@ export const createConfig = (userConfig) => {
   */
   combinedConfig.allLanguages = dedupe(combinedConfig.otherLanguages
     .concat([combinedConfig.defaultLanguage]))
+  // https://github.com/i18next/i18next/blob/master/CHANGELOG.md#1950
+  combinedConfig.supportedLngs = combinedConfig.allLanguages
+  // temporal backwards compatibility WHITELIST REMOVAL
   combinedConfig.whitelist = combinedConfig.allLanguages
+  // end temporal backwards compatibility WHITELIST REMOVAL
 
   const {
     allLanguages,
@@ -33,8 +37,6 @@ export const createConfig = (userConfig) => {
     localePath,
     localeStructure,
   } = combinedConfig
-
-
 
   /** 
    * Skips translation file resolution while in cimode
@@ -45,54 +47,59 @@ export const createConfig = (userConfig) => {
   }
 
   if (isServer()) {
-
-    const fs = eval("require('fs')")
-    const path = require('path')
-    let serverLocalePath = localePath
-
     /*
-      Validate defaultNS
-      https://github.com/isaachinman/next-i18next/issues/358
-    */
-    if (typeof combinedConfig.defaultNS === 'string') {
-      const defaultFile = `/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`
-      const defaultNSPath = path.join(localePath, defaultFile)
-      const defaultNSExists = fs.existsSync(defaultNSPath)
-      if (!defaultNSExists) {
-
-        /*
-          If defaultNS doesn't exist, try to fall back to the deprecated static folder
-          https://github.com/isaachinman/next-i18next/issues/523
-        */
-        const staticDirPath = path.resolve(process.cwd(), STATIC_LOCALE_PATH, defaultFile)
-        const staticDirExists = fs.existsSync(staticDirPath)
-
-        if (staticDirExists) {
-          consoleMessage('warn', 'next-i18next: Falling back to /static folder, deprecated in next@9.1.*', combinedConfig)
-          serverLocalePath = STATIC_LOCALE_PATH
-        } else if (process.env.NODE_ENV !== 'production') {
-          throw new Error(`Default namespace not found at ${defaultNSPath}`)
-        }
-      }
-    }
-
-    /*
-      Set server side backend
-    */
-    combinedConfig.backend = {
-      loadPath: path.resolve(process.cwd(), `${serverLocalePath}/${localeStructure}.${localeExtension}`),
-      addPath: path.resolve(process.cwd(), `${serverLocalePath}/${localeStructure}.missing.${localeExtension}`),
-    }
-
-    /*
-      Set server side preload (languages and namespaces)
+      On Server side preload (languages)
     */
     combinedConfig.preload = allLanguages
-    if (!combinedConfig.ns) {
-      const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace(`.${localeExtension}`, ''))
-      combinedConfig.ns = getAllNamespaces(path.resolve(process.cwd(), `${serverLocalePath}/${defaultLanguage}`))
-    }
 
+    const hasCustomBackend = userConfig.use && userConfig.use.find((b) => b.type === 'backend')
+    if (!hasCustomBackend) {
+      const fs = eval("require('fs')")
+      const path = require('path')
+      let serverLocalePath = localePath
+  
+      /*
+        Validate defaultNS
+        https://github.com/isaachinman/next-i18next/issues/358
+      */
+      if (typeof combinedConfig.defaultNS === 'string') {
+        const defaultFile = `/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`
+        const defaultNSPath = path.join(localePath, defaultFile)
+        const defaultNSExists = fs.existsSync(defaultNSPath)
+        if (!defaultNSExists) {
+  
+          /*
+            If defaultNS doesn't exist, try to fall back to the deprecated static folder
+            https://github.com/isaachinman/next-i18next/issues/523
+          */
+          const staticDirPath = path.resolve(process.cwd(), STATIC_LOCALE_PATH, defaultFile)
+          const staticDirExists = fs.existsSync(staticDirPath)
+  
+          if (staticDirExists) {
+            consoleMessage('warn', 'next-i18next: Falling back to /static folder, deprecated in next@9.1.*', combinedConfig)
+            serverLocalePath = STATIC_LOCALE_PATH
+          } else if (process.env.NODE_ENV !== 'production') {
+            throw new Error(`Default namespace not found at ${defaultNSPath}`)
+          }
+        }
+      }
+  
+      /*
+        Set server side backend
+      */
+      combinedConfig.backend = {
+        loadPath: path.resolve(process.cwd(), `${serverLocalePath}/${localeStructure}.${localeExtension}`),
+        addPath: path.resolve(process.cwd(), `${serverLocalePath}/${localeStructure}.missing.${localeExtension}`),
+      }
+  
+      /*
+        Set server side preload (namespaces)
+      */
+      if (!combinedConfig.ns) {
+        const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace(`.${localeExtension}`, ''))
+        combinedConfig.ns = getAllNamespaces(path.resolve(process.cwd(), `${serverLocalePath}/${defaultLanguage}`))
+      }
+    }
   } else {
 
     let clientLocalePath = localePath
