@@ -17,6 +17,7 @@ interface Props {
 interface WrappedComponentProps {
   pageProps: {
     namespacesRequired?: string[];
+    lang?: string;
   };
 }
 
@@ -101,12 +102,20 @@ export const appWithTranslation = function (WrappedComponent) {
         )
       }
 
+      /* 
+        Load language for specific page if set in pageProps 
+      */
+      const pageLanguage = wrappedComponentProps.pageProps.lang
+
       /*
         Step 1: Determine initial language
       */
       if (req && req.i18n) {
 
         initialLanguage = lngFromReq(req)
+        if (pageLanguage) {
+          initialLanguage = pageLanguage
+        }
 
         /*
           Perform a lang change in case we're not on the right lang
@@ -115,6 +124,14 @@ export const appWithTranslation = function (WrappedComponent) {
 
       } else if (Array.isArray(i18n.languages) && i18n.languages.length > 0) {
         initialLanguage = i18n.language
+
+        /*
+          Perform a lang change in case the page language is different
+        */
+        if (pageLanguage && initialLanguage !== pageLanguage) {
+          initialLanguage = pageLanguage
+          await i18n.changeLanguage(initialLanguage)
+        }
       }
 
       /*
