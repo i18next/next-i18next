@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { version } from 'next-i18next/package.json'
-import { withTranslation } from '../i18n'
+import { withTranslation } from 'next-i18next'
 
 const Footer = ({ t }) => (
   <footer>

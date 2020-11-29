@@ -1,5 +1,7 @@
-import PropTypes from 'prop-types'
-import { withTranslation, Link } from '../i18n'
+import Link from 'next/link'
+import { withTranslation, serverSideTranslations } from 'next-i18next'
+import nextI18NextConfig from '../next-i18next.config'
+
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
@@ -19,12 +21,10 @@ const SecondPage = ({ t }) => (
   </>
 )
 
-SecondPage.getInitialProps = async () => ({
-  namespacesRequired: ['second-page', 'footer'],
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, nextI18NextConfig, ['second-page', 'footer']),
+  }
 })
-
-SecondPage.propTypes = {
-  t: PropTypes.func.isRequired,
-}
 
 export default withTranslation('second-page')(SecondPage)

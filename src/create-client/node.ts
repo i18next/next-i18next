@@ -1,22 +1,17 @@
 import i18n from 'i18next'
 import i18nextFSBackend from 'i18next-fs-backend/cjs'
-import i18nextMiddleware from 'i18next-http-middleware/cjs'
 
 import { InitPromise } from '../../types'
 
 export default (config) => {
+  const instance = i18n.createInstance(config)
   let initPromise: InitPromise
 
-  if (!i18n.isInitialized) {
-    i18n.use(i18nextFSBackend)
-    if (config.serverLanguageDetection) {
-      const serverDetectors = new i18nextMiddleware.LanguageDetector()
-      config.customDetectors.forEach(detector => serverDetectors.addDetector(detector))
-      i18n.use(serverDetectors)
-    }
+  if (!instance.isInitialized) {
+    instance.use(i18nextFSBackend)
 
-    config.use.forEach(x => i18n.use(x))
-    initPromise = i18n.init(config)
+    config.use.forEach(x => instance.use(x))
+    initPromise = instance.init(config)
   }
-  return { i18n, initPromise }
+  return { i18n: instance, initPromise }
 }

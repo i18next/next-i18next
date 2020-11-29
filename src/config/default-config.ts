@@ -26,12 +26,6 @@ export const defaultConfig = {
   serverLanguageDetection: true,
   ignoreRoutes: ['/_next/', '/static/', '/public/', '/api/'],
   customDetectors: [],
-  detection: {
-    caches: ['cookie'],
-    cookieSameSite: 'strict',
-    lookupCookie: 'next-i18next',
-    order: ['cookie', 'header', 'querystring'],
-  },
   react: {
     wait: true,
     useSuspense: false,
