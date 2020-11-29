@@ -40,7 +40,7 @@ export type Config = {
   preload: string[];
 } & InitConfig
 
-export interface NextI18NextInternals {
+export type NextI18NextInternals = {
   config: Config;
   i18n: I18n;
 }
@@ -55,6 +55,14 @@ export type I18n = i18n
 export type WithTranslationHocType = typeof withTranslation
 export type WithTranslation = ReactI18nextWithTranslation
 export type InitPromise = Promise<TFunction>
+
+export type SSRConfig = {
+  _nextI18Next: {
+    initialI18nStore: any;
+    initialLocale: string;
+    userConfig: InitConfig;
+  };
+}
 
 export {
   I18nContext,

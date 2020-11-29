@@ -1,6 +1,6 @@
-import path from 'path'
+const path = require('path')
 
-export default {
+module.exports = {
   defaultLanguage: 'en',
   otherLanguages: ['de'],
   localePath: path.resolve('./public/static/locales')
