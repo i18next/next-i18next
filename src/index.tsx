@@ -1,4 +1,5 @@
 import React from 'react'
+import hoistNonReactStatics from 'hoist-non-react-statics'
 import { I18nextProvider } from 'react-i18next'
 
 import { createConfig } from './config/create-config'
@@ -11,8 +12,8 @@ type AppProps = {
   pageProps: SSRConfig;
 }
 
-export const appWithTranslation = (WrappedComponent: React.ComponentType) =>
-  (props: AppProps) => {
+export const appWithTranslation = (WrappedComponent: React.ComponentType) => {
+  const AppWithTranslation = (props: AppProps) => {
     let i18n = null
     let locale = null
 
@@ -43,3 +44,6 @@ export const appWithTranslation = (WrappedComponent: React.ComponentType) =>
       </I18nextProvider>
     )
   }
+
+  return hoistNonReactStatics(AppWithTranslation, WrappedComponent)
+}
