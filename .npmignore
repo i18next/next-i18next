@@ -32,7 +32,6 @@ tsconfig.json
 .circleci
 .all-contributorsrc
 greenkeeper.json
-jest-puppeteer.config.js
 .github
 Procfile
 *.md

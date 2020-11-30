@@ -1,2 +1,2 @@
-export { consoleMessage } from './console-message'
-export { isServer } from './is-server'
+export { consoleMessage } from './consoleMessage'
+export { isServer } from './isServer'

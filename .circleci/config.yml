@@ -3,17 +3,14 @@ commands:
   build-and-test:
     steps:
       - checkout
-      - run:
-          name: Install rsync
-          command: sudo apt install rsync
       - restore_cache:
           name: Restore cache (main)
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-{{ checksum "yarn.lock" }}
       - restore_cache:
           name: Restore cache (example)
           keys:
-            - v1-dependencies-{{ checksum "examples/simple/package.json" }}
+            - v1-dependencies-{{ checksum "examples/simple/yarn.lock" }}
       - run:
           name: Install dependencies (main)
           command: yarn install
@@ -27,12 +24,12 @@ commands:
           name: Save cache (main)
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
       - save_cache:
           name: Save cache (example)
           paths:
             - examples/simple/node_modules
-          key: v1-dependencies-{{ checksum "examples/simple/package.json" }}
+          key: v1-dependencies-{{ checksum "examples/simple/yarn.lock" }}
       - run:
           name: Lint
           command: yarn lint

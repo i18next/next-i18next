@@ -1,23 +1,19 @@
-import { defaultConfig } from './default-config'
+import { defaultConfig } from './defaultConfig'
 import { consoleMessage, isServer } from '../utils'
+import { Config } from '../../types'
 
 const deepMergeObjects = ['backend', 'detection']
 const dedupe = (names: string[]) => names.filter((v,i) => names.indexOf(v) === i)
 const STATIC_LOCALE_PATH = 'static/locales'
 
-export const createConfig = (userConfig) => {
-
-  if (typeof userConfig.localeSubpaths === 'string') {
-    throw new Error('The localeSubpaths option has been changed to an object. Please refer to documentation.')
-  }
-
+export const createConfig = (userConfig: Config): Config => {
   /*
     Initial merge of default and user-provided config
   */
   const combinedConfig = {
     ...defaultConfig,
     ...userConfig,
-  }
+  } as Config
 
   /*
     Sensible defaults to prevent user duplication
@@ -43,7 +39,7 @@ export const createConfig = (userConfig) => {
    * https://github.com/isaachinman/next-i18next/pull/851#discussion_r503113620
   */
   if (defaultLanguage === 'cimode') {
-    return combinedConfig
+    return combinedConfig as Config
   }
 
   if (isServer()) {
@@ -126,9 +122,9 @@ export const createConfig = (userConfig) => {
     Set fallback language to defaultLanguage in production
   */
   if (!userConfig.fallbackLng) {
-    combinedConfig.fallbackLng = process.env.NODE_ENV === 'production'
+    combinedConfig.fallbackLng = (process.env.NODE_ENV === 'production'
       ? combinedConfig.defaultLanguage
-      : false
+      : false) as any
   }
 
   /*

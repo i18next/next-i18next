@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
-import { createConfig } from './config/create-config'
-import createClient from './create-client'
+import { createConfig } from './config/createConfig'
+import createClient from './createClient'
 import { Config, SSRConfig } from '../types'
 
 const DEFAULT_CONFIG_PATH = './next-i18next.config.js'

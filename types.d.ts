@@ -22,13 +22,13 @@ export type InitConfig = {
   localePath?: string;
   localeStructure?: string;
   otherLanguages: string[];
-  localeSubpaths?: Record<string, string>;
   use?: any[];
   customDetectors?: any[];
   shallowRender?: boolean;
 } & InitOptions
 
 export type Config = {
+  errorStackTraceLimit: number
   fallbackLng: boolean;
   allLanguages: string[];
   // https://github.com/i18next/i18next/blob/master/CHANGELOG.md#1950
@@ -54,12 +54,16 @@ export type I18n = i18n
 export type WithTranslationHocType = typeof withTranslation
 export type WithTranslation = ReactI18nextWithTranslation
 export type InitPromise = Promise<TFunction>
+export type CreateClientReturn = {
+  i18n: I18n;
+  initPromise: InitPromise;
+}
 
 export type SSRConfig = {
   _nextI18Next: {
     initialI18nStore: any;
     initialLocale: string;
-    userConfig: InitConfig;
+    userConfig: Config;
   };
 }
 

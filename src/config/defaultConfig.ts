@@ -14,13 +14,12 @@ export const defaultConfig = {
   localePath: LOCALE_PATH,
   localeStructure: LOCALE_STRUCTURE,
   localeExtension: LOCALE_EXTENSION,
-  localeSubpaths: {},
   use: [],
   defaultNS: DEFAULT_NAMESPACE,
   interpolation: {
     escapeValue: false,
     formatSeparator: ',',
-    format: (value, format) => (format === 'uppercase' ? value.toUpperCase() : value),
+    format: (value: string, format: string): string => (format === 'uppercase' ? value.toUpperCase() : value),
   },
   browserLanguageDetection: true,
   serverLanguageDetection: true,
@@ -33,7 +32,7 @@ export const defaultConfig = {
   strictMode: true,
   errorStackTraceLimit: 0,
   shallowRender: false,
-  get initImmediate() {
+  get initImmediate(): boolean {
     return !isServer()
   }
 }
