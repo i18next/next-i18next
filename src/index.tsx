@@ -17,7 +17,7 @@ export const appWithTranslation = (WrappedComponent: React.ComponentType) => {
     let i18n = null
     let locale = null
 
-    if (props.pageProps._nextI18Next) {
+    if (props?.pageProps?._nextI18Next) {
       const {
         initialI18nStore,
         initialLocale,

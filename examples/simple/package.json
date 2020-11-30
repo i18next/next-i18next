@@ -11,5 +11,8 @@
   "dependencies": {
     "next": "^10.0.0",
     "next-i18next": "link:../../"
+  },
+  "devDependencies": {
+    "prop-types": "^15.7.2"
   }
 }
