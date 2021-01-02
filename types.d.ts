@@ -16,12 +16,12 @@ export type InitConfig = {
   browserLanguageDetection?: boolean;
   serverLanguageDetection?: boolean;
   strictMode?: boolean;
-  defaultLanguage: string;
+  defaultLocale: string;
   ignoreRoutes?: string[];
   localeExtension?: string;
   localePath?: string;
   localeStructure?: string;
-  otherLanguages: string[];
+  locales: string[];
   use?: any[];
   customDetectors?: any[];
   shallowRender?: boolean;
@@ -30,8 +30,6 @@ export type InitConfig = {
 export type Config = {
   errorStackTraceLimit: number
   fallbackLng: boolean;
-  allLanguages: string[];
-  // https://github.com/i18next/i18next/blob/master/CHANGELOG.md#1950
   supportedLngs: string[];
   // temporal backwards compatibility WHITELIST REMOVAL
   whitelist: string[];

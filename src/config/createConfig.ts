@@ -18,17 +18,13 @@ export const createConfig = (userConfig: Config): Config => {
   /*
     Sensible defaults to prevent user duplication
   */
-  combinedConfig.allLanguages = dedupe(combinedConfig.otherLanguages
-    .concat([combinedConfig.defaultLanguage]))
-  // https://github.com/i18next/i18next/blob/master/CHANGELOG.md#1950
-  combinedConfig.supportedLngs = combinedConfig.allLanguages
-  // temporal backwards compatibility WHITELIST REMOVAL
-  combinedConfig.whitelist = combinedConfig.allLanguages
-  // end temporal backwards compatibility WHITELIST REMOVAL
+  combinedConfig.locales = dedupe(combinedConfig.locales.concat([combinedConfig.defaultLocale]))
+  combinedConfig.supportedLngs = combinedConfig.locales
+  combinedConfig.whitelist = combinedConfig.locales
 
   const {
-    allLanguages,
-    defaultLanguage,
+    locales,
+    defaultLocale,
     localeExtension,
     localePath,
     localeStructure,
@@ -38,7 +34,7 @@ export const createConfig = (userConfig: Config): Config => {
    * Skips translation file resolution while in cimode
    * https://github.com/isaachinman/next-i18next/pull/851#discussion_r503113620
   */
-  if (defaultLanguage === 'cimode') {
+  if (defaultLocale === 'cimode') {
     return combinedConfig as Config
   }
 
@@ -46,7 +42,7 @@ export const createConfig = (userConfig: Config): Config => {
     /*
       On Server side preload (languages)
     */
-    combinedConfig.preload = allLanguages
+    combinedConfig.preload = locales
 
     const hasCustomBackend = userConfig.use && userConfig.use.find((b) => b.type === 'backend')
     if (!hasCustomBackend) {
@@ -59,7 +55,7 @@ export const createConfig = (userConfig: Config): Config => {
         https://github.com/isaachinman/next-i18next/issues/358
       */
       if (typeof combinedConfig.defaultNS === 'string') {
-        const defaultFile = `/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`
+        const defaultFile = `/${defaultLocale}/${combinedConfig.defaultNS}.${localeExtension}`
         const defaultNSPath = path.join(localePath, defaultFile)
         const defaultNSExists = fs.existsSync(defaultNSPath)
         if (!defaultNSExists) {
@@ -93,7 +89,7 @@ export const createConfig = (userConfig: Config): Config => {
       */
       if (!combinedConfig.ns) {
         const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace(`.${localeExtension}`, ''))
-        combinedConfig.ns = getAllNamespaces(path.resolve(process.cwd(), `${serverLocalePath}/${defaultLanguage}`))
+        combinedConfig.ns = getAllNamespaces(path.resolve(process.cwd(), `${serverLocalePath}/${defaultLocale}`))
       }
     }
   } else {
@@ -119,11 +115,11 @@ export const createConfig = (userConfig: Config): Config => {
   }
 
   /*
-    Set fallback language to defaultLanguage in production
+    Set fallback language to defaultLocale in production
   */
   if (!userConfig.fallbackLng) {
     combinedConfig.fallbackLng = (process.env.NODE_ENV === 'production'
-      ? combinedConfig.defaultLanguage
+      ? combinedConfig.defaultLocale
       : false) as any
   }
 
