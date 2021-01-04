@@ -22,10 +22,6 @@ export const defaultConfig = {
     formatSeparator: ',',
     format: (value: string, format: string): string => (format === 'uppercase' ? value.toUpperCase() : value),
   },
-  browserLanguageDetection: true,
-  serverLanguageDetection: true,
-  ignoreRoutes: ['/_next/', '/static/', '/public/', '/api/'],
-  customDetectors: [],
   react: {
     wait: true,
     useSuspense: false,
