@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 import { withTranslation } from 'next-i18next'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { serverSideTranslations } from 'next-i18next'
 
 import Header from '../components/Header'
 import Footer from '../components/Footer'
