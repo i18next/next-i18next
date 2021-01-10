@@ -38,7 +38,6 @@ export type SSRConfig = {
   };
 }
 export type UseTranslation = typeof useTranslation
-export type AppWithTranslation = <P extends unknown>(Component: React.ComponentType<P> | React.ElementType<P>) => any
 export type InitPromise = Promise<TFunction>
 export type TFunction = I18NextTFunction
 export type I18n = i18n
@@ -47,7 +46,7 @@ export type CreateClientReturn = {
   initPromise: InitPromise;
 }
 
-declare function appWithTranslation<P extends object>(
+declare function appWithTranslation<P extends unknown>(
   Component: React.ComponentType<P> | React.ElementType<P>
 ): any
 declare function serverSideTranslations(
