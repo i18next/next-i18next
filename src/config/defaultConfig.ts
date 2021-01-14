@@ -3,7 +3,7 @@ import { isServer } from '../utils'
 const DEFAULT_LOCALE = 'en'
 const LOCALES = ['en']
 const DEFAULT_NAMESPACE = 'common'
-const LOCALE_PATH = '/public/static/locales'
+const LOCALE_PATH = './public/static/locales'
 const LOCALE_STRUCTURE = '{{lng}}/{{ns}}'
 const LOCALE_EXTENSION = 'json'
 

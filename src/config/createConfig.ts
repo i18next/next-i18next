@@ -3,8 +3,7 @@ import { consoleMessage, isServer } from '../utils'
 import { Config } from '../../types'
 
 const deepMergeObjects = ['backend', 'detection']
-const dedupe = (names: string[]) => names.filter((v,i) => names.indexOf(v) === i)
-const STATIC_LOCALE_PATH = 'static/locales'
+const STATIC_LOCALE_PATH = 'public/static/locales'
 
 export const createConfig = (userConfig: Config): Config => {
   /*
@@ -15,16 +14,8 @@ export const createConfig = (userConfig: Config): Config => {
     ...userConfig,
   } as Config
 
-  /*
-    Sensible defaults to prevent user duplication
-  */
-  combinedConfig.locales = dedupe(combinedConfig.locales.concat([combinedConfig.defaultLocale]))
-  combinedConfig.supportedLngs = combinedConfig.locales
-  combinedConfig.whitelist = combinedConfig.locales
-
   const {
-    locales,
-    defaultLocale,
+    lng,
     localeExtension,
     localePath,
     localeStructure,
@@ -34,17 +25,15 @@ export const createConfig = (userConfig: Config): Config => {
    * Skips translation file resolution while in cimode
    * https://github.com/isaachinman/next-i18next/pull/851#discussion_r503113620
   */
-  if (defaultLocale === 'cimode') {
+  if (lng === 'cimode') {
     return combinedConfig as Config
   }
 
   if (isServer()) {
-    /*
-      On Server side preload (languages)
-    */
-    combinedConfig.preload = locales
+    combinedConfig.preload = [lng]
 
     const hasCustomBackend = userConfig.use && userConfig.use.find((b) => b.type === 'backend')
+
     if (!hasCustomBackend) {
       const fs = eval("require('fs')")
       const path = require('path')
@@ -55,7 +44,7 @@ export const createConfig = (userConfig: Config): Config => {
         https://github.com/isaachinman/next-i18next/issues/358
       */
       if (typeof combinedConfig.defaultNS === 'string') {
-        const defaultFile = `/${defaultLocale}/${combinedConfig.defaultNS}.${localeExtension}`
+        const defaultFile = `/${lng}/${combinedConfig.defaultNS}.${localeExtension}`
         const defaultNSPath = path.join(localePath, defaultFile)
         const defaultNSExists = fs.existsSync(defaultNSPath)
         if (!defaultNSExists) {
@@ -75,7 +64,7 @@ export const createConfig = (userConfig: Config): Config => {
           }
         }
       }
-  
+
       /*
         Set server side backend
       */
@@ -83,13 +72,13 @@ export const createConfig = (userConfig: Config): Config => {
         loadPath: path.resolve(process.cwd(), `${serverLocalePath}/${localeStructure}.${localeExtension}`),
         addPath: path.resolve(process.cwd(), `${serverLocalePath}/${localeStructure}.missing.${localeExtension}`),
       }
-  
+
       /*
         Set server side preload (namespaces)
       */
       if (!combinedConfig.ns) {
         const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace(`.${localeExtension}`, ''))
-        combinedConfig.ns = getAllNamespaces(path.resolve(process.cwd(), `${serverLocalePath}/${defaultLocale}`))
+        combinedConfig.ns = getAllNamespaces(path.resolve(process.cwd(), `${serverLocalePath}/${lng}`))
       }
     }
   } else {
@@ -112,15 +101,6 @@ export const createConfig = (userConfig: Config): Config => {
     }
 
     combinedConfig.ns = [combinedConfig.defaultNS]
-  }
-
-  /*
-    Set fallback language to defaultLocale in production
-  */
-  if (!userConfig.fallbackLng) {
-    combinedConfig.fallbackLng = (process.env.NODE_ENV === 'production'
-      ? combinedConfig.defaultLocale
-      : false) as any
   }
 
   /*

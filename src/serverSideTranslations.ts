@@ -18,7 +18,10 @@ export const serverSideTranslations = async (
     userConfig = await import(path.resolve(DEFAULT_CONFIG_PATH))
   }
 
-  const config = createConfig(userConfig)
+  const config = createConfig({
+    ...userConfig,
+    lng: initialLocale,
+  })
   const { i18n, initPromise } = createClient({
     ...config,
     lng: initialLocale,

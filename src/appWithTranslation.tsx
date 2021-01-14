@@ -27,7 +27,10 @@ export const appWithTranslation = (WrappedComponent: React.ComponentType): React
       locale = initialLocale;
   
       ({ i18n } = createClient({
-        ...createConfig(userConfig),
+        ...createConfig({
+          ...userConfig,
+          lng: initialLocale,
+        }),
         lng: initialLocale,
         resources: initialI18nStore,
       }))
