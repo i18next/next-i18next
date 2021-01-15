@@ -15,6 +15,120 @@ While `next-i18next` uses [i18next](https://www.i18next.com/) and [react-i18next
 
 A live demo is [available here](http://next-i18next.com/). This demo app is the [simple example](./examples/simple/) - nothing more, nothing less.
 
+## Setup
+
+### 1. Installation
+
+```jsx
+yarn add next-i18next
+```
+
+You need to also have `react` and `next` installed.
+
+### 2. Translation content
+
+By default, `next-i18next` expects your translations to be organised as such:
+```
+.
+└── public
+    └── static
+        └── locales
+            ├── en
+            |   └── common.json
+            └── de
+                └── common.json
+```
+
+This structure can also be seen in the [simple example](./examples/simple).
+
+If you want to structure your translations/namespaces in a custom way, you will need to pass modified `localePath` and `localeStructure` values into the initialisation config.
+
+### 3. Project setup
+
+First, you'll need to configure your internationalised routing [via NextJs directly](https://nextjs.org/docs/advanced-features/i18n-routing). An example `next.config.js` might look like this:
+
+```js
+module.exports = {
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'de'],
+  },
+}
+```
+
+There are three functions that `next-i18next` exports, which you will need to use to translate your project:
+
+#### appWithTranslation
+
+This is a HOC which wraps your [`_app`](https://nextjs.org/docs/advanced-features/custom-app):
+
+```tsx
+import { appWithTranslation } from 'next-i18next'
+
+const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />
+
+export default appWithTranslation(MyApp)
+```
+
+#### serverSideTranslations
+
+This is an async function that you need to include on your page-level components, via either [`getStaticProps`](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [`getServerSideProps`](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) (depending on your use case):
+
+```tsx
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common', 'footer']),
+  }
+})
+```
+
+Note that `serverSideTranslations` must be imported from `next-i18next/serverSideTranslations` – this is a separate module that contains NodeJs-specific code.
+
+### useTranslation
+
+This is the hook which you'll actually use to do the translation itself. The `useTranslation` hook [comes from `react-i18next`](https://react.i18next.com/latest/usetranslation-hook):
+
+```tsx
+import { useTranslation } from 'next-i18next'
+
+export const Footer = () => {
+
+  const { t } = useTranslation('footer')
+
+  return (
+    <footer>
+      <p>
+        {t('description')}
+      </p>
+    </footer>
+  )
+}
+```
+
+### 4. Declaring namespace dependencies
+
+By default, `next-i18next` will send _all your namespaces_ down to the client on each initial request. This can be an appropriate approach for smaller apps with less content, but a lot of apps will benefit from splitting namespaces based on route.
+
+To do that, you can pass an array of required namespaces for each page into `serverSideTranslations`. You can see this approach in [examples/simple/pages/index.js](./examples/simple/pages/index.js).
+
+Note: `useTranslation` provides namespaces to the component that you use it in. However, `serverSideTranslations` provides the total available namespaces to the entire React tree and belongs on the page level. Both are required.
+
+### 5. Advanced configuration
+
+If you need to modify more advanced configuration options, you can add a `next-i18next-config.js` file to the root of your project. That file should have a default export. For example:
+
+```js
+const path = require('path')
+
+module.exports = {
+  localePath: path.resolve('./my/custom/path')
+}
+```
+
+All other [i18next options](https://www.i18next.com/overview/configuration-options) can be passed in as well.
+
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
