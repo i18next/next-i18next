@@ -1,14 +1,17 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { withTranslation } from 'next-i18next'
+import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-import Header from '../components/Header'
-import Footer from '../components/Footer'
+import { Header } from '../components/Header'
+import { Footer } from '../components/Footer'
 
-const Homepage = ({ t }) => {
+const Homepage = () => {
+
   const router = useRouter()
+  const { t } = useTranslation('common')
+
   return (
     <>
       <main>
@@ -42,4 +45,4 @@ export const getStaticProps = async ({ locale }) => ({
   }
 })
 
-export default withTranslation('common')(Homepage)
+export default Homepage

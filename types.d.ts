@@ -59,6 +59,7 @@ export type SSRConfig = {
 
 export {
   I18nContext,
+  useTranslation,
   withTranslation,
 }
 

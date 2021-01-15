@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import Head from 'next/head'
 
-const Header = ({ title }) => (
+export const Header = ({ title }) => (
   <>
     <Head>
       <title>next-i18next</title>
@@ -28,9 +28,3 @@ const Header = ({ title }) => (
     </a>
   </>
 )
-
-Header.propTypes = {
-  title: PropTypes.string.isRequired,
-}
-
-export default Header
