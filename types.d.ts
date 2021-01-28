@@ -9,6 +9,7 @@ import {
   WithTranslation as ReactI18nextWithTranslation
 } from 'react-i18next'
 import { InitOptions, i18n, TFunction as I18NextTFunction } from 'i18next'
+import { appWithTranslation } from './src';
 
 export type InitConfig = {
   strictMode?: boolean;
@@ -38,7 +39,7 @@ export type NextI18NextInternals = {
 
 export type Trans = (props: TransProps) => any
 export type UseTranslation = typeof useTranslation
-export type AppWithTranslation = <P extends unknown>(Component: React.ComponentType<P> | React.ElementType<P>) => any
+export type AppWithTranslation = typeof appWithTranslation
 export type TFunction = I18NextTFunction
 export type I18n = i18n
 export type WithTranslationHocType = typeof withTranslation
@@ -59,6 +60,7 @@ export type SSRConfig = {
 
 export {
   I18nContext,
+  appWithTranslation,
   useTranslation,
   withTranslation,
 }
