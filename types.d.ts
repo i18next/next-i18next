@@ -64,16 +64,3 @@ export {
   useTranslation,
   withTranslation,
 }
-
-declare class NextI18Next {
-  constructor(config: InitConfig);
-  Trans: Trans
-  i18n: I18n
-  initPromise: InitPromise
-  config: Config
-  useTranslation: UseTranslation
-  withTranslation: WithTranslationHocType
-  appWithTranslation: AppWithTranslation
-}
-
-export default NextI18Next
