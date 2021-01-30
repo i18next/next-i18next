@@ -1,5 +1,5 @@
 import { defaultConfig } from './defaultConfig'
-import { consoleMessage, isServer } from '../utils'
+import { consoleMessage } from '../utils'
 import { Config } from '../../types'
 
 const deepMergeObjects = ['backend', 'detection']
@@ -21,7 +21,7 @@ export const createConfig = (userConfig: Config): Config => {
     localeStructure,
   } = combinedConfig
 
-  /** 
+  /**
    * Skips translation file resolution while in cimode
    * https://github.com/isaachinman/next-i18next/pull/851#discussion_r503113620
   */
@@ -29,16 +29,16 @@ export const createConfig = (userConfig: Config): Config => {
     return combinedConfig as Config
   }
 
-  if (isServer()) {
+  if (!process.browser) {
     combinedConfig.preload = [lng]
 
     const hasCustomBackend = userConfig.use && userConfig.use.find((b) => b.type === 'backend')
 
     if (!hasCustomBackend) {
-      const fs = eval("require('fs')")
+      const fs = require('fs')
       const path = require('path')
       let serverLocalePath = localePath
-  
+
       /*
         Validate defaultNS
         https://github.com/isaachinman/next-i18next/issues/358
@@ -48,14 +48,14 @@ export const createConfig = (userConfig: Config): Config => {
         const defaultNSPath = path.join(localePath, defaultFile)
         const defaultNSExists = fs.existsSync(defaultNSPath)
         if (!defaultNSExists) {
-  
+
           /*
             If defaultNS doesn't exist, try to fall back to the deprecated static folder
             https://github.com/isaachinman/next-i18next/issues/523
           */
           const staticDirPath = path.resolve(process.cwd(), STATIC_LOCALE_PATH, defaultFile)
           const staticDirExists = fs.existsSync(staticDirPath)
-  
+
           if (staticDirExists) {
             consoleMessage('warn', 'next-i18next: Falling back to /static folder, deprecated in next@9.1.*', combinedConfig)
             serverLocalePath = STATIC_LOCALE_PATH
@@ -84,7 +84,7 @@ export const createConfig = (userConfig: Config): Config => {
   } else {
 
     let clientLocalePath = localePath
-    
+
     /*
       Remove public prefix from client site config
     */

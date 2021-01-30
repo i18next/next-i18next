@@ -1,5 +1,3 @@
-import { isServer } from '../utils'
-
 const DEFAULT_LOCALE = 'en'
 const LOCALES = ['en']
 const DEFAULT_NAMESPACE = 'common'
@@ -30,6 +28,6 @@ export const defaultConfig = {
   errorStackTraceLimit: 0,
   shallowRender: false,
   get initImmediate(): boolean {
-    return !isServer()
+    return process.browser
   }
 }
