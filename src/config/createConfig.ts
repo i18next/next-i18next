@@ -1,9 +1,7 @@
 import { defaultConfig } from './defaultConfig'
-import { consoleMessage } from '../utils'
 import { Config } from '../../types'
 
 const deepMergeObjects = ['backend', 'detection']
-const STATIC_LOCALE_PATH = 'public/static/locales'
 
 export const createConfig = (userConfig: Config): Config => {
   /*
@@ -37,7 +35,7 @@ export const createConfig = (userConfig: Config): Config => {
     if (!hasCustomBackend) {
       const fs = require('fs')
       const path = require('path')
-      let serverLocalePath = localePath
+      const serverLocalePath = localePath
 
       /*
         Validate defaultNS
@@ -47,21 +45,8 @@ export const createConfig = (userConfig: Config): Config => {
         const defaultFile = `/${lng}/${combinedConfig.defaultNS}.${localeExtension}`
         const defaultNSPath = path.join(localePath, defaultFile)
         const defaultNSExists = fs.existsSync(defaultNSPath)
-        if (!defaultNSExists) {
-
-          /*
-            If defaultNS doesn't exist, try to fall back to the deprecated static folder
-            https://github.com/isaachinman/next-i18next/issues/523
-          */
-          const staticDirPath = path.resolve(process.cwd(), STATIC_LOCALE_PATH, defaultFile)
-          const staticDirExists = fs.existsSync(staticDirPath)
-
-          if (staticDirExists) {
-            consoleMessage('warn', 'next-i18next: Falling back to /static folder, deprecated in next@9.1.*', combinedConfig)
-            serverLocalePath = STATIC_LOCALE_PATH
-          } else if (process.env.NODE_ENV !== 'production') {
-            throw new Error(`Default namespace not found at ${defaultNSPath}`)
-          }
+        if (!defaultNSExists && process.env.NODE_ENV !== 'production') {
+          throw new Error(`Default namespace not found at ${defaultNSPath}`)
         }
       }
 

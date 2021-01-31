@@ -31,12 +31,11 @@ By default, `next-i18next` expects your translations to be organised as such:
 ```
 .
 └── public
-    └── static
-        └── locales
-            ├── en
-            |   └── common.json
-            └── de
-                └── common.json
+    └── locales
+        ├── en
+        |   └── common.json
+        └── de
+            └── common.json
 ```
 
 This structure can also be seen in the [simple example](./examples/simple).
