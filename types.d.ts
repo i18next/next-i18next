@@ -23,7 +23,7 @@ export type InitConfig = {
 } & InitOptions
 
 export type Config = {
-  errorStackTraceLimit: number
+  errorStackTraceLimit: number;
   fallbackLng: boolean;
   supportedLngs: string[];
   // temporal backwards compatibility WHITELIST REMOVAL
@@ -54,7 +54,6 @@ export type SSRConfig = {
   _nextI18Next: {
     initialI18nStore: any;
     initialLocale: string;
-    userConfig: Config;
   };
 }
 
