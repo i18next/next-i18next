@@ -8,6 +8,7 @@
   },
   "include": [
     "__tests__/types.test.tsx",
-    "src/**/*"
+    "src/**/*",
+    "node_modules/next/types/global.d.ts"
   ]
 }

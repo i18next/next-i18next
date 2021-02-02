@@ -1,5 +1,3 @@
-import { isServer } from '../utils'
-
 const DEFAULT_LANGUAGE = 'en'
 const OTHER_LANGUAGES = []
 const DEFAULT_NAMESPACE = 'common'
@@ -39,6 +37,6 @@ export const defaultConfig = {
   errorStackTraceLimit: 0,
   shallowRender: false,
   get initImmediate() {
-    return !isServer()
+    return process.browser
   }
 }

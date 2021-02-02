@@ -6,7 +6,6 @@ import { I18nextProvider, withSSR } from 'react-i18next'
 
 import { lngFromReq, lngPathCorrector, lngsToLoad } from '../utils'
 import { NextStaticProvider } from '../components'
-import { isServer } from '../utils'
 interface Props {
   initialLanguage: string;
   initialI18nStore: any;
@@ -34,7 +33,7 @@ export const appWithTranslation = function (WrappedComponent) {
 
     constructor(props) {
       super(props)
-      if (!isServer()) {
+      if (process.browser) {
 
         const changeLanguageCallback = (prevLng: string, newLng: string) => {
           const { router } = props
@@ -89,7 +88,7 @@ export const appWithTranslation = function (WrappedComponent) {
       /*
         Step 1: Determine initial language
       */
-      if (req && req.i18n) {
+      if (!process.browser && req && req.i18n) {
 
         initialLanguage = lngFromReq(req)
 
@@ -128,7 +127,7 @@ export const appWithTranslation = function (WrappedComponent) {
       /*
         Step 3: Perform data fetching, depending on environment
       */
-      if (req && req.i18n) {
+      if (!process.browser && req && req.i18n) {
 
         /*
           Detect the languages to load based upon the fallbackLng configuration
@@ -161,7 +160,7 @@ export const appWithTranslation = function (WrappedComponent) {
       /*
         Step 4: Overwrite i18n.toJSON method to be able to serialize the instance
       */
-      if (req && req.i18n) {
+      if (!process.browser && req && req.i18n) {
         req.i18n.toJSON = () => null
         i18nServerInstance = req.i18n
       }

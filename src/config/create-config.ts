@@ -1,5 +1,5 @@
 import { defaultConfig } from './default-config'
-import { consoleMessage, isServer } from '../utils'
+import { consoleMessage } from '../utils'
 
 const deepMergeObjects = ['backend', 'detection']
 const dedupe = (names: string[]) => names.filter((v,i) => names.indexOf(v) === i)
@@ -34,9 +34,9 @@ export const createConfig = (userConfig) => {
     localeStructure,
   } = combinedConfig
 
-  if (isServer()) {
+  if (!process.browser) {
 
-    const fs = eval("require('fs')")
+    const fs = require('fs')
     const path = require('path')
     let serverLocalePath = localePath
 
@@ -86,7 +86,7 @@ export const createConfig = (userConfig) => {
   } else {
 
     let clientLocalePath = localePath
-    
+
     /*
       Remove public prefix from client site config
     */
