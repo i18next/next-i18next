@@ -89,7 +89,7 @@ const Footer = ({ t }) => (
 
 export default withTranslation('footer')(Footer)
 ```
-You can use `NextI18Next.useTranslation` hook too! [See in react-i18nnext docs](https://react.i18next.com/latest/usetranslation-hook)
+You can use `NextI18Next.useTranslation` hook too! [See in react-i18next docs](https://react.i18next.com/latest/usetranslation-hook)
 
 ```jsx
 // This is our initialised `NextI18Next` instance
