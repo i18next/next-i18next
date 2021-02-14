@@ -23,7 +23,7 @@ A live demo is [available here](http://next-i18next.com/). This demo app is the 
 yarn add next-i18next
 ```
 
-You need to also have `react` and `next` installed.
+You need to also have `react` `next` and `i18next` installed.
 
 ### 2. Translation content
 
