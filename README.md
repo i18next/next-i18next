@@ -96,7 +96,7 @@ You can use `NextI18Next.useTranslation` hook too! [See in react-i18next docs](h
 import { useTranslation } from '../i18n'
 
 export  const Footer = () => {
- const {t} = useTranslation('footer')
+ const { t } = useTranslation('footer')
  return )
    <footer>
     <p>
