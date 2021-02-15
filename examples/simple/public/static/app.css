@@ -15,12 +15,18 @@ h2 {
 
 h1 {
   font-size: 3rem;
-  margin: 5rem 0;
+  margin: 2rem 0;
 }
+
 h2 {
   min-width: 18rem;
   font-size: 2rem;
   opacity: 0.3;
+}
+
+h3 {
+  font-size: 1rem;
+  margin: 2rem 0;
 }
 
 p {

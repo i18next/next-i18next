@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
-import { i18n, Link, withTranslation } from '../i18n'
+import { Link, withTranslation } from '../i18n'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
-const Homepage = ({ t }) => (
+const Homepage = ({ t, i18n }) => (
   <>
     <main>
-      <Header title={t('h1')} />
+      <Header title={t('h1')} subTitle={t('current-lang', { lang: i18n.language })}/>
       <div>
         <button
           type='button'

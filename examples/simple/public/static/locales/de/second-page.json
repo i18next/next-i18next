@@ -1,4 +1,5 @@
 {
   "h1": "Eine zweite Seite, um das Routing zu demonstrieren",
+  "current-lang": "Ihre aktuelle sprache ist immer noch: {{lang}}",
   "back-to-home": "Zurück zur Hauptseite"
 }

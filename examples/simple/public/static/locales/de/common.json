@@ -1,5 +1,6 @@
 {
   "h1": "Ein einfaches Beispiel",
+  "current-lang": "Ihre aktuelle sprache ist: {{lang}}",
   "change-locale": "Wechseln Locale",
   "to-second-page": "Zur zweiten Seite",
   "error-with-status": "Auf dem Server ist ein Fehler ({{statusCode}}) aufgetreten",

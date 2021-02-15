@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import Head from 'next/head'
 
-const Header = ({ title }) => (
+const Header = ({ title, subTitle }) => (
   <>
     <Head>
       <title>next-i18next</title>
@@ -20,6 +20,9 @@ const Header = ({ title }) => (
     <h1>
       {title}
     </h1>
+    <h3>
+      {subTitle}
+    </h3>
     <a
       className="github"
       href="//github.com/isaachinman/next-i18next"
@@ -31,6 +34,7 @@ const Header = ({ title }) => (
 
 Header.propTypes = {
   title: PropTypes.string.isRequired,
+  subTitle: PropTypes.string.isRequired,
 }
 
 export default Header
