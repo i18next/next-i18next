@@ -89,6 +89,23 @@ const Footer = ({ t }) => (
 
 export default withTranslation('footer')(Footer)
 ```
+You can use `NextI18Next.useTranslation` hook too! [See in react-i18next docs](https://react.i18next.com/latest/usetranslation-hook)
+
+```jsx
+// This is our initialised `NextI18Next` instance
+import { useTranslation } from '../i18n'
+
+export  const Footer = () => {
+ const { t } = useTranslation('footer')
+ return )
+   <footer>
+    <p>
+      {t('description')}
+    </p>
+  </footer>
+ )
+}
+```
 
 ### 4. Declaring namespace dependencies
 
