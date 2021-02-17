@@ -4,6 +4,7 @@ import * as React from 'react'
 import {
   I18nContext,
   useTranslation,
+  Trans,
   TransProps,
   withTranslation,
   WithTranslation as ReactI18nextWithTranslation
@@ -62,5 +63,6 @@ export {
   I18nContext,
   appWithTranslation,
   useTranslation,
+  Trans,
   withTranslation,
 }
