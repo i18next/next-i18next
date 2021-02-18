@@ -5,7 +5,6 @@ import {
   I18nContext,
   useTranslation,
   Trans,
-  TransProps,
   withTranslation,
   WithTranslation as ReactI18nextWithTranslation
 } from 'react-i18next'
@@ -38,7 +37,6 @@ export type NextI18NextInternals = {
   i18n: I18n;
 }
 
-export type Trans = (props: TransProps) => any
 export type UseTranslation = typeof useTranslation
 export type AppWithTranslation = typeof appWithTranslation
 export type TFunction = I18NextTFunction
