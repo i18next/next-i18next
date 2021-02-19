@@ -15,6 +15,7 @@ export const defaultConfig = {
   localeStructure: LOCALE_STRUCTURE,
   localeExtension: LOCALE_EXTENSION,
   localeSubpaths: {},
+  customClientLocalePath: null,
   use: [],
   defaultNS: DEFAULT_NAMESPACE,
   interpolation: {

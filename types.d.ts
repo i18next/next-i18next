@@ -21,6 +21,7 @@ export type InitConfig = {
   ignoreRoutes?: string[];
   localeExtension?: string;
   localePath?: string;
+  customClientLocalePath?: string;
   localeStructure?: string;
   otherLanguages: string[];
   localeSubpaths?: Record<string, string>;

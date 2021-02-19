@@ -202,6 +202,7 @@ const { i18n: { language } } = useContext(I18nContext)
 | `otherLanguages` (required) | `[]`  |
 | `localeExtension` | `'json'`  |
 | `localePath` (required) | `'/public/static/locales'`  |
+| `customClientLocalePath` | `'/someOtherFolder/locales'`  |
 | `localeStructure` | `'{{lng}}/{{ns}}'`  |
 | `localeSubpaths` | `{}`  |
 | `serverLanguageDetection` | `true`  |
