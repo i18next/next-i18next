@@ -4,7 +4,7 @@ import { I18nextProvider } from 'react-i18next'
 
 import { createConfig } from './config/createConfig'
 import createClient from './createClient'
-import { Config, SSRConfig } from '../types'
+import { SSRConfig } from '../types'
 
 export { I18nContext, Trans, useTranslation, withTranslation } from 'react-i18next'
 
@@ -23,6 +23,7 @@ export const appWithTranslation = <P extends Record<string, unknown>>(
       const {
         initialI18nStore,
         initialLocale,
+        userConfig,
       } = props.pageProps._nextI18Next
 
       const parsedUserConfig = Function(`'use strict';return(${userConfig})`)()
