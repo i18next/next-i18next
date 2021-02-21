@@ -53,13 +53,11 @@ First, create a `next-i18next.config.js` file in the root of your project. The s
 #### `next-i18next.config.js`
 
 ```js
-const i18n = {
-  defaultLocale: 'en',
-  locales: ['en', 'de'],
-}
-
 module.exports = {
-  ...i18n
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'de'],
+  },
 }
 ```
 
@@ -75,7 +73,6 @@ const { i18n } = require('./next-i18next.config')
 module.exports = {
   i18n,
 }
-
 ```
 
 There are three functions that `next-i18next` exports, which you will need to use to translate your project:
