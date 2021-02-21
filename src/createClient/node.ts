@@ -9,8 +9,9 @@ export default (config: InternalConfig): CreateClientReturn => {
 
   if (!instance.isInitialized) {
     const hasCustomBackend = config?.use?.some((b) => b.type === 'backend')
-    if (!hasCustomBackend)
+    if (!hasCustomBackend) {
       instance.use(i18nextFSBackend)
+    }
 
     config.use.forEach(x => instance.use(x))
     initPromise = instance.init(config)
