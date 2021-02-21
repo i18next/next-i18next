@@ -2,6 +2,7 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "noEmit": true,
+    "skipLibCheck": true,
     "lib": ["esnext", "dom"],
     "target": "es5",
     "jsx": "react"

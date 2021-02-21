@@ -95,6 +95,23 @@
     "quote-props": ["error", "as-needed"],
     "jsx-quotes": ["error", "prefer-single"]
   },
+  "overrides": [
+    {
+      "files": [
+        "cypress/**/*"
+      ],
+      "plugins": [
+        "cypress"
+      ],
+      "env": {
+        "cypress/globals": true
+      },
+      "rules": {
+        "import/no-default-export": 0,
+        "jest/expect-expect": 0
+      }
+    }
+  ],
   "settings": {
     "react": {
       "pragma": "React",
