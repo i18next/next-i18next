@@ -1,71 +1,104 @@
 {
   "parser": "@typescript-eslint/parser",
-  "extends": [
-    "plugin:react/recommended"
+  "plugins": [
+    "@typescript-eslint",
+    "eslint-plugin-import",
+    "typescript-sort-keys",
+    "prefer-arrow"
   ],
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
-  },
-  "env": {
-    "browser": true
-  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:jest/recommended",
+    "plugin:jest/style",
+    "plugin:typescript-sort-keys/recommended"
+  ],
   "ignorePatterns": [
-    "**/node_modules/*"
+    "**/node_modules/*",
+    "**/out/*",
+    "**/.next/*"
   ],
   "rules": {
-    "padded-blocks": 0,
-    "global-require": 0,
-    "function-paren-newline": 0,
-    "no-buffer-constructor": 0,
-    "import/no-extraneous-dependencies": 0,
-    "import/no-unresolved": 0,
-    "import/extensions": 0,
-    "import/no-mutable-exports": 0,
+    "comma-dangle": [
+      "error",
+      "always-multiline"
+    ],
+    "eol-last": ["error", "always"],
+    "indent": ["error", 2],
+    "jest/no-conditional-expect": 0,
+    "no-console": 2,
+    "no-trailing-spaces": 2,
+    "max-len": ["error", {
+      "code": 80,
+      "comments": 80,
+      "ignorePattern": "^import\\s.+\\sfrom\\s.+$",
+      "ignoreStrings": true,
+      "ignoreTemplateLiterals": true
+    }],
+    "multiline-comment-style": ["error", "separate-lines"],
+    "no-multiple-empty-lines": "error",
+    "no-multi-spaces": ["error", { "exceptions": { "Property": false } }],
+    "no-return-await": 2,
+    "arrow-body-style": ["error", "as-needed"],
+    "import/no-amd": 2,
+    "import/no-commonjs": 2,
+    "import/no-default-export": 2,
+    "import/no-namespace": 2,
+    "import/no-nodejs-modules": 0,
+    "keyword-spacing": ["error", { "overrides": {} }],
+    "react/prefer-stateless-function": 2,
     "react/prop-types": 0,
-    "react/display-name": 0,
-    "react/jsx-filename-extension": 0,
-    "react/prefer-stateless-function": 0,
-    "react/react-in-jsx-scope": 0,
-    "no-restricted-syntax": 0,
-    "no-useless-escape": 0,
-    "no-console": [
+    "react/jsx-wrap-multilines": ["error", {
+        "declaration": "parens-new-line",
+        "assignment": "parens-new-line",
+        "return": "parens-new-line",
+        "arrow": "parens-new-line",
+        "condition": "parens-new-line",
+        "logical": "parens-new-line",
+        "prop": "parens-new-line"
+      }
+    ],
+    "semi": ["error", "never"],
+    "sort-keys": 2,
+    "space-before-blocks": 2,
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/explicit-module-boundary-types": 0,
+    "@typescript-eslint/member-delimiter-style": ["error", {
+      "multiline": {
+        "delimiter": "none",
+        "requireLast": false
+      },
+      "singleline": {
+        "delimiter": "comma",
+        "requireLast": false
+      }
+    }],
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-unused-vars": [
+      2,
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/no-var-requires": 0,
+    "prefer-arrow/prefer-arrow-functions": [
       "error",
       {
-        "allow": [
-          "warn",
-          "error"
-        ]
+        "disallowPrototype": true,
+        "singleReturnOnly": false,
+        "classPropertiesAllowed": false
       }
-    ]
+    ],
+    "prefer-destructuring": ["error", {"object": true, "array": true}],
+    "quotes": ["error", "single"],
+    "quote-props": ["error", "as-needed"],
+    "jsx-quotes": ["error", "prefer-single"]
   },
-  "overrides": [
-    {
-      "files": [
-        "src/**/*.{ts,tsx}"
-      ],
-      "extends": [
-        "plugin:@typescript-eslint/recommended"
-      ],
-      "rules": {
-        "@typescript-eslint/indent": [
-          "error",
-          2
-        ],
-        "semi": "off",
-        "@typescript-eslint/semi": [
-          "error",
-          "never"
-        ],
-        "@typescript-eslint/no-var-requires": 0,
-        "@typescript-eslint/no-explicit-any": 0,
-        "@typescript-eslint/explicit-function-return-type": 0,
-        "@typescript-eslint/explicit-member-accessibility": 0,
-        "@typescript-eslint/no-object-literal-type-assertion": 0,
-        "@typescript-eslint/prefer-interface": 0
-      },
-      "parser": "@typescript-eslint/parser"
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "version": "16.13.1"
     }
-  ]
+  }
 }
