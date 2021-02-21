@@ -23,7 +23,6 @@ export type UserConfig = {
   use?: any[]
 } & InitOptions
 
-
 export type InternalConfig = Omit<UserConfig, 'i18n'> & NextJsI18NConfig & {
   errorStackTraceLimit: number
   fallbackLng: boolean
