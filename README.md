@@ -61,6 +61,8 @@ module.exports = {
 }
 ```
 
+Now, create or modify your `next.config.js` file.
+
 #### `next.config.js`
 
 This tells `next-i18next` what your `defaultLocale` and other locales are, so that it can preload translations on the server, etc.
