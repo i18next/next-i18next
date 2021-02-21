@@ -20,13 +20,17 @@ out
 runtime.log
 
 # Testing
-__tests__
+cypress
+cypress.json
 coverage
 jest.*
 .e2e
+*.test.*
 
 # Build tools
 tsconfig.json
+.eslintrc.json
+babel.config.json
 
 # Misc
 .circleci

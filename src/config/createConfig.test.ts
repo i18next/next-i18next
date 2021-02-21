@@ -1,4 +1,5 @@
 import fs from 'fs'
+
 import { createConfig } from './createConfig'
 import { UserConfig } from '../../types'
 

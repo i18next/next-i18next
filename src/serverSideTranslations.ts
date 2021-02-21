@@ -4,6 +4,7 @@ import path from 'path'
 
 import { createConfig } from './config/createConfig'
 import createClient from './createClient'
+
 import { UserConfig, SSRConfig } from '../types'
 
 const DEFAULT_CONFIG_PATH = './next-i18next.config.js'
@@ -13,6 +14,10 @@ export const serverSideTranslations = async (
   namespacesRequired: string[] = [],
   configOverride: UserConfig = null,
 ): Promise<SSRConfig> => {
+  if (typeof initialLocale !== 'string') {
+    throw new Error('Initial locale argument was not passed into serverSideTranslations')
+  }
+
   let userConfig = configOverride
 
   if (fs.existsSync(path.resolve(DEFAULT_CONFIG_PATH))) {
@@ -45,7 +50,7 @@ export const serverSideTranslations = async (
     _nextI18Next: {
       initialI18nStore,
       initialLocale,
-      userConfig: serialize(userConfig),
+      userConfig: userConfig !== null ? serialize(userConfig) : null,
     },
   }
 }

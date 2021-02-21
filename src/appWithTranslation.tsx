@@ -4,6 +4,7 @@ import { I18nextProvider } from 'react-i18next'
 
 import { createConfig } from './config/createConfig'
 import createClient from './createClient'
+
 import { SSRConfig } from '../types'
 
 export { I18nContext, Trans, useTranslation, withTranslation } from 'react-i18next'
