@@ -11,18 +11,21 @@ import {
 import { InitOptions, i18n, TFunction as I18NextTFunction } from 'i18next'
 import { appWithTranslation } from './src';
 
-export type InitConfig = {
-  strictMode?: boolean;
+type NextJsI18NConfig = {
   defaultLocale: string;
+  locales: string[];
+}
+
+export type UserConfig = {
+  i18n: NextJsI18NConfig;
   localeExtension?: string;
   localePath?: string;
   localeStructure?: string;
-  locales: string[];
+  strictMode?: boolean;
   use?: any[];
-  shallowRender?: boolean;
 } & InitOptions
 
-export type Config = {
+export type InternalConfig = Omit<UserConfig, 'i18n'> & NextJsI18NConfig & {
   errorStackTraceLimit: number
   fallbackLng: boolean;
   supportedLngs: string[];
@@ -30,11 +33,6 @@ export type Config = {
   whitelist: string[];
   // end temporal backwards compatibility WHITELIST REMOVAL
   preload: string[];
-} & InitConfig
-
-export type NextI18NextInternals = {
-  config: Config;
-  i18n: I18n;
 }
 
 export type UseTranslation = typeof useTranslation
@@ -53,7 +51,7 @@ export type SSRConfig = {
   _nextI18Next: {
     initialI18nStore: any;
     initialLocale: string;
-    userConfig: Config;
+    userConfig: UserConfig;
   };
 }
 
