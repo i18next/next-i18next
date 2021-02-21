@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { InternalConfig } from "../../types"
+import { InternalConfig } from '../../types'
 
 type MessageType = 'error' | 'info' | 'warn'
 
@@ -20,7 +20,11 @@ const logMessage = (messageType: MessageType, message: string) => {
   }
 }
 
-export const consoleMessage = (messageType: MessageType, message: string, config: InternalConfig): void => {
+export const consoleMessage = (
+  messageType: MessageType,
+  message: string,
+  config: InternalConfig
+): void => {
 
   const { errorStackTraceLimit, strictMode } = config
 
@@ -38,20 +42,20 @@ export const consoleMessage = (messageType: MessageType, message: string, config
     return
   }
 
-  /*
-    Temporarily set the stacktrace to 0 or errorStackTraceLimit,
-    in order to only display a message
-  */
+  //
+  // Temporarily set the stacktrace to 0 or errorStackTraceLimit,
+  // in order to only display a message
+  //
   Error.stackTraceLimit = errorStackTraceLimit
 
-  /*
-    Make room for new message
-  */
+  //
+  // Make room for new message
+  //
   console.log()
 
-  /*
-    Make sure the message is a string
-  */
+  //
+  // Make sure the message is a string
+  //
   if (typeof message !== 'string') {
     const metaError = new Error()
     metaError.name = 'Meta'
@@ -68,14 +72,14 @@ export const consoleMessage = (messageType: MessageType, message: string, config
     return
   }
 
-  /*
-    Log the message to console
-  */
+  //
+  // Log the message to console
+  //
   logMessage(messageType, message)
 
-  /*
-    Reset stack limit
-  */
+  //
+  // Reset stack limit
+  //
   Error.stackTraceLimit = prevStackLimit
 
 }

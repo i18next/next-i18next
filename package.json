@@ -27,7 +27,7 @@
   ],
   "scripts": {
     "check-types": "tsc",
-    "lint": "eslint types.d.ts src/**/* examples",
+    "lint": "eslint --ext .ts,.tsx types.d.ts src",
     "lint:fix": "eslint types.d.ts src/**/* examples --fix",
     "clean": "rm -rf examples/simple/.next && rm -rf dist && mkdir dist",
     "build:es": "BABEL_ENV=es babel src --extensions '.ts,.tsx' --out-dir dist/es --copy-files",
