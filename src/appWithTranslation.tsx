@@ -24,11 +24,13 @@ export const appWithTranslation = <P extends Record<string, unknown>>(WrappedCom
         userConfig,
       } = props.pageProps._nextI18Next
 
+      const parsedUserConfig = Function(`'use strict';return(${userConfig})`)()
+
       locale = initialLocale;
   
       ({ i18n } = createClient({
         ...createConfig({
-          ...userConfig,
+          ...parsedUserConfig,
           lng: initialLocale,
         }),
         lng: initialLocale,
