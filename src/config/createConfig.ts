@@ -1,19 +1,24 @@
 import { defaultConfig } from './defaultConfig'
-import { Config } from '../../types'
+import { InternalConfig, UserConfig } from '../../types'
 
 const deepMergeObjects = ['backend', 'detection']
 
-export const createConfig = (userConfig: Config): Config => {
+export const createConfig = (userConfig: UserConfig): InternalConfig => {
   /*
     Initial merge of default and user-provided config
   */
+  const { i18n: userI18n, ...userConfigStripped } = userConfig
+  const { i18n: defaultI18n, ...defaultConfigStripped } = defaultConfig
   const combinedConfig = {
-    ...defaultConfig,
-    ...userConfig,
-  } as Config
+    ...defaultConfigStripped,
+    ...userConfigStripped,
+    ...defaultI18n,
+    ...userI18n,
+  }
 
   const {
     lng,
+    locales,
     localeExtension,
     localePath,
     localeStructure,
@@ -24,11 +29,11 @@ export const createConfig = (userConfig: Config): Config => {
    * https://github.com/isaachinman/next-i18next/pull/851#discussion_r503113620
   */
   if (lng === 'cimode') {
-    return combinedConfig as Config
+    return combinedConfig as InternalConfig
   }
 
   if (!process.browser) {
-    combinedConfig.preload = [lng]
+    combinedConfig.preload = locales
 
     const hasCustomBackend = userConfig.use && userConfig.use.find((b) => b.type === 'backend')
 
@@ -100,5 +105,5 @@ export const createConfig = (userConfig: Config): Config => {
     }
   })
 
-  return combinedConfig
+  return combinedConfig as InternalConfig
 }

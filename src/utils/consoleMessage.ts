@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { Config } from "../../types"
+import { InternalConfig } from "../../types"
 
 type MessageType = 'error' | 'info' | 'warn'
 
@@ -20,7 +20,7 @@ const logMessage = (messageType: MessageType, message: string) => {
   }
 }
 
-export const consoleMessage = (messageType: MessageType, message: string, config: Config): void => {
+export const consoleMessage = (messageType: MessageType, message: string, config: InternalConfig): void => {
 
   const { errorStackTraceLimit, strictMode } = config
 

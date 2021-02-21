@@ -6,8 +6,10 @@ const LOCALE_STRUCTURE = '{{lng}}/{{ns}}'
 const LOCALE_EXTENSION = 'json'
 
 export const defaultConfig = {
-  defaultLocale: DEFAULT_LOCALE,
-  locales: LOCALES,
+  i18n: {
+    defaultLocale: DEFAULT_LOCALE,
+    locales: LOCALES,
+  },
 
   load: 'currentOnly',
   localePath: LOCALE_PATH,
@@ -26,7 +28,6 @@ export const defaultConfig = {
   },
   strictMode: true,
   errorStackTraceLimit: 0,
-  shallowRender: false,
   get initImmediate(): boolean {
     return process.browser
   }
