@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { consoleMessage } from '../../src/utils'
+import { consoleMessage } from './consoleMessage'
 import { InternalConfig } from '../../types'
 
 const consoleMessageStrictMode = (type, message) =>
