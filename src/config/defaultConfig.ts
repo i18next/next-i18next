@@ -6,28 +6,28 @@ const LOCALE_STRUCTURE = '{{lng}}/{{ns}}'
 const LOCALE_EXTENSION = 'json'
 
 export const defaultConfig = {
-  defaultLocale: DEFAULT_LOCALE,
-  locales: LOCALES,
-
-  load: 'currentOnly',
-  localePath: LOCALE_PATH,
-  localeStructure: LOCALE_STRUCTURE,
-  localeExtension: LOCALE_EXTENSION,
-  use: [],
   defaultNS: DEFAULT_NAMESPACE,
-  interpolation: {
-    escapeValue: false,
-    formatSeparator: ',',
-    format: (value: string, format: string): string => (format === 'uppercase' ? value.toUpperCase() : value),
-  },
-  react: {
-    wait: true,
-    useSuspense: false,
-  },
-  strictMode: true,
   errorStackTraceLimit: 0,
-  shallowRender: false,
+  i18n: {
+    defaultLocale: DEFAULT_LOCALE,
+    locales: LOCALES,
+  },
   get initImmediate(): boolean {
     return process.browser
-  }
+  },
+  interpolation: {
+    escapeValue: false,
+    format: (value: string, format: string): string => (format === 'uppercase' ? value.toUpperCase() : value),
+    formatSeparator: ',',
+  },
+  load: 'currentOnly',
+  localeExtension: LOCALE_EXTENSION,
+  localePath: LOCALE_PATH,
+  localeStructure: LOCALE_STRUCTURE,
+  react: {
+    useSuspense: false,
+    wait: true,
+  },
+  strictMode: true,
+  use: [],
 }

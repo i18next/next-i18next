@@ -1,9 +1,9 @@
 import i18n from 'i18next'
 import i18nextHTTPBackend from 'i18next-http-backend/cjs'
 
-import { Config, CreateClientReturn, InitPromise } from '../../types'
+import { InternalConfig, CreateClientReturn, InitPromise } from '../../types'
 
-export default (config: Config): CreateClientReturn => {
+export default (config: InternalConfig): CreateClientReturn => {
   const instance = i18n.createInstance(config)
   let initPromise: InitPromise
 

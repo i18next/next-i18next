@@ -1,16 +1,17 @@
 import fs from 'fs'
+import serialize from 'serialize-javascript'
 import path from 'path'
 
 import { createConfig } from './config/createConfig'
 import createClient from './createClient'
-import { Config, SSRConfig } from '../types'
+import { UserConfig, SSRConfig } from '../types'
 
 const DEFAULT_CONFIG_PATH = './next-i18next.config.js'
 
 export const serverSideTranslations = async (
   initialLocale: string,
   namespacesRequired: string[] = [],
-  configOverride: Config = null,
+  configOverride: UserConfig = null,
 ): Promise<SSRConfig> => {
   let userConfig = configOverride
 
@@ -22,6 +23,7 @@ export const serverSideTranslations = async (
     ...userConfig,
     lng: initialLocale,
   })
+
   const { i18n, initPromise } = createClient({
     ...config,
     lng: initialLocale,
@@ -30,7 +32,7 @@ export const serverSideTranslations = async (
   await initPromise
 
   const initialI18nStore = {
-    [initialLocale]: {}
+    [initialLocale]: {},
   }
 
   namespacesRequired.forEach((ns) => {
@@ -43,6 +45,7 @@ export const serverSideTranslations = async (
     _nextI18Next: {
       initialI18nStore,
       initialLocale,
-    }
+      userConfig: serialize(userConfig),
+    },
   }
 }

@@ -1,43 +1,39 @@
 /* tslint:disable no-explicit-any */
-
-import * as React from 'react'
 import {
   I18nContext,
   useTranslation,
-  TransProps,
+  Trans,
   withTranslation,
-  WithTranslation as ReactI18nextWithTranslation
+  WithTranslation as ReactI18nextWithTranslation,
 } from 'react-i18next'
 import { InitOptions, i18n, TFunction as I18NextTFunction } from 'i18next'
-import { appWithTranslation } from './src';
+import { appWithTranslation } from './src'
 
-export type InitConfig = {
-  strictMode?: boolean;
-  defaultLocale: string;
-  localeExtension?: string;
-  localePath?: string;
-  localeStructure?: string;
-  locales: string[];
-  use?: any[];
-  shallowRender?: boolean;
-} & InitOptions
-
-export type Config = {
-  errorStackTraceLimit: number;
-  fallbackLng: boolean;
-  supportedLngs: string[];
-  // temporal backwards compatibility WHITELIST REMOVAL
-  whitelist: string[];
-  // end temporal backwards compatibility WHITELIST REMOVAL
-  preload: string[];
-} & InitConfig
-
-export type NextI18NextInternals = {
-  config: Config;
-  i18n: I18n;
+type NextJsI18NConfig = {
+  defaultLocale: string
+  locales: string[]
 }
 
-export type Trans = (props: TransProps) => any
+export type UserConfig = {
+  i18n: NextJsI18NConfig
+  localeExtension?: string
+  localePath?: string
+  localeStructure?: string
+  strictMode?: boolean
+  use?: any[]
+} & InitOptions
+
+
+export type InternalConfig = Omit<UserConfig, 'i18n'> & NextJsI18NConfig & {
+  errorStackTraceLimit: number
+  fallbackLng: boolean
+  // end temporal backwards compatibility WHITELIST REMOVAL
+  preload: string[]
+  supportedLngs: string[]
+  // temporal backwards compatibility WHITELIST REMOVAL
+  whitelist: string[]
+}
+
 export type UseTranslation = typeof useTranslation
 export type AppWithTranslation = typeof appWithTranslation
 export type TFunction = I18NextTFunction
@@ -46,20 +42,22 @@ export type WithTranslationHocType = typeof withTranslation
 export type WithTranslation = ReactI18nextWithTranslation
 export type InitPromise = Promise<TFunction>
 export type CreateClientReturn = {
-  i18n: I18n;
-  initPromise: InitPromise;
+  i18n: I18n
+  initPromise: InitPromise
 }
 
 export type SSRConfig = {
   _nextI18Next: {
-    initialI18nStore: any;
-    initialLocale: string;
-  };
+    initialI18nStore: any
+    initialLocale: string
+    userConfig: UserConfig
+  }
 }
 
 export {
   I18nContext,
   appWithTranslation,
   useTranslation,
+  Trans,
   withTranslation,
 }
