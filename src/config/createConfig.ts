@@ -4,6 +4,10 @@ import { InternalConfig, UserConfig } from '../../types'
 const deepMergeObjects = ['backend', 'detection']
 
 export const createConfig = (userConfig: UserConfig): InternalConfig => {
+  if (typeof userConfig?.lng !== 'string') {
+    throw new Error('config.lng was not passed into createConfig')
+  }
+
   /*
     Initial merge of default and user-provided config
   */
@@ -35,7 +39,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
   if (!process.browser) {
     combinedConfig.preload = locales
 
-    const hasCustomBackend = userConfig.use && userConfig.use.find((b) => b.type === 'backend')
+    const hasCustomBackend = userConfig?.use?.find((b) => b.type === 'backend')
 
     if (!hasCustomBackend) {
       const fs = require('fs')
