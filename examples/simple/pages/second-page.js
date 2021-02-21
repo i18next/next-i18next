@@ -30,7 +30,7 @@ const SecondPage = () => {
 export const getStaticProps = async ({ locale }) => ({
   props: {
     ...await serverSideTranslations(locale, ['second-page', 'footer']),
-  }
+  },
 })
 
 export default SecondPage

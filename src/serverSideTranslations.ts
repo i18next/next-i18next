@@ -32,7 +32,7 @@ export const serverSideTranslations = async (
   await initPromise
 
   const initialI18nStore = {
-    [initialLocale]: {}
+    [initialLocale]: {},
   }
 
   namespacesRequired.forEach((ns) => {
@@ -46,6 +46,6 @@ export const serverSideTranslations = async (
       initialI18nStore,
       initialLocale,
       userConfig: serialize(userConfig),
-    }
+    },
   }
 }

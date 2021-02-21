@@ -1,38 +1,36 @@
 /* tslint:disable no-explicit-any */
-
-import * as React from 'react'
 import {
   I18nContext,
   useTranslation,
   Trans,
   withTranslation,
-  WithTranslation as ReactI18nextWithTranslation
+  WithTranslation as ReactI18nextWithTranslation,
 } from 'react-i18next'
 import { InitOptions, i18n, TFunction as I18NextTFunction } from 'i18next'
-import { appWithTranslation } from './src';
+import { appWithTranslation } from './src'
 
 type NextJsI18NConfig = {
-  defaultLocale: string;
-  locales: string[];
+  defaultLocale: string
+  locales: string[]
 }
 
 export type UserConfig = {
-  i18n: NextJsI18NConfig;
-  localeExtension?: string;
-  localePath?: string;
-  localeStructure?: string;
-  strictMode?: boolean;
-  use?: any[];
+  i18n: NextJsI18NConfig
+  localeExtension?: string
+  localePath?: string
+  localeStructure?: string
+  strictMode?: boolean
+  use?: any[]
 } & InitOptions
 
 export type InternalConfig = Omit<UserConfig, 'i18n'> & NextJsI18NConfig & {
   errorStackTraceLimit: number
-  fallbackLng: boolean;
-  supportedLngs: string[];
-  // temporal backwards compatibility WHITELIST REMOVAL
-  whitelist: string[];
+  fallbackLng: boolean
   // end temporal backwards compatibility WHITELIST REMOVAL
-  preload: string[];
+  preload: string[]
+  supportedLngs: string[]
+  // temporal backwards compatibility WHITELIST REMOVAL
+  whitelist: string[]
 }
 
 export type UseTranslation = typeof useTranslation
@@ -43,16 +41,16 @@ export type WithTranslationHocType = typeof withTranslation
 export type WithTranslation = ReactI18nextWithTranslation
 export type InitPromise = Promise<TFunction>
 export type CreateClientReturn = {
-  i18n: I18n;
-  initPromise: InitPromise;
+  i18n: I18n
+  initPromise: InitPromise
 }
 
 export type SSRConfig = {
   _nextI18Next: {
-    initialI18nStore: any;
-    initialLocale: string;
-    userConfig: UserConfig;
-  };
+    initialI18nStore: any
+    initialLocale: string
+    userConfig: UserConfig
+  }
 }
 
 export {

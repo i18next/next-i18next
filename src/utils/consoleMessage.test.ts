@@ -1,10 +1,12 @@
+/* eslint-disable no-console */
+
 import { consoleMessage } from '../../src/utils'
 import { InternalConfig } from '../../types'
 
 const consoleMessageStrictMode = (type, message) =>
   consoleMessage(type, message, {
-    strictMode: true,
     errorStackTraceLimit: 0,
+    strictMode: true,
   } as InternalConfig)
 
 const consoleMessageNotStrictMode = (type, message) =>
@@ -90,20 +92,22 @@ describe('consoleMessage utility function', () => {
     consoleMessageStrictMode('info', ['An', 'array', 'of', 'message'])
     consoleMessageStrictMode('info', () => 'Function message')
 
-    const [[errorObject1], [errorObject2], [errorObject3]] = consoleErrSpy.mock.calls
+    const [
+      [errorObject1], [errorObject2], [errorObject3],
+    ] = consoleErrSpy.mock.calls
     expect(errorObject1.name).toBe('Meta')
     expect(errorObject1.message).toMatch(
-      "Param message needs to be of type: string. Instead, 'object' was provided",
+      'Param message needs to be of type: string. Instead, \'object\' was provided',
     )
 
     expect(errorObject2.name).toBe('Meta')
     expect(errorObject2.message).toMatch(
-      "Param message needs to be of type: string. Instead, 'object' was provided",
+      'Param message needs to be of type: string. Instead, \'object\' was provided',
     )
 
     expect(errorObject3.name).toBe('Meta')
     expect(errorObject3.message).toMatch(
-      "Param message needs to be of type: string. Instead, 'function' was provided",
+      'Param message needs to be of type: string. Instead, \'function\' was provided',
     )
   })
 })
