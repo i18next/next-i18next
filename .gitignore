@@ -18,7 +18,14 @@ out
 
 # Testing
 coverage/
-.e2e
+/coverage
+/cypress/videos
+/cypress/screenshots
+/cypress/plugins
+/cypress/support
+/cypress/fixtures/example.json
+cypress.json
+!/cypress/cypress.json
 
 # npm
 package-lock.json

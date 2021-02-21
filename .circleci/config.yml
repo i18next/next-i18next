@@ -3,39 +3,18 @@ commands:
   build-and-test:
     steps:
       - checkout
-      - restore_cache:
-          name: Restore cache (main)
-          keys:
-            - v1-dependencies-{{ checksum "yarn.lock" }}
-      - restore_cache:
-          name: Restore cache (example)
-          keys:
-            - v1-dependencies-{{ checksum "examples/simple/yarn.lock" }}
       - run:
           name: Install dependencies (main)
           command: yarn install
-      - run:
-          name: Build source (main)
-          command: yarn build
-      - run:
-          name: Build source (example)
-          command: yarn build:examples/simple
-      - save_cache:
-          name: Save cache (main)
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "yarn.lock" }}
-      - save_cache:
-          name: Save cache (example)
-          paths:
-            - examples/simple/node_modules
-          key: v1-dependencies-{{ checksum "examples/simple/yarn.lock" }}
       - run:
           name: Lint
           command: yarn lint
       - run:
           name: Test
           command: yarn test
+      - run:
+          name: e2e
+          command: yarn test:e2e
 
 jobs:
   node-v10:
