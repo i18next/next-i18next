@@ -8,7 +8,10 @@ export default (config: InternalConfig): CreateClientReturn => {
   let initPromise: InitPromise
 
   if (!instance.isInitialized) {
-    instance.use(i18nextFSBackend)
+    const hasCustomBackend = config?.use?.some((b) => b.type === 'backend')
+    if (!hasCustomBackend) {
+      instance.use(i18nextFSBackend)
+    }
 
     config.use.forEach(x => instance.use(x))
     initPromise = instance.init(config)

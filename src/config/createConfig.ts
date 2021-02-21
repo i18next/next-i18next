@@ -39,7 +39,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
   if (!process.browser) {
     combinedConfig.preload = locales
 
-    const hasCustomBackend = userConfig?.use?.find((b) => b.type === 'backend')
+    const hasCustomBackend = userConfig?.use?.some((b) => b.type === 'backend')
 
     if (!hasCustomBackend) {
       const fs = require('fs')
