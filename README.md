@@ -160,7 +160,7 @@ module.exports = {
 | `defaultLanguage`  | `'en'`  |
 | `locales` (required) | `['en']`  |
 | `localeExtension` | `'json'`  |
-| `localePath` (required) | `'/public/static/locales'`  |
+| `localePath` (required) | `'./public/locales'`  |
 | `localeStructure` | `'{{lng}}/{{ns}}'`  |
 | `strictMode` | `true`  |
 | `use` (for plugins) | `[]`  |
