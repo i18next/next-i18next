@@ -104,6 +104,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
     if (userConfig[obj]) {
       combinedConfig[obj] = {
         ...defaultConfig[obj],
+        ...combinedConfig[obj],
         ...userConfig[obj],
       }
     }
