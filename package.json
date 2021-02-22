@@ -53,7 +53,7 @@
   "bundlesize": [
     {
       "path": "./examples/simple/.next/static/chunks/commons*.js",
-      "maxSize": "12 kB"
+      "maxSize": "14 kB"
     },
     {
       "path": "./examples/simple/.next/static/chunks/main*.js",
