@@ -21,6 +21,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
   }
 
   const {
+    defaultNS,
     lng,
     locales,
     localeExtension,
@@ -50,8 +51,9 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       // Validate defaultNS
       // https://github.com/isaachinman/next-i18next/issues/358
       //
-      if (typeof combinedConfig.defaultNS === 'string') {
-        const defaultFile = `/${lng}/${combinedConfig.defaultNS}.${localeExtension}`
+      if (typeof defaultNS === 'string') {
+        const defaultLocaleStructure = localeStructure.replace('{{lng}}', lng).replace('{{ns}}', defaultNS)
+        const defaultFile = `/${defaultLocaleStructure}.${localeExtension}`
         const defaultNSPath = path.join(localePath, defaultFile)
         const defaultNSExists = fs.existsSync(defaultNSPath)
         if (!defaultNSExists && process.env.NODE_ENV !== 'production') {
@@ -94,7 +96,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       loadPath: `${clientLocalePath}/${localeStructure}.${localeExtension}`,
     }
 
-    combinedConfig.ns = [combinedConfig.defaultNS]
+    combinedConfig.ns = [defaultNS]
   }
 
   //
