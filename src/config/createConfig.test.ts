@@ -1,4 +1,5 @@
 import fs from 'fs'
+import path from 'path'
 
 import { createConfig } from './createConfig'
 import { UserConfig } from '../../types'
@@ -56,6 +57,7 @@ describe('createConfig', () => {
           lng: 'en',
         } as UserConfig)
         expect((config.backend as any).hello).toEqual('world')
+        expect((config.backend as any).loadPath).toEqual(path.join(process.cwd(),'/public/locales/{{lng}}/{{ns}}.json'))
       })
 
       it('deep merges detection', () => {
@@ -133,6 +135,17 @@ describe('createConfig', () => {
       expect(config.preload).toBeUndefined()
       expect(config.strictMode).toEqual(true)
       expect(config.use).toEqual([])
+    })
+
+    it('deep merges backend', () => {
+      const config = createConfig({
+        backend: {
+          hello: 'world',
+        },
+        lng: 'en',
+      } as UserConfig)
+      expect((config.backend as any).hello).toEqual('world')
+      expect((config.backend as any).loadPath).toMatch('/public/locales/{{lng}}/{{ns}}.json')
     })
   })
 })
