@@ -48,6 +48,27 @@ describe('appWithTranslation', () => {
     expect(screen.getByText('Hello world')).toBeTruthy()
   })
 
+  it('respects configOverride', () => {
+    const DummyAppConfigOverride = appWithTranslation(() => (
+      <div>Hello world</div>
+    ), {
+      configOverride: 'custom-value',
+    } as any)
+    render(
+      <DummyAppConfigOverride
+        pageProps={{
+          _nextI18Next: {
+            initialLocale: 'en',
+          },
+        }}
+      />
+    )
+    const [args] = (I18nextProvider as jest.Mock).mock.calls
+
+    expect(screen.getByText('Hello world')).toBeTruthy()
+    expect(args[0].i18n.options.configOverride).toBe('custom-value')
+  })
+
   it('returns an I18nextProvider', () => {
     renderComponent()
     expect(I18nextProvider).toHaveBeenCalledTimes(1)

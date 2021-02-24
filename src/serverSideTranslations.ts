@@ -1,5 +1,4 @@
 import fs from 'fs'
-import serialize from 'serialize-javascript'
 import path from 'path'
 
 import { createConfig } from './config/createConfig'
@@ -56,7 +55,7 @@ export const serverSideTranslations = async (
     _nextI18Next: {
       initialI18nStore,
       initialLocale,
-      userConfig: userConfig !== null ? serialize(userConfig) : null,
+      userConfig,
     },
   }
 }
