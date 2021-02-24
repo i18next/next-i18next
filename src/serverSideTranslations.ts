@@ -40,10 +40,16 @@ export const serverSideTranslations = async (
     [initialLocale]: {},
   }
 
+  if (typeof config.fallbackLng === 'string') {
+    initialI18nStore[config.fallbackLng] = {}
+  }
+
   namespacesRequired.forEach((ns) => {
-    initialI18nStore[initialLocale][ns] = (
-      (i18n.services.resourceStore.data[initialLocale] || {})[ns] || {}
-    )
+    for (const locale in initialI18nStore) {
+      initialI18nStore[locale][ns] = (
+        (i18n.services.resourceStore.data[locale] || {})[ns] || {}
+      )
+    }
   })
 
   return {

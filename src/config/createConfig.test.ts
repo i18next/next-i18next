@@ -69,6 +69,34 @@ describe('createConfig', () => {
         } as UserConfig)
         expect((config.detection as any).hello).toEqual('world')
       })
+
+      describe('fallbackLng', () => {
+        it('automatically sets if it user does not provide', () => {
+          const config = createConfig({
+            lng: 'en',
+          } as UserConfig)
+
+          expect(config.fallbackLng).toBe('en')
+        })
+
+        it('does not overwrite user provided value', () => {
+          const config = createConfig({
+            fallbackLng: 'hello-world',
+            lng: 'en',
+          } as UserConfig)
+
+          expect(config.fallbackLng).toBe('hello-world')
+        })
+
+        it('does not overwrite user provided boolean', () => {
+          const config = createConfig({
+            fallbackLng: false,
+            lng: 'en',
+          } as UserConfig)
+
+          expect(config.fallbackLng).toBe(false)
+        })
+      })
     })
 
     describe('when filesystem is missing defaultNS', () => {
