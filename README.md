@@ -140,6 +140,9 @@ Note: `useTranslation` provides namespaces to the component that you use it in. 
 
 ### 5. Advanced configuration
 
+
+#### Passing other config options
+
 If you need to modify more advanced configuration options, you can add a `next-i18next.config.js` file to the root of your project. That file should have a default export. For example:
 
 ```js
@@ -152,6 +155,28 @@ module.exports = {
   },
   localePath: path.resolve('./my/custom/path')
 }
+```
+
+#### Unserialisable configs
+
+Some `i18next` plugins (which you can pass into `config.use`) are unserialisable, as they contain functions and other JavaScript primitives.
+
+You may run into this if your use case is more advanced. You'll see NextJs throw an error like:
+
+```
+Error: Error serializing `._nextI18Next.userConfig.use[0].process` returned from `getStaticProps` in "/my-page".
+Reason: `function` cannot be serialized as JSON. Please only return JSON serializable data types.
+```
+
+To fix this, you'll need to set `config.serializeConfig` to `false`, and manually pass your config into `appWithTranslation`:
+
+```tsx
+import { appWithTranslation } from 'next-i18next'
+import nextI18NextConfig from '../next-i18next.config.js'
+
+const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />
+
+export default appWithTranslation(MyApp, nextI18NextConfig)
 ```
 
 #### Options
