@@ -72,6 +72,23 @@ module.exports = {
   i18n,
 }
 ```
+You can use `NextI18Next.useTranslation` hook too! [See in react-i18next docs](https://react.i18next.com/latest/usetranslation-hook)
+
+```jsx
+// This is our initialised `NextI18Next` instance
+import { useTranslation } from '../i18n'
+
+export  const Footer = () => {
+ const { t } = useTranslation('footer')
+ return )
+   <footer>
+    <p>
+      {t('description')}
+    </p>
+  </footer>
+ )
+}
+```
 
 There are three functions that `next-i18next` exports, which you will need to use to translate your project:
 
