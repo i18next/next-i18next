@@ -17,7 +17,8 @@
   "ignorePatterns": [
     "**/node_modules/*",
     "**/out/*",
-    "**/.next/*"
+    "**/.next/*",
+    "**/*package.json"
   ],
   "rules": {
     "comma-dangle": [
@@ -109,6 +110,31 @@
       "rules": {
         "import/no-default-export": 0,
         "jest/expect-expect": 0
+      }
+    },
+    {
+      "files": [
+        "examples/**/*"
+      ],
+      "rules": {
+        "react/react-in-jsx-scope": 0
+      }
+    },
+    {
+      "files": [
+        "examples/**/pages/**/*"
+      ],
+      "rules": {
+        "import/no-default-export": 0
+      }
+    },
+    {
+      "files": [
+        "**/*.config.js"
+      ],
+      "rules": {
+        "import/no-commonjs": 0,
+        "no-undef": 0
       }
     }
   ],

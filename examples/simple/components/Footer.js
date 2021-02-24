@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import { version } from 'next-i18next/package.json'
 import { useTranslation } from 'next-i18next'
 
