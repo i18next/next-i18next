@@ -9,11 +9,9 @@ If you are using next-i18next in production, please consider [sponsoring the pac
 
 ## What is this?
 
-While NextJs [provides internationalised routing directly](https://nextjs.org/docs/advanced-features/i18n-routing), it does not handle any management of translation content, or the actual translation process itself. All NextJs does is keep your locales and URLs in sync.
+Although NextJs [provides internationalised routing directly](https://nextjs.org/docs/advanced-features/i18n-routing), it does not handle any management of translation content, or the actual translation functionality itself. All NextJs does is keep your locales and URLs in sync.
 
-Thus, `next-i18next` provides the remaining functionality – management of translation content, and components/hooks to translate your React components.
-
-`next-i18next` is a plugin for [Next.js](https://nextjs.org/) projects that allows you to get translations up and running quickly and easily, while fully supporting SSR, multiple [namespaces](https://www.i18next.com/principles/namespaces) with codesplitting, etc.
+To complement this, `next-i18next` provides the remaining functionality – management of translation content, and components/hooks to translate your React components, while fully supporting SSG/SSR, multiple [namespaces](https://www.i18next.com/principles/namespaces), codesplitting, etc.
 
 While `next-i18next` uses [i18next](https://www.i18next.com/) and [react-i18next](https://github.com/i18next/react-i18next) under the hood, users of `next-i18next` simply need to include their translation content as JSON files and don't have to worry about much else.
 
@@ -50,6 +48,8 @@ If you want to structure your translations/namespaces in a custom way, you will 
 
 First, create a `next-i18next.config.js` file in the root of your project. The syntax for the nested `i18n` object  [comes from NextJs directly](https://nextjs.org/docs/advanced-features/i18n-routing).
 
+This tells `next-i18next` what your `defaultLocale` and other locales are, so that it can preload translations on the server:
+
 #### `next-i18next.config.js`
 
 ```js
@@ -61,13 +61,9 @@ module.exports = {
 }
 ```
 
-Now, create or modify your `next.config.js` file.
+Now, create or modify your `next.config.js` file, by passing the `i18n` object into your `next.config.js` file, to enable localised URL routing:
 
 #### `next.config.js`
-
-This tells `next-i18next` what your `defaultLocale` and other locales are, so that it can preload translations on the server, etc.
-
-Second, simply pass the `i18n` object into your `next.config.js` file, to enable localised URL routing:
 
 ```js
 const { i18n } = require('./next-i18next.config')
@@ -107,7 +103,9 @@ export const getStaticProps = async ({ locale }) => ({
 })
 ```
 
-Note that `serverSideTranslations` must be imported from `next-i18next/serverSideTranslations` – this is a separate module that contains NodeJs-specific code. Also, note that `serverSideTranslations` is not compatible with `getInitialProps`, as it _only_ can execute in a server environment, whereas `getInitialProps` is called on the client side when navigating between pages.
+Note that `serverSideTranslations` must be imported from `next-i18next/serverSideTranslations` – this is a separate module that contains NodeJs-specific code.
+
+Also, note that `serverSideTranslations` is not compatible with `getInitialProps`, as it _only_ can execute in a server environment, whereas `getInitialProps` is called on the client side when navigating between pages.
 
 The `serverSideTranslations` HOC is primarily responsible for passing translations and configuration options into pages, as props.
 
@@ -148,6 +146,10 @@ If you need to modify more advanced configuration options, you can add a `next-i
 const path = require('path')
 
 module.exports = {
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'de'],
+  },
   localePath: path.resolve('./my/custom/path')
 }
 ```
@@ -162,6 +164,7 @@ module.exports = {
 | `localeExtension` | `'json'`  |
 | `localePath` (required) | `'./public/locales'`  |
 | `localeStructure` | `'{{lng}}/{{ns}}'`  |
+| `serializeConfig` | `true`  |
 | `strictMode` | `true`  |
 | `use` (for plugins) | `[]`  |
 | `customDetectors` | `[]`  |
