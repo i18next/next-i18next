@@ -1,6 +1,6 @@
 {
   "name": "next-i18next",
-  "version": "8.0.0-beta.6",
+  "version": "8.0.0",
   "repository": "git@github.com:isaachinman/next-i18next.git",
   "author": "Isaac Hinman <isaac@isaachinman.com>",
   "funding": {
@@ -108,7 +108,7 @@
     "react-i18next": "^11.8.8"
   },
   "peerDependencies": {
-    "next": ">= 9.5.0",
+    "next": ">= 10.0.0",
     "react": ">= 16.8.0"
   }
 }
