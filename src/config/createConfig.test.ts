@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 import fs from 'fs'
 import path from 'path'
 
