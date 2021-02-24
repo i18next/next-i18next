@@ -1,20 +1,18 @@
 {
-  "name": "-",
+  "name": "v10",
   "version": "1.0.0",
-  "main": "./dist/index.js",
+  "main": "index.js",
   "license": "MIT",
-  "engines": {
-    "node": ">=8"
-  },
   "scripts": {
     "dev": "next",
     "build": "next build",
     "start": "next start -p ${PORT:=3000}"
   },
-  "devDependencies": {},
   "dependencies": {
-    "i18next": "^14.0.1",
-    "next": "^9.5.4",
+    "next": "10.0.5",
     "next-i18next": "link:../../"
+  },
+  "devDependencies": {
+    "prop-types": "^15.7.2"
   }
 }

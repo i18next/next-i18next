@@ -2,12 +2,13 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "noEmit": true,
+    "skipLibCheck": true,
     "lib": ["esnext", "dom"],
     "target": "es5",
     "jsx": "react"
   },
   "include": [
-    "__tests__/types.test.tsx",
-    "src/**/*"
+    "src/**/*",
+    "node_modules/next/types/global.d.ts"
   ]
 }

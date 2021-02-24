@@ -1,30 +1,36 @@
-import PropTypes from 'prop-types'
-import { withTranslation, Link } from '../i18n'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
+import Link from 'next/link'
 
-const SecondPage = ({ t }) => (
-  <>
-    <main>
-      <Header title={t('h1')} />
-      <Link href='/'>
-        <button
-          type='button'
-        >
-          {t('back-to-home')}
-        </button>
-      </Link>
-    </main>
-    <Footer />
-  </>
-)
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-SecondPage.getInitialProps = async () => ({
-  namespacesRequired: ['second-page', 'footer'],
-})
+import { Header } from '../components/Header'
+import { Footer } from '../components/Footer'
 
-SecondPage.propTypes = {
-  t: PropTypes.func.isRequired,
+const SecondPage = () => {
+
+  const { t } = useTranslation('second-page')
+
+  return (
+    <>
+      <main>
+        <Header title={t('h1')} />
+        <Link href='/'>
+          <button
+            type='button'
+          >
+            {t('back-to-home')}
+          </button>
+        </Link>
+      </main>
+      <Footer />
+    </>
+  )
 }
 
-export default withTranslation('second-page')(SecondPage)
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['second-page', 'footer']),
+  },
+})
+
+export default SecondPage

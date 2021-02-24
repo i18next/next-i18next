@@ -51,6 +51,46 @@
         ]
       ]
     },
+    "esm": {
+      "presets": [
+        "@babel/preset-typescript",
+        [
+          "@babel/preset-env",
+          {
+            "modules": false,
+            "targets": {
+              "browsers": [
+                "last 2 versions",
+                "ie >= 11"
+              ]
+            }
+          }
+        ],
+        [
+          "next/babel",
+          {
+            "transform-runtime": {
+              "corejs": false,
+              "helpers": true,
+              "regenerator": true,
+              "useESModules": false
+            },
+            "preset-env": {
+              "modules": false
+            }
+          }
+        ]
+      ],
+      "plugins": [
+        "@babel/proposal-class-properties",
+        [
+          "add-module-exports",
+          {
+            "addDefaultProperty": true
+          }
+        ]
+      ]
+    },
     "test": {
       "presets": [
         "@babel/preset-typescript",

@@ -1,38 +1,48 @@
-import PropTypes from 'prop-types'
-import { i18n, Link, withTranslation } from '../i18n'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
-const Homepage = ({ t }) => (
-  <>
-    <main>
-      <Header title={t('h1')} />
-      <div>
-        <button
-          type='button'
-          onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'de' : 'en')}
-        >
-          {t('change-locale')}
-        </button>
-        <Link href='/second-page'>
-          <button
-            type='button'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+
+import { Header } from '../components/Header'
+import { Footer } from '../components/Footer'
+
+const Homepage = () => {
+
+  const router = useRouter()
+  const { t } = useTranslation('common')
+
+  return (
+    <>
+      <main>
+        <Header title={t('h1')} />
+        <div>
+          <Link
+            href='/'
+            locale={router.locale === 'en' ? 'de' : 'en'}
           >
-            {t('to-second-page')}
-          </button>
-        </Link>
-      </div>
-    </main>
-    <Footer />
-  </>
-)
-
-Homepage.getInitialProps = async () => ({
-  namespacesRequired: ['common', 'footer'],
-})
-
-Homepage.propTypes = {
-  t: PropTypes.func.isRequired,
+            <button>
+              {t('change-locale')}
+            </button>
+          </Link>
+          <Link href='/second-page'>
+            <button
+              type='button'
+            >
+              {t('to-second-page')}
+            </button>
+          </Link>
+        </div>
+      </main>
+      <Footer />
+    </>
+  )
 }
 
-export default withTranslation('common')(Homepage)
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common', 'footer']),
+  },
+})
+
+export default Homepage
