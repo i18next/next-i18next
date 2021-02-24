@@ -5,7 +5,7 @@ import { I18nextProvider } from 'react-i18next'
 import { createConfig } from './config/createConfig'
 import createClient from './createClient'
 
-import { SSRConfig } from '../types'
+import { SSRConfig, UserConfig } from '../types'
 
 export { I18nContext, Trans, useTranslation, withTranslation } from 'react-i18next'
 
@@ -14,26 +14,31 @@ type AppProps = {
 }
 
 export const appWithTranslation = <P extends Record<string, unknown>>(
-  WrappedComponent: React.ComponentType | React.ElementType):
+  WrappedComponent: React.ComponentType | React.ElementType,
+  configOverride: UserConfig = null,
+):
   React.ComponentType<P> | React.ElementType<P> => {
   const AppWithTranslation = (props: AppProps) => {
     let i18n = null
     let locale = null
 
     if (props?.pageProps?._nextI18Next) {
-      const {
-        initialI18nStore,
-        initialLocale,
-        userConfig,
-      } = props.pageProps._nextI18Next
+      let { userConfig } = props.pageProps._nextI18Next
+      const { initialI18nStore, initialLocale } = props.pageProps._nextI18Next
 
-      const parsedUserConfig = Function(`'use strict';return(${userConfig})`)()
+      if (userConfig === null && configOverride === null) {
+        throw new Error('appWithTranslation was called without a next-i18next config')
+      }
+
+      if (configOverride !== null) {
+        userConfig = configOverride
+      }
 
       locale = initialLocale;
 
       ({ i18n } = createClient({
         ...createConfig({
-          ...parsedUserConfig,
+          ...userConfig,
           lng: initialLocale,
         }),
         lng: initialLocale,
