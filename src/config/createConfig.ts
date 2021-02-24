@@ -37,6 +37,10 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
     return combinedConfig as InternalConfig
   }
 
+  if (typeof combinedConfig.fallbackLng === 'undefined') {
+    combinedConfig.fallbackLng = combinedConfig.defaultLocale
+  }
+
   if (!process.browser) {
     combinedConfig.preload = locales
 
