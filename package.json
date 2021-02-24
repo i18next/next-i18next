@@ -105,7 +105,7 @@
     "hoist-non-react-statics": "^3.2.0",
     "i18next": "^19.8.4",
     "i18next-fs-backend": "^1.0.7",
-    "react-i18next": "^11.7.3",
+    "react-i18next": "^11.8.8",
     "serialize-javascript": "^5.0.1"
   },
   "peerDependencies": {
