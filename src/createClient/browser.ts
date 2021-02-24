@@ -1,5 +1,4 @@
 import i18n from 'i18next'
-import i18nextHTTPBackend from 'i18next-http-backend/cjs'
 
 import { InternalConfig, CreateClientReturn, InitPromise } from '../../types'
 
@@ -8,10 +7,9 @@ export default (config: InternalConfig): CreateClientReturn => {
   let initPromise: InitPromise
 
   if (!instance.isInitialized) {
-    instance.use(i18nextHTTPBackend)
-
     config.use.forEach(x => instance.use(x))
     initPromise = instance.init(config)
   }
+
   return { i18n: instance, initPromise }
 }
