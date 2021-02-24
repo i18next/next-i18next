@@ -143,7 +143,7 @@ Note: `useTranslation` provides namespaces to the component that you use it in. 
 
 #### Passing other config options
 
-If you need to modify more advanced configuration options, you can add a `next-i18next.config.js` file to the root of your project. That file should have a default export. For example:
+If you need to modify more advanced configuration options, you can pass them via `next-i18next.config.js`. For example:
 
 ```js
 const path = require('path')
