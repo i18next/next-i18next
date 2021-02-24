@@ -28,6 +28,12 @@ export const serverSideTranslations = async (
     lng: initialLocale,
   })
 
+  const {
+    defaultLocale,
+    localeExtension,
+    localePath,
+  } = config
+
   const { i18n, initPromise } = createClient({
     ...config,
     lng: initialLocale,
@@ -41,6 +47,14 @@ export const serverSideTranslations = async (
 
   if (typeof config.fallbackLng === 'string') {
     initialI18nStore[config.fallbackLng] = {}
+  }
+
+  if (namespacesRequired.length === 0) {
+    const getAllNamespaces = (path: string) =>
+      fs.readdirSync(path)
+        .map(file => file.replace(`.${localeExtension}`, ''))
+
+    namespacesRequired = getAllNamespaces(path.resolve(process.cwd(), `${localePath}/${defaultLocale}`))
   }
 
   namespacesRequired.forEach((ns) => {
