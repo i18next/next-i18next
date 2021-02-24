@@ -14,6 +14,7 @@ describe('createConfig', () => {
   describe('server side', () => {
     beforeAll(() => {
       Object.assign(process, { browser: false })
+      delete global.window
     })
 
     describe('when filesystem is as expected', () => {
@@ -139,6 +140,7 @@ describe('createConfig', () => {
   describe('client side', () => {
     beforeAll(() => {
       Object.assign(process, { browser: true })
+      global.window = {} as any
     })
 
     it('throws when lng is not provided', () => {

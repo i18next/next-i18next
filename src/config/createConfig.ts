@@ -41,7 +41,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
     combinedConfig.fallbackLng = combinedConfig.defaultLocale
   }
 
-  if (!process.browser) {
+  if (!process.browser && typeof window === 'undefined') {
     combinedConfig.preload = locales
 
     const hasCustomBackend = userConfig?.use?.some((b) => b.type === 'backend')

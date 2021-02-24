@@ -13,7 +13,7 @@ export const defaultConfig = {
     locales: LOCALES,
   },
   get initImmediate(): boolean {
-    return process.browser
+    return process.browser && typeof window !== 'undefined'
   },
   interpolation: {
     escapeValue: false,
