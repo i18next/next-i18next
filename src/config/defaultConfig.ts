@@ -25,8 +25,7 @@ export const defaultConfig = {
   localePath: LOCALE_PATH,
   localeStructure: LOCALE_STRUCTURE,
   react: {
-    useSuspense: false,
-    wait: true,
+    useSuspense: true,
   },
   strictMode: true,
   use: [],
