@@ -26,6 +26,10 @@ export const appWithTranslation = <P extends Record<string, unknown>>(
       let { userConfig } = props.pageProps._nextI18Next
       const { initialI18nStore, initialLocale } = props.pageProps._nextI18Next
 
+      if (userConfig === null && configOverride === null) {
+        throw new Error('appWithTranslation was called without a next-i18next config')
+      }
+
       if (configOverride !== null) {
         userConfig = configOverride
       }

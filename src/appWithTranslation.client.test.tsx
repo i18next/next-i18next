@@ -30,6 +30,7 @@ const renderComponent = () =>
       pageProps={{
         _nextI18Next: {
           initialLocale: 'en',
+          userConfig: {},
         },
       }}
     />
@@ -67,6 +68,24 @@ describe('appWithTranslation', () => {
 
     expect(screen.getByText('Hello world')).toBeTruthy()
     expect(args[0].i18n.options.configOverride).toBe('custom-value')
+  })
+
+  it('throws an error if userConfig and configOverride are both missing', () => {
+    const DummyAppConfigOverride = appWithTranslation(() => (
+      <div>Hello world</div>
+    ))
+    expect(
+      () => render(
+        <DummyAppConfigOverride
+          pageProps={{
+            _nextI18Next: {
+              initialLocale: 'en',
+              userConfig: null,
+            },
+          }}
+        />
+      )
+    ).toThrow('appWithTranslation was called without a next-i18next config')
   })
 
   it('returns an I18nextProvider', () => {

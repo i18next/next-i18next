@@ -27,6 +27,7 @@ export const defaultConfig = {
   react: {
     useSuspense: true,
   },
+  serializeConfig: true,
   strictMode: true,
   use: [],
 }

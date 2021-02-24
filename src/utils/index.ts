@@ -1,1 +1,0 @@
-export { consoleMessage } from './consoleMessage'
