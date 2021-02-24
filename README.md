@@ -11,7 +11,7 @@ If you are using next-i18next in production, please consider [sponsoring the pac
 
 Although NextJs [provides internationalised routing directly](https://nextjs.org/docs/advanced-features/i18n-routing), it does not handle any management of translation content, or the actual translation functionality itself. All NextJs does is keep your locales and URLs in sync.
 
-To complement this, `next-i18next` provides the remaining functionality – management of translation content, and components/hooks to translate your React components, while fully supporting SSG/SSR, multiple [namespaces](https://www.i18next.com/principles/namespaces), codesplitting, etc.
+To complement this, `next-i18next` provides the remaining functionality – management of translation content, and components/hooks to translate your React components – while fully supporting SSG/SSR, multiple [namespaces](https://www.i18next.com/principles/namespaces), codesplitting, etc.
 
 While `next-i18next` uses [i18next](https://www.i18next.com/) and [react-i18next](https://github.com/i18next/react-i18next) under the hood, users of `next-i18next` simply need to include their translation content as JSON files and don't have to worry about much else.
 
@@ -70,23 +70,6 @@ const { i18n } = require('./next-i18next.config')
 
 module.exports = {
   i18n,
-}
-```
-You can use `NextI18Next.useTranslation` hook too! [See in react-i18next docs](https://react.i18next.com/latest/usetranslation-hook)
-
-```jsx
-// This is our initialised `NextI18Next` instance
-import { useTranslation } from '../i18n'
-
-export  const Footer = () => {
- const { t } = useTranslation('footer')
- return )
-   <footer>
-    <p>
-      {t('description')}
-    </p>
-  </footer>
- )
 }
 ```
 
@@ -201,15 +184,12 @@ export default appWithTranslation(MyApp, nextI18NextConfig)
 | Key  | Default value |
 | ------------- | ------------- |
 | `defaultNS` | `'common'`  |
-| `defaultLanguage`  | `'en'`  |
-| `locales` (required) | `['en']`  |
 | `localeExtension` | `'json'`  |
-| `localePath` (required) | `'./public/locales'`  |
+| `localePath` | `'./public/locales'`  |
 | `localeStructure` | `'{{lng}}/{{ns}}'`  |
 | `serializeConfig` | `true`  |
 | `strictMode` | `true`  |
 | `use` (for plugins) | `[]`  |
-| `customDetectors` | `[]`  |
 
 All other [i18next options](https://www.i18next.com/overview/configuration-options) can be passed in as well.
 
