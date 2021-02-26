@@ -3,10 +3,27 @@ import i18nextFSBackend from 'i18next-fs-backend/cjs'
 
 import { InternalConfig, CreateClientReturn, InitPromise } from '../../types'
 
-export default (config: InternalConfig): CreateClientReturn => {
-  const instance = i18n.createInstance(config)
-  let initPromise: InitPromise
+let instance
 
+export default (config: InternalConfig): CreateClientReturn => {
+  let initPromise: InitPromise
+  if (instance) {
+    // using cloneInstance for subsequent calls,
+    // prevents to load the translations again via backend plugin,
+    // like in i18next-http-middleware
+    let i18nextClone
+    initPromise = new Promise((resolve, reject) => {
+      i18nextClone = instance.cloneInstance({
+        ...config,
+        initImmediate: false,
+      }, (err, t) => err ? reject(err) : resolve(t))
+    })
+    return {
+      i18n: i18nextClone,
+      initPromise,
+    }
+  }
+  instance = i18n.createInstance(config)
   if (!instance.isInitialized) {
     const hasCustomBackend = config?.use?.some((b) => b.type === 'backend')
     if (!hasCustomBackend) {
