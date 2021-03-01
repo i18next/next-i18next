@@ -204,7 +204,13 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
 
-## Supported by BrowserStack
-Thanks to [BrowserStack](https://browserstack.com/) for their support of this open-source project.
+## Sponsors
 
-<img src="https://3fxtqy18kygf3on3bu39kh93-wpengine.netdna-ssl.com/wp-content/themes/browserstack/img/browserstack-logo.svg" width="150">
+<a href="https://locize.com/" target="_blank">
+  <img src="https://raw.githubusercontent.com/i18next/i18next/master/assets/locize_sponsor_240.gif" width="240px">
+</a>
+
+<a href="https://www.browserstack.com/" target="_blank">
+  <img src="https://miro.medium.com/max/560/0*dLdslKvNsmtaH2uQ.png" width="240px">
+</a>
+
