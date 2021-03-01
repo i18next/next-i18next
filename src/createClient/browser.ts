@@ -7,8 +7,10 @@ export default (config: InternalConfig): CreateClientReturn => {
   let initPromise: InitPromise
 
   if (!instance.isInitialized) {
-    config.use.forEach(x => instance.use(x))
+    config?.use?.forEach(x => instance.use(x))
     initPromise = instance.init(config)
+  } else {
+    initPromise = Promise.resolve(i18n.t)
   }
 
   return { i18n: instance, initPromise }

@@ -10,7 +10,7 @@ jest.mock('fs', () => ({
   readdirSync: jest.fn(),
 }))
 
-const DummyI18nextProvider = ({ children }) => (
+const DummyI18nextProvider: React.FC = ({ children }) => (
   <>{children}</>
 )
 
@@ -32,7 +32,7 @@ const renderComponent = () =>
           initialLocale: 'en',
           userConfig: {},
         },
-      }}
+      } as any}
     />
   )
 
@@ -61,7 +61,7 @@ describe('appWithTranslation', () => {
           _nextI18Next: {
             initialLocale: 'en',
           },
-        }}
+        } as any}
       />
     )
     const [args] = (I18nextProvider as jest.Mock).mock.calls
@@ -82,7 +82,7 @@ describe('appWithTranslation', () => {
               initialLocale: 'en',
               userConfig: null,
             },
-          }}
+          } as any}
         />
       )
     ).toThrow('appWithTranslation was called without a next-i18next config')

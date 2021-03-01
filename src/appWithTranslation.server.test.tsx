@@ -14,7 +14,7 @@ jest.mock('fs', () => ({
   readdirSync: jest.fn(),
 }))
 
-const DummyI18nextProvider = ({ children }) => (
+const DummyI18nextProvider: React.FC = ({ children }) => (
   <>{children}</>
 )
 
@@ -35,7 +35,7 @@ const renderComponent = () =>
         _nextI18Next: {
           initialLocale: 'en',
         },
-      }}
+      } as any}
     />,
   )
 

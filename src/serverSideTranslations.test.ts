@@ -16,7 +16,7 @@ describe('serverSideTranslations', () => {
   afterEach(jest.resetAllMocks)
 
   it('throws if initialLocale is not passed', async () => {
-    await expect(serverSideTranslations(undefined))
+    await expect(serverSideTranslations(undefined as any))
       .rejects
       .toThrow('Initial locale argument was not passed into serverSideTranslations')
   })

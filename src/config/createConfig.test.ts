@@ -9,12 +9,15 @@ jest.mock('fs', () => ({
   readdirSync: jest.fn(),
 }))
 
+const deleteWindow = () =>
+  global.window
+
 describe('createConfig', () => {
 
   describe('server side', () => {
     beforeAll(() => {
       Object.assign(process, { browser: false })
-      delete global.window
+      deleteWindow()
     })
 
     describe('when filesystem is as expected', () => {
@@ -106,7 +109,7 @@ describe('createConfig', () => {
 
         const config = createConfig.bind(null, {
           lng: 'en',
-        })
+        } as any)
 
         expect(config).toThrow('Default namespace not found at public/locales/en/common.json')
       })
