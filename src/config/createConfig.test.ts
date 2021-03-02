@@ -9,15 +9,12 @@ jest.mock('fs', () => ({
   readdirSync: jest.fn(),
 }))
 
-const deleteWindow = () =>
-  global.window
-
 describe('createConfig', () => {
 
   describe('server side', () => {
     beforeAll(() => {
       Object.assign(process, { browser: false })
-      deleteWindow()
+      delete (global as any).window
     })
 
     describe('when filesystem is as expected', () => {

@@ -34,6 +34,12 @@ const renderComponent = () =>
       pageProps={{
         _nextI18Next: {
           initialLocale: 'en',
+          userConfig: {
+            i18n: {
+              defaultLocale: 'en',
+              locales: ['en', 'fr'],
+            },
+          },
         },
       } as any}
     />,

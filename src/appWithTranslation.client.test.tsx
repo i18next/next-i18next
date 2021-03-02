@@ -30,7 +30,12 @@ const renderComponent = () =>
       pageProps={{
         _nextI18Next: {
           initialLocale: 'en',
-          userConfig: {},
+          userConfig: {
+            i18n: {
+              defaultLocale: 'en',
+              locales: ['en', 'de'],
+            },
+          },
         },
       } as any}
     />
@@ -54,6 +59,10 @@ describe('appWithTranslation', () => {
       <div>Hello world</div>
     ), {
       configOverride: 'custom-value',
+      i18n: {
+        defaultLocale: 'en',
+        locales: ['en', 'de'],
+      },
     } as any)
     render(
       <DummyAppConfigOverride
