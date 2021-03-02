@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 
 import { createConfig } from './createConfig'
-import { UserConfig } from '../../types'
+import { UserConfig } from '../types'
 
 jest.mock('fs', () => ({
   existsSync: jest.fn(),

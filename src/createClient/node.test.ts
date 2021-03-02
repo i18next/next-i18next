@@ -1,4 +1,4 @@
-import { InternalConfig } from '../../types'
+import { InternalConfig } from '../types'
 import createClientNode from './node'
 
 const config = {

@@ -9,7 +9,17 @@
   },
   "main": "dist/commonjs/index.js",
   "module": "dist/esm/index.js",
-  "types": "./types.d.ts",
+  "types": "dist/types/index.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "dist/types/index.d.ts"
+      ],
+      "serverSideTranslations": [
+        "dist/types/serverSideTranslations.d.ts"
+      ]
+    }
+  },
   "license": "MIT",
   "engines": {
     "node": ">=10"
@@ -29,10 +39,11 @@
     "check-types": "tsc",
     "lint": "eslint src examples",
     "clean": "rm -rf examples/simple/.next && rm -rf dist && mkdir dist",
+    "build:ts": "tsc -p tsconfig.declarations.json",
     "build:es": "BABEL_ENV=es babel src --extensions '.ts,.tsx' --out-dir dist/es --copy-files",
     "build:cjs": "BABEL_ENV=cjs babel src --extensions '.ts,.tsx' --out-dir dist/commonjs --copy-files",
     "build:esm": "BABEL_ENV=esm babel src --extensions '.ts,.tsx' --out-dir dist/esm --copy-files",
-    "build": "yarn clean && yarn build:cjs && yarn build:es && yarn build:esm",
+    "build": "yarn clean && yarn build:ts && yarn build:cjs && yarn build:es && yarn build:esm",
     "build:examples/simple": "yarn --cwd examples/simple && yarn --cwd examples/simple build",
     "prepublishOnly": "yarn build",
     "run-example": "yarn build && cd examples/simple && yarn && yarn dev",

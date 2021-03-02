@@ -1,4 +1,4 @@
-import { InternalConfig } from '../../types'
+import { InternalConfig } from '../types'
 import createClientBrowser from './browser'
 
 const config = {

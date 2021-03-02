@@ -1,5 +1,6 @@
 # Untranspiled source and examples
 examples
+src
 
 # Dependencies
 node_modules

@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { UserConfig } from '../types'
+import { UserConfig } from './types'
 import { serverSideTranslations } from './serverSideTranslations'
 
 jest.mock('fs', () => ({
