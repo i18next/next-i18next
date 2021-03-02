@@ -28,20 +28,24 @@ const DummyApp = appWithTranslation(() => (
   <div>Hello world</div>
 ))
 
+const props = {
+  pageProps: {
+    _nextI18Next: {
+      initialLocale: 'en',
+      userConfig: {
+        i18n: {
+          defaultLocale: 'en',
+          locales: ['en', 'fr'],
+        },
+      },
+    },
+  } as any,
+} as any
+
 const renderComponent = () =>
   renderToString(
     <DummyApp
-      pageProps={{
-        _nextI18Next: {
-          initialLocale: 'en',
-          userConfig: {
-            i18n: {
-              defaultLocale: 'en',
-              locales: ['en', 'fr'],
-            },
-          },
-        },
-      } as any}
+      {...props}
     />,
   )
 
