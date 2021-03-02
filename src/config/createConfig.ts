@@ -1,7 +1,7 @@
 import { defaultConfig } from './defaultConfig'
 import { InternalConfig, UserConfig } from '../../types'
 
-const deepMergeObjects = ['backend', 'detection']
+const deepMergeObjects = ['backend', 'detection'] as (keyof Pick<UserConfig, 'backend' | 'detection'>)[]
 
 export const createConfig = (userConfig: UserConfig): InternalConfig => {
   if (typeof userConfig?.lng !== 'string') {
@@ -55,7 +55,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       // Validate defaultNS
       // https://github.com/isaachinman/next-i18next/issues/358
       //
-      if (typeof defaultNS === 'string') {
+      if (typeof defaultNS === 'string' && typeof lng !== 'undefined') {
         const defaultLocaleStructure = localeStructure.replace('{{lng}}', lng).replace('{{ns}}', defaultNS)
         const defaultFile = `/${defaultLocaleStructure}.${localeExtension}`
         const defaultNSPath = path.join(localePath, defaultFile)
@@ -77,7 +77,10 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       // Set server side preload (namespaces)
       //
       if (!combinedConfig.ns) {
-        const getAllNamespaces = p => fs.readdirSync(p).map(file => file.replace(`.${localeExtension}`, ''))
+        const getAllNamespaces = (p: string) =>
+          fs.readdirSync(p).map(
+            (file: string) => file.replace(`.${localeExtension}`, '')
+          )
         combinedConfig.ns = getAllNamespaces(path.resolve(process.cwd(), `${serverLocalePath}/${lng}`))
       }
     }
@@ -109,7 +112,6 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
   deepMergeObjects.forEach((obj) => {
     if (userConfig[obj]) {
       combinedConfig[obj] = {
-        ...defaultConfig[obj],
         ...combinedConfig[obj],
         ...userConfig[obj],
       }

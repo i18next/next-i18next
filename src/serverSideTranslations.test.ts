@@ -16,7 +16,7 @@ describe('serverSideTranslations', () => {
   afterEach(jest.resetAllMocks)
 
   it('throws if initialLocale is not passed', async () => {
-    await expect(serverSideTranslations(undefined))
+    await expect(serverSideTranslations(undefined as any))
       .rejects
       .toThrow('Initial locale argument was not passed into serverSideTranslations')
   })
@@ -36,15 +36,25 @@ describe('serverSideTranslations', () => {
   })
 
   it('returns props', async () => {
-    const props = await serverSideTranslations('en')
+    const props = await serverSideTranslations('en-US', [], {
+      i18n: {
+        defaultLocale: 'en-US',
+        locales: ['en-US', 'fr-CA'],
+      },
+    } as UserConfig)
 
     expect(props).toEqual({
       _nextI18Next: {
         initialI18nStore: {
-          en: {},
+          'en-US': {},
         },
-        initialLocale: 'en',
-        userConfig: null,
+        initialLocale: 'en-US',
+        userConfig: {
+          i18n: {
+            defaultLocale: 'en-US',
+            locales: ['en-US', 'fr-CA'],
+          },
+        },
       },
     })
   })

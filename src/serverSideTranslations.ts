@@ -11,7 +11,7 @@ const DEFAULT_CONFIG_PATH = './next-i18next.config.js'
 export const serverSideTranslations = async (
   initialLocale: string,
   namespacesRequired: string[] = [],
-  configOverride: UserConfig = null,
+  configOverride: UserConfig | null = null,
 ): Promise<SSRConfig> => {
   if (typeof initialLocale !== 'string') {
     throw new Error('Initial locale argument was not passed into serverSideTranslations')
@@ -21,6 +21,10 @@ export const serverSideTranslations = async (
 
   if (fs.existsSync(path.resolve(DEFAULT_CONFIG_PATH))) {
     userConfig = await import(path.resolve(DEFAULT_CONFIG_PATH))
+  }
+
+  if (userConfig === null) {
+    throw new Error('next-i18next was unable to find a user config')
   }
 
   const config = createConfig({
@@ -41,7 +45,7 @@ export const serverSideTranslations = async (
 
   await initPromise
 
-  const initialI18nStore = {
+  const initialI18nStore: Record<string, any> = {
     [initialLocale]: {},
   }
 

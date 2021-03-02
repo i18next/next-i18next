@@ -19,7 +19,7 @@ export type UserConfig = {
   localeExtension?: string
   localePath?: string
   localeStructure?: string
-  serializeConfig: boolean
+  serializeConfig?: boolean
   strictMode?: boolean
   use?: any[]
 } & InitOptions
@@ -50,7 +50,7 @@ export type SSRConfig = {
   _nextI18Next: {
     initialI18nStore: any
     initialLocale: string
-    userConfig: UserConfig
+    userConfig: UserConfig | null
   }
 }
 

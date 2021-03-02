@@ -13,11 +13,10 @@ type AppProps = {
   pageProps: SSRConfig
 }
 
-export const appWithTranslation = <P extends Record<string, unknown>>(
-  WrappedComponent: React.ComponentType | React.ElementType,
-  configOverride: UserConfig = null,
-):
-  React.ComponentType<P> | React.ElementType<P> => {
+export const appWithTranslation = (
+  WrappedComponent: React.ComponentType<AppProps> | React.ElementType<AppProps>,
+  configOverride: UserConfig | null = null,
+) => {
   const AppWithTranslation = (props: AppProps) => {
     let i18n = null
     let locale = null
@@ -34,6 +33,10 @@ export const appWithTranslation = <P extends Record<string, unknown>>(
         userConfig = configOverride
       }
 
+      if (!userConfig?.i18n) {
+        throw new Error('appWithTranslation was called without config.i18n')
+      }
+
       locale = initialLocale;
 
       ({ i18n } = createClient({
@@ -46,17 +49,27 @@ export const appWithTranslation = <P extends Record<string, unknown>>(
       }))
     }
 
-    return (
-      <I18nextProvider
-        i18n={i18n}
-      >
-        <WrappedComponent
-          key={locale}
-          {...props}
-        />
-      </I18nextProvider>
+    return i18n !== null ? (
+      (
+        <I18nextProvider
+          i18n={i18n}
+        >
+          <WrappedComponent
+            key={locale}
+            {...props}
+          />
+        </I18nextProvider>
+      )
+    ) : (
+      <WrappedComponent
+        key={locale}
+        {...props}
+      />
     )
   }
 
-  return hoistNonReactStatics(AppWithTranslation, WrappedComponent)
+  return hoistNonReactStatics(
+    AppWithTranslation,
+    WrappedComponent,
+  )
 }
