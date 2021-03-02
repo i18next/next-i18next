@@ -49,19 +49,22 @@ export const appWithTranslation = (
       }))
     }
 
-    if (i18n === null) {
-      throw new Error('next-i18next could not initialise an i18next client')
-    }
-
-    return (
-      <I18nextProvider
-        i18n={i18n}
-      >
-        <WrappedComponent
-          key={locale}
-          {...props}
-        />
-      </I18nextProvider>
+    return i18n !== null ? (
+      (
+        <I18nextProvider
+          i18n={i18n}
+        >
+          <WrappedComponent
+            key={locale}
+            {...props}
+          />
+        </I18nextProvider>
+      )
+    ) : (
+      <WrappedComponent
+        key={locale}
+        {...props}
+      />
     )
   }
 
