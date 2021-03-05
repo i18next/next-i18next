@@ -9,7 +9,7 @@
   },
   "main": "dist/commonjs/index.js",
   "module": "dist/esm/index.js",
-  "types": "./types.d.ts",
+  "types": "dist/types/types.d.ts",
   "license": "MIT",
   "engines": {
     "node": ">=10"
@@ -32,7 +32,8 @@
     "build:es": "BABEL_ENV=es babel src --extensions '.ts,.tsx' --out-dir dist/es --copy-files",
     "build:cjs": "BABEL_ENV=cjs babel src --extensions '.ts,.tsx' --out-dir dist/commonjs --copy-files",
     "build:esm": "BABEL_ENV=esm babel src --extensions '.ts,.tsx' --out-dir dist/esm --copy-files",
-    "build": "yarn clean && yarn build:cjs && yarn build:es && yarn build:esm",
+    "build:types": "tsc --noEmit false --declaration --emitDeclarationOnly --outDir dist/types",
+    "build": "yarn clean && yarn build:cjs && yarn build:es && yarn build:esm && yarn build:types",
     "build:examples/simple": "yarn --cwd examples/simple && yarn --cwd examples/simple build",
     "prepublishOnly": "yarn build",
     "run-example": "yarn build && cd examples/simple && yarn && yarn dev",
