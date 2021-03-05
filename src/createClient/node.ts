@@ -1,7 +1,7 @@
 import i18n from 'i18next'
 import i18nextFSBackend from 'i18next-fs-backend'
 
-import { InternalConfig, CreateClientReturn, InitPromise } from '../../types'
+import { InternalConfig, CreateClientReturn, InitPromise } from '../types'
 
 export default (config: InternalConfig): CreateClientReturn => {
   const instance = i18n.createInstance(config)

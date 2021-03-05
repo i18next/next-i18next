@@ -1,5 +1,5 @@
 import { defaultConfig } from './defaultConfig'
-import { InternalConfig, UserConfig } from '../../types'
+import { InternalConfig, UserConfig } from '../types'
 
 const deepMergeObjects = ['backend', 'detection'] as (keyof Pick<UserConfig, 'backend' | 'detection'>)[]
 

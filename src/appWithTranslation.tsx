@@ -6,7 +6,7 @@ import type { AppProps as NextJsAppProps } from 'next/app'
 import { createConfig } from './config/createConfig'
 import createClient from './createClient'
 
-import { SSRConfig, UserConfig } from '../types'
+import { SSRConfig, UserConfig } from './types'
 
 export { I18nContext, Trans, useTranslation, withTranslation } from 'react-i18next'
 
