@@ -6,7 +6,7 @@ import {
   withTranslation,
   WithTranslation as ReactI18nextWithTranslation,
 } from 'react-i18next'
-import { InitOptions, i18n, TFunction as I18NextTFunction } from 'i18next'
+import { InitOptions, TFunction as I18NextTFunction } from 'i18next'
 import { appWithTranslation, i18n } from './'
 
 type NextJsI18NConfig = {
