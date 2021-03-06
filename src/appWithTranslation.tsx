@@ -50,7 +50,7 @@ export const appWithTranslation = (
         }),
         lng: initialLocale,
         resources: initialI18nStore,
-      })) as { i18n: I18NextClient }
+      }))
 
       useMemo(() => {
         globalI18n = i18n
