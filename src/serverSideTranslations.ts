@@ -4,7 +4,7 @@ import path from 'path'
 import { createConfig } from './config/createConfig'
 import createClient from './createClient'
 
-import { UserConfig, SSRConfig } from '../types'
+import { UserConfig, SSRConfig } from './types'
 
 const DEFAULT_CONFIG_PATH = './next-i18next.config.js'
 
