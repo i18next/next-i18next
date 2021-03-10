@@ -1,10 +1,14 @@
 import i18n from 'i18next'
 import i18nextFSBackend from 'i18next-fs-backend'
 
-import { InternalConfig, CreateClientReturn, InitPromise } from '../types'
+import { InternalConfig, CreateClientReturn, InitPromise, I18n } from '../types'
+
+let instance: I18n
 
 export default (config: InternalConfig): CreateClientReturn => {
-  const instance = i18n.createInstance(config)
+  if (!instance) {
+    instance = i18n.createInstance(config)
+  }
   let initPromise: InitPromise
 
   if (!instance.isInitialized) {

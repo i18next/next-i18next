@@ -6,7 +6,7 @@ const config = {
   use: [],
 } as any
 
-describe('createClientBrowser', () => {
+describe('createClientNode', () => {
   it('returns a node client', () => {
     const client = createClientNode(config)
     expect(typeof client.initPromise.then).toEqual('function')
