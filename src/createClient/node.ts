@@ -6,7 +6,9 @@ import { InternalConfig, CreateClientReturn, InitPromise, I18n } from '../types'
 let instance: I18n
 
 export default (config: InternalConfig): CreateClientReturn => {
-  if (!instance) instance = i18n.createInstance(config)
+  if (!instance) {
+    instance = i18n.createInstance(config)
+  }
   let initPromise: InitPromise
 
   if (!instance.isInitialized) {
