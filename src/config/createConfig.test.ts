@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 
 import { createConfig } from './createConfig'
-import { UserConfig } from '../../types'
+import { UserConfig } from '../types'
 
 jest.mock('fs', () => ({
   existsSync: jest.fn(),
@@ -14,7 +14,7 @@ describe('createConfig', () => {
   describe('server side', () => {
     beforeAll(() => {
       Object.assign(process, { browser: false })
-      delete global.window
+      delete (global as any).window
     })
 
     describe('when filesystem is as expected', () => {
@@ -106,7 +106,7 @@ describe('createConfig', () => {
 
         const config = createConfig.bind(null, {
           lng: 'en',
-        })
+        } as any)
 
         expect(config).toThrow('Default namespace not found at public/locales/en/common.json')
       })

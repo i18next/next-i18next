@@ -1,11 +1,10 @@
-import { InternalConfig } from '../../types'
 import createClientBrowser from './browser'
 
 const config = {
   defaultLocale: 'en',
   locales: ['en', 'de'],
   use: [],
-} as InternalConfig
+} as any
 
 describe('createClientBrowser', () => {
   it('returns a browser client', () => {

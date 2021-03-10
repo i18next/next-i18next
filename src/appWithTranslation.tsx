@@ -1,25 +1,28 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import { I18nextProvider } from 'react-i18next'
+import type { AppProps as NextJsAppProps } from 'next/app'
 
 import { createConfig } from './config/createConfig'
 import createClient from './createClient'
 
-import { SSRConfig, UserConfig } from '../types'
+import { SSRConfig, UserConfig } from './types'
 
-export { I18nContext, Trans, useTranslation, withTranslation } from 'react-i18next'
+import { i18n as I18NextClient } from 'i18next'
+export { Trans, useTranslation, withTranslation } from 'react-i18next'
 
-type AppProps = {
+type AppProps = NextJsAppProps & {
   pageProps: SSRConfig
 }
 
-export const appWithTranslation = <P extends Record<string, unknown>>(
-  WrappedComponent: React.ComponentType | React.ElementType,
-  configOverride: UserConfig = null,
-):
-  React.ComponentType<P> | React.ElementType<P> => {
+export let globalI18n: I18NextClient | null = null
+
+export const appWithTranslation = (
+  WrappedComponent: React.ComponentType<AppProps> | React.ElementType<AppProps>,
+  configOverride: UserConfig | null = null,
+) => {
   const AppWithTranslation = (props: AppProps) => {
-    let i18n = null
+    let i18n: I18NextClient | null = null
     let locale = null
 
     if (props?.pageProps?._nextI18Next) {
@@ -34,6 +37,10 @@ export const appWithTranslation = <P extends Record<string, unknown>>(
         userConfig = configOverride
       }
 
+      if (!userConfig?.i18n) {
+        throw new Error('appWithTranslation was called without config.i18n')
+      }
+
       locale = initialLocale;
 
       ({ i18n } = createClient({
@@ -44,9 +51,13 @@ export const appWithTranslation = <P extends Record<string, unknown>>(
         lng: initialLocale,
         resources: initialI18nStore,
       }))
+
+      useMemo(() => {
+        globalI18n = i18n
+      }, [i18n])
     }
 
-    return (
+    return i18n !== null ? (
       <I18nextProvider
         i18n={i18n}
       >
@@ -55,8 +66,16 @@ export const appWithTranslation = <P extends Record<string, unknown>>(
           {...props}
         />
       </I18nextProvider>
+    ) : (
+      <WrappedComponent
+        key={locale}
+        {...props}
+      />
     )
   }
 
-  return hoistNonReactStatics(AppWithTranslation, WrappedComponent)
+  return hoistNonReactStatics(
+    AppWithTranslation,
+    WrappedComponent,
+  )
 }

@@ -14,7 +14,7 @@ jest.mock('fs', () => ({
   readdirSync: jest.fn(),
 }))
 
-const DummyI18nextProvider = ({ children }) => (
+const DummyI18nextProvider: React.FC = ({ children }) => (
   <>{children}</>
 )
 
@@ -28,14 +28,24 @@ const DummyApp = appWithTranslation(() => (
   <div>Hello world</div>
 ))
 
+const props = {
+  pageProps: {
+    _nextI18Next: {
+      initialLocale: 'en',
+      userConfig: {
+        i18n: {
+          defaultLocale: 'en',
+          locales: ['en', 'fr'],
+        },
+      },
+    },
+  } as any,
+} as any
+
 const renderComponent = () =>
   renderToString(
     <DummyApp
-      pageProps={{
-        _nextI18Next: {
-          initialLocale: 'en',
-        },
-      }}
+      {...props}
     />,
   )
 

@@ -6,8 +6,8 @@ import {
   withTranslation,
   WithTranslation as ReactI18nextWithTranslation,
 } from 'react-i18next'
-import { InitOptions, i18n, TFunction as I18NextTFunction } from 'i18next'
-import { appWithTranslation } from './src'
+import { InitOptions, i18n as I18NextClient, TFunction as I18NextTFunction } from 'i18next'
+import { appWithTranslation, i18n } from './'
 
 type NextJsI18NConfig = {
   defaultLocale: string
@@ -19,7 +19,7 @@ export type UserConfig = {
   localeExtension?: string
   localePath?: string
   localeStructure?: string
-  serializeConfig: boolean
+  serializeConfig?: boolean
   strictMode?: boolean
   use?: any[]
 } & InitOptions
@@ -37,7 +37,7 @@ export type InternalConfig = Omit<UserConfig, 'i18n'> & NextJsI18NConfig & {
 export type UseTranslation = typeof useTranslation
 export type AppWithTranslation = typeof appWithTranslation
 export type TFunction = I18NextTFunction
-export type I18n = i18n
+export type I18n = I18NextClient
 export type WithTranslationHocType = typeof withTranslation
 export type WithTranslation = ReactI18nextWithTranslation
 export type InitPromise = Promise<TFunction>
@@ -50,11 +50,12 @@ export type SSRConfig = {
   _nextI18Next: {
     initialI18nStore: any
     initialLocale: string
-    userConfig: UserConfig
+    userConfig: UserConfig | null
   }
 }
 
 export {
+  i18n,
   I18nContext,
   appWithTranslation,
   useTranslation,

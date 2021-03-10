@@ -1,11 +1,10 @@
-import { InternalConfig } from '../../types'
 import createClientNode from './node'
 
 const config = {
   defaultLocale: 'en',
   locales: ['en', 'de'],
   use: [],
-} as InternalConfig
+} as any
 
 describe('createClientNode', () => {
   const client = createClientNode(config)

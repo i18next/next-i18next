@@ -10,7 +10,7 @@ jest.mock('fs', () => ({
   readdirSync: jest.fn(),
 }))
 
-const DummyI18nextProvider = ({ children }) => (
+const DummyI18nextProvider: React.FC = ({ children }) => (
   <>{children}</>
 )
 
@@ -24,15 +24,24 @@ const DummyApp = appWithTranslation(() => (
   <div>Hello world</div>
 ))
 
+const props = {
+  pageProps: {
+    _nextI18Next: {
+      initialLocale: 'en',
+      userConfig: {
+        i18n: {
+          defaultLocale: 'en',
+          locales: ['en', 'de'],
+        },
+      },
+    },
+  } as any,
+} as any
+
 const renderComponent = () =>
   render(
     <DummyApp
-      pageProps={{
-        _nextI18Next: {
-          initialLocale: 'en',
-          userConfig: {},
-        },
-      }}
+      {...props}
     />
   )
 
@@ -54,14 +63,21 @@ describe('appWithTranslation', () => {
       <div>Hello world</div>
     ), {
       configOverride: 'custom-value',
+      i18n: {
+        defaultLocale: 'en',
+        locales: ['en', 'de'],
+      },
     } as any)
+    const customProps = {
+      pageProps: {
+        _nextI18Next: {
+          initialLocale: 'en',
+        },
+      } as any,
+    } as any
     render(
       <DummyAppConfigOverride
-        pageProps={{
-          _nextI18Next: {
-            initialLocale: 'en',
-          },
-        }}
+        {...customProps}
       />
     )
     const [args] = (I18nextProvider as jest.Mock).mock.calls
@@ -74,15 +90,18 @@ describe('appWithTranslation', () => {
     const DummyAppConfigOverride = appWithTranslation(() => (
       <div>Hello world</div>
     ))
+    const customProps = {
+      pageProps: {
+        _nextI18Next: {
+          initialLocale: 'en',
+          userConfig: null,
+        },
+      } as any,
+    } as any
     expect(
       () => render(
         <DummyAppConfigOverride
-          pageProps={{
-            _nextI18Next: {
-              initialLocale: 'en',
-              userConfig: null,
-            },
-          }}
+          {...customProps}
         />
       )
     ).toThrow('appWithTranslation was called without a next-i18next config')
