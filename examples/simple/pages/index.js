@@ -15,7 +15,7 @@ const Homepage = () => {
   return (
     <>
       <main>
-        <Header title={t('h1')} />
+        <Header heading={t('h1')} title={t('title')} />
         <div>
           <Link
             href='/'

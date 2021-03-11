@@ -1,9 +1,9 @@
 import Head from 'next/head'
 
-export const Header = ({ title }) => (
+export const Header = ({ heading, title }) => (
   <>
     <Head>
-      <title>next-i18next</title>
+      <title>{title}</title>
 
       <link href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css' rel='stylesheet' />
       <link href='/app.css' rel='stylesheet' />
@@ -17,7 +17,7 @@ export const Header = ({ title }) => (
       <hr />
     </h2>
     <h1>
-      {title}
+      {heading}
     </h1>
     <a
       className='github'

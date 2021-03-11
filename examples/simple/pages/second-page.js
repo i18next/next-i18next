@@ -13,7 +13,7 @@ const SecondPage = () => {
   return (
     <>
       <main>
-        <Header title={t('h1')} />
+        <Header heading={t('h1')} title={t('title')} />
         <Link href='/'>
           <button
             type='button'

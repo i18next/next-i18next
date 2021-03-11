@@ -50,13 +50,11 @@ button {
   outline: 0;
   text-decoration: none;
   cursor: pointer;
-  padding: .4rem;
   background-color: rgba(255, 255, 255, 0.5);
   box-sizing: border-box;
   font-size: 1em;
   font-family: inherit;
   border-radius: 3px;
-  margin: .1rem;
   transition: box-shadow .2s ease;
   user-select: none;
   line-height: 2.5em;
