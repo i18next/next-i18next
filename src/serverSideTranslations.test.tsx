@@ -27,6 +27,9 @@ const props = {
       },
     },
   } as any,
+  router: {
+    locale: 'en',
+  },
 } as any
 
 const renderDummyComponent = () =>
