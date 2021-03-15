@@ -91,8 +91,8 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
     //
     // Remove public prefix from client site config
     //
-    if (localePath.startsWith('/public/')) {
-      clientLocalePath = localePath.replace(/^\/public/, '')
+    if (localePath.match(/^\.?\/public\//)) {
+      clientLocalePath = localePath.replace(/^\.?\/public/, '')
     }
 
     //

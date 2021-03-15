@@ -150,8 +150,8 @@ describe('createConfig', () => {
     it('returns a valid config when only lng is provided', () => {
       const config = createConfig({ lng: 'en' } as UserConfig)
 
-      expect((config.backend as any).addPath).toMatch('/public/locales/{{lng}}/{{ns}}.missing.json')
-      expect((config.backend as any).loadPath).toMatch('/public/locales/{{lng}}/{{ns}}.json')
+      expect((config.backend as any).addPath).toMatch('/locales/{{lng}}/{{ns}}.missing.json')
+      expect((config.backend as any).loadPath).toMatch('/locales/{{lng}}/{{ns}}.json')
       expect(config.defaultLocale).toEqual('en')
       expect(config.defaultNS).toEqual('common')
       expect(config.errorStackTraceLimit).toEqual(0)
@@ -175,7 +175,7 @@ describe('createConfig', () => {
         lng: 'en',
       } as UserConfig)
       expect((config.backend as any).hello).toEqual('world')
-      expect((config.backend as any).loadPath).toMatch('/public/locales/{{lng}}/{{ns}}.json')
+      expect((config.backend as any).loadPath).toMatch('/locales/{{lng}}/{{ns}}.json')
     })
   })
 })
