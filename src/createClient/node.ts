@@ -8,6 +8,11 @@ let instance: I18n
 export default (config: InternalConfig): CreateClientReturn => {
   if (!instance) {
     instance = i18n.createInstance(config)
+  } else {
+    instance = instance.cloneInstance({
+      ...config,
+      initImmediate: false,
+    })
   }
   let initPromise: InitPromise
 
