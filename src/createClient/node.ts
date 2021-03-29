@@ -6,14 +6,12 @@ import { InternalConfig, CreateClientReturn, InitPromise, I18n } from '../types'
 let instance: I18n
 
 export default (config: InternalConfig): CreateClientReturn => {
-  if (!instance) {
-    instance = i18n.createInstance(config)
-  } else {
-    instance = instance.cloneInstance({
-      ...config,
-      initImmediate: false,
-    })
-  }
+  const i18nStore = instance && instance.store
+  instance = i18n.createInstance({
+    ...config,
+    resources: i18nStore ? i18nStore.data as any : undefined,
+  })
+
   let initPromise: InitPromise
 
   if (!instance.isInitialized) {

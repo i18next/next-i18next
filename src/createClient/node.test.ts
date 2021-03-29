@@ -19,7 +19,7 @@ describe('createClientNode', () => {
     expect((client.i18n.options as any).isClone).not.toEqual(true)
   })
 
-  describe('createClientNode a second time should return a clone of i18next', () => {
+  describe('createClientNode a second time should return the same of i18next store', () => {
     it('returns a node client', () => {
       const secondClient = createClientNode(config)
       expect(typeof secondClient.initPromise.then).toEqual('function')
@@ -29,7 +29,6 @@ describe('createClientNode', () => {
         (secondClient.i18n.options as any).defaultLocale
       ).toEqual(config.defaultLocale)
       expect((secondClient.i18n.options as any).locales).toEqual(config.locales)
-      expect((secondClient.i18n.options as any).isClone).toEqual(true)
       expect(secondClient).not.toEqual(client)
       expect((secondClient as any).store).toEqual((client as any).store)
     })
