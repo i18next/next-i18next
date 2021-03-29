@@ -3,13 +3,15 @@ import i18nextFSBackend from 'i18next-fs-backend'
 
 import { InternalConfig, CreateClientReturn, InitPromise, I18n } from '../types'
 
-let instance: I18n
+let globalInstance: I18n
 
 export default (config: InternalConfig): CreateClientReturn => {
-  if (!instance) {
-    instance = i18n.createInstance(config)
+  let instance: I18n
+  if (!globalInstance) {
+    globalInstance = i18n.createInstance(config)
+    instance = globalInstance
   } else {
-    instance = instance.cloneInstance({
+    instance = globalInstance.cloneInstance({
       ...config,
       initImmediate: false,
     })
