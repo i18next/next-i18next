@@ -19,7 +19,7 @@ describe('createClientNode', () => {
     expect((client.i18n.options as any).isClone).not.toEqual(true)
   })
 
-  describe('createClientNode a second time should return the same of i18next store', () => {
+  describe('createClientNode a second time should return the same i18next store', () => {
     it('returns a node client', () => {
       const secondClient = createClientNode(config)
       expect(typeof secondClient.initPromise.then).toEqual('function')
