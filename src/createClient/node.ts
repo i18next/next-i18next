@@ -7,7 +7,6 @@ let globalInstance: I18n
 
 export default (config: InternalConfig): CreateClientReturn => {
   let instance: I18n
-  
   if (!globalInstance) {
     globalInstance = i18n.createInstance(config)
     instance = globalInstance
