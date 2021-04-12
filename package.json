@@ -108,7 +108,7 @@
     "hoist-non-react-statics": "^3.2.0",
     "i18next": "^20.1.0",
     "i18next-fs-backend": "^1.0.7",
-    "react-i18next": "^11.8.8"
+    "react-i18next": "^11.8.13"
   },
   "peerDependencies": {
     "next": ">= 10.0.0",
