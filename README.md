@@ -109,6 +109,12 @@ Also, note that `serverSideTranslations` is not compatible with `getInitialProps
 
 The `serverSideTranslations` HOC is primarily responsible for passing translations and configuration options into pages, as props.
 
+Note that if you use the `Dockerfile` from [Next.js docs](https://nextjs.org/docs/deployment#docker-image) do not forget to copy `next.config.js` and `next-i18next.config.js` into the Docker image.
+```
+COPY --from=builder /app/next.config.js ./next.config.js
+COPY --from=builder /app/next-i18next.config.js ./next-i18next.config.js
+```
+
 ### useTranslation
 
 This is the hook which you'll actually use to do the translation itself. The `useTranslation` hook [comes from `react-i18next`](https://react.i18next.com/latest/usetranslation-hook), but can be imported from `next-i18next` directly:
