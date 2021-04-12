@@ -17,6 +17,25 @@ While `next-i18next` uses [i18next](https://www.i18next.com/) and [react-i18next
 
 A live demo is [available here](http://next-i18next.com/). This demo app is the [simple example](./examples/simple/) - nothing more, nothing less.
 
+## Why next-i18next?
+
+Easy to set up, easy to use: you can set up in a few steps and start to use. Configuration is quite simple.
+
+No other requirements: `next-i18next` simplify internationalized routing. It acts as a wrapper between [NextJs](https://nextjs.org/) and [i18next](https://www.i18next.com/) and uses [react-i18next](https://react.i18next.com/) functions on client side.
+
+Production ready: `next-i18next` supports you passing translations and configuration options into pages as props with SSG/SSR support. 
+
+## How it works?
+
+The `next-i18next.config.js` file that we use in the set up acts as a wrapper by providing the configuration between next-i18next, i18n, and NextJs.
+
+We add a wrapper in `_app.js` after configuration. `appWithTranslation` allows us to send `t` function and `i18n instance` into our components through props which comes from `i18next`.
+Afterwards,  we use `serverSideTranslation` in our page-level components which is a HOC which responsible for passing translations and configuration options into pages as props. 
+
+We call `serverSideTranslation` inside [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) async functions (depends on your case) which comes from NextJs. 
+
+After this process, we will be able to call `i18n` and `useTranslation` hook on the client side and translate our NextJs app. 
+
 ## Setup
 
 ### 1. Installation
@@ -63,7 +82,7 @@ module.exports = {
 
 Now, create or modify your `next.config.js` file, by passing the `i18n` object into your `next.config.js` file, to enable localised URL routing:
 
-#### `next.config.js`
+#### [`next.config.js`](https://nextjs.org/docs/api-reference/next.config.js/introduction)
 
 ```js
 const { i18n } = require('./next-i18next.config')
@@ -82,25 +101,33 @@ This is a HOC which wraps your [`_app`](https://nextjs.org/docs/advanced-feature
 ```tsx
 import { appWithTranslation } from 'next-i18next'
 
-const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />
+function MyApp({ Component, pageProps }) {
+  return (
+    <Component {...pageProps} />
+  )
+} 
 
 export default appWithTranslation(MyApp)
 ```
 
-The `appWithTranslation` HOC is primarily responsible for adding a `I18nextProvider`.
+The `appWithTranslation` HOC is primarily responsible for adding a [`I18nextProvider`](https://react.i18next.com/latest/i18nextprovider).
 
 #### serverSideTranslations
 
 This is an async function that you need to include on your page-level components, via either [`getStaticProps`](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [`getServerSideProps`](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) (depending on your use case):
 
 ```tsx
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-export const getStaticProps = async ({ locale }) => ({
-  props: {
-    ...await serverSideTranslations(locale, ['common', 'footer']),
+// This function gets called at build time on server-side. For more information, please read Next.js docs.
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common', 'press'])),
+      // will be passed to the page component as props
+    }
   }
-})
+}
 ```
 
 Note that `serverSideTranslations` must be imported from `next-i18next/serverSideTranslations` – this is a separate module that contains NodeJs-specific code.
