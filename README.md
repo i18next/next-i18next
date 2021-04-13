@@ -193,6 +193,13 @@ export default appWithTranslation(MyApp, nextI18NextConfig)
 
 All other [i18next options](https://www.i18next.com/overview/configuration-options) can be passed in as well.
 
+## Notes
+For Docker deployment, note that if you use the `Dockerfile` from [Next.js docs](https://nextjs.org/docs/deployment#docker-image) do not forget to copy `next.config.js` and `next-i18next.config.js` into the Docker image.
+```
+COPY --from=builder /app/next.config.js ./next.config.js
+COPY --from=builder /app/next-i18next.config.js ./next-i18next.config.js
+```
+
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
