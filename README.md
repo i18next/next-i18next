@@ -25,7 +25,7 @@ No other requirements: `next-i18next` simplifies internationalisation for your [
 
 Production ready: `next-i18next` supports you passing translations and configuration options into pages as props with SSG/SSR support. 
 
-## How it works?
+## How does it work?
 
 The `next-i18next.config.js` file that we use in the set up acts as a wrapper by providing the configuration between next-i18next, i18n, and NextJs.
 
