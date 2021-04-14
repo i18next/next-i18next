@@ -117,7 +117,7 @@ The `appWithTranslation` HOC is primarily responsible for adding a [`I18nextProv
 This is an async function that you need to include on your page-level components, via either [`getStaticProps`](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [`getServerSideProps`](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) (depending on your use case):
 
 ```tsx
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 // This function gets called at build time on server-side. For more information, please read Next.js docs.
 export async function getStaticProps({ locale }) {
