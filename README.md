@@ -27,7 +27,7 @@ Production ready: `next-i18next` supports you passing translations and configura
 
 ## How does it work?
 
-The `next-i18next.config.js` file that we use in the set up acts as a wrapper by providing the configuration between next-i18next, i18n, and NextJs.
+Your `next-i18next.config.js` file will act as a wrapper, providing configuration for `next-i18next`, `i18next`, and NextJs.
 
 We add a wrapper in `_app.js` after configuration. `appWithTranslation` allows us to send `t` function and `i18n instance` into our components through props which comes from `i18next`.
 Afterwards,  we use `serverSideTranslation` in our page-level components which is a HOC which responsible for passing translations and configuration options into pages as props. 
