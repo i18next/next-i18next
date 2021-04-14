@@ -19,7 +19,7 @@ A live demo is [available here](http://next-i18next.com/). This demo app is the 
 
 ## Why next-i18next?
 
-Easy to set up, easy to use: you can set up in a few steps and start to use. Configuration is quite simple.
+Easy to set up, easy to use: setting up only takes a few steps, and configuration is simple.
 
 No other requirements: `next-i18next` simplify internationalized routing. It acts as a wrapper between [NextJs](https://nextjs.org/) and [i18next](https://www.i18next.com/) and uses [react-i18next](https://react.i18next.com/) functions on client side.
 
@@ -240,4 +240,3 @@ This project follows the [all-contributors](https://github.com/kentcdodds/all-co
 <a href="https://www.browserstack.com/" target="_blank">
   <img src="https://miro.medium.com/max/560/0*dLdslKvNsmtaH2uQ.png" width="240px">
 </a>
-
