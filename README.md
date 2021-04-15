@@ -146,14 +146,12 @@ Note: `useTranslation` provides namespaces to the component that you use it in. 
 If you need to modify more advanced configuration options, you can pass them via `next-i18next.config.js`. For example:
 
 ```js
-const path = require('path')
-
 module.exports = {
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'de'],
   },
-  localePath: path.resolve('./my/custom/path')
+  localePath: './my/custom/path'
 }
 ```
 
