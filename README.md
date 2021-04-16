@@ -179,45 +179,16 @@ const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />
 export default appWithTranslation(MyApp, nextI18NextConfig)
 ```
 
-#### Using i18next interpolation format
-
-If you want to take advantage of the native [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) namespace to format things like [Numbers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) or [Dates](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat), you need to use the [interpolation.format function](https://www.i18next.com/translation-function/formatting) provided by `i18next` and include that in the next-i18next.config.
-
-Additionally you need to set `config.serializeConfig` to `false`. Here's a complete example:
-
-##### next-i18next.config.js
-
-```js
-module.exports = {
-  i18n: {
-    defaultLocale: "en",
-    locales: ["en", "de"],
-  },
-  serializeConfig: false,
-  interpolation: {
-    format(value, format, locale, { currency }) {
-      if (format === "currency") {
-        return new Intl.NumberFormat(locale, {
-          style: "currency",
-          currency,
-        }).format(value);
-      }
-
-      return value;
-    },
-  },
-};
-```
-
-##### pages/\_app.js
-
 ```tsx
-import { appWithTranslation } from "next-i18next";
-import nextI18NextConfig from "../next-i18next.config.js";
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />;
+import nextI18NextConfig from '../next-i18next.config.js'
 
-export default appWithTranslation(MyApp, nextI18NextConfig);
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common', 'footer'], nextI18NextConfig),
+  }
+})
 ```
 
 #### Options
