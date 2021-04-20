@@ -179,6 +179,18 @@ const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />
 export default appWithTranslation(MyApp, nextI18NextConfig)
 ```
 
+```tsx
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+
+import nextI18NextConfig from '../next-i18next.config.js'
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common', 'footer'], nextI18NextConfig),
+  }
+})
+```
+
 #### Options
 
 | Key  | Default value |
