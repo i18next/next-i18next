@@ -26,9 +26,9 @@ export const serverSideTranslations = async (
   if (userConfig === null) {
     throw new Error('next-i18next was unable to find a user config')
   }
-
+  const { translationsRootDir, ...rest } = userConfig
   const config = createConfig({
-    ...userConfig,
+    ...rest,
     lng: initialLocale,
   })
 
@@ -58,7 +58,7 @@ export const serverSideTranslations = async (
       fs.readdirSync(path)
         .map(file => file.replace(`.${localeExtension}`, ''))
 
-    namespacesRequired = getAllNamespaces(path.resolve(process.cwd(), `${localePath}/${defaultLocale}`))
+    namespacesRequired = getAllNamespaces(path.resolve(process.cwd(), `${translationsRootDir ? path.join(translationsRootDir, '/') : ''}${localePath}/${defaultLocale}`))
   }
 
   namespacesRequired.forEach((ns) => {

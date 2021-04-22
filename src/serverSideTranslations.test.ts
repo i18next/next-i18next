@@ -20,7 +20,22 @@ describe('serverSideTranslations', () => {
       .rejects
       .toThrow('Initial locale argument was not passed into serverSideTranslations')
   })
-
+  it('finds namespaces when monoreporoot is defined', async () => {
+    (fs.readdirSync as jest.Mock).mockReturnValue(['one/two/three'])
+    const props = await serverSideTranslations('en-US', undefined,{
+      i18n: {
+        defaultLocale: 'en-US',
+        locales: ['en-US', 'fr-CA'],
+      },
+      translationsRootDir: 'one/two/three',
+    })
+    expect(fs.readdirSync).toHaveBeenCalledTimes(1)
+    expect(fs.readdirSync).toHaveBeenCalledWith(
+      expect.stringMatching(/(.*)(one\/two\/three\/)(public\/locales\/en-US)/)
+    )
+    expect(Object.values(props._nextI18Next.initialI18nStore))
+      .toEqual([{ 'one/two/three': {} }])
+  })
   it('returns all namespaces if namespacesRequired is not provided', async () => {
     (fs.readdirSync as jest.Mock).mockReturnValue(['one', 'two', 'three'])
     const props = await serverSideTranslations('en-US', undefined, {

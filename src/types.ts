@@ -21,6 +21,7 @@ export type UserConfig = {
   localeStructure?: string
   serializeConfig?: boolean
   strictMode?: boolean
+  translationsRootDir?: string
   use?: any[]
 } & InitOptions
 
