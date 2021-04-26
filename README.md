@@ -23,7 +23,7 @@ Easy to set up, easy to use: setting up only takes a few steps, and configuratio
 
 No other requirements: `next-i18next` simplifies internationalisation for your [NextJs](https://nextjs.org/) app without extra dependencies.
 
-Production ready: `next-i18next` supports you passing translations and configuration options into pages as props with SSG/SSR support. 
+Production ready: `next-i18next` supports passing translations and configuration options into pages as props with SSG/SSR support. 
 
 ## How does it work?
 
