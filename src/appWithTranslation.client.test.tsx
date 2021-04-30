@@ -7,6 +7,8 @@ import createClient from './createClient'
 import { appWithTranslation } from './appWithTranslation'
 import { NextRouter } from 'next/router'
 
+const i18nextConfig = require('../mocks/next-i18next.config') // eslint-disable-line
+
 jest.mock('fs', () => ({
   existsSync: jest.fn(),
   readdirSync: jest.fn(),
@@ -25,7 +27,7 @@ jest.mock('./createClient', () => jest.fn())
 
 const DummyApp = appWithTranslation(() => (
   <div>Hello world</div>
-))
+), i18nextConfig)
 
 const createProps = (locale = 'en', router: Partial<NextRouter> = {}) => ({
   pageProps: {
@@ -118,6 +120,114 @@ describe('appWithTranslation', () => {
         />
       )
     ).toThrow('appWithTranslation was called without a next-i18next config')
+  })
+
+  it('throws an error if userConfig and configOverride are both missing an i18n property', () => {
+    const DummyAppConfigOverride = appWithTranslation(() => (
+      <div>Hello world</div>
+    ), {} as any)
+    const customProps = {
+      ...createProps(),
+      pageProps: {
+        _nextI18Next: {
+          initialLocale: 'en',
+          userConfig: {},
+        },
+      } as any,
+    } as any
+    expect(
+      () => render(
+        <DummyAppConfigOverride
+          {...customProps}
+        />
+      )
+    ).toThrow('appWithTranslation was called without config.i18n')
+  })
+
+  it('throws an error if userConfig and configOverride are both missing a defaultLocale property', () => {
+    const DummyAppConfigOverride = appWithTranslation(() => (
+      <div>Hello world</div>
+    ), {i18n: {} as any})
+    const customProps = {
+      ...createProps(),
+      pageProps: {
+        _nextI18Next: {
+          initialLocale: 'en',
+          userConfig: {i18n: {}},
+        },
+      } as any,
+    } as any
+    expect(
+      () => render(
+        <DummyAppConfigOverride
+          {...customProps}
+        />
+      )
+    ).toThrow('config.i18n does not include a defaultLocale property')
+  })
+
+  it('should use the initialLocale property if the router locale is undefined', () => {
+    const DummyAppConfigOverride = appWithTranslation(() => (
+      <div>Hello world</div>
+    ))
+    const customProps = {
+      ...createProps(),
+      pageProps: {
+        _nextI18Next: {
+          initialLocale: 'en',
+          userConfig: {i18n: {
+            defaultLocale: 'fr',
+          }},
+        },
+      } as any,
+    } as any
+
+    customProps.router = {
+      ...customProps.router,
+      locale: undefined,
+    }
+
+
+    render(
+      <DummyAppConfigOverride
+        {...customProps}
+      />
+    )
+
+    const [args] = (I18nextProvider as jest.Mock).mock.calls
+    expect(args[0].i18n.language).toEqual('en')
+  })
+
+  it('should use the userConfig defaltLocale property if the router locale is undefined and initialLocale is undefined', () => {
+    const DummyAppConfigOverride = appWithTranslation(() => (
+      <div>Hello world</div>
+    ))
+    const customProps = {
+      ...createProps(),
+
+      pageProps: {
+        _nextI18Next: {
+          initialLocale: undefined,
+          userConfig: {i18n: {
+            defaultLocale: 'fr',
+          }},
+        },
+      } as any,
+    } as any
+
+    customProps.router = {
+      ...customProps.router,
+      locale: undefined,
+    }
+
+    render(
+      <DummyAppConfigOverride
+        {...customProps}
+      />
+    )
+
+    const [args] = (I18nextProvider as jest.Mock).mock.calls
+    expect(args[0].i18n.language).toEqual('fr')
   })
 
   it('returns an I18nextProvider', () => {

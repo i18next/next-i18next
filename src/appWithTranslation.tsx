@@ -12,7 +12,7 @@ import { i18n as I18NextClient } from 'i18next'
 export { Trans, useTranslation, withTranslation } from 'react-i18next'
 
 type AppProps = NextJsAppProps & {
-  pageProps: SSRConfig
+  pageProps?: SSRConfig
 }
 
 export let globalI18n: I18NextClient
@@ -32,7 +32,7 @@ export const appWithTranslation = (
     // 3. UserConfig override changes
     const {config, i18n} = useMemo(() => {
       let { userConfig } = _nextI18Next
-      const { initialI18nStore } = _nextI18Next
+      const { initialLocale, initialI18nStore } = _nextI18Next
 
       if (!userConfig && configOverride === null) {
         throw new Error('appWithTranslation was called without a next-i18next config')
@@ -51,7 +51,7 @@ export const appWithTranslation = (
       }
 
       if (!locale) {
-        locale = userConfig.i18n.defaultLocale
+        locale = initialLocale || userConfig.i18n.defaultLocale
       }
 
       const config = createConfig({
