@@ -46,9 +46,9 @@ const Homepage = () => {
   )
 }
 
-export const getStaticProps = async () => ({
+export const getStaticProps = async ({locale}) => ({
   props: {
-    ...await serverSideTranslations(['common', 'footer']),
+    ...await serverSideTranslations(locale, ['common', 'footer']),
   },
 })
 
