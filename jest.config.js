@@ -8,6 +8,7 @@ module.exports = {
   moduleDirectories: [
     'node_modules',
     'src',
+    'mocks',
   ],
   moduleNameMapper: {
     createClient: '<rootDir>/src/createClient/browser.ts',

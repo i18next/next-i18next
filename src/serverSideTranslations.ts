@@ -6,7 +6,7 @@ import createClient from './createClient'
 
 import { UserConfig, SSRConfig } from './types'
 
-const DEFAULT_CONFIG_PATH = './next-i18next.config.js'
+export const DEFAULT_CONFIG_PATH = './next-i18next.config.js'
 
 export const serverSideTranslations = async (
   initialLocale: string,
@@ -17,14 +17,16 @@ export const serverSideTranslations = async (
     throw new Error('Initial locale argument was not passed into serverSideTranslations')
   }
 
-  let userConfig = configOverride
+  let userConfig: UserConfig | null = null
 
-  if (fs.existsSync(path.resolve(DEFAULT_CONFIG_PATH))) {
+  if (configOverride) {
+    userConfig = configOverride
+  } else if (fs.existsSync(path.resolve(DEFAULT_CONFIG_PATH))) {
     userConfig = await import(path.resolve(DEFAULT_CONFIG_PATH))
   }
 
-  if (userConfig === null) {
-    throw new Error('next-i18next was unable to find a user config')
+  if (!userConfig) {
+    throw new Error('next-i18next was unable to find a user config or one was not passed to serverSideTranslations')
   }
 
   const config = createConfig({
