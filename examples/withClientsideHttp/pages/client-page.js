@@ -1,12 +1,12 @@
 import Link from 'next/link'
 
-import { i18n, useTranslation } from 'next-i18next'
+import { useTranslation } from 'next-i18next'
 
 import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
 
 const ClientPage = () => {
-  const { t, ready } = useTranslation('client-page', {i18n})
+  const { t, ready } = useTranslation('client-page')
 
   return (
     <>

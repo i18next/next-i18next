@@ -7,12 +7,11 @@ module.exports = {
     backendOptions: [{}, {expirationTime: 60 * 60 * 1000}], // 1 hour
     backends: process.browser ? [localStorageBackend, i18nextHttpBackend]: [],
   },
-  debug: true,
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'de'],
   },
-  ns: ['common', 'second-page', 'footer'], // the namespaces needs to be listed here, to make sure they got preloaded
+  ns: ['common', 'second-page', 'footer', 'client-page', 'fallback'], // the namespaces needs to be listed here, to make sure they got preloaded
   partialBundledLanguages: true,
   react: {
     useSuspense: false,

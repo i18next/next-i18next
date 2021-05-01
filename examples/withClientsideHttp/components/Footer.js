@@ -1,9 +1,10 @@
+import React from 'react'
 import { version } from 'next-i18next/package.json'
-import { i18n, useTranslation } from 'next-i18next'
+import { useTranslation } from 'next-i18next'
 
 export const Footer = () => {
 
-  const { t } = useTranslation('footer', {i18n})
+  const { t } = useTranslation('footer')
 
   return (
     <footer>
