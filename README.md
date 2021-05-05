@@ -207,7 +207,6 @@ function greeting(username: string) {
 
 | Key  | Default value |
 | ------------- | ------------- |
-| `browserLanguageDetection` | `false` |
 | `defaultNS` | `'common'`  |
 | `localeExtension` | `'json'`  |
 | `localePath` | `'./public/locales'`  |
