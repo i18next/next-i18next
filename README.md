@@ -191,10 +191,23 @@ export const getStaticProps = async ({ locale }) => ({
 })
 ```
 
+#### Global Singleton
+
+If you want access to the [global i18n client](https://github.com/isaachinman/next-i18next/pull/986) outside of a component, you can import it like this:
+
+```tsx
+import { i18n } from 'next-i18next';
+
+function greeting(username: string) {
+    return `${i18n?.t('greeting')} ${username}`
+}
+```
+
 #### Options
 
 | Key  | Default value |
 | ------------- | ------------- |
+| `browserLanguageDetection` | `false` |
 | `defaultNS` | `'common'`  |
 | `localeExtension` | `'json'`  |
 | `localePath` | `'./public/locales'`  |
