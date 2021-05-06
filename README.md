@@ -191,6 +191,10 @@ export const getStaticProps = async ({ locale }) => ({
 })
 ```
 
+### 6. Loading translations - Client side
+
+While loading your translations via `getServerSideProps` and `getStaticProps` is recommended if you need to load them client side then you can see the example [here](examples/withClientsideHttp)
+
 #### Options
 
 | Key  | Default value |

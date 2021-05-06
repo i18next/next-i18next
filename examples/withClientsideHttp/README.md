@@ -1,6 +1,7 @@
-# Client side HTTP loading of translations
+# Client side loading of translations via HTTP
 
 This examples shows a basic way of loading translations within a clientside rendered page. In general you should prefer static and server rendered pages where possible where you can benefit from preloading links in Next.js, however there are use cases where client side rendering and async loading of translations makes sense.
+
 The include but not limited to
 * client side only rendered components that you dont want to always load translations for at build
 * Setting `fallback: true` while using incremental static regeneration - no server side methods like getStaticProps are run for the fallback page
@@ -18,6 +19,10 @@ The chained plugin allows us to chain together backend plugins so we can specify
 Please see the [i18next docs](https://www.i18next.com/how-to/add-or-load-translations) in order to see how to setup and use backend plugins. The config used in this example is shown below.
 
 ```js
+const i18nextHttpBackend = require('i18next-http-backend/cjs')
+const chainedBackend= require('i18next-chained-backend').default
+const localStorageBackend = require('i18next-localstorage-backend').default
+
 module.exports = {
   backend: {
     backendOptions: [{}, {expirationTime: 60 * 60 * 1000}], // 1 hour
@@ -78,7 +83,7 @@ export default appWithTranslation(MyApp, nextI18nConfig);
 
 ### 4. Setup your client rendered pages/components
 
-Use the `ready` property from `useTranslation` to ensure the i18next instance is ready and that your translations are loaded to avoid the user seeing translation keys, below is a very simplistic example of this
+Use the `ready` property from `useTranslation` to ensure the i18next instance is ready and that your translations are loaded to avoid the user seeing bare translation keys, below is a very simplistic example of this.
 
 ```jsx
 // getServerSideProps and getStaticProps are not used (no serverSideTranslations method)
