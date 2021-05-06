@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -11,6 +12,17 @@ const Homepage = () => {
 
   const router = useRouter()
   const { t } = useTranslation('common')
+  const [counter, setCounter] = useState(1)
+
+  useEffect(() => {
+    if (router.query.counter) {
+      setCounter(parseInt(router.query.counter))
+    }
+  },[router.query.counter])
+
+  const updateShallowRoute = () => {
+    router.push(`/?counter=${counter + 1}`, undefined, {shallow: true})
+  }
 
   return (
     <>
@@ -32,6 +44,12 @@ const Homepage = () => {
               {t('to-second-page')}
             </button>
           </Link>
+          <button
+            type='button'
+            onClick={updateShallowRoute}
+          >
+            {t('shallow-route', {counter: counter + 1})}
+          </button>
         </div>
       </main>
       <Footer />

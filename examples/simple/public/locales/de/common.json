@@ -4,5 +4,6 @@
   "to-second-page": "Zur zweiten Seite",
   "error-with-status": "Auf dem Server ist ein Fehler ({{statusCode}}) aufgetreten",
   "error-without-status": "Auf dem Server ist ein Fehler aufgetreten",
-  "title": "Hauptseite | next-i18next"
+  "title": "Hauptseite | next-i18next",
+  "shallow-route": "zur flache route {{counter}}"
 }

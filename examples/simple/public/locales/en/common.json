@@ -4,5 +4,6 @@
   "to-second-page": "To second page",
   "error-with-status": "A {{statusCode}} error occurred on server",
   "error-without-status": "An error occurred on the server",
-  "title": "Home | next-i18next"
+  "title": "Home | next-i18next",
+  "shallow-route": "To shallow route {{counter}}"
 }

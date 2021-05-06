@@ -34,7 +34,6 @@ describe('serverSideTranslations', () => {
       const props = await serverSideTranslations('en-US', undefined, undefined)
 
       expect(pathMock).toHaveBeenCalledWith(DEFAULT_CONFIG_PATH)
-      expect(props._nextI18Next.initialLocale).toEqual('en-US')
       expect(props._nextI18Next?.userConfig?.i18n).toEqual(config?.i18n)
     })
 
@@ -93,7 +92,6 @@ describe('serverSideTranslations', () => {
           initialI18nStore: {
             'en-US': {},
           },
-          initialLocale: 'en-US',
           userConfig: {
             i18n: {
               defaultLocale: 'en-US',
