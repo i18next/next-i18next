@@ -19,7 +19,7 @@ A live demo is [available here](http://next-i18next.com/). This demo app is the 
 
 ## Why next-i18next?
 
-Easy to set up, easy to use: setting up only takes a few steps, and configuration is simple.
+Easy to set up, easy to use: setup only takes a few steps, and configuration is simple.
 
 No other requirements: `next-i18next` simplifies internationalisation for your [NextJs](https://nextjs.org/) app without extra dependencies.
 
@@ -28,10 +28,10 @@ Production ready: `next-i18next` supports passing translations and configuration
 ## How does it work?
 
 Your `next-i18next.config.js` file will provide configuration for `next-i18next`.
-After configuration, `appWithTranslation` allows us to use `i18n` and `t` function in our components through props.
-Then we add `serverSideTranslation` inside [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) async functions (depends on your case) in our page-level components.
+After configuration, `appWithTranslation` allows us to use the `t` (translate) function in our components via hooks.
+Then we add `serverSideTranslation` to [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) (depending on your case) in our page-level components.
 
-After this process, we will be able to translate our NextJs app on the client side. 
+Now our NextJs app is fully translatable!
 
 ## Setup
 
@@ -98,11 +98,7 @@ This is a HOC which wraps your [`_app`](https://nextjs.org/docs/advanced-feature
 ```tsx
 import { appWithTranslation } from 'next-i18next'
 
-function MyApp({ Component, pageProps }) {
-  return (
-    <Component {...pageProps} />
-  )
-} 
+const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />
 
 export default appWithTranslation(MyApp)
 ```
