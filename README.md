@@ -118,7 +118,7 @@ export async function getStaticProps({ locale }) {
       ...(await serverSideTranslations(locale, ['common', 'footer'])),
       // will be passed to the page component as props
     }
-  }
+  } 
 }
 ```
 
