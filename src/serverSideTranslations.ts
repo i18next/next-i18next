@@ -45,13 +45,11 @@ export const serverSideTranslations = async (
 
   await initPromise
 
-  const initialI18nStore: Record<string, any> = {
-    [initialLocale]: {},
-  }
+  const initialI18nStore: Record<string, any> = {}
 
-  if (typeof config.fallbackLng === 'string') {
-    initialI18nStore[config.fallbackLng] = {}
-  }
+  config.locales.forEach(lng => {
+    initialI18nStore[lng] = {}
+  })
 
   if (namespacesRequired.length === 0) {
     const getAllNamespaces = (path: string) =>

@@ -31,8 +31,11 @@ describe('serverSideTranslations', () => {
     } as UserConfig)
     expect(fs.readdirSync).toHaveBeenCalledTimes(1)
     expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en-US'))
-    expect(Object.values(props._nextI18Next.initialI18nStore))
-      .toEqual([{ one: {}, three: {}, two: {} }])
+    expect(props._nextI18Next.initialI18nStore)
+      .toEqual({
+        'en-US': { one: {}, three: {}, two: {} },
+        'fr-CA': { one: {}, three: {}, two: {} }}
+      )
   })
 
   it('returns props', async () => {
@@ -47,6 +50,7 @@ describe('serverSideTranslations', () => {
       _nextI18Next: {
         initialI18nStore: {
           'en-US': {},
+          'fr-CA': {},
         },
         initialLocale: 'en-US',
         userConfig: {
