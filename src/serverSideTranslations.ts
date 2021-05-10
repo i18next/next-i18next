@@ -106,7 +106,6 @@ export const serverSideTranslations = async (
   return {
     _nextI18Next: {
       initialI18nStore,
-      initialLocale,
       userConfig: config.serializeConfig ? userConfig : null,
     },
   }
