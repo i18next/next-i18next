@@ -3120,9 +3120,9 @@ core-js@^2.4.0:
   integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
 
 core-js@^3:
-  version "3.11.0"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.11.0.tgz#05dac6aa70c0a4ad842261f8957b961d36eb8926"
-  integrity sha512-bd79DPpx+1Ilh9+30aT5O1sgpQd4Ttg8oqkqi51ZzhedMM1omD2e6IOF48Z/DzDCZ2svp49tN/3vneTK6ZBkXw==
+  version "3.12.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.12.1.tgz#6b5af4ff55616c08a44d386f1f510917ff204112"
+  integrity sha512-Ne9DKPHTObRuB09Dru5AjwKjY4cJHVGu+y5f7coGn1E9Grkc3p2iBwE9AI/nJzsE29mQF7oq+mhYYRqOMFN1Bw==
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -3723,9 +3723,9 @@ eslint-module-utils@^2.6.0:
     pkg-dir "^2.0.0"
 
 eslint-plugin-cypress@^2.11.2:
-  version "2.11.2"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-cypress/-/eslint-plugin-cypress-2.11.2.tgz#a8f3fe7ec840f55e4cea37671f93293e6c3e76a0"
-  integrity sha512-1SergF1sGbVhsf7MYfOLiBhdOg6wqyeV9pXUAIDIffYTGMN3dTBQS9nFAzhLsHhO+Bn0GaVM1Ecm71XUidQ7VA==
+  version "2.11.3"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-cypress/-/eslint-plugin-cypress-2.11.3.tgz#54ee4067aa8192aa62810cd35080eb577e191ab7"
+  integrity sha512-hOoAid+XNFtpvOzZSNWP5LDrQBEJwbZwjib4XJ1KcRYKjeVj0mAmPmucG4Egli4j/aruv+Ow/acacoloWWCl9Q==
   dependencies:
     globals "^11.12.0"
 
