@@ -99,9 +99,6 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
           lng: string,
           fallbackLng: false | FallbackLng
         ): string[] => {
-          if (fallbackLng === null) {
-            return [lng]
-          }
           if (typeof fallbackLng === 'string') {
             return unique([lng, fallbackLng])
           }
