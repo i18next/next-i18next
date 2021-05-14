@@ -72,19 +72,22 @@ export const serverSideTranslations = async (
   })
 
   if (namespacesRequired.length === 0) {
-    const getAllNamespaces = (path: string) =>
+    const getLocaleNamespaces = (path: string) =>
       fs.readdirSync(path)
         .map(file => file.replace(`.${localeExtension}`, ''))
 
     const namespacesByLocale = Object.keys(initialI18nStore)
-      .map(locale => getAllNamespaces(path.resolve(process.cwd(), `${localePath}/${locale}`)))
+      .map(locale => getLocaleNamespaces(path.resolve(process.cwd(), `${localePath}/${locale}`)))
 
-    const allNamespaces = []
-    for (const localNamespaces of namespacesByLocale) {
-      allNamespaces.push(...localNamespaces)
+    const flatNamespaces = (namespacesByLocale: string[][]) => {
+      const allNamespaces = []
+      for (const localNamespaces of namespacesByLocale) {
+        allNamespaces.push(...localNamespaces)
+      }
+      return Array.from(new Set(allNamespaces))
     }
 
-    namespacesRequired = Array.from(new Set(allNamespaces))
+    namespacesRequired = flatNamespaces(namespacesByLocale)
   }
 
   namespacesRequired.forEach((ns) => {
