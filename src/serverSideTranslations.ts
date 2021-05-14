@@ -10,13 +10,16 @@ import { FallbackLng } from 'i18next'
 const DEFAULT_CONFIG_PATH = './next-i18next.config.js'
 
 const getFallbackLocales = (fallbackLng: false | FallbackLng) => {
+  if (fallbackLng === null) {
+    return []
+  }
   if (typeof fallbackLng === 'string') {
     return [fallbackLng]
   }
   if (Array.isArray(fallbackLng)) {
     return fallbackLng
   }
-  if (typeof fallbackLng === 'object' && fallbackLng !== null) {
+  if (typeof fallbackLng === 'object') {
     return Object
       .values(fallbackLng)
       .reduce((all, locales) => [...all, ...locales],[])
