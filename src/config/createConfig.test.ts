@@ -61,7 +61,7 @@ describe('createConfig', () => {
       })
 
       it('gets namespaces from current language + fallback (as object) when ns is not provided', ()=>{
-        const fallbackLng = {default: ['fr'], 'en-US': ['en']} as unknown
+        const fallbackLng = { default: ['fr'], 'en-US': ['en'] } as unknown
         const config = createConfig({ fallbackLng, lng: 'en-US' } as UserConfig)
         expect(config.ns).toEqual(['namespace-of-en-US', 'namespace-of-fr', 'namespace-of-en'])
       })

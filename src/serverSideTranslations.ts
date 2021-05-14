@@ -9,14 +9,14 @@ import { FallbackLng } from 'i18next'
 
 const DEFAULT_CONFIG_PATH = './next-i18next.config.js'
 
-const getFallBackLocales = (fallbackLng: false | FallbackLng) => {
+const getFallbackLocales = (fallbackLng: false | FallbackLng) => {
   if (typeof fallbackLng === 'string') {
     return [fallbackLng]
   }
   if (Array.isArray(fallbackLng)) {
     return fallbackLng
   }
-  if (typeof fallbackLng === 'object') {
+  if (typeof fallbackLng === 'object' && fallbackLng !== null) {
     return Object
       .values(fallbackLng)
       .reduce((all, locales) => [...all, ...locales],[])
@@ -67,7 +67,7 @@ export const serverSideTranslations = async (
     initialI18nStore[lng] = {}
   })
 
-  getFallBackLocales(fallbackLng).forEach(lng => {
+  getFallbackLocales(fallbackLng).forEach(lng => {
     initialI18nStore[lng] = {}
   })
 
@@ -76,12 +76,13 @@ export const serverSideTranslations = async (
       fs.readdirSync(path)
         .map(file => file.replace(`.${localeExtension}`, ''))
 
-    const allNamespaces = Object.keys(initialI18nStore)
+    const namespacesByLocale = Object.keys(initialI18nStore)
       .map(locale => getAllNamespaces(path.resolve(process.cwd(), `${localePath}/${locale}`)))
-      .reduce(
-        (allNamespaces, namespaces) => [...allNamespaces,...namespaces],
-        []
-      )
+
+    const allNamespaces = []
+    for (const localNamespaces of namespacesByLocale) {
+      allNamespaces.push(...localNamespaces)
+    }
 
     namespacesRequired = Array.from(new Set(allNamespaces))
   }

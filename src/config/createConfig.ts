@@ -77,39 +77,41 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       // Set server side preload (namespaces)
       //
       if (!combinedConfig.ns && typeof lng !== 'undefined') {
-        const unique = (list:string[]) => Array.from(new Set<string>(list))
+        const unique = (list: string[]) => Array.from(new Set<string>(list))
         const getNamespaces = (locales: string[]): string[] => {
           const getLocaleNamespaces = (p: string) =>
             fs.readdirSync(p).map(
               (file: string) => file.replace(`.${localeExtension}`, '')
             )
 
-          const namespaces: string[] = locales
+          const namespacesByLocale = locales
             .map(locale => getLocaleNamespaces(path.resolve(process.cwd(), `${serverLocalePath}/${locale}`)))
-            .reduce(
-              (flattenNamespaces, namespaces) =>
-                [...flattenNamespaces,...namespaces],
-              []
-            )
 
-          return unique(namespaces)
+          const allNamespaces = []
+          for (const localNamespaces of namespacesByLocale) {
+            allNamespaces.push(...localNamespaces)
+          }
+
+          return unique(allNamespaces)
         }
 
         const getAllLocales = (
           lng: string,
           fallbackLng: false | FallbackLng
         ): string[] => {
-          if (typeof fallbackLng === 'string')
+          if (typeof fallbackLng === 'string') {
             return unique([lng, fallbackLng])
+          }
 
-          if (Array.isArray(fallbackLng))
+          if (Array.isArray(fallbackLng)) {
             return unique([lng, ...fallbackLng])
+          }
 
-          if (typeof fallbackLng === 'object') {
+          if (typeof fallbackLng === 'object' && fallbackLng !== null) {
             const flattenedFallbacks = Object
               .values(fallbackLng)
-              .reduce(((all, fallbackLngs) => [...all,...fallbackLngs]),[])
-            return unique([lng, ...flattenedFallbacks])
+              .reduce(((all, fallbackLngs) => [ ...all, ...fallbackLngs ]),[])
+            return unique([ lng, ...flattenedFallbacks])
           }
           return [lng]
         }
