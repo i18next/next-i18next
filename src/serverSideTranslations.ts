@@ -24,6 +24,14 @@ const getFallbackLocales = (fallbackLng: false | FallbackLng) => {
   return []
 }
 
+const flatNamespaces = (namespacesByLocale: string[][]) => {
+  const allNamespaces = []
+  for (const localNamespaces of namespacesByLocale) {
+    allNamespaces.push(...localNamespaces)
+  }
+  return Array.from(new Set(allNamespaces))
+}
+
 export const serverSideTranslations = async (
   initialLocale: string,
   namespacesRequired: string[] = [],
@@ -78,14 +86,6 @@ export const serverSideTranslations = async (
 
     const namespacesByLocale = Object.keys(initialI18nStore)
       .map(locale => getLocaleNamespaces(path.resolve(process.cwd(), `${localePath}/${locale}`)))
-
-    const flatNamespaces = (namespacesByLocale: string[][]) => {
-      const allNamespaces = []
-      for (const localNamespaces of namespacesByLocale) {
-        allNamespaces.push(...localNamespaces)
-      }
-      return Array.from(new Set(allNamespaces))
-    }
 
     namespacesRequired = flatNamespaces(namespacesByLocale)
   }
