@@ -107,9 +107,9 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
             return unique([lng, ...fallbackLng])
           }
 
-          if (typeof fallbackLng === 'object' && fallbackLng !== null) {
+          if (typeof fallbackLng === 'object') {
             const flattenedFallbacks = Object
-              .values(fallbackLng)
+              .values(fallbackLng || {})
               .reduce(((all, fallbackLngs) => [ ...all, ...fallbackLngs ]),[])
             return unique([ lng, ...flattenedFallbacks ])
           }

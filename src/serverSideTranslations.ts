@@ -16,9 +16,9 @@ const getFallbackLocales = (fallbackLng: false | FallbackLng) => {
   if (Array.isArray(fallbackLng)) {
     return fallbackLng
   }
-  if (typeof fallbackLng === 'object' && fallbackLng !== null) {
+  if (typeof fallbackLng === 'object') {
     return Object
-      .values(fallbackLng)
+      .values(fallbackLng || {})
       .reduce((all, locales) => [...all, ...locales],[])
   }
   return []
