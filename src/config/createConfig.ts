@@ -111,7 +111,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
             const flattenedFallbacks = Object
               .values(fallbackLng)
               .reduce(((all, fallbackLngs) => [ ...all, ...fallbackLngs ]),[])
-            return unique([ lng, ...flattenedFallbacks])
+            return unique([ lng, ...flattenedFallbacks ])
           }
           return [lng]
         }
