@@ -29,6 +29,7 @@ Production ready: `next-i18next` supports passing translations and configuration
 
 Your `next-i18next.config.js` file will provide configuration for `next-i18next`.
 After configuration, `appWithTranslation` allows us to use the `t` (translate) function in our components via hooks.
+
 Then we add `serverSideTranslation` to [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) (depending on your case) in our page-level components.
 
 Now our NextJs app is fully translatable!
@@ -116,7 +117,7 @@ export async function getStaticProps({ locale }) {
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common', 'footer'])),
-      // will be passed to the page component as props
+      // Will be passed to the page component as props
     }
   } 
 }
