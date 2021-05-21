@@ -5,8 +5,32 @@ import { createConfig } from './config/createConfig'
 import createClient from './createClient'
 
 import { UserConfig, SSRConfig } from './types'
+import { FallbackLng } from 'i18next'
 
 const DEFAULT_CONFIG_PATH = './next-i18next.config.js'
+
+const getFallbackLocales = (fallbackLng: false | FallbackLng) => {
+  if (typeof fallbackLng === 'string') {
+    return [fallbackLng]
+  }
+  if (Array.isArray(fallbackLng)) {
+    return fallbackLng
+  }
+  if (typeof fallbackLng === 'object' && fallbackLng !== null) {
+    return Object
+      .values(fallbackLng)
+      .reduce((all, locales) => [...all, ...locales],[])
+  }
+  return []
+}
+
+const flatNamespaces = (namespacesByLocale: string[][]) => {
+  const allNamespaces = []
+  for (const localNamespaces of namespacesByLocale) {
+    allNamespaces.push(...localNamespaces)
+  }
+  return Array.from(new Set(allNamespaces))
+}
 
 export const serverSideTranslations = async (
   initialLocale: string,
@@ -33,9 +57,9 @@ export const serverSideTranslations = async (
   })
 
   const {
-    defaultLocale,
     localeExtension,
     localePath,
+    fallbackLng,
   } = config
 
   const { i18n, initPromise } = createClient({
@@ -51,12 +75,19 @@ export const serverSideTranslations = async (
     initialI18nStore[lng] = {}
   })
 
+  getFallbackLocales(fallbackLng).forEach(lng => {
+    initialI18nStore[lng] = {}
+  })
+
   if (namespacesRequired.length === 0) {
-    const getAllNamespaces = (path: string) =>
+    const getLocaleNamespaces = (path: string) =>
       fs.readdirSync(path)
         .map(file => file.replace(`.${localeExtension}`, ''))
 
-    namespacesRequired = getAllNamespaces(path.resolve(process.cwd(), `${localePath}/${defaultLocale}`))
+    const namespacesByLocale = Object.keys(initialI18nStore)
+      .map(locale => getLocaleNamespaces(path.resolve(process.cwd(), `${localePath}/${locale}`)))
+
+    namespacesRequired = flatNamespaces(namespacesByLocale)
   }
 
   namespacesRequired.forEach((ns) => {

@@ -1,5 +1,6 @@
 import { defaultConfig } from './defaultConfig'
 import { InternalConfig, UserConfig } from '../types'
+import { FallbackLng } from 'i18next'
 
 const deepMergeObjects = ['backend', 'detection'] as (keyof Pick<UserConfig, 'backend' | 'detection'>)[]
 
@@ -40,7 +41,6 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
   if (typeof combinedConfig.fallbackLng === 'undefined') {
     combinedConfig.fallbackLng = combinedConfig.defaultLocale
   }
-
   if (!process.browser && typeof window === 'undefined') {
     combinedConfig.preload = locales
 
@@ -76,12 +76,49 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       //
       // Set server side preload (namespaces)
       //
-      if (!combinedConfig.ns) {
-        const getAllNamespaces = (p: string) =>
-          fs.readdirSync(p).map(
-            (file: string) => file.replace(`.${localeExtension}`, '')
-          )
-        combinedConfig.ns = getAllNamespaces(path.resolve(process.cwd(), `${serverLocalePath}/${lng}`))
+      if (!combinedConfig.ns && typeof lng !== 'undefined') {
+        const unique = (list: string[]) => Array.from(new Set<string>(list))
+        const getNamespaces = (locales: string[]): string[] => {
+          const getLocaleNamespaces = (p: string) =>
+            fs.readdirSync(p).map(
+              (file: string) => file.replace(`.${localeExtension}`, '')
+            )
+
+          const namespacesByLocale = locales
+            .map(locale => getLocaleNamespaces(path.resolve(process.cwd(), `${serverLocalePath}/${locale}`)))
+
+          const allNamespaces = []
+          for (const localNamespaces of namespacesByLocale) {
+            allNamespaces.push(...localNamespaces)
+          }
+
+          return unique(allNamespaces)
+        }
+
+        const getAllLocales = (
+          lng: string,
+          fallbackLng: false | FallbackLng
+        ): string[] => {
+          if (typeof fallbackLng === 'string') {
+            return unique([lng, fallbackLng])
+          }
+
+          if (Array.isArray(fallbackLng)) {
+            return unique([lng, ...fallbackLng])
+          }
+
+          if (typeof fallbackLng === 'object') {
+            const flattenedFallbacks = Object
+              .values(fallbackLng)
+              .reduce(((all, fallbackLngs) => [ ...all, ...fallbackLngs ]),[])
+            return unique([ lng, ...flattenedFallbacks ])
+          }
+          return [lng]
+        }
+
+        combinedConfig.ns = getNamespaces(
+          getAllLocales(lng, combinedConfig.fallbackLng)
+        )
       }
     }
   } else {

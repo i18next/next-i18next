@@ -20,7 +20,7 @@ describe('createConfig', () => {
     describe('when filesystem is as expected', () => {
       beforeAll(() => {
         (fs.existsSync as jest.Mock).mockReturnValue(true);
-        (fs.readdirSync as jest.Mock).mockReturnValue([])
+        (fs.readdirSync as jest.Mock).mockImplementation((locale)=>[`namespace-of-${locale.split('/').pop()}`])
       })
 
       it('throws when lng is not provided', () => {
@@ -41,13 +41,29 @@ describe('createConfig', () => {
         expect(config.localePath).toEqual('./public/locales')
         expect(config.localeStructure).toEqual('{{lng}}/{{ns}}')
         expect(config.locales).toEqual(['en'])
-        expect(config.ns).toEqual([])
+        expect(config.ns).toEqual(['namespace-of-en'])
         expect(config.preload).toEqual(['en'])
         expect(config.strictMode).toEqual(true)
         expect(config.use).toEqual([])
 
         expect(fs.existsSync).toHaveBeenCalledTimes(1)
         expect(fs.readdirSync).toHaveBeenCalledTimes(1)
+      })
+
+      it('gets namespaces from current language + fallback (as string) when ns is not provided', ()=>{
+        const config = createConfig({ fallbackLng:'en', lng: 'en-US' } as UserConfig)
+        expect(config.ns).toEqual(['namespace-of-en-US', 'namespace-of-en'])
+      })
+
+      it('gets namespaces from current language + fallback (as array) when ns is not provided', ()=>{
+        const config = createConfig({ fallbackLng: ['en', 'fr'], lng: 'en-US' } as UserConfig)
+        expect(config.ns).toEqual(['namespace-of-en-US', 'namespace-of-en', 'namespace-of-fr'])
+      })
+
+      it('gets namespaces from current language + fallback (as object) when ns is not provided', ()=>{
+        const fallbackLng = { default: ['fr'], 'en-US': ['en'] } as unknown
+        const config = createConfig({ fallbackLng, lng: 'en-US' } as UserConfig)
+        expect(config.ns).toEqual(['namespace-of-en-US', 'namespace-of-fr', 'namespace-of-en'])
       })
 
       it('deep merges backend', () => {
