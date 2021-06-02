@@ -85,7 +85,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
             )
 
           const namespacesByLocale = locales
-            .map(locale => getLocaleNamespaces(path.resolve(process.cwd(), `${serverLocalePath}/${locale}`)))
+            .map(locale => getLocaleNamespaces(path.resolve(process.cwd(), serverLocalePath)))
 
           const allNamespaces = []
           for (const localNamespaces of namespacesByLocale) {
