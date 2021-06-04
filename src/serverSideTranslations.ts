@@ -6,6 +6,7 @@ import createClient from './createClient'
 
 import { UserConfig, SSRConfig } from './types'
 import { FallbackLng } from 'i18next'
+import { Namespace } from 'react-i18next'
 
 const DEFAULT_CONFIG_PATH = './next-i18next.config.js'
 
@@ -32,9 +33,11 @@ const flatNamespaces = (namespacesByLocale: string[][]) => {
   return Array.from(new Set(allNamespaces))
 }
 
+type NextNamespace<T extends Namespace> = T extends (infer R)[] ? R[] : T[];
+
 export const serverSideTranslations = async (
   initialLocale: string,
-  namespacesRequired: string[] = [],
+  namespacesRequired: NextNamespace<Namespace> = [],
   configOverride: UserConfig | null = null,
 ): Promise<SSRConfig> => {
   if (typeof initialLocale !== 'string') {
