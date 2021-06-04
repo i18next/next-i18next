@@ -158,6 +158,31 @@ To do that, you can pass an array of required namespaces for each page into `ser
 
 Note: `useTranslation` provides namespaces to the component that you use it in. However, `serverSideTranslations` provides the total available namespaces to the entire React tree and belongs on the page level. Both are required.
 
+#### Strict Typings
+
+In order to have strict typings and editor auto-complete, you can extends the type definitions exported by `next-i18next` in a similar way to [react-i18next](https://react.i18next.com/latest/typescript).
+
+This will also provide the correct typings to the `serverSideTranslations` function. 
+
+```ts
+import ns1 from './public/locales/en/ns1.json'
+import ns2 from './public/locales/en/ns2.json'
+
+declare module 'next-i18next' {
+  type DefaultResources = {
+    ns1: typeof ns1
+    ns2: typeof ns2
+  }
+
+  // The default for `next-i18next` is 'common', 
+  // If you use a custom value in `defaultNS` put it here
+  type DefaultNamespace = 'common'
+
+  interface Resources extends DefaultResources {}
+}
+
+```
+
 ### 5. Advanced configuration
 
 
