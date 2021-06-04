@@ -174,13 +174,8 @@ declare module 'next-i18next' {
     ns2: typeof ns2
   }
 
-  // The default for `next-i18next` is 'common', 
-  // If you use a custom value in `defaultNS` put it here
-  type DefaultNamespace = 'common'
-
   interface Resources extends DefaultResources {}
 }
-
 ```
 
 ### 5. Advanced configuration
