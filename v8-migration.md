@@ -26,7 +26,7 @@ The object `i18n` which was imported directly  from `i18n.js` in the v7 suppored
 3.  Replace all instances of `import { withTranslation } from 'i18n`  to  `import { withTranslation } from 'next-i18next'`
 4. Replace all instances of `import { useTranslation } from 'i18n`  to  `import { useTranslation } from 'next-i18next'`
 5.  Add to `getServerSideProps` or `getInitialProps` in the return as props`...(await serverSideTranslations(locale, [<YOUR_NAMESPACES>]))`  in every single page where you have translations in children. Or in all pages if you have a component in `_app.js` that needs translations. As [described in the docs.](https://github.com/isaachinman/next-i18next#serversidetranslations)
-6.  Remove  `namespacesRequired: ['common'],`  in `_app.js` (not used anymore)
+6.  Remove  `namespacesRequired: ['common'],`  in `_app.js` (not used anymore).
 7.  Change the language changer to  `router.push(router.asPath, undefined, { locale: <YOUR_LOCALE>, });`
 
 #### Optional
