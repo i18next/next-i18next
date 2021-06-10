@@ -140,7 +140,9 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       loadPath: `${clientLocalePath}/${localeStructure}.${localeExtension}`,
     }
 
-    combinedConfig.ns = [defaultNS]
+    if (!combinedConfig.ns) {
+      combinedConfig.ns = [defaultNS]
+    }
   }
 
   //
