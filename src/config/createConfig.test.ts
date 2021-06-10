@@ -199,7 +199,12 @@ describe('createConfig', () => {
       expect(config.ns).toEqual(['core'])
     })
 
-    it('returns ns when provided', () => {
+    it('returns ns when provided as a string', () => {
+      const config = createConfig({ lng: 'en', ns: 'core' } as UserConfig)
+      expect(config.ns).toEqual('core')
+    })
+
+    it('returns ns when provided as an array', () => {
       const config = createConfig({ lng: 'en', ns: ['core', 'page'] } as UserConfig)
       expect(config.ns).toEqual(['core', 'page'])
     })
