@@ -125,7 +125,7 @@ export async function getStaticProps({ locale }) {
 
 Note that `serverSideTranslations` must be imported from `next-i18next/serverSideTranslations` – this is a separate module that contains NodeJs-specific code.
 
-Also, note that `serverSideTranslations` is not compatible with `getInitialProps`, as it _only_ can execute in a server environment, whereas `getInitialProps` is called on the client side when navigating between pages.
+Also, note that `serverSideTranslations` is not compatible with `getInitialProps` and `getServerSideProps`, as it _only_ can execute in a server environment, whereas `getInitialProps` and `getServerSideProps` are called on the client side when navigating between pages.
 
 The `serverSideTranslations` HOC is primarily responsible for passing translations and configuration options into pages, as props.
 
