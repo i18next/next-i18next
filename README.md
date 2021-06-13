@@ -229,7 +229,7 @@ All other [i18next options](https://www.i18next.com/overview/configuration-optio
 
 ## Migration to v8
 
-To migrate from previous versions to the v8, check out the [v8-migration guide](https://github.com/isaachinman/next-i18next/tree/master/docs/v8-migration.md)
+To migrate from previous versions to the version 8, check out the [v8-migration guide](https://github.com/isaachinman/next-i18next/tree/master/docs/v8-migration.md)
 
 ## Notes
 
