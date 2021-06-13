@@ -1,4 +1,5 @@
 # next-i18next
+
 [![npm version](https://badge.fury.io/js/next-i18next.svg)](https://badge.fury.io/js/next-i18next)
 [![CircleCI](https://circleci.com/gh/isaachinman/next-i18next.svg?style=shield)](https://circleci.com/gh/isaachinman/next-i18next)
 [![Package Quality](https://npm.packagequality.com/shield/next-i18next.svg)](https://packagequality.com/#?package=next-i18next)
@@ -23,7 +24,7 @@ Easy to set up, easy to use: setup only takes a few steps, and configuration is 
 
 No other requirements: `next-i18next` simplifies internationalisation for your [NextJs](https://nextjs.org/) app without extra dependencies.
 
-Production ready: `next-i18next` supports passing translations and configuration options into pages as props with SSG/SSR support. 
+Production ready: `next-i18next` supports passing translations and configuration options into pages as props with SSG/SSR support.
 
 ## How does it work?
 
@@ -47,6 +48,7 @@ You need to also have `react` and `next` installed.
 ### 2. Translation content
 
 By default, `next-i18next` expects your translations to be organised as such:
+
 ```
 .
 └── public
@@ -63,7 +65,7 @@ If you want to structure your translations/namespaces in a custom way, you will 
 
 ### 3. Project setup
 
-First, create a `next-i18next.config.js` file in the root of your project. The syntax for the nested `i18n` object  [comes from NextJs directly](https://nextjs.org/docs/advanced-features/i18n-routing).
+First, create a `next-i18next.config.js` file in the root of your project. The syntax for the nested `i18n` object [comes from NextJs directly](https://nextjs.org/docs/advanced-features/i18n-routing).
 
 This tells `next-i18next` what your `defaultLocale` and other locales are, so that it can preload translations on the server:
 
@@ -75,7 +77,7 @@ module.exports = {
     defaultLocale: 'en',
     locales: ['en', 'de'],
   },
-}
+};
 ```
 
 Now, create or modify your `next.config.js` file, by passing the `i18n` object into your `next.config.js` file, to enable localised URL routing:
@@ -83,11 +85,11 @@ Now, create or modify your `next.config.js` file, by passing the `i18n` object i
 #### [`next.config.js`](https://nextjs.org/docs/api-reference/next.config.js/introduction)
 
 ```js
-const { i18n } = require('./next-i18next.config')
+const { i18n } = require('./next-i18next.config');
 
 module.exports = {
   i18n,
-}
+};
 ```
 
 There are three functions that `next-i18next` exports, which you will need to use to translate your project:
@@ -97,11 +99,11 @@ There are three functions that `next-i18next` exports, which you will need to us
 This is a HOC which wraps your [`_app`](https://nextjs.org/docs/advanced-features/custom-app):
 
 ```tsx
-import { appWithTranslation } from 'next-i18next'
+import { appWithTranslation } from 'next-i18next';
 
-const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />
+const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />;
 
-export default appWithTranslation(MyApp)
+export default appWithTranslation(MyApp);
 ```
 
 The `appWithTranslation` HOC is primarily responsible for adding a [`I18nextProvider`](https://react.i18next.com/latest/i18nextprovider).
@@ -111,15 +113,15 @@ The `appWithTranslation` HOC is primarily responsible for adding a [`I18nextProv
 This is an async function that you need to include on your page-level components, via either [`getStaticProps`](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [`getServerSideProps`](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) (depending on your use case):
 
 ```tsx
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export async function getStaticProps({ locale }) {
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common', 'footer'])),
       // Will be passed to the page component as props
-    }
-  } 
+    },
+  };
 }
 ```
 
@@ -134,20 +136,17 @@ The `serverSideTranslations` HOC is primarily responsible for passing translatio
 This is the hook which you'll actually use to do the translation itself. The `useTranslation` hook [comes from `react-i18next`](https://react.i18next.com/latest/usetranslation-hook), but can be imported from `next-i18next` directly:
 
 ```tsx
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from 'next-i18next';
 
 export const Footer = () => {
-
-  const { t } = useTranslation('footer')
+  const { t } = useTranslation('footer');
 
   return (
     <footer>
-      <p>
-        {t('description')}
-      </p>
+      <p>{t('description')}</p>
     </footer>
-  )
-}
+  );
+};
 ```
 
 ### 4. Declaring namespace dependencies
@@ -160,21 +159,20 @@ Note: `useTranslation` provides namespaces to the component that you use it in. 
 
 ### 5. Advanced configuration
 
-
 #### Passing other config options
 
 If you need to modify more advanced configuration options, you can pass them via `next-i18next.config.js`. For example:
 
 ```js
-const path = require('path')
+const path = require('path');
 
 module.exports = {
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'de'],
   },
-  localePath: path.resolve('./my/custom/path')
-}
+  localePath: path.resolve('./my/custom/path'),
+};
 ```
 
 #### Unserialisable configs
@@ -191,42 +189,52 @@ Reason: `function` cannot be serialized as JSON. Please only return JSON seriali
 To fix this, you'll need to set `config.serializeConfig` to `false`, and manually pass your config into `appWithTranslation`:
 
 ```tsx
-import { appWithTranslation } from 'next-i18next'
-import nextI18NextConfig from '../next-i18next.config.js'
+import { appWithTranslation } from 'next-i18next';
+import nextI18NextConfig from '../next-i18next.config.js';
 
-const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />
+const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />;
 
-export default appWithTranslation(MyApp, nextI18NextConfig)
+export default appWithTranslation(MyApp, nextI18NextConfig);
 ```
 
 ```tsx
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import nextI18NextConfig from '../next-i18next.config.js'
+import nextI18NextConfig from '../next-i18next.config.js';
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['common', 'footer'], nextI18NextConfig),
-  }
-})
+    ...(await serverSideTranslations(
+      locale,
+      ['common', 'footer'],
+      nextI18NextConfig
+    )),
+  },
+});
 ```
 
 #### Options
 
-| Key  | Default value |
-| ------------- | ------------- |
-| `defaultNS` | `'common'`  |
-| `localeExtension` | `'json'`  |
-| `localePath` | `'./public/locales'`  |
-| `localeStructure` | `'{{lng}}/{{ns}}'`  |
-| `serializeConfig` | `true`  |
-| `strictMode` | `true`  |
-| `use` (for plugins) | `[]`  |
+| Key                 | Default value        |
+| ------------------- | -------------------- |
+| `defaultNS`         | `'common'`           |
+| `localeExtension`   | `'json'`             |
+| `localePath`        | `'./public/locales'` |
+| `localeStructure`   | `'{{lng}}/{{ns}}'`   |
+| `serializeConfig`   | `true`               |
+| `strictMode`        | `true`               |
+| `use` (for plugins) | `[]`                 |
 
 All other [i18next options](https://www.i18next.com/overview/configuration-options) can be passed in as well.
 
+## Migration to v8
+
+To migrate from previous versions to the version 8, check out the [v8-migration guide](https://github.com/isaachinman/next-i18next/tree/master/docs/v8-migration.md)
+
 ## Notes
+
 For Docker deployment, note that if you use the `Dockerfile` from [Next.js docs](https://nextjs.org/docs/deployment#docker-image) do not forget to copy `next.config.js` and `next-i18next.config.js` into the Docker image.
+
 ```
 COPY --from=builder /app/next.config.js ./next.config.js
 COPY --from=builder /app/next-i18next.config.js ./next-i18next.config.js
@@ -252,4 +260,3 @@ This project follows the [all-contributors](https://github.com/kentcdodds/all-co
 <a href="https://www.browserstack.com/" target="_blank">
   <img src="https://miro.medium.com/max/560/0*dLdslKvNsmtaH2uQ.png" width="240px">
 </a>
-
