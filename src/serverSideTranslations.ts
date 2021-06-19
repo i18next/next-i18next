@@ -69,11 +69,9 @@ export const serverSideTranslations = async (
 
   await initPromise
 
-  const initialI18nStore: Record<string, any> = {}
-
-  config.locales.forEach(lng => {
-    initialI18nStore[lng] = {}
-  })
+  const initialI18nStore: Record<string, any> = {
+    [initialLocale]: {},
+  }
 
   getFallbackLocales(fallbackLng).forEach(lng => {
     initialI18nStore[lng] = {}
