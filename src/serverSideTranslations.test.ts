@@ -33,20 +33,13 @@ describe('serverSideTranslations', () => {
           locales: ['en-US', 'fr-CA'],
         },
       } as UserConfig)
-      expect(fs.readdirSync).toHaveBeenCalledTimes(2)
+      expect(fs.readdirSync).toHaveBeenCalledTimes(1)
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en-US'))
-      expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/fr-CA'))
       expect(props._nextI18Next.initialI18nStore)
         .toEqual({
           'en-US': {
             common: {},
             'namespace-of-en-US': {},
-            'namespace-of-fr-CA': {},
-          },
-          'fr-CA': {
-            common: {},
-            'namespace-of-en-US': {},
-            'namespace-of-fr-CA': {},
           },
         })
     })
@@ -59,29 +52,19 @@ describe('serverSideTranslations', () => {
           locales: ['nl-BE', 'fr-BE'],
         },
       } as UserConfig)
-      expect(fs.readdirSync).toHaveBeenCalledTimes(3)
-      expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/nl-BE'))
-      expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/fr-BE'))
+      expect(fs.readdirSync).toHaveBeenCalledTimes(2)
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/fr'))
       expect(props._nextI18Next.initialI18nStore)
         .toEqual({
+          'en-US': {
+            common: {},
+            'namespace-of-en-US': {},
+            'namespace-of-fr': {},
+          },
           fr: {
             common: {},
+            'namespace-of-en-US': {},
             'namespace-of-fr': {},
-            'namespace-of-fr-BE': {},
-            'namespace-of-nl-BE': {},
-          },
-          'fr-BE': {
-            common: {},
-            'namespace-of-fr': {},
-            'namespace-of-fr-BE': {},
-            'namespace-of-nl-BE': {},
-          },
-          'nl-BE': {
-            common: {},
-            'namespace-of-fr': {},
-            'namespace-of-fr-BE': {},
-            'namespace-of-nl-BE': {},
           },
         })
     })
@@ -94,8 +77,7 @@ describe('serverSideTranslations', () => {
           locales: ['en-US', 'fr-CA'],
         },
       } as UserConfig)
-      expect(fs.readdirSync).toHaveBeenCalledTimes(4)
-      expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/fr-CA'))
+      expect(fs.readdirSync).toHaveBeenCalledTimes(3)
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en-US'))
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en'))
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/fr'))
@@ -106,28 +88,18 @@ describe('serverSideTranslations', () => {
             'namespace-of-en': {},
             'namespace-of-en-US': {},
             'namespace-of-fr': {},
-            'namespace-of-fr-CA': {},
           },
           'en-US': {
             common: {},
             'namespace-of-en': {},
             'namespace-of-en-US': {},
             'namespace-of-fr': {},
-            'namespace-of-fr-CA': {},
           },
           fr: {
             common: {},
             'namespace-of-en': {},
             'namespace-of-en-US': {},
             'namespace-of-fr': {},
-            'namespace-of-fr-CA': {},
-          },
-          'fr-CA': {
-            common: {},
-            'namespace-of-en': {},
-            'namespace-of-en-US': {},
-            'namespace-of-fr': {},
-            'namespace-of-fr-CA': {},
           },
         })
     })
@@ -140,9 +112,7 @@ describe('serverSideTranslations', () => {
           locales: ['nl-BE', 'fr-BE'],
         },
       } as UserConfig)
-      expect(fs.readdirSync).toHaveBeenCalledTimes(4)
-      expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/fr-BE'))
-      expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/nl-BE'))
+      expect(fs.readdirSync).toHaveBeenCalledTimes(3)
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en'))
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/fr'))
       expect(props._nextI18Next.initialI18nStore)
@@ -150,30 +120,20 @@ describe('serverSideTranslations', () => {
           en: {
             common: {},
             'namespace-of-en': {},
+            'namespace-of-en-US': {},
             'namespace-of-fr': {},
-            'namespace-of-fr-BE': {},
-            'namespace-of-nl-BE': {},
+          },
+          'en-US': {
+            common: {},
+            'namespace-of-en': {},
+            'namespace-of-en-US': {},
+            'namespace-of-fr': {},
           },
           fr: {
             common: {},
             'namespace-of-en': {},
+            'namespace-of-en-US': {},
             'namespace-of-fr': {},
-            'namespace-of-fr-BE': {},
-            'namespace-of-nl-BE': {},
-          },
-          'fr-BE': {
-            common: {},
-            'namespace-of-en': {},
-            'namespace-of-fr': {},
-            'namespace-of-fr-BE': {},
-            'namespace-of-nl-BE': {},
-          },
-          'nl-BE': {
-            common: {},
-            'namespace-of-en': {},
-            'namespace-of-fr': {},
-            'namespace-of-fr-BE': {},
-            'namespace-of-nl-BE': {},
           },
         })
     })
@@ -191,7 +151,6 @@ describe('serverSideTranslations', () => {
       _nextI18Next: {
         initialI18nStore: {
           'en-US': {},
-          'fr-CA': {},
         },
         initialLocale: 'en-US',
         userConfig: {
