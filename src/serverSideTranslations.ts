@@ -87,7 +87,7 @@ export const serverSideTranslations = async (
 
     namespacesRequired = flatNamespaces(namespacesByLocale)
   } else {
-    namespacesRequired = [];
+    namespacesRequired = []
   }
 
   namespacesRequired.forEach((ns) => {
