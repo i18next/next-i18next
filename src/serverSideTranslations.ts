@@ -86,7 +86,7 @@ export const serverSideTranslations = async (
       .map(locale => getLocaleNamespaces(path.resolve(process.cwd(), `${localePath}/${locale}`)))
 
     namespacesRequired = flatNamespaces(namespacesByLocale)
-  } else {
+  } else if (namespacesRequired.length === 0) {
     namespacesRequired = []
   }
 
