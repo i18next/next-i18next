@@ -3847,9 +3847,9 @@ eslint-plugin-react@^7.22.0:
     string.prototype.matchall "^4.0.5"
 
 eslint-plugin-typescript-sort-keys@^1.5.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-typescript-sort-keys/-/eslint-plugin-typescript-sort-keys-1.6.0.tgz#1a6724a87e5d9d30cb1d07822fff1102259c08a4"
-  integrity sha512-G3yn33MCRLveXNBQLLyLd3QqhQUul8mNwzH+zOhKB/DTMx5J/h6QpCDPf1d6YNwA5ihHM4MEvRimIxqK7eQxFA==
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-typescript-sort-keys/-/eslint-plugin-typescript-sort-keys-1.7.0.tgz#efdef0c66ede1258097a0839b424776f986ee5c6"
+  integrity sha512-YEuksNJuCNEWILmQhD/PUX2NgkIblRMW2L+t+6QUsLuavz35UWDlKJIMsCoAVh4scJXDmR2cPe1MD2xYbt5YPQ==
   dependencies:
     "@typescript-eslint/experimental-utils" "^2.32.0"
     json-schema "^0.2.5"
