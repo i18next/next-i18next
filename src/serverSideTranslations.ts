@@ -77,7 +77,7 @@ export const serverSideTranslations = async (
     initialI18nStore[lng] = {}
   })
 
-  if (!namespacesRequired) {
+  if (!Array.isArray(namespacesRequired)) {
     const getLocaleNamespaces = (path: string) =>
       fs.readdirSync(path)
         .map(file => file.replace(`.${localeExtension}`, ''))
@@ -86,8 +86,6 @@ export const serverSideTranslations = async (
       .map(locale => getLocaleNamespaces(path.resolve(process.cwd(), `${localePath}/${locale}`)))
 
     namespacesRequired = flatNamespaces(namespacesByLocale)
-  } else if (namespacesRequired.length === 0) {
-    namespacesRequired = []
   }
 
   namespacesRequired.forEach((ns) => {
