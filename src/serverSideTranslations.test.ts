@@ -33,6 +33,7 @@ describe('serverSideTranslations', () => {
           locales: ['en-US', 'fr-CA'],
         },
       } as UserConfig)
+      expect(fs.existsSync).toHaveBeenCalledTimes(0)
       expect(fs.readdirSync).toHaveBeenCalledTimes(1)
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en-US'))
       expect(props._nextI18Next.initialI18nStore)
