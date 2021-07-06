@@ -43,7 +43,7 @@ export const serverSideTranslations = async (
 
   let userConfig = configOverride
 
-  if (fs.existsSync(path.resolve(DEFAULT_CONFIG_PATH))) {
+  if (!userConfig && fs.existsSync(path.resolve(DEFAULT_CONFIG_PATH))) {
     userConfig = await import(path.resolve(DEFAULT_CONFIG_PATH))
   }
 
