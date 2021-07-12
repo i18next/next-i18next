@@ -116,15 +116,31 @@ describe('createConfig', () => {
       })
     })
 
-    describe('when filesystem is missing defaultNS', () => {
-      it('throws an error', () => {
+    describe('defaultNS validation', () => {
+      it('when filesystem is missing defaultNS throws an error', () => {
         (fs.existsSync as jest.Mock).mockReturnValueOnce(false)
 
         const config = createConfig.bind(null, {
           lng: 'en',
-        } as any)
+        } as UserConfig)
 
         expect(config).toThrow('Default namespace not found at public/locales/en/common.json')
+      })
+
+      it('uses user provided prefix/suffix with localeStructure', () => {
+        (fs.existsSync as jest.Mock).mockReturnValueOnce(false)
+
+        const config = createConfig.bind(null, {
+          interpolation: {
+            prefix: '^^',
+            suffix: '$$',
+          },
+          lng: 'en',
+          localeStructure: '^^lng$$/^^ns$$',
+        } as UserConfig)
+
+        expect(config).toThrow('Default namespace not found at public/locales/en/common.json')
+        expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en/common.json')
       })
     })
 
