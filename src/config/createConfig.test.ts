@@ -208,5 +208,19 @@ describe('createConfig', () => {
       const config = createConfig({ lng: 'en', ns: ['core', 'page'] } as UserConfig)
       expect(config.ns).toEqual(['core', 'page'])
     })
+
+    describe('hasCustomBackend', () => {
+      it('returns the correct configuration', () => {
+        const config = createConfig({
+          backend: {
+            hello: 'world',
+          },
+          lng: 'en',
+          use: [{
+            type: 'backend',
+          }] } as UserConfig)
+        expect((config.backend as any)).toEqual({ hello: 'world' })
+      })
+    })
   })
 })
