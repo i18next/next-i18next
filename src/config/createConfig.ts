@@ -41,10 +41,9 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
   if (typeof combinedConfig.fallbackLng === 'undefined') {
     combinedConfig.fallbackLng = combinedConfig.defaultLocale
   }
+  const hasCustomBackend = userConfig?.use?.some((b) => b.type === 'backend')
   if (!process.browser && typeof window === 'undefined') {
     combinedConfig.preload = locales
-
-    const hasCustomBackend = userConfig?.use?.some((b) => b.type === 'backend')
 
     if (!hasCustomBackend) {
       const fs = require('fs')
@@ -133,11 +132,13 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
     }
 
     //
-    // Set client side backend
+    // Set client side backend, if there is no custom backend
     //
-    combinedConfig.backend = {
-      addPath: `${clientLocalePath}/${localeStructure}.missing.${localeExtension}`,
-      loadPath: `${clientLocalePath}/${localeStructure}.${localeExtension}`,
+    if (!hasCustomBackend) {
+      combinedConfig.backend = {
+        addPath: `${clientLocalePath}/${localeStructure}.missing.${localeExtension}`,
+        loadPath: `${clientLocalePath}/${localeStructure}.${localeExtension}`,
+      }
     }
 
     if (typeof combinedConfig.ns !== 'string' && !Array.isArray(combinedConfig.ns)) {
