@@ -34,7 +34,7 @@ const flatNamespaces = (namespacesByLocale: string[][]) => {
 
 export const serverSideTranslations = async (
   initialLocale: string,
-  namespacesRequired: string[] = [],
+  namespacesRequired: string[] | undefined = undefined,
   configOverride: UserConfig | null = null,
 ): Promise<SSRConfig> => {
   if (typeof initialLocale !== 'string') {
@@ -43,7 +43,7 @@ export const serverSideTranslations = async (
 
   let userConfig = configOverride
 
-  if (fs.existsSync(path.resolve(DEFAULT_CONFIG_PATH))) {
+  if (!userConfig && fs.existsSync(path.resolve(DEFAULT_CONFIG_PATH))) {
     userConfig = await import(path.resolve(DEFAULT_CONFIG_PATH))
   }
 
@@ -69,17 +69,15 @@ export const serverSideTranslations = async (
 
   await initPromise
 
-  const initialI18nStore: Record<string, any> = {}
-
-  config.locales.forEach(lng => {
-    initialI18nStore[lng] = {}
-  })
+  const initialI18nStore: Record<string, any> = {
+    [initialLocale]: {},
+  }
 
   getFallbackLocales(fallbackLng).forEach(lng => {
     initialI18nStore[lng] = {}
   })
 
-  if (namespacesRequired.length === 0) {
+  if (!Array.isArray(namespacesRequired)) {
     const getLocaleNamespaces = (path: string) =>
       fs.readdirSync(path)
         .map(file => file.replace(`.${localeExtension}`, ''))

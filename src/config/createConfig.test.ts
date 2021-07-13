@@ -209,5 +209,34 @@ describe('createConfig', () => {
       expect((config.backend as any).hello).toEqual('world')
       expect((config.backend as any).loadPath).toMatch('/locales/{{lng}}/{{ns}}.json')
     })
+
+    it('returns ns as [defaultNS]', () => {
+      const config = createConfig({ defaultNS: 'core', lng: 'en' } as UserConfig)
+      expect(config.ns).toEqual(['core'])
+    })
+
+    it('returns ns when provided as a string', () => {
+      const config = createConfig({ lng: 'en', ns: 'core' } as UserConfig)
+      expect(config.ns).toEqual('core')
+    })
+
+    it('returns ns when provided as an array', () => {
+      const config = createConfig({ lng: 'en', ns: ['core', 'page'] } as UserConfig)
+      expect(config.ns).toEqual(['core', 'page'])
+    })
+
+    describe('hasCustomBackend', () => {
+      it('returns the correct configuration', () => {
+        const config = createConfig({
+          backend: {
+            hello: 'world',
+          },
+          lng: 'en',
+          use: [{
+            type: 'backend',
+          }] } as UserConfig)
+        expect((config.backend as any)).toEqual({ hello: 'world' })
+      })
+    })
   })
 })
