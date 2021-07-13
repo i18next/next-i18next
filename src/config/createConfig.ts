@@ -55,7 +55,9 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       // https://github.com/isaachinman/next-i18next/issues/358
       //
       if (typeof defaultNS === 'string' && typeof lng !== 'undefined') {
-        const defaultLocaleStructure = localeStructure.replace('{{lng}}', lng).replace('{{ns}}', defaultNS)
+        const prefix = userConfig?.interpolation?.prefix ?? '{{'
+        const suffix = userConfig?.interpolation?.suffix ?? '}}'
+        const defaultLocaleStructure = localeStructure.replace(`${prefix}lng${suffix}`, lng).replace(`${prefix}ns${suffix}`, defaultNS)
         const defaultFile = `/${defaultLocaleStructure}.${localeExtension}`
         const defaultNSPath = path.join(localePath, defaultFile)
         const defaultNSExists = fs.existsSync(defaultNSPath)
