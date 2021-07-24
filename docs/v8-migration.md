@@ -24,6 +24,7 @@ The object `i18n` which was imported directly from `i18n.js` in `next-i18next@<8
 ## What is different?
 
 1. `getInitialProps` is not supported anymore, using `serverSideTranslations` is mandatory for all pages.
+   If you require `getInitialProps` keep using the last `7.x` version.
 
 ## Step By Step Migration Guide
 
