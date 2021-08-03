@@ -73,7 +73,7 @@ export const serverSideTranslations = async (
     [initialLocale]: {},
   }
 
-  getFallbackLocales(fallbackLng).forEach(lng => {
+  getFallbackLocales(fallbackLng).forEach((lng: string) => {
     initialI18nStore[lng] = {}
   })
 

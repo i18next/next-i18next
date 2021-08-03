@@ -56,7 +56,7 @@ describe('createConfig', () => {
       })
 
       it('gets namespaces from current language + fallback (as array) when ns is not provided', ()=>{
-        const config = createConfig({ fallbackLng: ['en', 'fr'], lng: 'en-US' } as UserConfig)
+        const config = createConfig({ fallbackLng: ['en', 'fr'], lng: 'en-US' } as any)
         expect(config.ns).toEqual(['namespace-of-en-US', 'namespace-of-en', 'namespace-of-fr'])
       })
 
@@ -221,7 +221,7 @@ describe('createConfig', () => {
     })
 
     it('returns ns when provided as an array', () => {
-      const config = createConfig({ lng: 'en', ns: ['core', 'page'] } as UserConfig)
+      const config = createConfig({ lng: 'en', ns: ['core', 'page'] } as any)
       expect(config.ns).toEqual(['core', 'page'])
     })
 
