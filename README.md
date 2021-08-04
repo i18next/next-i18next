@@ -72,7 +72,7 @@ This tells `next-i18next` what your `defaultLocale` and other locales are, so th
 #### `next-i18next.config.js`
 
 ```js
-const path = require('path')
+const path = require('path');
 
 module.exports = {
   i18n: {
