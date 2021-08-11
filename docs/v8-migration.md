@@ -39,7 +39,7 @@ The object `i18n` which was imported directly from `i18n.js` in `next-i18next@<8
 ## Optional
 
 1. Add to the custom 404 page the `...(await serverSideTranslations(locale, [<YOUR_NAMESPACES>])),` as a return in props in `getStaticProps` so the 404 page works with translations as well
-2. Add to the custom 500 page the `...(await serverSideTranslations(locale, [<YOUR_NAMESPACES>])),` as a return in props in `getStaticProps` so the 404 page works with translations as well
+2. Add to the custom 500 page the `...(await serverSideTranslations(locale, [<YOUR_NAMESPACES>])),` as a return in props in `getStaticProps` so the 500 page works with translations as well
 3. Add set cookie `NEXT_LOCALE` for language recognition. More about that in [the NextJs docs](https://nextjs.org/docs/advanced-features/i18n-routing#leveraging-the-next_locale-cookie)
 4. Adjust the Jest test settings to mock `withTranslation`,`useTranslation`, and `t()` or/and `i18n` in props.
 
