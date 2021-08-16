@@ -27,6 +27,7 @@ export const defaultConfig = {
   react: {
     useSuspense: true,
   },
+  reloadOnPrerender: false,
   serializeConfig: true,
   strictMode: true,
   use: [],
