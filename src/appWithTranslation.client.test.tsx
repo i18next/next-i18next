@@ -26,6 +26,11 @@ jest.mock('i18next-hmr/client', () => ({
   applyClientHMR: jest.fn(),
 }))
 
+jest.mock('i18next-http-backend', () => ({
+  __esmodule: false,
+  default: jest.requireActual('i18next-http-backend'),
+}))
+
 
 const DummyApp = appWithTranslation(() => (
   <div>Hello world</div>
