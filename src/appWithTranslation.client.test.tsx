@@ -2,6 +2,8 @@ import React from 'react'
 import fs from 'fs'
 import { screen, render } from '@testing-library/react'
 import { I18nextProvider } from 'react-i18next'
+import getConfig from 'next/config'
+import { applyClientHMR } from 'i18next-hmr/client'
 
 import { appWithTranslation } from './appWithTranslation'
 
@@ -17,6 +19,11 @@ const DummyI18nextProvider: React.FC = ({ children }) => (
 jest.mock('react-i18next', () => ({
   I18nextProvider: jest.fn(),
   __esmodule: true,
+}))
+
+jest.mock('next/config')
+jest.mock('i18next-hmr/client', () => ({
+  applyClientHMR: jest.fn(),
 }))
 
 
@@ -49,7 +56,10 @@ describe('appWithTranslation', () => {
   beforeEach(() => {
     (fs.existsSync as jest.Mock).mockReturnValue(true);
     (fs.readdirSync as jest.Mock).mockReturnValue([]);
-    (I18nextProvider as jest.Mock).mockImplementation(DummyI18nextProvider)
+    (I18nextProvider as jest.Mock).mockImplementation(DummyI18nextProvider);
+    (getConfig as jest.Mock).mockReturnValue({
+      publicRuntimeConfig: {},
+    })
   })
   afterEach(jest.resetAllMocks)
 
@@ -122,6 +132,29 @@ describe('appWithTranslation', () => {
 
     expect(fs.existsSync).toHaveBeenCalledTimes(0)
     expect(fs.readdirSync).toHaveBeenCalledTimes(0)
+  })
+
+  describe('When next publicRuntimeConfig.__HMR_I18N_ENABLED__ is enabled', () => {
+    beforeEach(() => {
+      (getConfig as jest.Mock).mockReturnValue({
+        publicRuntimeConfig: {
+          __HMR_I18N_ENABLED__: true,
+          __HMR_I18N_NAMESPACES__: ['foo', 'bar'],
+        },
+      })
+    })
+
+    it('applyClientHMR should be called', () => {
+      renderComponent()
+      expect(applyClientHMR).toHaveBeenCalled()
+    })
+
+    it('i18n.options.ns should be set from publicRuntimeConfig.__HMR_I18N_NAMESPACES__', () => {
+      renderComponent()
+
+      const [args] = (I18nextProvider as jest.Mock).mock.calls
+      expect(args[0].i18n.options.ns).toEqual(['foo', 'bar'])
+    })
   })
 
 })

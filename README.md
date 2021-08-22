@@ -92,6 +92,21 @@ module.exports = {
 };
 ```
 
+If you want to enable **hot module reload**, use `withHmrNextConfig` plugin at `next.config.js`.
+
+```js
+const withPlugins = require('next-compose-plugins');
+const { withHmrNextConfig } = require('next-i18next/withHmrNextConfig');
+
+const { i18n } = require('./next-i18next.config');
+
+module.exports = withPlugins([
+  withHmrNextConfig(i18n)
+], {
+  // ...
+})
+```
+
 There are three functions that `next-i18next` exports, which you will need to use to translate your project:
 
 #### appWithTranslation
