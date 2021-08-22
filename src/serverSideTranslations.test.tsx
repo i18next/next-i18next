@@ -197,7 +197,7 @@ describe('serverSideTranslations', () => {
     renderDummyComponent()
 
     if (globalI18n) {
-      globalI18n.reloadResources = jest.fn();
+      globalI18n.reloadResources = jest.fn()
     }
 
     await serverSideTranslations('en-US', [], {
@@ -208,14 +208,14 @@ describe('serverSideTranslations', () => {
       reloadOnPrerender: true,
     } as UserConfig)
 
-    expect(globalI18n?.reloadResources).toHaveBeenCalledTimes(1);
+    expect(globalI18n?.reloadResources).toHaveBeenCalledTimes(1)
   })
 
   it('does not call reloadResources when reloadOnPrerender option is false', async () => {
     renderDummyComponent()
 
     if (globalI18n) {
-      globalI18n.reloadResources = jest.fn();
+      globalI18n.reloadResources = jest.fn()
     }
 
     await serverSideTranslations('en-US', [], {
@@ -226,6 +226,6 @@ describe('serverSideTranslations', () => {
       reloadOnPrerender: false,
     } as UserConfig)
 
-    expect(globalI18n?.reloadResources).toHaveBeenCalledTimes(0);
+    expect(globalI18n?.reloadResources).toHaveBeenCalledTimes(0)
   })
 })
