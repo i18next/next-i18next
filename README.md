@@ -28,7 +28,7 @@ Production ready: `next-i18next` supports passing translations and configuration
 
 ## How does it work?
 
-Your `next-i18next.config.js` file will provide configuration for `next-i18next`.
+Your `next-i18next.config.js` or `next-i18next.config.json` file will provide configuration for `next-i18next`.
 After configuration, `appWithTranslation` allows us to use the `t` (translate) function in our components via hooks.
 
 Then we add `serverSideTranslation` to [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) (depending on your case) in our page-level components.
@@ -65,7 +65,7 @@ If you want to structure your translations/namespaces in a custom way, you will 
 
 ### 3. Project setup
 
-First, create a `next-i18next.config.js` file in the root of your project. The syntax for the nested `i18n` object [comes from NextJs directly](https://nextjs.org/docs/advanced-features/i18n-routing).
+First, create a `next-i18next.config.js` or `next-i18next.config.json` file in the root of your project. The syntax for the nested `i18n` object [comes from NextJs directly](https://nextjs.org/docs/advanced-features/i18n-routing).
 
 This tells `next-i18next` what your `defaultLocale` and other locales are, so that it can preload translations on the server:
 
@@ -78,6 +78,17 @@ module.exports = {
     locales: ['en', 'de'],
   },
 };
+```
+
+#### or `next-i18next.config.json`
+
+```json
+{
+  "i18n": {
+    "defaultLocale": "en",
+    "locales": ["en", "de"]
+  }
+}
 ```
 
 Now, create or modify your `next.config.js` file, by passing the `i18n` object into your `next.config.js` file, to enable localised URL routing:
@@ -233,7 +244,7 @@ To migrate from previous versions to the version 8, check out the [v8-migration 
 
 ## Notes
 
-For Docker deployment, note that if you use the `Dockerfile` from [Next.js docs](https://nextjs.org/docs/deployment#docker-image) do not forget to copy `next.config.js` and `next-i18next.config.js` into the Docker image.
+For Docker deployment, note that if you use the `Dockerfile` from [Next.js docs](https://nextjs.org/docs/deployment#docker-image) do not forget to copy `next.config.js` and `next-i18next.config.js` or `next-i18next.config.json` into the Docker image.
 
 ```
 COPY --from=builder /app/next.config.js ./next.config.js

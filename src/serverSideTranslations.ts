@@ -7,7 +7,7 @@ import createClient from './createClient'
 import { UserConfig, SSRConfig } from './types'
 import { FallbackLng } from 'i18next'
 
-const DEFAULT_CONFIG_PATH = './next-i18next.config.js'
+const DEFAULT_CONFIG_PATH = './next-i18next.config'
 
 const getFallbackLocales = (fallbackLng: false | FallbackLng) => {
   if (typeof fallbackLng === 'string') {
@@ -43,8 +43,12 @@ export const serverSideTranslations = async (
 
   let userConfig = configOverride
 
-  if (!userConfig && fs.existsSync(path.resolve(DEFAULT_CONFIG_PATH))) {
-    userConfig = await import(path.resolve(DEFAULT_CONFIG_PATH))
+  if (!userConfig) {
+    if (fs.existsSync(path.resolve(`${DEFAULT_CONFIG_PATH}.json`))) {
+      userConfig = JSON.parse(fs.readFileSync(path.resolve(`${DEFAULT_CONFIG_PATH}.json`), 'utf-8'))
+    } else if (fs.existsSync(path.resolve(`${DEFAULT_CONFIG_PATH}.js`))) {
+      userConfig = await import(path.resolve(`${DEFAULT_CONFIG_PATH}.js`))
+    }
   }
 
   if (userConfig === null) {
