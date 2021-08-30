@@ -47,6 +47,7 @@ export const serverSideTranslations = async (
     if (fs.existsSync(path.resolve(`${DEFAULT_CONFIG_PATH}.json`))) {
       userConfig = JSON.parse(fs.readFileSync(path.resolve(`${DEFAULT_CONFIG_PATH}.json`), 'utf-8'))
     } else if (fs.existsSync(path.resolve(`${DEFAULT_CONFIG_PATH}.js`))) {
+      // this is not working anymore in Next.js >= v10.2.x (#1202)
       userConfig = await import(path.resolve(`${DEFAULT_CONFIG_PATH}.js`))
     }
   }
