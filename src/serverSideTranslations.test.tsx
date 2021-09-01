@@ -1,11 +1,40 @@
+import React from 'react'
 import fs from 'fs'
 import { UserConfig } from './types'
 import { serverSideTranslations } from './serverSideTranslations'
+import { globalI18n } from './appWithTranslation'
+import { renderToString } from 'react-dom/server'
+import { appWithTranslation } from './appWithTranslation'
 
 jest.mock('fs', () => ({
   existsSync: jest.fn(),
   readdirSync: jest.fn(),
 }))
+
+const DummyApp = appWithTranslation(() => (
+  <div>Hello world</div>
+))
+
+const props = {
+  pageProps: {
+    _nextI18Next: {
+      initialLocale: 'en',
+      userConfig: {
+        i18n: {
+          defaultLocale: 'en',
+          locales: ['en', 'fr'],
+        },
+      },
+    },
+  } as any,
+} as any
+
+const renderDummyComponent = () =>
+  renderToString(
+    <DummyApp
+      {...props}
+    />,
+  )
 
 describe('serverSideTranslations', () => {
   beforeEach(() => {
@@ -162,5 +191,41 @@ describe('serverSideTranslations', () => {
         },
       },
     })
+  })
+
+  it('calls reloadResources when reloadOnPrerender option is true', async () => {
+    renderDummyComponent()
+
+    if (globalI18n) {
+      globalI18n.reloadResources = jest.fn()
+    }
+
+    await serverSideTranslations('en-US', [], {
+      i18n: {
+        defaultLocale: 'en-US',
+        locales: ['en-US', 'fr-CA'],
+      },
+      reloadOnPrerender: true,
+    } as UserConfig)
+
+    expect(globalI18n?.reloadResources).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not call reloadResources when reloadOnPrerender option is false', async () => {
+    renderDummyComponent()
+
+    if (globalI18n) {
+      globalI18n.reloadResources = jest.fn()
+    }
+
+    await serverSideTranslations('en-US', [], {
+      i18n: {
+        defaultLocale: 'en-US',
+        locales: ['en-US', 'fr-CA'],
+      },
+      reloadOnPrerender: false,
+    } as UserConfig)
+
+    expect(globalI18n?.reloadResources).toHaveBeenCalledTimes(0)
   })
 })

@@ -21,6 +21,7 @@ export type UserConfig = {
   localeExtension?: string
   localePath?: string
   localeStructure?: string
+  reloadOnPrerender?: boolean
   serializeConfig?: boolean
   strictMode?: boolean
   use?: any[]
