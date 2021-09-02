@@ -4,6 +4,8 @@ import path from 'path'
 import { createConfig } from './config/createConfig'
 import createClient from './createClient'
 
+import { globalI18n } from './appWithTranslation'
+
 import { UserConfig, SSRConfig } from './types'
 import { FallbackLng } from 'i18next'
 
@@ -60,7 +62,12 @@ export const serverSideTranslations = async (
     localeExtension,
     localePath,
     fallbackLng,
+    reloadOnPrerender,
   } = config
+
+  if (reloadOnPrerender) {
+    await globalI18n?.reloadResources()
+  }
 
   const { i18n, initPromise } = createClient({
     ...config,
