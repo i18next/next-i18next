@@ -129,7 +129,7 @@ Note that `serverSideTranslations` must be imported from `next-i18next/serverSid
 
 Also, note that `serverSideTranslations` is not compatible with `getInitialProps`, as it _only_ can execute in a server environment, whereas `getInitialProps` is called on the client side when navigating between pages.
 
-The `serverSideTranslations` HOC is primarily responsible for passing translations and configuration options into pages, as props.
+The `serverSideTranslations` HOC is primarily responsible for passing translations and configuration options into pages, as props – you need to add it to any page that has translations.
 
 ### useTranslation
 
