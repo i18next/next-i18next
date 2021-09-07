@@ -51,11 +51,11 @@ export const appWithTranslation = (
         lng: initialLocale,
         resources: initialI18nStore,
       }))
-
-      useMemo(() => {
-        globalI18n = i18n
-      }, [i18n])
     }
+
+    useMemo(() => {
+      globalI18n = i18n
+    }, [i18n])
 
     return i18n !== null ? (
       <I18nextProvider
