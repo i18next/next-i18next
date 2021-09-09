@@ -140,7 +140,7 @@ Note that `serverSideTranslations` must be imported from `next-i18next/serverSid
 
 Also, note that `serverSideTranslations` is not compatible with `getInitialProps`, as it _only_ can execute in a server environment, whereas `getInitialProps` is called on the client side when navigating between pages.
 
-The `serverSideTranslations` HOC is primarily responsible for passing translations and configuration options into pages, as props.
+The `serverSideTranslations` HOC is primarily responsible for passing translations and configuration options into pages, as props – you need to add it to any page that has translations.
 
 ### useTranslation
 
@@ -224,6 +224,14 @@ export const getStaticProps = async ({ locale }) => ({
 });
 ```
 
+#### Reloading Resources in Development
+
+Because resources are loaded once when the server is started, any changes made to your translation JSON files in development will not be loaded until the server is restarted.
+
+In production this does not tend to be an issue, but in development you may want to see updates to your translation JSON files without having to restart your development server each time. To do this, set the `reloadOnPrerender` config option to `true`.
+
+This option will reload your translations whenever `serverSideTranslations` is called (in `getStaticProps` or `getServerSideProps`). If you are using `serverSideTranslations` in `getServerSideProps`, it is recommended to disable `reloadOnPrerender` in production environments as to avoid reloading resources on each server call.
+
 #### Options
 
 | Key                 | Default value        |
@@ -232,6 +240,7 @@ export const getStaticProps = async ({ locale }) => ({
 | `localeExtension`   | `'json'`             |
 | `localePath`        | `'./public/locales'` |
 | `localeStructure`   | `'{{lng}}/{{ns}}'`   |
+| `reloadOnPrerender` | `false`              |
 | `serializeConfig`   | `true`               |
 | `strictMode`        | `true`               |
 | `use` (for plugins) | `[]`                 |
