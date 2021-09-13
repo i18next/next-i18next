@@ -22,12 +22,17 @@ export const appWithTranslation = (
   configOverride: UserConfig | null = null,
 ) => {
   const AppWithTranslation = (props: AppProps) => {
-    let i18n: I18NextClient | null = null
-    let locale = null
+    const { _nextI18Next } = props.pageProps
+    const { locale } = props.router
 
-    if (props?.pageProps?._nextI18Next) {
-      let { userConfig } = props.pageProps._nextI18Next
-      const { initialI18nStore, initialLocale } = props.pageProps._nextI18Next
+    // Memoize the instance and only re-initialize when either:
+    // 1. The route changes (non-shallowly)
+    // 2. Router locale changes
+    const i18n: I18NextClient | null = useMemo(() => {
+      if (!locale || !_nextI18Next) return null
+
+      let { userConfig } = _nextI18Next
+      const { initialI18nStore } = _nextI18Next
 
       if (userConfig === null && configOverride === null) {
         throw new Error('appWithTranslation was called without a next-i18next config')
@@ -41,21 +46,20 @@ export const appWithTranslation = (
         throw new Error('appWithTranslation was called without config.i18n')
       }
 
-      locale = initialLocale;
 
-      ({ i18n } = createClient({
+      const instance = createClient({
         ...createConfig({
           ...userConfig,
-          lng: initialLocale,
+          lng: locale,
         }),
-        lng: initialLocale,
+        lng: locale,
         resources: initialI18nStore,
-      }))
-    }
+      }).i18n
 
-    useMemo(() => {
-      globalI18n = i18n
-    }, [i18n])
+      globalI18n = instance
+
+      return instance
+    }, [_nextI18Next, locale])
 
     return i18n !== null ? (
       <I18nextProvider

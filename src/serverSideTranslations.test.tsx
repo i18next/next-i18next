@@ -18,7 +18,6 @@ const DummyApp = appWithTranslation(() => (
 const props = {
   pageProps: {
     _nextI18Next: {
-      initialLocale: 'en',
       userConfig: {
         i18n: {
           defaultLocale: 'en',
@@ -27,6 +26,9 @@ const props = {
       },
     },
   } as any,
+  router: {
+    locale: 'en',
+  },
 } as any
 
 const renderDummyComponent = () =>
@@ -182,7 +184,6 @@ describe('serverSideTranslations', () => {
         initialI18nStore: {
           'en-US': {},
         },
-        initialLocale: 'en-US',
         userConfig: {
           i18n: {
             defaultLocale: 'en-US',
