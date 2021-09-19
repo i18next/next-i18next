@@ -46,7 +46,7 @@ export const serverSideTranslations = async (
   let userConfig = configOverride
 
   if (!userConfig && fs.existsSync(path.resolve(DEFAULT_CONFIG_PATH))) {
-    userConfig = await import(path.resolve(DEFAULT_CONFIG_PATH))
+    userConfig = eval(await fs.promises.readFile(path.resolve(DEFAULT_CONFIG_PATH), 'utf-8'))
   }
 
   if (userConfig === null) {
