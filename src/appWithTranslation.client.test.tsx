@@ -2,8 +2,10 @@ import React from 'react'
 import fs from 'fs'
 import { screen, render } from '@testing-library/react'
 import { I18nextProvider } from 'react-i18next'
+import createClient from './createClient'
 
 import { appWithTranslation } from './appWithTranslation'
+import { NextRouter } from 'next/router'
 
 jest.mock('fs', () => ({
   existsSync: jest.fn(),
@@ -19,15 +21,16 @@ jest.mock('react-i18next', () => ({
   __esmodule: true,
 }))
 
+jest.mock('./createClient', () => jest.fn())
 
 const DummyApp = appWithTranslation(() => (
   <div>Hello world</div>
 ))
 
-const props = {
+const createProps = (locale = 'en', router: Partial<NextRouter> = {}) => ({
   pageProps: {
     _nextI18Next: {
-      initialLocale: 'en',
+      initialLocale: locale,
       userConfig: {
         i18n: {
           defaultLocale: 'en',
@@ -36,9 +39,15 @@ const props = {
       },
     },
   } as any,
-} as any
+  router: {
+    locale: locale,
+    route: '/',
+    ...router,
+  },
+} as any)
 
-const renderComponent = () =>
+const defaultRenderProps = createProps()
+const renderComponent = (props = defaultRenderProps) =>
   render(
     <DummyApp
       {...props}
@@ -50,6 +59,8 @@ describe('appWithTranslation', () => {
     (fs.existsSync as jest.Mock).mockReturnValue(true);
     (fs.readdirSync as jest.Mock).mockReturnValue([]);
     (I18nextProvider as jest.Mock).mockImplementation(DummyI18nextProvider)
+    const actualCreateClient = jest.requireActual('./createClient');
+    (createClient as jest.Mock).mockImplementation(actualCreateClient)
   })
   afterEach(jest.resetAllMocks)
 
@@ -69,6 +80,7 @@ describe('appWithTranslation', () => {
       },
     } as any)
     const customProps = {
+      ...createProps(),
       pageProps: {
         _nextI18Next: {
           initialLocale: 'en',
@@ -91,6 +103,7 @@ describe('appWithTranslation', () => {
       <div>Hello world</div>
     ))
     const customProps = {
+      ...createProps(),
       pageProps: {
         _nextI18Next: {
           initialLocale: 'en',
@@ -122,6 +135,37 @@ describe('appWithTranslation', () => {
 
     expect(fs.existsSync).toHaveBeenCalledTimes(0)
     expect(fs.readdirSync).toHaveBeenCalledTimes(0)
+  })
+
+  it('should use locale from router', () => {
+    renderComponent(createProps('de'))
+    const [args] = (I18nextProvider as jest.Mock).mock.calls
+    expect(args[0].i18n.language).toEqual('de')
+  })
+
+  it('does not re-call createClient on re-renders unless locale or props have changed', () => {
+    const { rerender } = renderComponent()
+    expect(createClient).toHaveBeenCalledTimes(1)
+    rerender(
+      <DummyApp
+        {...defaultRenderProps}
+      />
+    )
+    expect(createClient).toHaveBeenCalledTimes(1)
+    const newProps = createProps()
+    rerender(
+      <DummyApp
+        {...newProps}
+      />
+    )
+    expect(createClient).toHaveBeenCalledTimes(2)
+    newProps.router.locale = 'de'
+    rerender(
+      <DummyApp
+        {...newProps}
+      />
+    )
+    expect(createClient).toHaveBeenCalledTimes(3)
   })
 
 })

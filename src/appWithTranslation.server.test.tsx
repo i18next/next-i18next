@@ -40,6 +40,10 @@ const props = {
       },
     },
   } as any,
+  router: {
+    locale: 'en',
+    route: '/',
+  },
 } as any
 
 const renderComponent = () =>
