@@ -236,6 +236,24 @@ This option will reload your translations whenever `serverSideTranslations` is c
 
 All other [i18next options](https://www.i18next.com/overview/configuration-options) can be passed in as well.
 
+#### Loading Namespaces Dynamically Client Side
+
+In some use cases, you might want to load a translation file dynamically without having to use `serverSideTranslations`. This can be especially useful for lazy-loaded components that you don't want slowing down pages.
+
+This can easily be done by using [addResourceBundle](https://www.i18next.com/how-to/add-or-load-translations#add-after-init):
+
+```tsx
+import { i18n } from 'next-i18next'
+
+const Component = () => {
+  const { locale } = useRouter()
+
+  useEffect(() => {
+    i18n.addResourceBundle(locale, '<namespace name>')
+  }, [])
+}
+```
+
 ## Migration to v8
 
 To migrate from previous versions to the version 8, check out the [v8-migration guide](https://github.com/isaachinman/next-i18next/tree/master/docs/v8-migration.md)
