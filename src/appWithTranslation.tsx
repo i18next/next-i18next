@@ -17,11 +17,11 @@ type AppProps = NextJsAppProps & {
 
 export let globalI18n: I18NextClient | null = null
 
-export const appWithTranslation = (
-  WrappedComponent: React.ComponentType<AppProps> | React.ElementType<AppProps>,
+export const appWithTranslation = <Props extends AppProps = AppProps>(
+  WrappedComponent: React.ComponentType<Props> | React.ElementType<AppProps>,
   configOverride: UserConfig | null = null,
 ) => {
-  const AppWithTranslation = (props: AppProps) => {
+  const AppWithTranslation = (props: Props) => {
     const { _nextI18Next } = props.pageProps
     const { locale } = props.router
 
