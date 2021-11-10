@@ -18,7 +18,7 @@ type AppProps = NextJsAppProps & {
 export let globalI18n: I18NextClient | null = null
 
 export const appWithTranslation = <Props extends AppProps = AppProps>(
-  WrappedComponent: React.ComponentType<Props> | React.ElementType<AppProps>,
+  WrappedComponent: React.ComponentType<Props>,
   configOverride: UserConfig | null = null,
 ) => {
   const AppWithTranslation = (props: Props) => {
