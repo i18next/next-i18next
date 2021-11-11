@@ -137,12 +137,6 @@ describe('appWithTranslation', () => {
     expect(fs.readdirSync).toHaveBeenCalledTimes(0)
   })
 
-  it('should use locale from router', () => {
-    renderComponent(createProps('de'))
-    const [args] = (I18nextProvider as jest.Mock).mock.calls
-    expect(args[0].i18n.language).toEqual('de')
-  })
-
   it('does not re-call createClient on re-renders unless locale or props have changed', () => {
     const { rerender } = renderComponent()
     expect(createClient).toHaveBeenCalledTimes(1)
@@ -159,13 +153,18 @@ describe('appWithTranslation', () => {
       />
     )
     expect(createClient).toHaveBeenCalledTimes(2)
-    newProps.router.locale = 'de'
+    const deProps = createProps('de')
     rerender(
       <DummyApp
-        {...newProps}
+        {...deProps}
+      />
+    )
+    expect(createClient).toHaveBeenCalledTimes(3)
+    rerender(
+      <DummyApp
+        {...deProps}
       />
     )
     expect(createClient).toHaveBeenCalledTimes(3)
   })
-
 })
