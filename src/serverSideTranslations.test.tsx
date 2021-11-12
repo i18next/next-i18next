@@ -1,6 +1,6 @@
 import React from 'react'
 import fs from 'fs'
-import { UserConfig } from './types'
+import { SSRConfig, UserConfig } from './types'
 import { serverSideTranslations } from './serverSideTranslations'
 import { globalI18n } from './appWithTranslation'
 import { renderToString } from 'react-dom/server'
@@ -18,6 +18,7 @@ const DummyApp = appWithTranslation(() => (
 const props = {
   pageProps: {
     _nextI18Next: {
+      initialLocale: 'en-US',
       userConfig: {
         i18n: {
           defaultLocale: 'en',
@@ -25,7 +26,7 @@ const props = {
         },
       },
     },
-  } as any,
+  } as SSRConfig,
   router: {
     locale: 'en',
   },
@@ -184,6 +185,7 @@ describe('serverSideTranslations', () => {
         initialI18nStore: {
           'en-US': {},
         },
+        initialLocale: 'en-US',
         userConfig: {
           i18n: {
             defaultLocale: 'en-US',

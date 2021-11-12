@@ -52,6 +52,7 @@ export type CreateClientReturn = {
 export type SSRConfig = {
   _nextI18Next: {
     initialI18nStore: any
+    initialLocale: string
     userConfig: UserConfig | null
   }
 }
