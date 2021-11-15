@@ -114,5 +114,8 @@
   "peerDependencies": {
     "next": ">= 10.0.0",
     "react": ">= 16.8.0"
+  },
+  "resolutions": {
+    "i18next-fs-backend": ">=1.1.4"
   }
 }
