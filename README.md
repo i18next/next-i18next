@@ -260,12 +260,28 @@ To migrate from previous versions to the version 8, check out the [v8-migration 
 
 ## Notes
 
+### Docker
+
 For Docker deployment, note that if you use the `Dockerfile` from [Next.js docs](https://nextjs.org/docs/deployment#docker-image) do not forget to copy `next.config.js` and `next-i18next.config.js` into the Docker image.
 
 ```
 COPY --from=builder /app/next.config.js ./next.config.js
 COPY --from=builder /app/next-i18next.config.js ./next-i18next.config.js
 ```
+
+### Asynchronous i18next backends
+
+If you choose to use an i18next backend different to the in-built [i18next-fs-backend](https://github.com/i18next/i18next-fs-backend), you need to make sure the translation resources are loaded before you call the `t` function.
+Since [Suspense is not yet supported on server side](https://github.com/isaachinman/next-i18next/issues/1255), this can be solved in 2 different ways:
+
+**1) preload the namespaces:**
+
+Set the `ns` option, like in [this example](https://github.com/locize/next-i18next-locize/blob/main/next-i18next.config.js#L17). This way the translation resources will all be loaded on initialization.
+
+**2) check the ready flag:**
+
+You need to handle the not ready state by eg. render a loading component as long `ready === false` or `props.tReady === false`. Not doing so will result in rendering your translations before they loaded, which will cause save missing be called although translations exists (just yet not loaded).
+This can be done with the [useTranslation hook](https://react.i18next.com/latest/usetranslation-hook#not-using-suspense) or the [withTranslation HOC](https://react.i18next.com/latest/withtranslation-hoc#not-using-suspense).
 
 ## Contributors
 
