@@ -45,6 +45,7 @@ describe('createConfig', () => {
         expect(config.preload).toEqual(['en'])
         expect(config.strictMode).toEqual(true)
         expect(config.use).toEqual([])
+        expect(config.react?.useSuspense).toEqual(false)
 
         expect(fs.existsSync).toHaveBeenCalledTimes(1)
         expect(fs.readdirSync).toHaveBeenCalledTimes(1)
@@ -197,6 +198,7 @@ describe('createConfig', () => {
       expect(config.preload).toBeUndefined()
       expect(config.strictMode).toEqual(true)
       expect(config.use).toEqual([])
+      expect(config.react?.useSuspense).toEqual(false)
     })
 
     it('deep merges backend', () => {

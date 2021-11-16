@@ -25,7 +25,7 @@ export const defaultConfig = {
   localePath: LOCALE_PATH,
   localeStructure: LOCALE_STRUCTURE,
   react: {
-    useSuspense: true,
+    useSuspense: false,
   },
   reloadOnPrerender: false,
   serializeConfig: true,
