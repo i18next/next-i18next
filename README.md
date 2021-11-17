@@ -278,7 +278,7 @@ Since [React suspense is not yet supported for SSR](https://github.com/isaachinm
 
 Set the `ns` option, like in [this example](https://github.com/locize/next-i18next-locize/blob/main/next-i18next.config.js#L17). Doing this will ensure all translation resources are loaded on initialization.
 
-**2) check the ready flag:**
+**2) Check the ready flag:**
 
 You need to handle the not ready state by eg. render a loading component as long `ready === false` or `props.tReady === false`. Not doing so will result in rendering your translations before they loaded, which will cause save missing be called although translations exists (just yet not loaded).
 This can be done with the [useTranslation hook](https://react.i18next.com/latest/usetranslation-hook#not-using-suspense) or the [withTranslation HOC](https://react.i18next.com/latest/withtranslation-hoc#not-using-suspense).
