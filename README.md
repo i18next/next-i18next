@@ -271,7 +271,7 @@ COPY --from=builder /app/next-i18next.config.js ./next-i18next.config.js
 
 ### Asynchronous i18next backends
 
-If you choose to use an i18next backend different to the in-built [i18next-fs-backend](https://github.com/i18next/i18next-fs-backend), you need to make sure the translation resources are loaded before you call the `t` function.
+If you choose to use an i18next backend different to the built-in [i18next-fs-backend](https://github.com/i18next/i18next-fs-backend), you will need to ensure the translation resources are loaded before you call the `t` function.
 Since [Suspense is not yet supported on server side](https://github.com/isaachinman/next-i18next/issues/1255), this can be solved in 2 different ways:
 
 **1) preload the namespaces:**
