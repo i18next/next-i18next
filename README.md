@@ -274,7 +274,7 @@ COPY --from=builder /app/next-i18next.config.js ./next-i18next.config.js
 If you choose to use an i18next backend different to the built-in [i18next-fs-backend](https://github.com/i18next/i18next-fs-backend), you will need to ensure the translation resources are loaded before you call the `t` function.
 Since [React suspense is not yet supported for SSR](https://github.com/isaachinman/next-i18next/issues/1255), this can be solved in 2 different ways:
 
-**1) preload the namespaces:**
+**1) Preload the namespaces:**
 
 Set the `ns` option, like in [this example](https://github.com/locize/next-i18next-locize/blob/main/next-i18next.config.js#L17). This way the translation resources will all be loaded on initialization.
 
