@@ -276,7 +276,7 @@ Since [React suspense is not yet supported for SSR](https://github.com/isaachinm
 
 **1) Preload the namespaces:**
 
-Set the `ns` option, like in [this example](https://github.com/locize/next-i18next-locize/blob/main/next-i18next.config.js#L17). This way the translation resources will all be loaded on initialization.
+Set the `ns` option, like in [this example](https://github.com/locize/next-i18next-locize/blob/main/next-i18next.config.js#L17). Doing this will ensure all translation resources are loaded on initialization.
 
 **2) check the ready flag:**
 
