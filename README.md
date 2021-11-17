@@ -280,7 +280,7 @@ Set the `ns` option, like in [this example](https://github.com/locize/next-i18ne
 
 **2) Check the ready flag:**
 
-You need to handle the not ready state by eg. render a loading component as long `ready === false` or `props.tReady === false`. Not doing so will result in rendering your translations before they loaded, which will cause save missing be called although translations exists (just yet not loaded).
+If you cannot or do not want to provide the `ns` array, calls to the `t` function will cause namespaces to be loaded on the fly. This means you'll need to handle the "not ready" state by checking `ready === true` or `props.tReady === true`. Not doing so will result in rendering your translations before they loaded, which will cause "save missing" be called despite the translations actually existing (just yet not loaded).
 This can be done with the [useTranslation hook](https://react.i18next.com/latest/usetranslation-hook#not-using-suspense) or the [withTranslation HOC](https://react.i18next.com/latest/withtranslation-hoc#not-using-suspense).
 
 ## Contributors
