@@ -50,16 +50,20 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       const path = require('path')
       const serverLocalePath = localePath
 
+      const getFilePath = (lng: string, ns: string, base: string): string => {
+        const prefix = userConfig?.interpolation?.prefix ?? '{{'
+        const suffix = userConfig?.interpolation?.suffix ?? '}}'
+        const defaultLocaleStructure = localeStructure.replace(`${prefix}lng${suffix}`, lng).replace(`${prefix}ns${suffix}`, ns)
+        const defaultFile = `/${defaultLocaleStructure}.${localeExtension}`
+        return path.join(base, defaultFile)
+      }
+
       //
       // Validate defaultNS
       // https://github.com/isaachinman/next-i18next/issues/358
       //
       if (typeof defaultNS === 'string' && typeof lng !== 'undefined') {
-        const prefix = userConfig?.interpolation?.prefix ?? '{{'
-        const suffix = userConfig?.interpolation?.suffix ?? '}}'
-        const defaultLocaleStructure = localeStructure.replace(`${prefix}lng${suffix}`, lng).replace(`${prefix}ns${suffix}`, defaultNS)
-        const defaultFile = `/${defaultLocaleStructure}.${localeExtension}`
-        const defaultNSPath = path.join(localePath, defaultFile)
+        const defaultNSPath = getFilePath(lng, defaultNS, localePath)
         const defaultNSExists = fs.existsSync(defaultNSPath)
         if (!defaultNSExists && process.env.NODE_ENV !== 'production') {
           throw new Error(`Default namespace not found at ${defaultNSPath}`)
@@ -80,13 +84,29 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       if (!combinedConfig.ns && typeof lng !== 'undefined') {
         const unique = (list: string[]) => Array.from(new Set<string>(list))
         const getNamespaces = (locales: string[]): string[] => {
-          const getLocaleNamespaces = (p: string) =>
-            fs.readdirSync(p).map(
-              (file: string) => file.replace(`.${localeExtension}`, '')
+          const getLocaleNamespaces = (p: string, locale: string) => {
+            const defaultNSPath = getFilePath(locale, defaultNS, p)
+            const translationPath = path.dirname(defaultNSPath)
+
+            return fs.readdirSync(translationPath).map(
+              (file: string) => {
+                const fileWithoutExt = file.replace(`.${localeExtension}`, '')
+
+                // Remove lng in file to combine the namespaces
+                for (const configLocale of combinedConfig.locales) {
+                  const lngRegex = new RegExp(`(^|[^a-zA-Z])${configLocale}($|[^a-zA-Z])`, 'gm')
+
+                  if (fileWithoutExt.match(lngRegex)) {
+                    return fileWithoutExt.replace(lngRegex, '')
+                  }
+                }
+                return fileWithoutExt
+              }
             )
+          }
 
           const namespacesByLocale = locales
-            .map(locale => getLocaleNamespaces(path.resolve(process.cwd(), `${serverLocalePath}/${locale}`)))
+            .map((locale) => getLocaleNamespaces(path.resolve(process.cwd(), `${serverLocalePath}/`),locale))
 
           const allNamespaces = []
           for (const localNamespaces of namespacesByLocale) {
