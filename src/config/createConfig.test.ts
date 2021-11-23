@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { createConfig } from './createConfig'
+import { createConfig, getLngRegex } from './createConfig'
 import { UserConfig } from '../types'
 
 jest.mock('fs', () => ({
@@ -114,6 +114,18 @@ describe('createConfig', () => {
 
           expect(config.fallbackLng).toBe(false)
         })
+      })
+    })
+
+    describe('custom localStructure provided', () => {
+      it('returns a valid config when language is in filename', () => {
+        (fs.existsSync as jest.Mock).mockReturnValue(true);
+        (fs.readdirSync as jest.Mock).mockImplementation(() => ['common.en.json'])
+        const config = createConfig({ lng: 'en', localeStructure: '{{ns}}.{{lng}}' } as UserConfig)
+
+        expect((config.backend as any).addPath).toMatch('/public/locales/{{ns}}.{{lng}}.missing.json')
+        expect((config.backend as any).loadPath).toMatch('/public/locales/{{ns}}.{{lng}}.json')
+        expect(config.ns).toEqual(['common'])
       })
     })
 
@@ -239,6 +251,23 @@ describe('createConfig', () => {
           }] } as UserConfig)
         expect((config.backend as any)).toEqual({ hello: 'world' })
       })
+    })
+  })
+
+  describe('language regex', () => {
+    it.each([
+      { expected: ['.en'], lng: 'en', test: 'common.en' },
+      { expected: null, lng: 'de', test : 'default' },
+      { expected: ['.de'], lng: 'de', test : 'default.de' },
+      { expected: ['fr.'], lng: 'fr', test : 'fr.common' },
+      { expected: ['.fr.'], lng: 'fr', test : 'a.b.c.fr.d.e.common' },
+      { expected: ['[en]'], lng: 'en', test : 'common[en]' },
+      { expected: ['-en'], lng: 'en', test : 'common-en' },
+      { expected: ['en.', '.en'], lng: 'en', test : 'en.common.en' },
+      { expected: ['en'], lng: 'en', test : 'en' },
+    ])('returns expected namespaces', ({expected, lng , test}) => {
+      const lngRegex = getLngRegex(lng)
+      expect(test.match(lngRegex)).toStrictEqual(expected)
     })
   })
 })

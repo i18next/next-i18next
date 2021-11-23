@@ -4,6 +4,8 @@ import { FallbackLng } from 'i18next'
 
 const deepMergeObjects = ['backend', 'detection'] as (keyof Pick<UserConfig, 'backend' | 'detection'>)[]
 
+export const getLngRegex = (lng: string) => new RegExp(`(^|[^a-zA-Z])${lng}($|[^a-zA-Z])`, 'gm')
+
 export const createConfig = (userConfig: UserConfig): InternalConfig => {
   if (typeof userConfig?.lng !== 'string') {
     throw new Error('config.lng was not passed into createConfig')
@@ -88,21 +90,26 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
             const defaultNSPath = getFilePath(locale, defaultNS, p)
             const translationPath = path.dirname(defaultNSPath)
 
-            return fs.readdirSync(translationPath).map(
-              (file: string) => {
-                const fileWithoutExt = file.replace(`.${localeExtension}`, '')
+            const namespaceFiles = fs.readdirSync(translationPath)
+            const filesWithoutExt = namespaceFiles.map((file:string) => file.replace(`.${localeExtension}`, ''))
 
-                // Remove lng in file to combine the namespaces
-                for (const configLocale of combinedConfig.locales) {
-                  const lngRegex = new RegExp(`(^|[^a-zA-Z])${configLocale}($|[^a-zA-Z])`, 'gm')
+            if (translationPath.match(locale)) {
+              return filesWithoutExt
+            }
 
-                  if (fileWithoutExt.match(lngRegex)) {
-                    return fileWithoutExt.replace(lngRegex, '')
-                  }
+            const lngRegex = getLngRegex(locale)
+
+            return filesWithoutExt
+              // check if all files are placed in one directory
+              // proceed only with the files matching current locale
+              .filter((file: string) => file.match(lngRegex))
+              .map((file: string) => {
+                if (file === locale) {
+                  return file
                 }
-                return fileWithoutExt
-              }
-            )
+
+                return file.replace(lngRegex, '')
+              })
           }
 
           const namespacesByLocale = locales
@@ -179,6 +186,8 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       }
     }
   })
+
+  console.log(combinedConfig.ns)
 
   return combinedConfig as InternalConfig
 }
