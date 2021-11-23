@@ -107,7 +107,7 @@
     "@types/hoist-non-react-statics": "^3.3.1",
     "core-js": "^3",
     "hoist-non-react-statics": "^3.2.0",
-    "i18next": "^21.4.1",
+    "i18next": "^21.5.3",
     "i18next-fs-backend": "^1.0.7",
     "react-i18next": "^11.8.13"
   },
