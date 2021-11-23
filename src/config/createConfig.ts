@@ -187,7 +187,5 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
     }
   })
 
-  console.log(combinedConfig.ns)
-
   return combinedConfig as InternalConfig
 }
