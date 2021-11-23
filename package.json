@@ -39,7 +39,7 @@
     "run-example": "yarn build && cd examples/simple && yarn && yarn dev",
     "run-example:prod": "yarn build:examples/simple && yarn --cwd examples/simple start",
     "run-cypress": "cypress run --config-file cypress/cypress.json",
-    "test": "yarn check-types && yarn clean && yarn build && yarn build:examples/simple && bundlesize && NODE_ENV=test jest --passWithNoTests --maxWorkers=1 --silent",
+    "test": "yarn check-types && yarn clean && yarn build && yarn build:examples/simple && bundlesize && NODE_ENV=test jest --maxWorkers=1 --silent",
     "test:e2e": "start-server-and-test 'yarn --cwd examples/simple start' 3000 'yarn run-cypress'",
     "contributors:check": "all-contributors check",
     "contributors:add": "all-contributors add",
