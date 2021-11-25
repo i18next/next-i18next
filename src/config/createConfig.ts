@@ -66,11 +66,15 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       const replaceNS = (path: string, ns: string) => path
         .replace(nsPlaceholder, ns)
 
-      const validatePath = (path:string, errorMessage: string) => {
+      const assertPathExists = (path:string, errorMessage: string) => {
         const defaultNSExists = fs.existsSync(path)
-        if (!defaultNSExists && process.env.NODE_ENV !== 'production') {
-          throw new Error(errorMessage)
+        if (defaultNSExists) {
+          return
         }
+        if (process.env.NODE_ENV === 'production') {
+          return
+        }
+        throw new Error(errorMessage)
       }
 
       //
@@ -82,7 +86,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
         const defaultNSPathLng = replaceLng(defaultNSPathNotReplaced, lng)
         const defaultNSPath = replaceNS(defaultNSPathLng, defaultNS)
 
-        validatePath(defaultNSPath, `Default namespace not found at ${defaultNSPath}`)
+        assertPathExists(defaultNSPath, `Default namespace not found at ${defaultNSPath}`)
       }
 
       //
@@ -106,7 +110,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
             const fileDir = path.dirname(filePath)
             const fileDirLng = path.dirname(filePathLng)
 
-            validatePath(fileDirLng, `Namespace can not be a folder [${fileDirLng}]`)
+            assertPathExists(fileDirLng, `Namespace can not be a folder [${fileDirLng}]`)
 
             const nsFiles = fs.readdirSync(fileDirLng)
             const nsFilesWithoutExt = nsFiles.map((file:string) => file.replace(`.${localeExtension}`, ''))
