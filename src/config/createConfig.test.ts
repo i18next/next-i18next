@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { createConfig, getLngRegex } from './createConfig'
+import { createConfig } from './createConfig'
 import { UserConfig } from '../types'
 
 jest.mock('fs', () => ({
@@ -47,7 +47,7 @@ describe('createConfig', () => {
         expect(config.use).toEqual([])
         expect(config.react?.useSuspense).toEqual(false)
 
-        expect(fs.existsSync).toHaveBeenCalledTimes(1)
+        expect(fs.existsSync).toHaveBeenCalledTimes(2)
         expect(fs.readdirSync).toHaveBeenCalledTimes(1)
       })
 
@@ -251,23 +251,6 @@ describe('createConfig', () => {
           }] } as UserConfig)
         expect((config.backend as any)).toEqual({ hello: 'world' })
       })
-    })
-  })
-
-  describe('language regex', () => {
-    it.each([
-      { expected: ['.en'], lng: 'en', test: 'common.en' },
-      { expected: null, lng: 'de', test : 'default' },
-      { expected: ['.de'], lng: 'de', test : 'default.de' },
-      { expected: ['fr.'], lng: 'fr', test : 'fr.common' },
-      { expected: ['.fr.'], lng: 'fr', test : 'a.b.c.fr.d.e.common' },
-      { expected: ['[en]'], lng: 'en', test : 'common[en]' },
-      { expected: ['-en'], lng: 'en', test : 'common-en' },
-      { expected: ['en.', '.en'], lng: 'en', test : 'en.common.en' },
-      { expected: ['en'], lng: 'en', test : 'en' },
-    ])('returns expected namespaces', ({expected, lng , test}) => {
-      const lngRegex = getLngRegex(lng)
-      expect(test.match(lngRegex)).toStrictEqual(expected)
     })
   })
 })
