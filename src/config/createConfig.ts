@@ -38,11 +38,6 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
     return combinedConfig as InternalConfig
   }
 
-  const prefix = userConfig?.interpolation?.prefix ?? '{{'
-  const suffix = userConfig?.interpolation?.suffix ?? '}}'
-  const lngPlaceholder = `${prefix}lng${suffix}`
-  const nsPlaceholder = `${prefix}ns${suffix}`
-
   if (typeof combinedConfig.fallbackLng === 'undefined') {
     combinedConfig.fallbackLng = combinedConfig.defaultLocale
   }
@@ -54,6 +49,11 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       const fs = require('fs')
       const path = require('path')
       const serverLocalePath = localePath
+
+      const prefix = userConfig?.interpolation?.prefix ?? '{{'
+      const suffix = userConfig?.interpolation?.suffix ?? '}}'
+      const lngPlaceholder = `${prefix}lng${suffix}`
+      const nsPlaceholder = `${prefix}ns${suffix}`
 
       const getFilePath = (base: string): string => {
         const defaultFile = `/${localeStructure}.${localeExtension}`
