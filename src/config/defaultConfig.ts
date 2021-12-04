@@ -15,11 +15,6 @@ export const defaultConfig = {
   get initImmediate(): boolean {
     return process.browser && typeof window !== 'undefined'
   },
-  interpolation: {
-    escapeValue: false,
-    format: (value: string, format: string): string => (format === 'uppercase' ? value.toUpperCase() : value),
-    formatSeparator: ',',
-  },
   load: 'currentOnly',
   localeExtension: LOCALE_EXTENSION,
   localePath: LOCALE_PATH,
