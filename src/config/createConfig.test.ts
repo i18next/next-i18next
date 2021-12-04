@@ -46,7 +46,8 @@ describe('createConfig', () => {
         expect(config.strictMode).toEqual(true)
         expect(config.use).toEqual([])
         expect(config.react?.useSuspense).toEqual(false)
-        expect(config.interpolation).toBeUndefined()
+        expect(config.interpolation?.escapeValue).toEqual(false)
+        expect(config.interpolation?.format).toBeUndefined()
 
         expect(fs.existsSync).toHaveBeenCalledTimes(1)
         expect(fs.readdirSync).toHaveBeenCalledTimes(1)
@@ -200,7 +201,8 @@ describe('createConfig', () => {
       expect(config.strictMode).toEqual(true)
       expect(config.use).toEqual([])
       expect(config.react?.useSuspense).toEqual(false)
-      expect(config.interpolation).toBeUndefined()
+      expect(config.interpolation?.escapeValue).toEqual(false)
+      expect(config.interpolation?.format).toBeUndefined()
     })
 
     it('deep merges backend', () => {
