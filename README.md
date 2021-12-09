@@ -262,7 +262,7 @@ To migrate from previous versions to the version 8, check out the [v8-migration 
 
 ### Vercel and Netlify
 
-These services are not able to directly locate the path of your translations and requires additional configuration. If you are facing issues using `serverSideTranslations` then setting `config.localePath` to use `path.resolve` should resolve this. An example can be [found here](https://github.com/isaachinman/next-i18next/issues/1552#issuecomment-981156476).
+Some serverless PaaS may not be able to locate the path of your translations and require additional configuration. If you have filesystem issues using `serverSideTranslations`, set `config.localePath` to use `path.resolve`. An example can be [found here](https://github.com/isaachinman/next-i18next/issues/1552#issuecomment-981156476).
 
 
 ### Docker
