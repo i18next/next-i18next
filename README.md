@@ -260,6 +260,11 @@ To migrate from previous versions to the version 8, check out the [v8-migration 
 
 ## Notes
 
+### Vercel and Netlify
+
+Some serverless PaaS may not be able to locate the path of your translations and require additional configuration. If you have filesystem issues using `serverSideTranslations`, set `config.localePath` to use `path.resolve`. An example can be [found here](https://github.com/isaachinman/next-i18next/issues/1552#issuecomment-981156476).
+
+
 ### Docker
 
 For Docker deployment, note that if you use the `Dockerfile` from [Next.js docs](https://nextjs.org/docs/deployment#docker-image) do not forget to copy `next.config.js` and `next-i18next.config.js` into the Docker image.
