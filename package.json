@@ -86,7 +86,7 @@
     "babel-plugin-add-module-exports": "^1.0.0",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "bundlesize": "^0.18.0",
-    "cypress": "^6.5.0",
+    "cypress": "^9.1.1",
     "eslint": "^7.17.0",
     "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-import": "^2.22.1",
