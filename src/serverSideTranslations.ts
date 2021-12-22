@@ -85,6 +85,9 @@ export const serverSideTranslations = async (
   })
 
   if (!Array.isArray(namespacesRequired)) {
+    if (typeof localePath === 'function')
+      throw new Error('Must provide namespacesRequired to serverSideTranslations when using a function as localePath')
+
     const getLocaleNamespaces = (path: string) =>
       fs.readdirSync(path)
         .map(file => file.replace(`.${localeExtension}`, ''))

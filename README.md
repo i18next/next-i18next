@@ -223,16 +223,18 @@ This option will reload your translations whenever `serverSideTranslations` is c
 
 #### Options
 
-| Key                 | Default value        |
-| ------------------- | -------------------- |
-| `defaultNS`         | `'common'`           |
-| `localeExtension`   | `'json'`             |
-| `localePath`        | `'./public/locales'` |
-| `localeStructure`   | `'{{lng}}/{{ns}}'`   |
-| `reloadOnPrerender` | `false`              |
-| `serializeConfig`   | `true`               |
-| `strictMode`        | `true`               |
-| `use` (for plugins) | `[]`                 |
+| Key                 | Default value        | Note                                   |
+| ------------------- | -------------------- | -------------------------------------- |
+| `defaultNS`         | `'common'`           |                                        |
+| `localePath`        | `'./public/locales'` | Can be a function, see note below.     |
+| `localeExtension`   | `'json'`             | Ignored if `localePath` is a function. |
+| `localeStructure`   | `'{{lng}}/{{ns}}'`   | Ignored if `localePath` is a function. |
+| `reloadOnPrerender` | `false`              |                                        |
+| `serializeConfig`   | `true`               |                                        |
+| `strictMode`        | `true`               |                                        |
+| `use` (for plugins) | `[]`                 |                                        |
+
+`localePath` as a function is of the form `(locale: string, namespace: string, env: 'client' | 'server', missing: boolean) => string` returning the entire path including filename and extension. When `missing` is true, return the path for the `addPath` option of `i18next-fs-backend`, when false, return the path for the `loadPath` option. [More info at the `i18next-fs-backend` repo.](https://github.com/i18next/i18next-fs-backend/tree/master#backend-options)
 
 All other [i18next options](https://www.i18next.com/overview/configuration-options) can be passed in as well.
 
