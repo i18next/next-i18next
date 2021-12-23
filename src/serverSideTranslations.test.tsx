@@ -231,4 +231,18 @@ describe('serverSideTranslations', () => {
 
     expect(globalI18n?.reloadResources).toHaveBeenCalledTimes(0)
   })
+
+  it('throws if a function is used for localePath and namespaces are not provided', async () => {
+    const localePathFn: UserConfig['localePath'] = (locale, namespace, env, missing) => `${missing}/${env}/${namespace}/${locale}.json`
+    const config: UserConfig = {
+      i18n: {
+        defaultLocale: 'en',
+        locales: ['en'],
+      },
+      localePath: localePathFn,
+      ns: ['common'],
+    }
+    await expect(serverSideTranslations('en-US', undefined, config))
+      .rejects.toMatchObject({ message: 'Must provide namespacesRequired to serverSideTranslations when using a function as localePath' })
+  })
 })

@@ -170,6 +170,36 @@ describe('createConfig', () => {
         expect(fs.readdirSync).toHaveBeenCalledTimes(0)
       })
     })
+
+    describe('with a function for localePath', () => {
+      const localePathFn: UserConfig['localePath'] = (locale, namespace, env, missing) => `${missing}/${env}/${namespace}/${locale}.json`
+
+      it('returns a config whose localePath works as expected', () => {
+        const config = createConfig({
+          i18n: {
+            defaultLocale: 'en',
+            locales: ['en'],
+          },
+          lng: 'en',
+          localePath: localePathFn,
+          ns: ['common'],
+        })
+
+        expect(((config.backend as any).loadPath)('en', 'common')).toBe('false/server/common/en.json')
+        expect(((config.backend as any).addPath)('en', 'common')).toBe('true/server/common/en.json')
+      })
+
+      it('throws an error if namespaces are not provided', () => {
+        expect(() => createConfig({
+          i18n: {
+            defaultLocale: 'en',
+            locales: ['en'],
+          },
+          lng: 'en',
+          localePath: localePathFn,
+        })).toThrow('Must provide all namespaces in ns option if using a function as localePath')
+      })
+    })
   })
 
   describe('client side', () => {
@@ -242,6 +272,25 @@ describe('createConfig', () => {
             type: 'backend',
           }] } as UserConfig)
         expect((config.backend as any)).toEqual({ hello: 'world' })
+      })
+    })
+
+    describe('with a function for localePath', () => {
+      const localePathFn: UserConfig['localePath'] = (locale, namespace, env, missing) => `${missing}/${env}/${namespace}/${locale}.json`
+
+      it('returns a config whose localePath works as expected', () => {
+        const config = createConfig({
+          i18n: {
+            defaultLocale: 'en',
+            locales: ['en'],
+          },
+          lng: 'en',
+          localePath: localePathFn,
+          ns: ['common'],
+        })
+
+        expect(((config.backend as any).loadPath)('en', 'common')).toBe('false/client/common/en.json')
+        expect(((config.backend as any).addPath)('en', 'common')).toBe('true/client/common/en.json')
       })
     })
   })
