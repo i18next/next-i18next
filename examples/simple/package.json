@@ -13,6 +13,6 @@
     "next-i18next": "link:../../"
   },
   "devDependencies": {
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.8.0"
   }
 }
