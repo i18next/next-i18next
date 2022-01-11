@@ -7,6 +7,7 @@ import {
   WithTranslation as ReactI18nextWithTranslation,
   Resources,
   DefaultNamespace,
+  Translation,
 } from 'react-i18next'
 import { InitOptions, i18n as I18NextClient, TFunction as I18NextTFunction } from 'i18next'
 import { appWithTranslation, i18n } from './'
@@ -63,6 +64,7 @@ export {
   appWithTranslation,
   useTranslation,
   Trans,
+  Translation,
   withTranslation,
   Resources,
   DefaultNamespace,
