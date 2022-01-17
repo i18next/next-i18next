@@ -21,9 +21,10 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
   WrappedComponent: React.ComponentType<Props>,
   configOverride: UserConfig | null = null,
 ) => {
+  let locale: string | null = null
+
   const AppWithTranslation = (props: Props) => {
     const { _nextI18Next } = props.pageProps as SSRConfig
-    let locale = null
 
     // Memoize the instance and only re-initialize when either:
     // 1. The route changes (non-shallowly)
