@@ -23,7 +23,7 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
 ) => {
   const AppWithTranslation = (props: Props) => {
     const { _nextI18Next } = props.pageProps as SSRConfig
-    const [locale, setLocale] = useState<string | undefined>(undefined)
+    const [locale, setLocale] = useState<string | undefined>(_nextI18Next ? _nextI18Next.initialLocale : undefined) // eslint-disable-line
 
     // Memoize the instance and only re-initialize when either:
     // 1. The route changes (non-shallowly)
@@ -34,7 +34,10 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
       let { userConfig } = _nextI18Next
       const { initialI18nStore, initialLocale } = _nextI18Next
 
-      setLocale(initialLocale)
+      // If initialLocale has changed, change the locale state to the new value.
+      if (initialLocale && (!locale || (locale != initialLocale))) {
+        setLocale(initialLocale)
+      }
 
       if (userConfig === null && configOverride === null) {
         throw new Error('appWithTranslation was called without a next-i18next config')
@@ -48,12 +51,14 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
         throw new Error('appWithTranslation was called without config.i18n')
       }
 
+      const lng = locale || initialLocale
+
       const instance = createClient({
         ...createConfig({
           ...userConfig,
-          lng: locale || initialLocale,
+          lng,
         }),
-        lng: locale || initialLocale,
+        lng,
         resources: initialI18nStore,
       }).i18n
 
