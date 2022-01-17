@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import { I18nextProvider } from 'react-i18next'
 import type { AppProps as NextJsAppProps } from 'next/app'
@@ -23,7 +23,7 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
 ) => {
   const AppWithTranslation = (props: Props) => {
     const { _nextI18Next } = props.pageProps as SSRConfig
-    const [locale, setLocale] = useState<string>(_nextI18Next?.initialLocale)
+    const locale: string | null = _nextI18Next?.initialLocale ?? null
 
     // Memoize the instance and only re-initialize when either:
     // 1. The route changes (non-shallowly)
@@ -32,12 +32,7 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
       if (!_nextI18Next) return null
 
       let { userConfig } = _nextI18Next
-      const { initialI18nStore, initialLocale } = _nextI18Next
-
-      // If initialLocale has changed, change the locale state to the new value.
-      if (initialLocale && (!locale || (locale != initialLocale))) {
-        setLocale(initialLocale)
-      }
+      const { initialI18nStore } = _nextI18Next
 
       if (userConfig === null && configOverride === null) {
         throw new Error('appWithTranslation was called without a next-i18next config')
@@ -51,14 +46,12 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
         throw new Error('appWithTranslation was called without config.i18n')
       }
 
-      const lng = locale || initialLocale
-
       const instance = createClient({
         ...createConfig({
           ...userConfig,
-          lng,
+          lng: locale,
         }),
-        lng,
+        lng: locale,
         resources: initialI18nStore,
       }).i18n
 
