@@ -23,7 +23,7 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
 ) => {
   const AppWithTranslation = (props: Props) => {
     const { _nextI18Next } = props.pageProps as SSRConfig
-    const [locale, setLocale] = useState<string | undefined>(_nextI18Next ? _nextI18Next.initialLocale : undefined) // eslint-disable-line
+    const [locale, setLocale] = useState<string>(_nextI18Next?.initialLocale)
 
     // Memoize the instance and only re-initialize when either:
     // 1. The route changes (non-shallowly)
