@@ -167,4 +167,20 @@ describe('appWithTranslation', () => {
     )
     expect(createClient).toHaveBeenCalledTimes(3)
   })
+
+  it('assures locale key is set to the right value', () => {
+    const { rerender } = renderComponent()
+    const Dummy = (
+      <DummyApp
+        {...defaultRenderProps}
+      />
+    )
+    rerender(Dummy)
+    rerender(Dummy)
+
+    const [args] = (I18nextProvider as jest.Mock).mock.calls
+
+    expect(args[0].children.key).toBe('en')
+  })
+
 })
