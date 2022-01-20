@@ -169,18 +169,18 @@ describe('appWithTranslation', () => {
   })
 
   it('assures locale key is set to the right value', () => {
-    const { rerender } = renderComponent()
-    const Dummy = (
-      <DummyApp
-        {...defaultRenderProps}
-      />
-    )
-    rerender(Dummy)
-    rerender(Dummy)
+    const { rerender } = render(<DummyApp
+      {...(createProps('de'))}
+    />)
+    rerender(<DummyApp
+      {...(createProps('en'))}
+    />)
+    rerender(<DummyApp
+      {...(createProps('en'))}
+    />)
 
     const [args] = (I18nextProvider as jest.Mock).mock.calls
 
     expect(args[0].children.key).toBe('en')
   })
-
 })
