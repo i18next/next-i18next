@@ -233,7 +233,7 @@ describe('serverSideTranslations', () => {
   })
 
   it('throws if a function is used for localePath and namespaces are not provided', async () => {
-    const localePathFn: UserConfig['localePath'] = (locale, namespace, env, missing) => `${missing}/${env}/${namespace}/${locale}.json`
+    const localePathFn: UserConfig['localePath'] = (locale, namespace, missing) => `${missing}/${namespace}/${locale}.json`
     const config: UserConfig = {
       i18n: {
         defaultLocale: 'en',

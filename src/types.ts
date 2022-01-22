@@ -21,7 +21,7 @@ export type UserConfig = {
   i18n: NextJsI18NConfig
   localeExtension?: string
   localePath?:
-    string | ((locale: string, namespace: string, env: 'client' | 'server', missing: boolean) => string)
+    string | ((locale: string, namespace: string, missing: boolean) => string)
   localeStructure?: string
   reloadOnPrerender?: boolean
   serializeConfig?: boolean
