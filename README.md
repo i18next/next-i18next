@@ -254,6 +254,27 @@ const Component = () => {
 }
 ```
 
+#### Custom interpolation prefix/suffix
+
+By default, i18next uses `{{` as prefix and `}}` as suffix for [interpolation](https://www.i18next.com/translation-function/interpolation).
+If you want/need to override these interpolation settings, you **must** also specify an alternative `localeStructure` setting that matches your custom prefix and suffix.
+
+For example, if you want to use `{` and `}` the config would look like this:
+
+```js
+{
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'nl'],
+  },
+  interpolation: {
+    prefix: '{',
+    suffix: '}',
+  },
+  localeStructure: '{lng}/{ns}',
+}
+```
+
 ## Migration to v8
 
 To migrate from previous versions to the version 8, check out the [v8-migration guide](https://github.com/isaachinman/next-i18next/tree/master/docs/v8-migration.md)
