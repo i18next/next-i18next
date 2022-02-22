@@ -75,7 +75,7 @@
     "@testing-library/react": "^11.2.5",
     "@types/i18next-fs-backend": "^1.1.2",
     "@types/jest": "^27.0.1",
-    "@types/node": "^16.7.1",
+    "@types/node": "^17.0.19",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "@types/testing-library__cypress": "^5.0.8",
