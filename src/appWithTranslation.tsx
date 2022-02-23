@@ -33,20 +33,15 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
 
       let { userConfig } = _nextI18Next
       const { initialI18nStore } = _nextI18Next
-      let resources = initialI18nStore
+      const resources =
+        configOverride?.resources ? configOverride.resources : initialI18nStore
 
       if (userConfig === null && configOverride === null) {
         throw new Error('appWithTranslation was called without a next-i18next config')
       }
 
       if (configOverride !== null) {
-        const {resources: overrideResources} = configOverride
-
         userConfig = configOverride
-
-        if (overrideResources) {
-          resources = overrideResources
-        }
       }
 
       if (!userConfig?.i18n) {
