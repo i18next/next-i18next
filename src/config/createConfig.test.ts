@@ -170,6 +170,49 @@ describe('createConfig', () => {
         expect(fs.readdirSync).toHaveBeenCalledTimes(0)
       })
     })
+
+    describe('with a function for localePath', () => {
+      const localePathFn: UserConfig['localePath'] = (locale, namespace, missing) => `${missing}/${namespace}/${locale}.json`
+
+      it('returns a config whose localePath works as expected', () => {
+        (fs.existsSync as jest.Mock).mockReturnValueOnce(true)
+        const config = createConfig({
+          i18n: {
+            defaultLocale: 'en',
+            locales: ['en'],
+          },
+          lng: 'en',
+          localePath: localePathFn,
+          ns: ['common'],
+        })
+
+        expect(((config.backend as any).loadPath)('en', 'common')).toBe('false/common/en.json')
+        expect(((config.backend as any).addPath)('en', 'common')).toBe('true/common/en.json')
+      })
+
+      it('when filesystem is missing defaultNS throws an error', () => {
+        (fs.existsSync as jest.Mock).mockReturnValueOnce(false)
+
+        const config = createConfig.bind(null, {
+          lng: 'en',
+          localePath: localePathFn,
+        } as UserConfig)
+
+        expect(config).toThrow('Default namespace not found at false/common/en.json')
+      })
+
+      it('throws an error if namespaces are not provided', () => {
+        (fs.existsSync as jest.Mock).mockReturnValueOnce(true)
+        expect(() => createConfig({
+          i18n: {
+            defaultLocale: 'en',
+            locales: ['en'],
+          },
+          lng: 'en',
+          localePath: localePathFn,
+        })).toThrow('Must provide all namespaces in ns option if using a function as localePath')
+      })
+    })
   })
 
   describe('client side', () => {
@@ -242,6 +285,25 @@ describe('createConfig', () => {
             type: 'backend',
           }] } as UserConfig)
         expect((config.backend as any)).toEqual({ hello: 'world' })
+      })
+    })
+
+    describe('with a function for localePath', () => {
+      const localePathFn: UserConfig['localePath'] = (locale, namespace, missing) => `${missing}/${namespace}/${locale}.json`
+
+      it('returns a config whose localePath works as expected', () => {
+        const config = createConfig({
+          i18n: {
+            defaultLocale: 'en',
+            locales: ['en'],
+          },
+          lng: 'en',
+          localePath: localePathFn,
+          ns: ['common'],
+        })
+
+        expect(((config.backend as any).loadPath)('en', 'common')).toBe('false/common/en.json')
+        expect(((config.backend as any).addPath)('en', 'common')).toBe('true/common/en.json')
       })
     })
   })
