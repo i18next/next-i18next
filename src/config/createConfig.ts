@@ -48,36 +48,58 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
     if (!hasCustomBackend) {
       const fs = require('fs')
       const path = require('path')
-      const serverLocalePath = localePath
 
       //
       // Validate defaultNS
       // https://github.com/isaachinman/next-i18next/issues/358
       //
       if (typeof defaultNS === 'string' && typeof lng !== 'undefined') {
-        const prefix = userConfig?.interpolation?.prefix ?? '{{'
-        const suffix = userConfig?.interpolation?.suffix ?? '}}'
-        const defaultLocaleStructure = localeStructure.replace(`${prefix}lng${suffix}`, lng).replace(`${prefix}ns${suffix}`, defaultNS)
-        const defaultFile = `/${defaultLocaleStructure}.${localeExtension}`
-        const defaultNSPath = path.join(localePath, defaultFile)
-        const defaultNSExists = fs.existsSync(defaultNSPath)
-        if (!defaultNSExists && process.env.NODE_ENV !== 'production') {
-          throw new Error(`Default namespace not found at ${defaultNSPath}`)
+        if (typeof localePath === 'string') {
+          const prefix = userConfig?.interpolation?.prefix ?? '{{'
+          const suffix = userConfig?.interpolation?.suffix ?? '}}'
+          const defaultLocaleStructure = localeStructure.replace(`${prefix}lng${suffix}`, lng).replace(`${prefix}ns${suffix}`, defaultNS)
+          const defaultFile = `/${defaultLocaleStructure}.${localeExtension}`
+          const defaultNSPath = path.join(localePath, defaultFile)
+          const defaultNSExists = fs.existsSync(defaultNSPath)
+          if (!defaultNSExists && process.env.NODE_ENV !== 'production') {
+            throw new Error(`Default namespace not found at ${defaultNSPath}`)
+          }
+        } else if (typeof localePath === 'function') {
+          const defaultNSPath = localePath(lng, defaultNS, false)
+          const defaultNSExists = fs.existsSync(defaultNSPath)
+          if (!defaultNSExists && process.env.NODE_ENV !== 'production') {
+            throw new Error(`Default namespace not found at ${defaultNSPath}`)
+          }
         }
       }
 
       //
       // Set server side backend
       //
-      combinedConfig.backend = {
-        addPath: path.resolve(process.cwd(), `${serverLocalePath}/${localeStructure}.missing.${localeExtension}`),
-        loadPath: path.resolve(process.cwd(), `${serverLocalePath}/${localeStructure}.${localeExtension}`),
+      if (typeof localePath === 'string') {
+        combinedConfig.backend = {
+          addPath: path.resolve(process.cwd(), `${localePath}/${localeStructure}.missing.${localeExtension}`),
+          loadPath: path.resolve(process.cwd(), `${localePath}/${localeStructure}.${localeExtension}`),
+        }
+      } else if (typeof localePath === 'function') {
+        combinedConfig.backend = {
+          addPath: (locale: string, namespace: string) =>
+            localePath(locale, namespace, true),
+          loadPath: (locale: string, namespace: string) =>
+            localePath(locale, namespace, false),
+        }
+      } else {
+        throw new Error(`Unsupported localePath type: ${typeof localePath}`)
       }
 
       //
       // Set server side preload (namespaces)
       //
       if (!combinedConfig.ns && typeof lng !== 'undefined') {
+        if (typeof localePath === 'function') {
+          throw new Error('Must provide all namespaces in ns option if using a function as localePath')
+        }
+
         const unique = (list: string[]) => Array.from(new Set<string>(list))
         const getNamespaces = (locales: string[]): string[] => {
           const getLocaleNamespaces = (p: string) =>
@@ -86,7 +108,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
             )
 
           const namespacesByLocale = locales
-            .map(locale => getLocaleNamespaces(path.resolve(process.cwd(), `${serverLocalePath}/${locale}`)))
+            .map(locale => getLocaleNamespaces(path.resolve(process.cwd(), `${localePath}/${locale}`)))
 
           const allNamespaces = []
           for (const localNamespaces of namespacesByLocale) {
@@ -124,22 +146,22 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
     }
   } else {
 
-    let clientLocalePath = localePath
-
-    //
-    // Remove public prefix from client site config
-    //
-    if (localePath.match(/^\.?\/public\//)) {
-      clientLocalePath = localePath.replace(/^\.?\/public/, '')
-    }
-
     //
     // Set client side backend, if there is no custom backend
     //
     if (!hasCustomBackend) {
-      combinedConfig.backend = {
-        addPath: `${clientLocalePath}/${localeStructure}.missing.${localeExtension}`,
-        loadPath: `${clientLocalePath}/${localeStructure}.${localeExtension}`,
+      if (typeof localePath === 'string') {
+        combinedConfig.backend = {
+          addPath: `${localePath}/${localeStructure}.missing.${localeExtension}`,
+          loadPath: `${localePath}/${localeStructure}.${localeExtension}`,
+        }
+      } else if (typeof localePath === 'function') {
+        combinedConfig.backend = {
+          addPath: (locale: string, namespace: string) =>
+            localePath(locale, namespace, true),
+          loadPath: (locale: string, namespace: string) =>
+            localePath(locale, namespace, false),
+        }
       }
     }
 

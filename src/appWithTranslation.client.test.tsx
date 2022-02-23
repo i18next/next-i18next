@@ -167,4 +167,41 @@ describe('appWithTranslation', () => {
     )
     expect(createClient).toHaveBeenCalledTimes(3)
   })
+
+  it('assures locale key is set to the right value', () => {
+    const props = createProps('de')
+
+    const { rerender } = render(<DummyApp
+      {...props}
+    />)
+
+    props.router.locale = 'en'
+    props.pageProps._nextI18Next.initialLocale = 'en'
+
+    rerender(<DummyApp
+      {...props}
+    />)
+    rerender(<DummyApp
+      {...props}
+    />)
+    rerender(<DummyApp
+      {...props}
+    />)
+
+    props.router.locale = 'de'
+    props.pageProps._nextI18Next.initialLocale = 'de'
+
+    rerender(<DummyApp
+      {...(createProps('de'))}
+    />)
+
+    const [[first], [second], [third], [fourth], [fifth]] =
+      (I18nextProvider as jest.Mock).mock.calls
+
+    expect(first.children.key).toEqual('de')
+    expect(second.children.key).toEqual('en')
+    expect(third.children.key).toEqual('en')
+    expect(fourth.children.key).toEqual('en')
+    expect(fifth.children.key).toEqual('de')
+  })
 })
