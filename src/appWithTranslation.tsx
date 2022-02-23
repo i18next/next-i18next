@@ -33,6 +33,8 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
 
       let { userConfig } = _nextI18Next
       const { initialI18nStore } = _nextI18Next
+      const resources =
+        configOverride?.resources ? configOverride.resources : initialI18nStore
 
       if (userConfig === null && configOverride === null) {
         throw new Error('appWithTranslation was called without a next-i18next config')
@@ -52,7 +54,7 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
           lng: locale,
         }),
         lng: locale,
-        resources: initialI18nStore,
+        resources,
       }).i18n
 
       globalI18n = instance

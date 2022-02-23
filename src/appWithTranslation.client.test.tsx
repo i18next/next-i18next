@@ -98,6 +98,34 @@ describe('appWithTranslation', () => {
     expect(args[0].i18n.options.configOverride).toBe('custom-value')
   })
 
+  it('allows passing configOverride.resources', () => {
+    const DummyAppConfigOverride = appWithTranslation(() => (
+      <div>Hello world</div>
+    ), {
+      i18n: {
+        defaultLocale: 'en',
+        locales: ['en', 'de'],
+      },
+      resources: {
+        xyz: {
+          custom: 'resources',
+        },
+      },
+    } as any)
+    render(
+      <DummyAppConfigOverride
+        {...createProps()}
+      />
+    )
+    const [args] = (I18nextProvider as jest.Mock).mock.calls
+
+    expect(args[0].i18n.options.resources).toMatchObject({
+      xyz: {
+        custom: 'resources',
+      },
+    })
+  })
+
   it('throws an error if userConfig and configOverride are both missing', () => {
     const DummyAppConfigOverride = appWithTranslation(() => (
       <div>Hello world</div>
