@@ -155,7 +155,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
           addPath: `${localePath}/${localeStructure}.missing.${localeExtension}`,
           loadPath: `${localePath}/${localeStructure}.${localeExtension}`,
         }
-      } else {
+      } else if (typeof localePath === 'function') {
         combinedConfig.backend = {
           addPath: (locale: string, namespace: string) =>
             localePath(locale, namespace, true),
