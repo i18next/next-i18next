@@ -23,7 +23,7 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
 ) => {
   const AppWithTranslation = (props: Props) => {
     const { _nextI18Next } = props.pageProps as SSRConfig
-    let locale = null
+    const locale: string | null = _nextI18Next?.initialLocale ?? null
 
     // Memoize the instance and only re-initialize when either:
     // 1. The route changes (non-shallowly)
@@ -32,9 +32,7 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
       if (!_nextI18Next) return null
 
       let { userConfig } = _nextI18Next
-      const { initialI18nStore, initialLocale } = _nextI18Next
-
-      locale = initialLocale
+      const { initialI18nStore } = _nextI18Next
 
       if (userConfig === null && configOverride === null) {
         throw new Error('appWithTranslation was called without a next-i18next config')
