@@ -1,0 +1,10 @@
+{
+  "h1": "Ein einfaches Beispiel",
+  "change-locale": "Wechseln Locale",
+  "to-second-page": "Zur zweiten Seite",
+  "to-client-page": "Zur Client Seite",
+  "error-with-status": "Auf dem Server ist ein Fehler ({{statusCode}}) aufgetreten",
+  "error-without-status": "Auf dem Server ist ein Fehler aufgetreten",
+  "title": "Hauptseite | next-i18next",
+  "shallow-route": "zur Shallow-Route {{counter}}"
+}
