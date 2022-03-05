@@ -5,7 +5,7 @@ const LocalStorageBackend = require('i18next-localstorage-backend').default
 module.exports = {
   backend: {
     backendOptions: [{ expirationTime: 60 * 60 * 1000 }, {}], // 1 hour
-    backends: process.browser ? [LocalStorageBackend, HttpBackend]: [],
+    backends: typeof window !== 'undefined' ? [LocalStorageBackend, HttpBackend]: [],
   },
   // debug: true,
   i18n: {
@@ -13,5 +13,5 @@ module.exports = {
     locales: ['en', 'de'],
   },
   serializeConfig: false,
-  use: process.browser ? [ChainedBackend] : [],
+  use: typeof window !== 'undefined' ? [ChainedBackend] : [],
 }
