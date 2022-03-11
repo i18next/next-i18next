@@ -33,7 +33,7 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
     const i18n: I18NextClient | null = useMemo(() => {
       if (!_nextI18Next && !configOverride) return null
 
-      let userConfig = _nextI18Next?.userConfig
+      let userConfig = configOverride ?? _nextI18Next?.userConfig
 
       if (!userConfig && configOverride === null) {
         throw new Error('appWithTranslation was called without a next-i18next config')
