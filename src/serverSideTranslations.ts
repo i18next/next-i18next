@@ -43,7 +43,9 @@ export const serverSideTranslations = async (
     throw new Error('Initial locale argument was not passed into serverSideTranslations')
   }
 
-  let userConfig = configOverride
+  let userConfig: UserConfig
+    | (() => UserConfig | Promise<UserConfig>)
+    | null = configOverride
 
   if (!userConfig && fs.existsSync(path.resolve(DEFAULT_CONFIG_PATH))) {
     userConfig = await import(path.resolve(DEFAULT_CONFIG_PATH))
@@ -51,6 +53,10 @@ export const serverSideTranslations = async (
 
   if (userConfig === null) {
     throw new Error('next-i18next was unable to find a user config')
+  }
+
+  if (typeof userConfig === 'function') {
+    userConfig = await userConfig()
   }
 
   const config = createConfig({
