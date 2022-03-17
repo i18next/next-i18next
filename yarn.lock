@@ -4215,7 +4215,7 @@ i18next@^21.0.1:
   resolved "https://registry.yarnpkg.com/i18next/-/i18next-21.6.13.tgz#e881b05f156ac06997e9b63379d8b2674bb4a4f2"
   integrity sha512-MVjNttw+5mIuu2/fwTpSU0EeI7iU/6pnDvGQboCzkILiv0/gD+FLZaF7qSHmUHO4ZkE6xJQ9SlBgGvMHxhC82Q==
   dependencies:
-    "@babel/runtime" "^7.17.2"
+    "@babel/runtime" "^7.12.0"
 
 i18next@^21.6.14:
   version "21.6.14"
@@ -6248,10 +6248,10 @@ react-dom@^17.0.1:
     object-assign "^4.1.1"
     scheduler "^0.20.2"
 
-react-i18next@^11.15.6:
-  version "11.15.6"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.15.6.tgz#693430fbee5ac7d0774bd88683575d62adb24afb"
-  integrity sha512-OUWcFdNgIA9swVx3JGIreuquglAinpRwB/HYrCprTN+s9BQDt9LSiY7x5DGc2JzVpwqtpoTV7oRUTOxEPNyUPw==
+react-i18next@^11.16.0:
+  version "11.16.0"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.16.0.tgz#7daffdcc09d2f8ea47c34e7f661dd6ae583e9cad"
+  integrity sha512-OLOl0NM/X6NMNthLkGpwcIVV5fxbnYYrKy7G/hhS85rEWF2JOy80RgOZCFpbywKwQRnF0GaiKkFFa+8vK7e9AQ==
   dependencies:
     "@babel/runtime" "^7.14.5"
     html-escaper "^2.0.2"
