@@ -6248,10 +6248,10 @@ react-dom@^17.0.1:
     object-assign "^4.1.1"
     scheduler "^0.20.2"
 
-react-i18next@^11.16.0:
-  version "11.16.0"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.16.0.tgz#7daffdcc09d2f8ea47c34e7f661dd6ae583e9cad"
-  integrity sha512-OLOl0NM/X6NMNthLkGpwcIVV5fxbnYYrKy7G/hhS85rEWF2JOy80RgOZCFpbywKwQRnF0GaiKkFFa+8vK7e9AQ==
+react-i18next@^11.16.1:
+  version "11.16.1"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.16.1.tgz#707e6ce56e97df97a271a2274d401ba8bec4b679"
+  integrity sha512-6Wf/YtPqANloFmnN5ol0ANeweFPzDWGykRq/dk4wU3ZkjWBR3d5iH210gMg8e8AgLQ1Dq7suUIL7WGfu08OehQ==
   dependencies:
     "@babel/runtime" "^7.14.5"
     html-escaper "^2.0.2"
