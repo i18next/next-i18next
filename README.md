@@ -74,8 +74,8 @@ This tells `next-i18next` what your `defaultLocale` and other locales are, so th
 ```js
 module.exports = {
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'de'],
+    defaultLocale: "en",
+    locales: ["en", "de"],
   },
 };
 ```
@@ -85,7 +85,7 @@ Now, create or modify your `next.config.js` file, by passing the `i18n` object i
 #### [`next.config.js`](https://nextjs.org/docs/api-reference/next.config.js/introduction)
 
 ```js
-const { i18n } = require('./next-i18next.config');
+const { i18n } = require("./next-i18next.config");
 
 module.exports = {
   i18n,
@@ -99,7 +99,7 @@ There are three functions that `next-i18next` exports, which you will need to us
 This is a HOC which wraps your [`_app`](https://nextjs.org/docs/advanced-features/custom-app):
 
 ```tsx
-import { appWithTranslation } from 'next-i18next';
+import { appWithTranslation } from "next-i18next";
 
 const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />;
 
@@ -112,13 +112,27 @@ The `appWithTranslation` HOC is primarily responsible for adding a [`I18nextProv
 
 This is an async function that you need to include on your page-level components, via either [`getStaticProps`](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [`getServerSideProps`](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) (depending on your use case):
 
+> Important! If you are using `getServerSideProps`, make sure to update your `next-i18next.config.js` to include `localePath` field. Your config should look like something like this.
+
+```js
+// config for usage with getServerSideProps
+const path = require("path");
+module.exports = {
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en"],
+    localePath: path.resolve("./public/locales"),
+  },
+};
+```
+
 ```tsx
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export async function getStaticProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common', 'footer'])),
+      ...(await serverSideTranslations(locale, ["common", "footer"])),
       // Will be passed to the page component as props
     },
   };
@@ -136,14 +150,14 @@ The `serverSideTranslations` HOC is primarily responsible for passing translatio
 This is the hook which you'll actually use to do the translation itself. The `useTranslation` hook [comes from `react-i18next`](https://react.i18next.com/latest/usetranslation-hook), but can be imported from `next-i18next` directly:
 
 ```tsx
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from "next-i18next";
 
 export const Footer = () => {
-  const { t } = useTranslation('footer');
+  const { t } = useTranslation("footer");
 
   return (
     <footer>
-      <p>{t('description')}</p>
+      <p>{t("description")}</p>
     </footer>
   );
 };
@@ -164,14 +178,14 @@ Note: `useTranslation` provides namespaces to the component that you use it in. 
 If you need to modify more advanced configuration options, you can pass them via `next-i18next.config.js`. For example:
 
 ```js
-const path = require('path');
+const path = require("path");
 
 module.exports = {
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'de'],
+    defaultLocale: "en",
+    locales: ["en", "de"],
   },
-  localePath: path.resolve('./my/custom/path'),
+  localePath: path.resolve("./my/custom/path"),
 };
 ```
 
@@ -189,8 +203,8 @@ Reason: `function` cannot be serialized as JSON. Please only return JSON seriali
 To fix this, you'll need to set `config.serializeConfig` to `false`, and manually pass your config into `appWithTranslation`:
 
 ```tsx
-import { appWithTranslation } from 'next-i18next';
-import nextI18NextConfig from '../next-i18next.config.js';
+import { appWithTranslation } from "next-i18next";
+import nextI18NextConfig from "../next-i18next.config.js";
 
 const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />;
 
@@ -198,15 +212,15 @@ export default appWithTranslation(MyApp, nextI18NextConfig);
 ```
 
 ```tsx
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-import nextI18NextConfig from '../next-i18next.config.js';
+import nextI18NextConfig from "../next-i18next.config.js";
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
     ...(await serverSideTranslations(
       locale,
-      ['common', 'footer'],
+      ["common", "footer"],
       nextI18NextConfig
     )),
   },
@@ -245,15 +259,15 @@ In some use cases, you might want to load a translation file dynamically without
 This can easily be done by using [addResourceBundle](https://www.i18next.com/how-to/add-or-load-translations#add-after-init):
 
 ```tsx
-import { i18n } from 'next-i18next'
+import { i18n } from "next-i18next";
 
 const Component = () => {
-  const { locale } = useRouter()
+  const { locale } = useRouter();
 
   useEffect(() => {
-    i18n.addResourceBundle(locale, '<namespace name>')
-  }, [])
-}
+    i18n.addResourceBundle(locale, "<namespace name>");
+  }, []);
+};
 ```
 
 #### Custom interpolation prefix/suffix
@@ -286,7 +300,6 @@ To migrate from previous versions to the version 8, check out the [v8-migration 
 ### Vercel and Netlify
 
 Some serverless PaaS may not be able to locate the path of your translations and require additional configuration. If you have filesystem issues using `serverSideTranslations`, set `config.localePath` to use `path.resolve`. An example can be [found here](https://github.com/isaachinman/next-i18next/issues/1552#issuecomment-981156476).
-
 
 ### Docker
 
