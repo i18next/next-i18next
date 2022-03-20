@@ -16,7 +16,7 @@ On the server when using SSR the translations are loaded via the filesystem and 
 
 The chained plugin allows us to chain together backend plugins so we can specify load strategies for our translations, i18next-http-backend allows you to load translations via fetch or XMLHttpRequest and finally i18next-localstorage-backend allows us to cache and then subsequently load our translations from localstorage. If your translation responses are sending a Cache-Control header, you may not need the i18next-localstorage-backend and i18next-chained-backend plugin.
 
-Please read the i18next [Add or Load Translations docs](https://www.i18next.com/how-to/add-or-load-translations) and [Caching docs](https://www.i18next.com/how-to/caching) in order to see how to setup and use backend plugins. The config used in this example is shown below.
+Please read the i18next [Add or Load Translations docs](https://www.i18next.com/how-to/add-or-load-translations) and [Caching docs](https://www.i18next.com/how-to/caching) in order to see how to setup and use backend plugins. The config used [in this example](https://github.com/i18next/i18next-http-backend/tree/master/example/next) is shown below.
 
 ```js
 const HttpBackend = require('i18next-http-backend/cjs')
@@ -94,3 +94,5 @@ const ClientPage = () => {
 
 export default ClientPage
 ```
+
+**The complete example can be found [here](https://github.com/i18next/i18next-http-backend/tree/master/example/next).**
