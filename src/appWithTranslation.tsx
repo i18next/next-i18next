@@ -23,20 +23,19 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
 ) => {
   const AppWithTranslation = (props: Props) => {
     const { _nextI18Next } = props.pageProps as SSRConfig
-    const locale: string | null = _nextI18Next?.initialLocale ?? null
+    let locale: string | null =
+      _nextI18Next?.initialLocale ?? props?.router?.locale
 
     // Memoize the instance and only re-initialize when either:
     // 1. The route changes (non-shallowly)
     // 2. Router locale changes
+    // 3. UserConfig override changes
     const i18n: I18NextClient | null = useMemo(() => {
-      if (!_nextI18Next) return null
+      if (!_nextI18Next && !configOverride) return null
 
-      let { userConfig } = _nextI18Next
-      const { initialI18nStore } = _nextI18Next
-      const resources =
-        configOverride?.resources ? configOverride.resources : initialI18nStore
+      let userConfig = configOverride ?? _nextI18Next?.userConfig
 
-      if (userConfig === null && configOverride === null) {
+      if (!userConfig && configOverride === null) {
         throw new Error('appWithTranslation was called without a next-i18next config')
       }
 
@@ -47,6 +46,16 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
       if (!userConfig?.i18n) {
         throw new Error('appWithTranslation was called without config.i18n')
       }
+
+      if (!userConfig?.i18n?.defaultLocale) {
+        throw new Error('config.i18n does not include a defaultLocale property')
+      }
+
+      const { initialI18nStore } = _nextI18Next || {}
+      const resources =
+        configOverride?.resources ? configOverride.resources : initialI18nStore
+
+      if (!locale) locale = userConfig.i18n.defaultLocale
 
       const instance = createClient({
         ...createConfig({
@@ -60,7 +69,7 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
       globalI18n = instance
 
       return instance
-    }, [_nextI18Next, locale])
+    }, [_nextI18Next, locale, configOverride])
 
     return i18n !== null ? (
       <I18nextProvider

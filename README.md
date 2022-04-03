@@ -213,6 +213,12 @@ export const getStaticProps = async ({ locale }) => ({
 });
 ```
 
+#### Client side loading of translations via HTTP
+
+Since v11.0.0 next-i18next also provides support for client side loading of translations.
+
+More information about that can be found [here](https://github.com/i18next/i18next-http-backend/tree/master/example/next).
+
 #### Reloading Resources in Development
 
 Because resources are loaded once when the server is started, any changes made to your translation JSON files in development will not be loaded until the server is restarted.
