@@ -190,7 +190,6 @@ describe('appWithTranslation', () => {
       locale: undefined,
     }
 
-
     render(
       <DummyAppConfigOverride
         {...customProps}
