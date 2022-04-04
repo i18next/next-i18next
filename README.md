@@ -215,7 +215,7 @@ export const getStaticProps = async ({ locale }) => ({
 
 #### Client side loading of translations via HTTP
 
-Since v11.0.0 next-i18next also provides support for client side loading of translations.
+Since [v11.0.0](https://github.com/isaachinman/next-i18next/releases/tag/v11.0.0) next-i18next also provides support for client side loading of translations.
 
 More information about that can be found [here](https://github.com/i18next/i18next-http-backend/tree/master/example/next).
 
