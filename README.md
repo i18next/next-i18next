@@ -215,7 +215,7 @@ export const getStaticProps = async ({ locale }) => ({
 
 #### Client side loading of translations via HTTP
 
-Since v11.0.0 next-i18next also provides support for client side loading of translations.
+Since [v11.0.0](https://github.com/isaachinman/next-i18next/releases/tag/v11.0.0) next-i18next also provides support for client side loading of translations.
 
 More information about that can be found [here](https://github.com/i18next/i18next-http-backend/tree/master/example/next).
 
@@ -310,7 +310,7 @@ Since [React suspense is not yet supported for SSR](https://github.com/isaachinm
 
 **1) Preload the namespaces:**
 
-Set the `ns` option, like in [this example](https://github.com/locize/next-i18next-locize/blob/main/next-i18next.config.js#L17). Doing this will ensure all translation resources are loaded on initialization.
+Set the `ns` option, like in [this example](https://github.com/locize/next-i18next-locize/blob/main/next-i18next.config.js#L48). Doing this will ensure all translation resources are loaded on initialization.
 
 **2) Check the ready flag:**
 
