@@ -9,7 +9,7 @@
     "start": "next start -p ${PORT:=3000}"
   },
   "dependencies": {
-    "next": "10.0.5",
+    "next": "12.1.4",
     "next-i18next": "link:../../"
   },
   "devDependencies": {
