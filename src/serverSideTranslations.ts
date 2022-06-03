@@ -3,12 +3,14 @@ import path from 'path'
 
 import { createConfig } from './config/createConfig'
 import createClient from './createClient'
+import { isConfigExisting } from './resolveConfig'
 
 import { globalI18n } from './appWithTranslation'
 
 import { UserConfig, SSRConfig } from './types'
 import { FallbackLng } from 'i18next'
 
+const DEFAULT_CONFIG_FILENAME = 'next-i18next.config'
 const DEFAULT_CONFIG_PATH = './next-i18next.config.js'
 
 const getFallbackLocales = (fallbackLng: false | FallbackLng) => {
@@ -21,7 +23,7 @@ const getFallbackLocales = (fallbackLng: false | FallbackLng) => {
   if (typeof fallbackLng === 'object' && fallbackLng !== null) {
     return Object
       .values(fallbackLng)
-      .reduce((all, locales) => [...all, ...locales],[])
+      .reduce((all, locales) => [...all, ...locales], [])
   }
   return []
 }
@@ -43,9 +45,10 @@ export const serverSideTranslations = async (
     throw new Error('Initial locale argument was not passed into serverSideTranslations')
   }
 
+  const configFolder = process.cwd()
   let userConfig = configOverride
 
-  if (!userConfig && fs.existsSync(path.resolve(DEFAULT_CONFIG_PATH))) {
+  if (!userConfig && isConfigExisting(configFolder, DEFAULT_CONFIG_FILENAME)) {
     userConfig = await import(path.resolve(DEFAULT_CONFIG_PATH))
   }
 
