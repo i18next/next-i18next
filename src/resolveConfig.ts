@@ -51,8 +51,20 @@ export const importConfig = async (
 
   case '.json': {
     const jsonContent = fs.readFileSync(configPath, { encoding: 'utf-8' })
-    const userConfig: UserConfig = JSON.parse(jsonContent)
-    return userConfig
+
+    try {
+      const userConfig: UserConfig = JSON.parse(jsonContent)
+      return userConfig
+    } catch (error) {
+      if (error instanceof SyntaxError) {
+        throw new Error(
+          `Config file at "${configPath}" is not a valid json.`,
+          { cause: error }
+        )
+      }
+
+      throw error
+    }
   }
 
   case '.cjs':
