@@ -54,6 +54,17 @@ describe('resolveConfig', () => {
     const userConfig = await importConfig(configFolder, 'js')
 
     return expect(userConfig).toBeTruthy()
-  }
-  )
+  })
+
+  it('resolves a function config', async () => {
+    const userConfig = await importConfig(configFolder, 'function')
+
+    return expect(userConfig).toBeTruthy()
+  })
+
+  it('resolves async config', async () => {
+    const userConfig = await importConfig(configFolder, 'async')
+
+    return expect(userConfig).toBeTruthy()
+  })
 })
