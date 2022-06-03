@@ -3,14 +3,12 @@ import path from 'path'
 
 import { createConfig } from './config/createConfig'
 import createClient from './createClient'
-import { isConfigExisting, importConfig } from './resolveConfig'
+import { isConfigExisting, importConfig } from './resolveConfig/lib'
 
 import { globalI18n } from './appWithTranslation'
 
-import { UserConfig, SSRConfig } from './types'
+import { DEFAULT_CONFIG_FILENAME, type UserConfig, type SSRConfig } from './types'
 import { FallbackLng } from 'i18next'
-
-const DEFAULT_CONFIG_FILENAME = 'next-i18next.config'
 
 const getFallbackLocales = (fallbackLng: false | FallbackLng) => {
   if (typeof fallbackLng === 'string') {

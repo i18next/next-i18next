@@ -3073,10 +3073,10 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-i18next@^11.16.1:
-  version "11.16.2"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.16.2.tgz#650b18c12a624057ee2651ba4b4a989b526be554"
-  integrity sha512-1iuZduvARUelL5ux663FvIoDZExwFO+9QtRAAt4uvs1/aun4cUZt8XBrVg7iiDgNls9cOSORAhE7Ri5KA9RMvg==
+react-i18next@^11.16.2:
+  version "11.16.11"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.16.11.tgz#28410a9c8412a34ab6e21ed7bbdd29ed33e5c3b8"
+  integrity sha512-x2UUTizhrnApV8Y/VmJ54/jxWVg9WwQ3CI5CC7u/aUTyqkCE6hUcymPg+Ibqw4XmYSz/Pa4dSXc9SLStQxvHKQ==
   dependencies:
     "@babel/runtime" "^7.14.5"
     html-escaper "^2.0.2"

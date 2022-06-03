@@ -61,6 +61,8 @@ export type SSRConfig = {
   }
 }
 
+export const DEFAULT_CONFIG_FILENAME = 'next-i18next.config'
+
 export {
   i18n,
   I18nContext,

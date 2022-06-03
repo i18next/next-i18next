@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import type { UserConfig, UserConfigModule } from './types'
+import type { UserConfig, UserConfigModule } from '../types'
 
 export const isConfigExisting = (
   configFolder: string,
