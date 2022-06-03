@@ -15,6 +15,7 @@ out
 
 # Development Environment
 .vscode
+*.code-workspace
 
 # Logs
 runtime.log
