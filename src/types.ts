@@ -21,13 +21,15 @@ export type UserConfig = {
   i18n: NextJsI18NConfig
   localeExtension?: string
   localePath?:
-    string | ((locale: string, namespace: string, missing: boolean) => string)
+  string | ((locale: string, namespace: string, missing: boolean) => string)
   localeStructure?: string
   reloadOnPrerender?: boolean
   serializeConfig?: boolean
   strictMode?: boolean
   use?: any[]
 } & InitOptions
+
+export type UserConfigModule = UserConfig | (() => PromiseLike<UserConfig>)
 
 export type InternalConfig = Omit<UserConfig, 'i18n'> & NextJsI18NConfig & {
   errorStackTraceLimit: number
