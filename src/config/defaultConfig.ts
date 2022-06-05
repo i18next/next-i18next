@@ -27,6 +27,5 @@ export const defaultConfig = {
   },
   reloadOnPrerender: false,
   serializeConfig: true,
-  strictMode: true,
   use: [],
 }
