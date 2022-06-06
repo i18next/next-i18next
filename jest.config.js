@@ -1,4 +1,7 @@
-module.exports = {
+/**
+ * @type {import('@jest/types').Config.InitialOptions)}
+ */
+const config = {
   automock: false,
   collectCoverage: true,
   collectCoverageFrom: [
@@ -19,3 +22,5 @@ module.exports = {
     '<rootDir>/node_modules/',
   ],
 }
+
+module.exports = config
