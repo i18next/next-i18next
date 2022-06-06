@@ -10,7 +10,7 @@ out
 .DS_Store
 
 # Development Environment
-.vscode
+*.code-workspace
 .idea
 
 # Logs

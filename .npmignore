@@ -14,6 +14,7 @@ out
 .DS_Store
 
 # Development Environment
+*.code-workspace
 .vscode
 
 # Logs
