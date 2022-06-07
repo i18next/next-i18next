@@ -41,7 +41,6 @@ const renderDummyComponent = () =>
 
 describe('serverSideTranslations', () => {
   beforeEach(() => {
-    (fs.existsSync as jest.Mock).mockReturnValueOnce(false);
     (fs.existsSync as jest.Mock).mockReturnValueOnce(true);
     (fs.readdirSync as jest.Mock).mockReturnValue([])
   })
@@ -55,7 +54,7 @@ describe('serverSideTranslations', () => {
 
   describe('When namespacesRequired is not provided', ()=>{
     beforeEach(() =>{
-      (fs.readdirSync as jest.Mock).mockImplementation((path)=>['common', `namespace-of-${path.split('/').pop()}`])
+      (fs.readdirSync as jest.Mock).mockImplementation((path: string)=>['common', `namespace-of-${path.split('/').pop()}`])
     })
 
     it('returns all namespaces', async () => {
@@ -64,7 +63,7 @@ describe('serverSideTranslations', () => {
           defaultLocale: 'en-US',
           locales: ['en-US', 'fr-CA'],
         },
-      } as UserConfig)
+      })
       expect(fs.existsSync).toHaveBeenCalledTimes(0)
       expect(fs.readdirSync).toHaveBeenCalledTimes(1)
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en-US'))
