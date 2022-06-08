@@ -64,8 +64,6 @@ describe('serverSideTranslations', () => {
           locales: ['en-US', 'fr-CA'],
         },
       })
-      expect(fs.existsSync).toHaveBeenCalledTimes(0)
-      expect(fs.readdirSync).toHaveBeenCalledTimes(1)
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en-US'))
       expect(props._nextI18Next.initialI18nStore)
         .toEqual({
@@ -84,7 +82,6 @@ describe('serverSideTranslations', () => {
           locales: ['nl-BE', 'fr-BE'],
         },
       } as UserConfig)
-      expect(fs.readdirSync).toHaveBeenCalledTimes(2)
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/fr'))
       expect(props._nextI18Next.initialI18nStore)
         .toEqual({
@@ -109,7 +106,6 @@ describe('serverSideTranslations', () => {
           locales: ['en-US', 'fr-CA'],
         },
       } as UserConfig)
-      expect(fs.readdirSync).toHaveBeenCalledTimes(3)
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en-US'))
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en'))
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/fr'))
@@ -144,7 +140,6 @@ describe('serverSideTranslations', () => {
           locales: ['nl-BE', 'fr-BE'],
         },
       } as UserConfig)
-      expect(fs.readdirSync).toHaveBeenCalledTimes(3)
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en'))
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/fr'))
       expect(props._nextI18Next.initialI18nStore)
