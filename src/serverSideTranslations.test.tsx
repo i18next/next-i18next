@@ -190,7 +190,7 @@ describe('serverSideTranslations', () => {
     })
   })
 
-  it('calls reloadResources when reloadOnPrerender option is true', async () => {
+  it('live reload works when enabled', async () => {
     renderDummyComponent()
 
     if (globalI18n) {
@@ -208,7 +208,7 @@ describe('serverSideTranslations', () => {
     expect(globalI18n?.reloadResources).toHaveBeenCalledTimes(1)
   })
 
-  it('does not call reloadResources when reloadOnPrerender option is false', async () => {
+  it('live reload doesn\'t work when disabled', async () => {
     renderDummyComponent()
 
     if (globalI18n) {
