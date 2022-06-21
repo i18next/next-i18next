@@ -41,7 +41,7 @@ const renderDummyComponent = () =>
 
 describe('serverSideTranslations', () => {
   beforeEach(() => {
-    (fs.existsSync as jest.Mock).mockReturnValueOnce(true);
+    (fs.existsSync as jest.Mock).mockReturnValue(true);
     (fs.readdirSync as jest.Mock).mockReturnValue([])
   })
   afterEach(jest.resetAllMocks)
