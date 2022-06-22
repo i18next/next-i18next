@@ -25,7 +25,6 @@ export type UserConfig = {
   localeStructure?: string
   reloadOnPrerender?: boolean
   serializeConfig?: boolean
-  strictMode?: boolean
   use?: any[]
 } & InitOptions
 
