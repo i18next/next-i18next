@@ -21,16 +21,16 @@ commands:
           path: cypress/videos
 
 jobs:
-  node-v12:
-    docker:
-      - image: circleci/node:12-browsers
-    steps:
-      - build-and-test
-  node-v14:
-    docker:
-      - image: circleci/node:14-browsers
-    steps:
-      - build-and-test
+  # node-v12:
+  #   docker:
+  #     - image: circleci/node:12-browsers
+  #   steps:
+  #     - build-and-test
+  # node-v14:
+  #   docker:
+  #     - image: circleci/node:14-browsers
+  #   steps:
+  #     - build-and-test
   node-v16:
     docker:
       - image: circleci/node:16-browsers
@@ -45,7 +45,7 @@ jobs:
 workflows:
   node-multi-build:
     jobs:
-      - node-v12
-      - node-v14
+      # - node-v12
+      # - node-v14
       - node-v16
       # - node-v18
