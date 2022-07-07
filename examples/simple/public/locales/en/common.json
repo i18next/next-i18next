@@ -4,5 +4,9 @@
   "to-second-page": "To second page",
   "error-with-status": "A {{statusCode}} error occurred on server",
   "error-without-status": "An error occurred on the server",
-  "title": "Home | next-i18next"
+  "title": "Home | next-i18next",
+  "blog": {
+    "question": "Do you like to unleash some super powers to have all side optimized translations?",
+    "answer": "Then you may have a look at <1>this blog post</1>"
+  }
 }
