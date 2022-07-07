@@ -16,7 +16,7 @@ To complement this, `next-i18next` provides the remaining functionality – man
 
 While `next-i18next` uses [i18next](https://www.i18next.com/) and [react-i18next](https://github.com/i18next/react-i18next) under the hood, users of `next-i18next` simply need to include their translation content as JSON files and don't have to worry about much else.
 
-A live demo is [available here](http://next-i18next.com/). This demo app is the [simple example](./examples/simple/) - nothing more, nothing less.
+A live demo is [available here](https://next.i18next.com/). This demo app is the [simple example](./examples/simple/) - nothing more, nothing less.
 
 ## Why next-i18next?
 
