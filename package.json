@@ -100,7 +100,7 @@
     "eslint": "^7.17.0",
     "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jest": "^24.1.5",
+    "eslint-plugin-jest": "^26.5.3",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-typescript-sort-keys": "^2.1.0",
