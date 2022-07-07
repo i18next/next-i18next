@@ -44,7 +44,7 @@
     "build:esm": "BABEL_ENV=esm babel src --extensions '.ts,.tsx' --out-dir dist/esm --copy-files",
     "build:types": "tsc --noEmit false --declaration --emitDeclarationOnly --outDir dist/types",
     "build": "npm run clean && npm run build:cjs && npm run build:es && npm run build:esm && npm run build:types",
-    "build:examples/simple": "cd examples/simple && npm run && npm run build",
+    "build:examples/simple": "cd examples/simple && npm run build",
     "prepublishOnly": "npm run build",
     "run-example": "npm run build && cp -r dist examples/simple/node_modules/next-i18next && cd examples/simple && npm run dev",
     "run-example:prod": "npm run build:examples/simple && cd examples/simple && npm run start",
@@ -53,7 +53,8 @@
     "test:e2e": "start-server-and-test 'cd examples/simple && npm run start' 3000 'npm run run-cypress'",
     "contributors:check": "all-contributors check",
     "contributors:add": "all-contributors add",
-    "contributors:generate": "all-contributors generate"
+    "contributors:generate": "all-contributors generate",
+    "postinstall": "cd examples/simple && npm install"
   },
   "husky": {
     "hooks": {
