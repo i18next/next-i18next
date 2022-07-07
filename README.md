@@ -321,18 +321,45 @@ This can be done with the [useTranslation hook](https://react.i18next.com/latest
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore -->
-<table cellspacing="0" cellpadding="1"><tr><td><a href="https://github.com/capellini"><img src="https://avatars3.githubusercontent.com/u/75311?v=4" width="100px;" height="100px;" alt="Rob Capellini"/><br /><sub><b>Rob Capellini</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=capellini" title="Code">💻</a> <a href="https://github.com/i18next/next-i18next/commits?author=capellini" title="Tests">⚠️</a></td><td><a href="https://en.kachkaev.ru"><img src="https://avatars3.githubusercontent.com/u/608862?v=4" width="100px;" height="100px;" alt="Alexander Kachkaev"/><br /><sub><b>Alexander Kachkaev</b></sub></a><br /><a href="#talk-kachkaev" title="Talks">📢</a> <a href="#question-kachkaev" title="Answering Questions">💬</a> <a href="#ideas-kachkaev" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/i18next/next-i18next/commits?author=kachkaev" title="Code">💻</a> <a href="https://github.com/i18next/next-i18next/commits?author=kachkaev" title="Tests">⚠️</a></td><td><a href="https://kandelborg.dk"><img src="https://avatars1.githubusercontent.com/u/33042011?v=4" width="100px;" height="100px;" alt="Mathias Wøbbe"/><br /><sub><b>Mathias Wøbbe</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=MathiasKandelborg" title="Code">💻</a> <a href="#ideas-MathiasKandelborg" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/i18next/next-i18next/commits?author=MathiasKandelborg" title="Tests">⚠️</a></td><td><a href="http://lucasfeliciano.com"><img src="https://avatars3.githubusercontent.com/u/968014?v=4" width="100px;" height="100px;" alt="Lucas Feliciano"/><br /><sub><b>Lucas Feliciano</b></sub></a><br /><a href="#ideas-lucasfeliciano" title="Ideas, Planning, & Feedback">🤔</a> <a href="#review-lucasfeliciano" title="Reviewed Pull Requests">👀</a></td><td><a href="http://www.fifteenprospects.com"><img src="https://avatars2.githubusercontent.com/u/6932550?v=4" width="100px;" height="100px;" alt="Ryan Leung"/><br /><sub><b>Ryan Leung</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=minocys" title="Code">💻</a></td><td><a href="http://nathanfriemel.com"><img src="https://avatars3.githubusercontent.com/u/1325835?v=4" width="100px;" height="100px;" alt="Nathan Friemel"/><br /><sub><b>Nathan Friemel</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=nathanfriemel" title="Code">💻</a> <a href="https://github.com/i18next/next-i18next/commits?author=nathanfriemel" title="Documentation">📖</a> <a href="#example-nathanfriemel" title="Examples">💡</a> <a href="#ideas-nathanfriemel" title="Ideas, Planning, & Feedback">🤔</a></td></tr></table>
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/capellini"><img src="https://avatars3.githubusercontent.com/u/75311?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rob Capellini</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=capellini" title="Code">💻</a> <a href="https://github.com/i18next/next-i18next/commits?author=capellini" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://en.kachkaev.ru"><img src="https://avatars3.githubusercontent.com/u/608862?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Alexander Kachkaev</b></sub></a><br /><a href="#talk-kachkaev" title="Talks">📢</a> <a href="#question-kachkaev" title="Answering Questions">💬</a> <a href="#ideas-kachkaev" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/i18next/next-i18next/commits?author=kachkaev" title="Code">💻</a> <a href="https://github.com/i18next/next-i18next/commits?author=kachkaev" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://kandelborg.dk"><img src="https://avatars1.githubusercontent.com/u/33042011?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Mathias Wøbbe</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=MathiasKandelborg" title="Code">💻</a> <a href="#ideas-MathiasKandelborg" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/i18next/next-i18next/commits?author=MathiasKandelborg" title="Tests">⚠️</a></td>
+    <td align="center"><a href="http://lucasfeliciano.com"><img src="https://avatars3.githubusercontent.com/u/968014?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Lucas Feliciano</b></sub></a><br /><a href="#ideas-lucasfeliciano" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/i18next/next-i18next/pulls?q=is%3Apr+reviewed-by%3Alucasfeliciano" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="http://www.fifteenprospects.com"><img src="https://avatars2.githubusercontent.com/u/6932550?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ryan Leung</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=minocys" title="Code">💻</a></td>
+    <td align="center"><a href="http://nathanfriemel.com"><img src="https://avatars3.githubusercontent.com/u/1325835?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nathan Friemel</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=nathanfriemel" title="Code">💻</a> <a href="https://github.com/i18next/next-i18next/commits?author=nathanfriemel" title="Documentation">📖</a> <a href="#example-nathanfriemel" title="Examples">💡</a> <a href="#ideas-nathanfriemel" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://isaachinman.com/"><img src="https://avatars.githubusercontent.com/u/10575782?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Isaac Hinman</b></sub></a><br /><a href="#a11y-isaachinman" title="Accessibility">️️️️♿️</a> <a href="#question-isaachinman" title="Answering Questions">💬</a> <a href="#audio-isaachinman" title="Audio">🔊</a> <a href="#blog-isaachinman" title="Blogposts">📝</a> <a href="https://github.com/i18next/next-i18next/issues?q=author%3Aisaachinman" title="Bug reports">🐛</a> <a href="#business-isaachinman" title="Business development">💼</a> <a href="https://github.com/i18next/next-i18next/commits?author=isaachinman" title="Code">💻</a> <a href="#content-isaachinman" title="Content">🖋</a> <a href="#data-isaachinman" title="Data">🔣</a> <a href="#design-isaachinman" title="Design">🎨</a> <a href="https://github.com/i18next/next-i18next/commits?author=isaachinman" title="Documentation">📖</a> <a href="#eventOrganizing-isaachinman" title="Event Organizing">📋</a> <a href="#example-isaachinman" title="Examples">💡</a> <a href="#financial-isaachinman" title="Financial">💵</a> <a href="#fundingFinding-isaachinman" title="Funding Finding">🔍</a> <a href="#ideas-isaachinman" title="Ideas, Planning, & Feedback">🤔</a> <a href="#infra-isaachinman" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#maintenance-isaachinman" title="Maintenance">🚧</a> <a href="#mentoring-isaachinman" title="Mentoring">🧑‍🏫</a> <a href="#platform-isaachinman" title="Packaging/porting to new platform">📦</a> <a href="#plugin-isaachinman" title="Plugin/utility libraries">🔌</a> <a href="#projectManagement-isaachinman" title="Project Management">📆</a> <a href="#research-isaachinman" title="Research">🔬</a> <a href="https://github.com/i18next/next-i18next/pulls?q=is%3Apr+reviewed-by%3Aisaachinman" title="Reviewed Pull Requests">👀</a> <a href="#security-isaachinman" title="Security">🛡️</a> <a href="#talk-isaachinman" title="Talks">📢</a> <a href="https://github.com/i18next/next-i18next/commits?author=isaachinman" title="Tests">⚠️</a> <a href="#tool-isaachinman" title="Tools">🔧</a> <a href="#translation-isaachinman" title="Translation">🌍</a> <a href="#tutorial-isaachinman" title="Tutorials">✅</a> <a href="#userTesting-isaachinman" title="User Testing">📓</a> <a href="#video-isaachinman" title="Videos">📹</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
 
-## Sponsors
+---
 
-<a href="https://locize.com/" target="_blank">
-  <img src="https://raw.githubusercontent.com/i18next/i18next/master/assets/locize_sponsor_240.gif" width="240px">
-</a>
+<h3 align="center">Gold Sponsors</h3>
 
-<a href="https://www.browserstack.com/" target="_blank">
-  <img src="https://miro.medium.com/max/560/0*dLdslKvNsmtaH2uQ.png" width="240px">
-</a>
+<p align="center">
+  <a href="https://locize.com/" target="_blank">
+    <img src="https://raw.githubusercontent.com/i18next/i18next/master/assets/locize_sponsor_240.gif" width="240px">
+  </a>
+</p>
+
+---
+
+**localization as a service - locize.com**
+
+Needing a translation management? Want to edit your translations with an InContext Editor? Use the original provided to you by the maintainers of i18next!
+
+![locize](https://locize.com/img/ads/github_locize.png)
+
+With using [locize](http://locize.com/?utm_source=next_i18next_readme&utm_medium=github) you directly support the future of i18next and react-i18next.
+
+---

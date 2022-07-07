@@ -73,6 +73,47 @@
         "example",
         "ideas"
       ]
+    },
+    {
+      "login": "isaachinman",
+      "name": "Isaac Hinman",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10575782?v=4",
+      "profile": "https://isaachinman.com/",
+      "contributions": [
+        "a11y",
+        "question",
+        "audio",
+        "blog",
+        "bug",
+        "business",
+        "code",
+        "content",
+        "data",
+        "design",
+        "doc",
+        "eventOrganizing",
+        "example",
+        "financial",
+        "fundingFinding",
+        "ideas",
+        "infra",
+        "maintenance",
+        "mentoring",
+        "platform",
+        "plugin",
+        "projectManagement",
+        "research",
+        "review",
+        "security",
+        "talk",
+        "test",
+        "tool",
+        "translation",
+        "tutorial",
+        "userTesting",
+        "video"
+      ]
     }
-  ]
+  ],
+  "commitConvention": "none"
 }
