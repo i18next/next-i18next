@@ -1,8 +1,9 @@
 ## vNext
 
 - first release with new project ownership
-- update most dependiences
+- update most dependencies
 - update docs and example
+- feat: support default locale by ignoring it (#1679)
 
 
 ## 11.0.0

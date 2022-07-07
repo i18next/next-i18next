@@ -24,11 +24,12 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
   const {
     defaultNS,
     lng,
-    locales,
     localeExtension,
     localePath,
     localeStructure,
   } = combinedConfig
+
+  const locales = combinedConfig.locales.filter((l) => l !== 'default')
 
   /**
    * Skips translation file resolution while in cimode
@@ -40,6 +41,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
 
   if (typeof combinedConfig.fallbackLng === 'undefined') {
     combinedConfig.fallbackLng = combinedConfig.defaultLocale
+    if (combinedConfig.fallbackLng === 'default') [combinedConfig.fallbackLng] = locales
   }
   const hasCustomBackend = userConfig?.use?.some((b) => b.type === 'backend')
   if (!process.browser && typeof window === 'undefined') {

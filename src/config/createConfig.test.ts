@@ -212,6 +212,26 @@ describe('createConfig', () => {
         })).toThrow('Must provide all namespaces in ns option if using a function as localePath')
       })
     })
+
+    describe('with default as locale', () => {
+      beforeAll(() => {
+        (fs.existsSync as jest.Mock).mockReturnValue(true);
+        (fs.readdirSync as jest.Mock).mockImplementation((locale)=>[`namespace-of-${locale.split('/').pop()}`])
+      })
+      // eslint-disable-next-line max-len
+      // https://nextjs.org/docs/advanced-features/i18n-routing#prefixing-the-default-locale
+      it('should ignore the default value', () => {
+        const config = createConfig({
+          i18n: {
+            defaultLocale: 'default',
+            locales: ['default', 'en', 'de'],
+          },
+          lng: 'de',
+        })
+        expect(config.fallbackLng).toBe('en')
+        expect(config.preload).toEqual(['en', 'de'])
+      })
+    })
   })
 
   describe('client side', () => {
