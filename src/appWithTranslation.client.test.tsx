@@ -12,7 +12,11 @@ jest.mock('fs', () => ({
   readdirSync: jest.fn(),
 }))
 
-const DummyI18nextProvider: React.FC = ({ children }) => (
+interface Props {
+  children: React.ReactNode
+}
+
+const DummyI18nextProvider: React.FC<Props> = ({ children }) => (
   <>{children}</>
 )
 
@@ -225,7 +229,7 @@ describe('appWithTranslation', () => {
     )
 
     const [args] = (I18nextProvider as jest.Mock).mock.calls
-    expect(args[0].i18n.language).toEqual('en')
+    expect(args[0].i18n.language).toBe('en')
   })
 
   it('should use the userConfig defaltLocale property if the router locale is undefined and initialLocale is undefined', () => {
@@ -257,7 +261,7 @@ describe('appWithTranslation', () => {
     )
 
     const [args] = (I18nextProvider as jest.Mock).mock.calls
-    expect(args[0].i18n.language).toEqual('fr')
+    expect(args[0].i18n.language).toBe('fr')
   })
 
   it('returns an I18nextProvider', () => {
@@ -270,8 +274,8 @@ describe('appWithTranslation', () => {
     expect(args).toHaveLength(2)
     expect(args[0].children).toBeTruthy()
     expect(args[0].i18n.addResource).toBeTruthy()
-    expect(args[0].i18n.language).toEqual('en')
-    expect(args[0].i18n.isInitialized).toEqual(true)
+    expect(args[0].i18n.language).toBe('en')
+    expect(args[0].i18n.isInitialized).toBe(true)
 
     expect(fs.existsSync).toHaveBeenCalledTimes(0)
     expect(fs.readdirSync).toHaveBeenCalledTimes(0)
@@ -280,7 +284,7 @@ describe('appWithTranslation', () => {
   it('should use locale from router', () => {
     renderComponent(createProps('de'))
     const [args] = (I18nextProvider as jest.Mock).mock.calls
-    expect(args[0].i18n.language).toEqual('de')
+    expect(args[0].i18n.language).toBe('de')
   })
 
   it('does not re-call createClient on re-renders unless locale or props have changed', () => {
@@ -339,10 +343,10 @@ describe('appWithTranslation', () => {
     const [[first], [second], [third], [fourth], [fifth]] =
       (I18nextProvider as jest.Mock).mock.calls
 
-    expect(first.children.key).toEqual('de')
-    expect(second.children.key).toEqual('en')
-    expect(third.children.key).toEqual('en')
-    expect(fourth.children.key).toEqual('en')
-    expect(fifth.children.key).toEqual('de')
+    expect(first.children.key).toBe('de')
+    expect(second.children.key).toBe('en')
+    expect(third.children.key).toBe('en')
+    expect(fourth.children.key).toBe('en')
+    expect(fifth.children.key).toBe('de')
   })
 })

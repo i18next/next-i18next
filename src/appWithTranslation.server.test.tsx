@@ -14,7 +14,11 @@ jest.mock('fs', () => ({
   readdirSync: jest.fn(),
 }))
 
-const DummyI18nextProvider: React.FC = ({ children }) => (
+interface Props {
+  children: React.ReactNode
+}
+
+const DummyI18nextProvider: React.FC<Props> = ({ children }) => (
   <>{children}</>
 )
 
@@ -69,11 +73,11 @@ describe('appWithTranslation', () => {
     const [args] = (I18nextProvider as jest.Mock).mock.calls
 
     expect(I18nextProvider).toHaveBeenCalledTimes(1)
-    expect(args).toHaveLength(3)
+    expect(args).toHaveLength(2)
     expect(args[0].children).toBeTruthy()
     expect(args[0].i18n.addResource).toBeTruthy()
-    expect(args[0].i18n.language).toEqual('en')
-    expect(args[0].i18n.isInitialized).toEqual(true)
+    expect(args[0].i18n.language).toBe('en')
+    expect(args[0].i18n.isInitialized).toBe(true)
 
     expect(fs.existsSync).toHaveBeenCalledTimes(1)
     expect(fs.readdirSync).toHaveBeenCalledTimes(1)

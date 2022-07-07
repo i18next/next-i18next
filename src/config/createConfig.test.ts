@@ -32,20 +32,20 @@ describe('createConfig', () => {
 
         expect((config.backend as any).addPath).toMatch('/public/locales/{{lng}}/{{ns}}.missing.json')
         expect((config.backend as any).loadPath).toMatch('/public/locales/{{lng}}/{{ns}}.json')
-        expect(config.defaultLocale).toEqual('en')
-        expect(config.defaultNS).toEqual('common')
-        expect(config.errorStackTraceLimit).toEqual(0)
-        expect(config.lng).toEqual('en')
-        expect(config.load).toEqual('currentOnly')
-        expect(config.localeExtension).toEqual('json')
-        expect(config.localePath).toEqual('./public/locales')
-        expect(config.localeStructure).toEqual('{{lng}}/{{ns}}')
+        expect(config.defaultLocale).toBe('en')
+        expect(config.defaultNS).toBe('common')
+        expect(config.errorStackTraceLimit).toBe(0)
+        expect(config.lng).toBe('en')
+        expect(config.load).toBe('currentOnly')
+        expect(config.localeExtension).toBe('json')
+        expect(config.localePath).toBe('./public/locales')
+        expect(config.localeStructure).toBe('{{lng}}/{{ns}}')
         expect(config.locales).toEqual(['en'])
         expect(config.ns).toEqual(['namespace-of-en'])
         expect(config.preload).toEqual(['en'])
         expect(config.use).toEqual([])
-        expect(config.react?.useSuspense).toEqual(false)
-        expect(config.interpolation?.escapeValue).toEqual(false)
+        expect(config.react?.useSuspense).toBe(false)
+        expect(config.interpolation?.escapeValue).toBe(false)
         expect(config.interpolation?.format).toBeUndefined()
 
         expect(fs.existsSync).toHaveBeenCalledTimes(1)
@@ -75,7 +75,7 @@ describe('createConfig', () => {
           },
           lng: 'en',
         } as UserConfig)
-        expect((config.backend as any).hello).toEqual('world')
+        expect((config.backend as any).hello).toBe('world')
         expect((config.backend as any).loadPath).toEqual(path.join(process.cwd(),'/public/locales/{{lng}}/{{ns}}.json'))
       })
 
@@ -86,7 +86,7 @@ describe('createConfig', () => {
           },
           lng: 'en',
         } as UserConfig)
-        expect((config.detection as any).hello).toEqual('world')
+        expect((config.detection as any).hello).toBe('world')
       })
 
       describe('fallbackLng', () => {
@@ -229,20 +229,20 @@ describe('createConfig', () => {
 
       expect((config.backend as any).addPath).toMatch('/locales/{{lng}}/{{ns}}.missing.json')
       expect((config.backend as any).loadPath).toMatch('/locales/{{lng}}/{{ns}}.json')
-      expect(config.defaultLocale).toEqual('en')
-      expect(config.defaultNS).toEqual('common')
-      expect(config.errorStackTraceLimit).toEqual(0)
-      expect(config.lng).toEqual('en')
-      expect(config.load).toEqual('currentOnly')
-      expect(config.localeExtension).toEqual('json')
-      expect(config.localePath).toEqual('./public/locales')
-      expect(config.localeStructure).toEqual('{{lng}}/{{ns}}')
+      expect(config.defaultLocale).toBe('en')
+      expect(config.defaultNS).toBe('common')
+      expect(config.errorStackTraceLimit).toBe(0)
+      expect(config.lng).toBe('en')
+      expect(config.load).toBe('currentOnly')
+      expect(config.localeExtension).toBe('json')
+      expect(config.localePath).toBe('./public/locales')
+      expect(config.localeStructure).toBe('{{lng}}/{{ns}}')
       expect(config.locales).toEqual(['en'])
       expect(config.ns).toEqual(['common'])
       expect(config.preload).toBeUndefined()
       expect(config.use).toEqual([])
-      expect(config.react?.useSuspense).toEqual(false)
-      expect(config.interpolation?.escapeValue).toEqual(false)
+      expect(config.react?.useSuspense).toBe(false)
+      expect(config.interpolation?.escapeValue).toBe(false)
       expect(config.interpolation?.format).toBeUndefined()
     })
 
@@ -253,7 +253,7 @@ describe('createConfig', () => {
         },
         lng: 'en',
       } as UserConfig)
-      expect((config.backend as any).hello).toEqual('world')
+      expect((config.backend as any).hello).toBe('world')
       expect((config.backend as any).loadPath).toMatch('/locales/{{lng}}/{{ns}}.json')
     })
 
@@ -264,7 +264,7 @@ describe('createConfig', () => {
 
     it('returns ns when provided as a string', () => {
       const config = createConfig({ lng: 'en', ns: 'core' } as UserConfig)
-      expect(config.ns).toEqual('core')
+      expect(config.ns).toBe('core')
     })
 
     it('returns ns when provided as an array', () => {
