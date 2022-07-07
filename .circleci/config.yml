@@ -38,7 +38,7 @@ jobs:
       - build-and-test
   node-v18:
     docker:
-      - image: circleci/node:18-browsers
+      - image: cimg/node:18.4
     steps:
       - build-and-test
 
