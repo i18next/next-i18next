@@ -5,16 +5,16 @@ commands:
       - checkout
       - run:
           name: Install dependencies (main)
-          command: yarn install
+          command: npm install
       - run:
           name: Lint
-          command: yarn lint
+          command: npm run lint
       - run:
           name: Test
-          command: yarn test
+          command: npm test
       - run:
           name: e2e
-          command: yarn test:e2e
+          command: npm run test:e2e
       - store_artifacts:
           path: cypress/screenshots
       - store_artifacts:
