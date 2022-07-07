@@ -219,6 +219,8 @@ export const getStaticProps = async ({ locale }) => ({
 
 Since [v11.0.0](https://github.com/i18next/next-i18next/releases/tag/v11.0.0) next-i18next also provides support for client side loading of translations.
 
+In some use cases, you might want to load a translation file dynamically without having to use `serverSideTranslations`. This can be especially useful for lazy-loaded components that you don't want slowing down pages.
+
 More information about that can be found [here](https://github.com/i18next/i18next-http-backend/tree/master/example/next).
 
 #### Reloading Resources in Development
@@ -245,23 +247,6 @@ This option will reload your translations whenever `serverSideTranslations` is c
 
 All other [i18next options](https://www.i18next.com/overview/configuration-options) and [react-i18next options](https://react.i18next.com/latest/i18next-instance) can be passed in as well.
 
-#### Loading Namespaces Dynamically Client Side
-
-In some use cases, you might want to load a translation file dynamically without having to use `serverSideTranslations`. This can be especially useful for lazy-loaded components that you don't want slowing down pages.
-
-This can easily be done by using [addResourceBundle](https://www.i18next.com/how-to/add-or-load-translations#add-after-init):
-
-```tsx
-import { i18n } from 'next-i18next'
-
-const Component = () => {
-  const { locale } = useRouter()
-
-  useEffect(() => {
-    i18n.addResourceBundle(locale, '<namespace name>')
-  }, [])
-}
-```
 
 #### Custom interpolation prefix/suffix
 

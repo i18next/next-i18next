@@ -22,7 +22,7 @@ describe('basic e2e test run', () => {
     cy.location('pathname', { timeout: 10000 }).should('equal', '/de')
     cy.contains('Ein einfaches Beispiel')
 
-    cy.contains('Wechseln Locale').click()
+    cy.contains('Sprache wechseln zu').click()
     cy.location('pathname', { timeout: 10000 }).should('equal', '/')
     cy.contains('A simple example')
   })
