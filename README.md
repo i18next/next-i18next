@@ -7,7 +7,8 @@
 
 **The easiest way to translate your Next.js apps.**
 
-If you are using next-i18next in production, please consider [sponsoring the package](https://github.com/sponsors/i18next) with any amount you think appropriate.
+If you are using next-i18next in production and like to unleash some super powers, you may have a look at [this blog post](https://dev.to/adrai/all-side-optimized-nextjs-translations-4n9i).
+[![](https://locize.com/blog/next-i18next/next-i18next.jpg)](https://dev.to/adrai/all-side-optimized-nextjs-translations-4n9i)
 
 ## What is this?
 
