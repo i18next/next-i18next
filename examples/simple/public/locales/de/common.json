@@ -1,8 +1,12 @@
 {
   "h1": "Ein einfaches Beispiel",
-  "change-locale": "Wechseln Locale",
+  "change-locale": "Sprache wechseln zu \"{{changeTo}}\"",
   "to-second-page": "Zur zweiten Seite",
   "error-with-status": "Auf dem Server ist ein Fehler ({{statusCode}}) aufgetreten",
   "error-without-status": "Auf dem Server ist ein Fehler aufgetreten",
-  "title": "Hauptseite | next-i18next"
+  "title": "Hauptseite | next-i18next",
+  "blog": {
+    "question": "Möchtest du einige Superkräfte entfesseln, um für alle Seiten optimierte Übersetzungen zu haben?",
+    "answer": "Dann schaue dir vielleicht <1>diesen Blogbeitrag</1> an"
+  }
 }

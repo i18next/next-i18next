@@ -1,4 +1,4 @@
-import { version } from 'next-i18next/package.json'
+import pkg from 'next-i18next/package.json'
 import { useTranslation } from 'next-i18next'
 
 export const Footer = () => {
@@ -12,7 +12,7 @@ export const Footer = () => {
       </p>
       <p>
         next-i18next v
-        {version}
+        {pkg.version}
       </p>
     </footer>
   )

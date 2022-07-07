@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { useTranslation } from 'next-i18next'
+import { useTranslation, Trans } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import { Header } from '../components/Header'
@@ -16,13 +16,23 @@ const Homepage = () => {
     <>
       <main>
         <Header heading={t('h1')} title={t('title')} />
+        <h3>{t('blog.question')}</h3>
+        <p>
+          <Trans i18nKey='blog.answer'>
+            Then you may have a look at <a href='https://locize.com/blog/next-i18next/'>this blog post</a>.
+          </Trans>
+        </p>
+        <a href='https://locize.com/blog/next-i18next/'>
+          <img style={{ width: '30%' }} src='https://locize.com/blog/next-i18next/next-i18next.jpg' />
+        </a>
+        <hr style={{ width: '90%' }} />
         <div>
           <Link
             href='/'
             locale={router.locale === 'en' ? 'de' : 'en'}
           >
             <button>
-              {t('change-locale')}
+              {t('change-locale', { changeTo: router.locale === 'en' ? 'de' : 'en' })}
             </button>
           </Link>
           <Link href='/second-page'>

@@ -22,6 +22,10 @@ h2 {
   font-size: 2rem;
   opacity: 0.3;
 }
+h3 {
+  font-size: 1.5rem;
+  opacity: 0.5;
+}
 
 p {
   line-height: 1.65em;
