@@ -9,8 +9,8 @@
     "start": "next start -p ${PORT:=3000}"
   },
   "dependencies": {
-    "next": "10.0.5",
-    "next-i18next": "link:../../"
+    "next": "12.2.0",
+    "next-i18next": "11.0.0"
   },
   "devDependencies": {
     "prop-types": "^15.8.1"
