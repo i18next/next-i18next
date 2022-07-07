@@ -1,12 +1,22 @@
 {
   "name": "next-i18next",
   "version": "11.0.0",
-  "repository": "git@github.com:isaachinman/next-i18next.git",
-  "author": "Isaac Hinman <isaac@isaachinman.com>",
-  "funding": {
-    "type": "github",
-    "url": "https://github.com/sponsors/isaachinman"
-  },
+  "repository": "git@github.com:i18next/next-i18next.git",
+  "author": "i18next",
+  "funding": [
+    {
+      "type": "individual",
+      "url": "https://locize.com"
+    },
+    {
+      "type": "individual",
+      "url": "https://locize.com/i18next.html"
+    },
+    {
+      "type": "individual",
+      "url": "https://www.i18next.com/how-to/faq#i18next-is-awesome.-how-can-i-support-the-project"
+    }
+  ],
   "main": "dist/commonjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/types/types.d.ts",

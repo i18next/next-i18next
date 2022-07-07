@@ -32,7 +32,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
 
   /**
    * Skips translation file resolution while in cimode
-   * https://github.com/isaachinman/next-i18next/pull/851#discussion_r503113620
+   * https://github.com/i18next/next-i18next/pull/851#discussion_r503113620
   */
   if (lng === 'cimode') {
     return combinedConfig as InternalConfig
@@ -51,7 +51,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
 
       //
       // Validate defaultNS
-      // https://github.com/isaachinman/next-i18next/issues/358
+      // https://github.com/i18next/next-i18next/issues/358
       //
       if (typeof defaultNS === 'string' && typeof lng !== 'undefined') {
         if (typeof localePath === 'string') {

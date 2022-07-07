@@ -12,3 +12,5 @@ The `examples/simple` project is linked via `yarn link` to the main source and c
 ## PRs
 
 All PRs must pass all checks before they will be considered for review.
+
+# [Developer's Certificate of Origin](https://github.com/i18next/i18next/blob/master/CONTRIBUTING.md)
