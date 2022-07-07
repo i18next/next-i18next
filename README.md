@@ -5,13 +5,13 @@
 [![npm version](https://img.shields.io/npm/v/next-i18next.svg?style=flat-square)](https://www.npmjs.com/package/next-i18next)
 ![npm](https://img.shields.io/npm/dw/next-i18next)
 
-**The easiest way to translate your NextJs apps.**
+**The easiest way to translate your Next.js apps.**
 
 If you are using next-i18next in production, please consider [sponsoring the package](https://github.com/sponsors/i18next) with any amount you think appropriate.
 
 ## What is this?
 
-Although NextJs [provides internationalised routing directly](https://nextjs.org/docs/advanced-features/i18n-routing), it does not handle any management of translation content, or the actual translation functionality itself. All NextJs does is keep your locales and URLs in sync.
+Although Next.js [provides internationalised routing directly](https://nextjs.org/docs/advanced-features/i18n-routing), it does not handle any management of translation content, or the actual translation functionality itself. All Next.js does is keep your locales and URLs in sync.
 
 To complement this, `next-i18next` provides the remaining functionality – management of translation content, and components/hooks to translate your React components – while fully supporting SSG/SSR, multiple [namespaces](https://www.i18next.com/principles/namespaces), codesplitting, etc.
 
@@ -23,7 +23,7 @@ A live demo is [available here](https://next.i18next.com/). This demo app is the
 
 Easy to set up, easy to use: setup only takes a few steps, and configuration is simple.
 
-No other requirements: `next-i18next` simplifies internationalisation for your [NextJs](https://nextjs.org/) app without extra dependencies.
+No other requirements: `next-i18next` simplifies internationalisation for your [Next.js](https://nextjs.org/) app without extra dependencies.
 
 Production ready: `next-i18next` supports passing translations and configuration options into pages as props with SSG/SSR support.
 
@@ -34,7 +34,7 @@ After configuration, `appWithTranslation` allows us to use the `t` (translate) f
 
 Then we add `serverSideTranslation` to [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) (depending on your case) in our page-level components.
 
-Now our NextJs app is fully translatable!
+Now our Next.js app is fully translatable!
 
 ## Setup
 
@@ -66,7 +66,7 @@ If you want to structure your translations/namespaces in a custom way, you will 
 
 ### 3. Project setup
 
-First, create a `next-i18next.config.js` file in the root of your project. The syntax for the nested `i18n` object [comes from NextJs directly](https://nextjs.org/docs/advanced-features/i18n-routing).
+First, create a `next-i18next.config.js` file in the root of your project. The syntax for the nested `i18n` object [comes from Next.js directly](https://nextjs.org/docs/advanced-features/i18n-routing).
 
 This tells `next-i18next` what your `defaultLocale` and other locales are, so that it can preload translations on the server:
 
@@ -180,7 +180,7 @@ module.exports = {
 
 Some `i18next` plugins (which you can pass into `config.use`) are unserialisable, as they contain functions and other JavaScript primitives.
 
-You may run into this if your use case is more advanced. You'll see NextJs throw an error like:
+You may run into this if your use case is more advanced. You'll see Next.js throw an error like:
 
 ```
 Error: Error serializing `._nextI18Next.userConfig.use[0].process` returned from `getStaticProps` in "/my-page".
