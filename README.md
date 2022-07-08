@@ -269,19 +269,6 @@ For example, if you want to use `{` and `}` the config would look like this:
 }
 ```
 
-#### Static HTML Export SSG
-
-Are you trying to generate a [static HTML export](https://nextjs.org/docs/advanced-features/static-html-export) by executing `next export` and are getting this error?
->Error: i18n support is not compatible with next export. See here for more info on deploying: https://nextjs.org/docs/deployment
-
-But there's a way to workaround that with the help of [next-language-detector](https://github.com/i18next/next-language-detector).
-Check out [this blog post](https://dev.to/adrai/static-html-export-with-i18n-compatibility-in-nextjs-8cd) and [this example project](./examples/ssg/).
-[![](https://locize.com/blog/next-i18n-static/title.jpg)](https://dev.to/adrai/static-html-export-with-i18n-compatibility-in-nextjs-8cd)
-
-## Migration to v8
-
-To migrate from previous versions to the version 8, check out the [v8-migration guide](https://github.com/i18next/next-i18next/tree/master/docs/v8-migration.md)
-
 ## Notes
 
 ### Vercel and Netlify
@@ -311,6 +298,16 @@ Set the `ns` option, like in [this example](https://github.com/locize/next-i18ne
 
 If you cannot or do not want to provide the `ns` array, calls to the `t` function will cause namespaces to be loaded on the fly. This means you'll need to handle the "not ready" state by checking `ready === true` or `props.tReady === true`. Not doing so will result in rendering your translations before they loaded, which will cause "save missing" be called despite the translations actually existing (just yet not loaded).
 This can be done with the [useTranslation hook](https://react.i18next.com/latest/usetranslation-hook#not-using-suspense) or the [withTranslation HOC](https://react.i18next.com/latest/withtranslation-hoc#not-using-suspense).
+
+
+### Static HTML Export SSG
+
+Are you trying to generate a [static HTML export](https://nextjs.org/docs/advanced-features/static-html-export) by executing `next export` and are getting this error?
+>Error: i18n support is not compatible with next export. See here for more info on deploying: https://nextjs.org/docs/deployment
+
+But there's a way to workaround that with the help of [next-language-detector](https://github.com/i18next/next-language-detector).
+Check out [this blog post](https://dev.to/adrai/static-html-export-with-i18n-compatibility-in-nextjs-8cd) and [this example project](./examples/ssg/).
+[![](https://locize.com/blog/next-i18n-static/title.jpg)](https://dev.to/adrai/static-html-export-with-i18n-compatibility-in-nextjs-8cd)
 
 ## Contributors
 
