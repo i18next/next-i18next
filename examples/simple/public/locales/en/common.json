@@ -6,7 +6,13 @@
   "error-without-status": "An error occurred on the server",
   "title": "Home | next-i18next",
   "blog": {
-    "question": "Do you like to unleash some super powers to have all side optimized translations?",
-    "answer": "Then you may have a look at <1>this blog post</1>"
+    "optimized": {
+      "question": "Do you like to unleash some super powers to have all side optimized translations?",
+      "answer": "Then you may have a look at <1>this blog post</1>."
+    },
+    "ssg": {
+      "question": "Do you want to use SSG (next export)?",
+      "answer": "Then you may have a look at <1>this blog post</1>."
+    }
   }
 }

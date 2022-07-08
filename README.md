@@ -269,6 +269,14 @@ For example, if you want to use `{` and `}` the config would look like this:
 }
 ```
 
+#### Static HTML Export SSG
+
+Are you trying to generate a [static HTML export](https://nextjs.org/docs/advanced-features/static-html-export) by executing `next export` and are getting this error?
+>Error: i18n support is not compatible with next export. See here for more info on deploying: https://nextjs.org/docs/deployment
+
+But there's a way to workaround that with the help of [next-language-detector](https://github.com/i18next/next-language-detector).
+Check out [this blog post](https://dev.to/adrai/static-html-export-with-i18n-compatibility-in-nextjs-8cd) and [this example project](./examples/ssg/).
+
 ## Migration to v8
 
 To migrate from previous versions to the version 8, check out the [v8-migration guide](https://github.com/i18next/next-i18next/tree/master/docs/v8-migration.md)
@@ -336,6 +344,9 @@ This project follows the [all-contributors](https://github.com/kentcdodds/all-co
 <p align="center">
   <a href="https://locize.com/" target="_blank">
     <img src="https://raw.githubusercontent.com/i18next/i18next/master/assets/locize_sponsor_240.gif" width="240px">
+  </a>
+  <a href="https://localistars.com/" target="_blank">
+    <img src="https://raw.githubusercontent.com/i18next/i18next/master/assets/localistars_sponsor_240.gif" width="240px">
   </a>
 </p>
 

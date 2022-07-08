@@ -1,0 +1,8 @@
+{
+  "back-to-home": "Zurück zur Hauptseite",
+  "error-with-status": "Auf dem Server ist ein Fehler ({{statusCode}}) aufgetreten",
+  "error-without-status": "Auf dem Server ist ein Fehler aufgetreten",
+  "h1": "Ein einfaches Beispiel",
+  "title": "Hauptseite | next-i18next",
+  "to-second-page": "Zur zweiten Seite"
+}

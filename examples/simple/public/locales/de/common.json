@@ -6,7 +6,13 @@
   "error-without-status": "Auf dem Server ist ein Fehler aufgetreten",
   "title": "Hauptseite | next-i18next",
   "blog": {
-    "question": "Möchtest du einige Superkräfte entfesseln, um für alle Seiten optimierte Übersetzungen zu haben?",
-    "answer": "Dann schaue dir vielleicht <1>diesen Blogbeitrag</1> an"
+    "optimized": {
+      "question": "Möchtest du einige Superkräfte entfesseln, um für alle Seiten optimierte Übersetzungen zu haben?",
+      "answer": "Dann schaue dir vielleicht <1>diesen Blogbeitrag</1> an."
+    },
+    "ssg": {
+      "question": "Möchtest du SSG (next export) verwenden?",
+      "answer": "Dann schaue dir vielleicht <1>diesen Blogbeitrag</1> an."
+    }
   }
 }

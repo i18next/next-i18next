@@ -44,7 +44,7 @@
     "arrow-body-style": ["error", "as-needed"],
     "import/no-amd": 2,
     "import/no-commonjs": 2,
-    "import/no-default-export": 2,
+    // "import/no-default-export": 2,
     "import/no-namespace": 2,
     "import/no-nodejs-modules": 0,
     "keyword-spacing": ["error", { "overrides": {} }],
@@ -61,7 +61,7 @@
       }
     ],
     "semi": ["error", "never"],
-    "sort-keys": 2,
+    "sort-keys": 1,
     "space-before-blocks": 2,
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/explicit-module-boundary-types": 0,
