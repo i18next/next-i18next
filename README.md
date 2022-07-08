@@ -276,6 +276,7 @@ Are you trying to generate a [static HTML export](https://nextjs.org/docs/advanc
 
 But there's a way to workaround that with the help of [next-language-detector](https://github.com/i18next/next-language-detector).
 Check out [this blog post](https://dev.to/adrai/static-html-export-with-i18n-compatibility-in-nextjs-8cd) and [this example project](./examples/ssg/).
+[![](https://locize.com/blog/next-i18n-static/title.jpg)](https://dev.to/adrai/static-html-export-with-i18n-compatibility-in-nextjs-8cd)
 
 ## Migration to v8
 
