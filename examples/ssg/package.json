@@ -15,7 +15,7 @@
     "downloadLocales": "locize download --project-id=0842ada9-1d1d-4d48-ab27-08f6a132f558 --ver=latest --clean=true --path=./public/locales"
   },
   "dependencies": {
-    "next": "12.2.1",
+    "next": "12.2.2",
     "next-i18next": "11.1.1",
     "next-language-detector": "1.0.2"
   },

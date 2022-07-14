@@ -3,7 +3,7 @@
 ## Setup local dev environment
 
 1. Clone the repo
-2. Do `npm i && npm run build && npm run build:examples/simple`
+2. Do `npm i && npm run install:examples && npm run build && build:example:simple`
 
 ## Development
 
