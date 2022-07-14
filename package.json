@@ -59,7 +59,6 @@
     "contributors:check": "all-contributors check",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "postinstall": "cd examples/simple && npm install",
     "preversion": "npm run test && npm run build && git push",
     "postversion": "git push && git push --tags && npm run release",
     "release": "gh-release"

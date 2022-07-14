@@ -1,3 +1,7 @@
+## 11.1.1
+
+- fix: remove postinstall script
+
 ## 11.1.0
 
 - first release with new project ownership
