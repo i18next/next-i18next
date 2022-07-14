@@ -7,6 +7,9 @@ commands:
           name: Install dependencies (main)
           command: npm install
       - run:
+          name: Install examples
+          command: npm run install:examples
+      - run:
           name: Lint
           command: npm run lint
       - run:
