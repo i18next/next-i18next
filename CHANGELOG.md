@@ -1,4 +1,4 @@
-## vNext
+## 11.1.0
 
 - first release with new project ownership
 - update most dependencies
