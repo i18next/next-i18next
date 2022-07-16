@@ -1,3 +1,7 @@
+## 11.2.0
+
+- feat: support nested namespace structure (#1911)
+
 ## 11.1.1
 
 - fix: remove postinstall script

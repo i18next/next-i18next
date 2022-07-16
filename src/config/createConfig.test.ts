@@ -7,6 +7,7 @@ import { UserConfig } from '../types'
 jest.mock('fs', () => ({
   existsSync: jest.fn(),
   readdirSync: jest.fn(),
+  statSync: jest.fn(),
 }))
 
 describe('createConfig', () => {
@@ -20,7 +21,9 @@ describe('createConfig', () => {
     describe('when filesystem is as expected', () => {
       beforeAll(() => {
         (fs.existsSync as jest.Mock).mockReturnValue(true);
-        (fs.readdirSync as jest.Mock).mockImplementation((locale)=>[`namespace-of-${locale.split('/').pop()}`])
+        (fs.readdirSync as jest.Mock).mockImplementation((locale)=>[`namespace-of-${locale.split('/').pop()}`]);
+        // eslint-disable-next-line max-len
+        (fs.statSync as jest.Mock).mockImplementation(()=>({isDirectory:()=>false}))
       })
 
       it('throws when lng is not provided', () => {
@@ -216,7 +219,9 @@ describe('createConfig', () => {
     describe('with default as locale', () => {
       beforeAll(() => {
         (fs.existsSync as jest.Mock).mockReturnValue(true);
-        (fs.readdirSync as jest.Mock).mockImplementation((locale)=>[`namespace-of-${locale.split('/').pop()}`])
+        (fs.readdirSync as jest.Mock).mockImplementation((locale)=>[`namespace-of-${locale.split('/').pop()}`]);
+        // eslint-disable-next-line max-len
+        (fs.statSync as jest.Mock).mockImplementation(()=>({isDirectory:()=>false}))
       })
       // eslint-disable-next-line max-len
       // https://nextjs.org/docs/advanced-features/i18n-routing#prefixing-the-default-locale
@@ -230,6 +235,45 @@ describe('createConfig', () => {
         })
         expect(config.fallbackLng).toBe('en')
         expect(config.preload).toEqual(['en', 'de'])
+      })
+    })
+
+    describe('when filesystem contains nested namespace structure', () => {
+      beforeAll(() => {
+        (fs.existsSync as jest.Mock).mockReset();
+        (fs.readdirSync as jest.Mock).mockReset();
+        (fs.statSync as jest.Mock).mockReset();
+        (fs.existsSync as jest.Mock).mockReturnValue(true)
+        let level = 0;
+        (fs.readdirSync as jest.Mock).mockImplementation((locale)=>level === 0 ? ['sub-folder'] : [`namespace-of-${locale.split('/').pop()}`]);
+        // eslint-disable-next-line max-len
+        (fs.statSync as jest.Mock).mockImplementation(()=>({isDirectory:()=>++level>1?false:true}))
+      })
+
+      it('returns a valid config', () => {
+        const config = createConfig({ lng: 'en' } as UserConfig)
+
+        expect((config.backend as any).addPath).toMatch('/public/locales/{{lng}}/{{ns}}.missing.json')
+        expect((config.backend as any).loadPath).toMatch('/public/locales/{{lng}}/{{ns}}.json')
+        expect(config.defaultLocale).toBe('en')
+        expect(config.defaultNS).toBe('common')
+        expect(config.errorStackTraceLimit).toBe(0)
+        expect(config.lng).toBe('en')
+        expect(config.load).toBe('currentOnly')
+        expect(config.localeExtension).toBe('json')
+        expect(config.localePath).toBe('./public/locales')
+        expect(config.localeStructure).toBe('{{lng}}/{{ns}}')
+        expect(config.locales).toEqual(['en'])
+        expect(config.ns).toEqual(['sub-folder/namespace-of-sub-folder'])
+        expect(config.preload).toEqual(['en'])
+        expect(config.use).toEqual([])
+        expect(config.react?.useSuspense).toBe(false)
+        expect(config.interpolation?.escapeValue).toBe(false)
+        expect(config.interpolation?.format).toBeUndefined()
+
+        expect(fs.existsSync).toHaveBeenCalledTimes(1)
+        expect(fs.readdirSync).toHaveBeenCalledTimes(2)
+        expect(fs.statSync).toHaveBeenCalledTimes(2)
       })
     })
   })

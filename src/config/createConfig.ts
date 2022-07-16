@@ -104,10 +104,21 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
 
         const unique = (list: string[]) => Array.from(new Set<string>(list))
         const getNamespaces = (locales: string[]): string[] => {
-          const getLocaleNamespaces = (p: string) =>
+          const getLocaleNamespaces = (p: string) => {
+            let ret: string[] = []
             fs.readdirSync(p).map(
-              (file: string) => file.replace(`.${localeExtension}`, '')
+              (file: string) => {
+                const joinedP = path.join(p, file)
+                if (fs.statSync(joinedP).isDirectory()) {
+                  const subRet = getLocaleNamespaces(joinedP).map((n) => `${file}/${n}`)
+                  ret = ret.concat(subRet)
+                  return
+                }
+                ret.push(file.replace(`.${localeExtension}`, ''))
+              }
             )
+            return ret
+          }
 
           const namespacesByLocale = locales
             .map(locale => getLocaleNamespaces(path.resolve(process.cwd(), `${localePath}/${locale}`)))
