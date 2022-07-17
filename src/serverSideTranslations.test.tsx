@@ -53,9 +53,9 @@ describe('serverSideTranslations', () => {
       .toThrow('Initial locale argument was not passed into serverSideTranslations')
   })
 
-  describe('When namespacesRequired is not provided', ()=>{
-    beforeEach(() =>{
-      (fs.readdirSync as jest.Mock).mockImplementation((path)=>['common', `namespace-of-${path.split('/').pop()}`])
+  describe('When namespacesRequired is not provided', () => {
+    beforeEach(() => {
+      (fs.readdirSync as jest.Mock).mockImplementation((path) => ['common', `namespace-of-${path.split('/').pop()}`])
     })
 
     it('returns all namespaces', async () => {
@@ -75,6 +75,7 @@ describe('serverSideTranslations', () => {
             'namespace-of-en-US': {},
           },
         })
+      expect(props._nextI18Next.ns).toEqual(['common', 'namespace-of-en-US'])
     })
 
     it('returns all namespaces with fallbackLng (as string)', async () => {
@@ -100,13 +101,14 @@ describe('serverSideTranslations', () => {
             'namespace-of-fr': {},
           },
         })
+      expect(props._nextI18Next.ns).toStrictEqual(['common', 'namespace-of-en-US', 'namespace-of-fr'])
     })
 
     it('returns all namespaces with fallbackLng (as array)', async () => {
       const props = await serverSideTranslations('en-US', undefined, {
         i18n: {
           defaultLocale: 'en-US',
-          fallbackLng: ['en','fr'],
+          fallbackLng: ['en', 'fr'],
           locales: ['en-US', 'fr-CA'],
         },
       } as UserConfig)
@@ -135,13 +137,19 @@ describe('serverSideTranslations', () => {
             'namespace-of-fr': {},
           },
         })
+      expect(props._nextI18Next.ns).toEqual([
+        'common',
+        'namespace-of-en-US',
+        'namespace-of-en',
+        'namespace-of-fr',
+      ])
     })
 
     it('returns all namespaces with fallbackLng (as object)', async () => {
       const props = await serverSideTranslations('en-US', undefined, {
         i18n: {
           defaultLocale: 'nl-BE',
-          fallbackLng: {default:['fr'], 'nl-BE':['en']},
+          fallbackLng: { default: ['fr'], 'nl-BE': ['en'] },
           locales: ['nl-BE', 'fr-BE'],
         },
       } as UserConfig)
@@ -169,6 +177,12 @@ describe('serverSideTranslations', () => {
             'namespace-of-fr': {},
           },
         })
+      expect(props._nextI18Next.ns).toEqual([
+        'common',
+        'namespace-of-en-US',
+        'namespace-of-fr',
+        'namespace-of-en',
+      ])
     })
   })
 
@@ -186,6 +200,7 @@ describe('serverSideTranslations', () => {
           'en-US': {},
         },
         initialLocale: 'en-US',
+        ns: [],
         userConfig: {
           i18n: {
             defaultLocale: 'en-US',

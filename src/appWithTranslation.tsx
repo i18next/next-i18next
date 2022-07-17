@@ -25,6 +25,7 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
     const { _nextI18Next } = props.pageProps as SSRConfig
     let locale: string | null =
       _nextI18Next?.initialLocale ?? props?.router?.locale
+    const ns = _nextI18Next?.ns
 
     // Memoize the instance and only re-initialize when either:
     // 1. The route changes (non-shallowly)
@@ -62,6 +63,7 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
           ...userConfig,
           lng: locale,
         }),
+        ns,
         lng: locale,
         resources,
       }).i18n
@@ -69,7 +71,7 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
       globalI18n = instance
 
       return instance
-    }, [_nextI18Next, locale, configOverride])
+    }, [_nextI18Next, locale, configOverride, ns])
 
     return i18n !== null ? (
       <I18nextProvider

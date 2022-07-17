@@ -54,6 +54,7 @@ export type SSRConfig = {
   _nextI18Next: {
     initialI18nStore: any
     initialLocale: string
+    ns: string[]
     userConfig: UserConfig | null
   }
 }
