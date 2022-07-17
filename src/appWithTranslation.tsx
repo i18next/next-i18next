@@ -63,8 +63,8 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
           ...userConfig,
           lng: locale,
         }),
-        ns,
         lng: locale,
+        ns,
         resources,
       }).i18n
 
