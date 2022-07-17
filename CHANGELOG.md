@@ -1,3 +1,7 @@
+## 11.2.1
+
+- fix: pass namespaces to the client (#1912 closes #1839)
+
 ## 11.2.0
 
 - feat: support nested namespace structure (#1911)
