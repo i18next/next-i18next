@@ -3,6 +3,7 @@ import i18n from 'i18next'
 import { InternalConfig, CreateClientReturn, InitPromise } from '../types'
 
 export default (config: InternalConfig): CreateClientReturn => {
+  if (config.ns === undefined) config.ns = []
   const instance = i18n.createInstance(config)
   let initPromise: InitPromise
 

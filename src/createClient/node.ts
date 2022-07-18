@@ -6,6 +6,7 @@ import { InternalConfig, CreateClientReturn, InitPromise, I18n } from '../types'
 let globalInstance: I18n
 
 export default (config: InternalConfig): CreateClientReturn => {
+  if (config.ns === undefined) config.ns = []
   let instance: I18n
   if (!globalInstance) {
     globalInstance = i18n.createInstance(config)

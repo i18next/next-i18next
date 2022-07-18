@@ -1,3 +1,7 @@
+## 11.2.2
+
+- fix: pass namespaces to the client also for custom backends (#1913)
+
 ## 11.2.1
 
 - fix: pass namespaces to the client (#1912 closes #1839)
