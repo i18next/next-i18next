@@ -38,6 +38,7 @@ export const serverSideTranslations = async (
   initialLocale: string,
   namespacesRequired: string[] | undefined = undefined,
   configOverride: UserConfig | null = null,
+  extraLocales: string[] | undefined = undefined,
 ): Promise<SSRConfig> => {
   if (typeof initialLocale !== 'string') {
     throw new Error('Initial locale argument was not passed into serverSideTranslations')
@@ -80,7 +81,7 @@ export const serverSideTranslations = async (
     [initialLocale]: {},
   }
 
-  getFallbackLocales(fallbackLng).forEach((lng: string) => {
+  getFallbackLocales(fallbackLng).concat(extraLocales || []).forEach((lng: string) => {
     initialI18nStore[lng] = {}
   })
 
