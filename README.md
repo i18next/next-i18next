@@ -159,7 +159,32 @@ To do that, you can pass an array of required namespaces for each page into `ser
 
 Note: `useTranslation` provides namespaces to the component that you use it in. However, `serverSideTranslations` provides the total available namespaces to the entire React tree and belongs on the page level. Both are required.
 
-### 5. Advanced configuration
+### 5. Declaring locale dependencies
+
+By default, `next-i18next` will send _only the active locale_ down to the client on each request. This helps reduce the size of the
+initial payload send to the client. However in some cases one may need the translations for other languages at runtime too. For example
+when using [getFixedT](https://www.i18next.com/overview/api#getfixedt) of `useTranslation` hook.
+
+To change the behavior and load extra locales just pass in an array of locales as the last argument to `serverSideTranslations`.
+
+```diff
+  import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
+  export async function getStaticProps({ locale }) {
+    return {
+      props: {
+-       ...(await serverSideTranslations(locale, ['common', 'footer'])),
++       ...(await serverSideTranslations(locale, ['common', 'footer'], null, ['en', 'no'])),
+      },
+    };
+  }
+```
+
+As a result the translations for both `no` and `en` locales will always be loaded regardless of the current language.
+
+> Note: The extra argument should be added to all pages that use `getFixedT` function.
+
+### 6. Advanced configuration
 
 #### Passing other config options
 
