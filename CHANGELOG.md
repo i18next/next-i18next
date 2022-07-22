@@ -1,3 +1,7 @@
+## 11.3.0
+
+- feat: introduce extraLocales (#1916)
+
 ## 11.2.2
 
 - fix: pass namespaces to the client also for custom backends (#1913)

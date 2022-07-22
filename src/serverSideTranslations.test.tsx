@@ -186,54 +186,75 @@ describe('serverSideTranslations', () => {
     })
 
     it('loads extra locales when extraLocales is provided', async () => {
-      const props = await serverSideTranslations('en-US', undefined, {
+      const props = await serverSideTranslations('de-CH', undefined, {
         i18n: {
           defaultLocale: 'en-US',
-          locales: ['en-US', 'fr-BE', 'nl-BE'],
+          locales: ['en-US', 'fr-BE', 'nl-BE', 'de-CH'],
         },
       } as UserConfig, ['en-US', 'fr-BE', 'fr-BE'])
 
-      expect(fs.readdirSync).toHaveBeenCalledTimes(2)
+      expect(fs.readdirSync).toHaveBeenCalledTimes(3)
+      expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/de'))
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en'))
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/fr'))
       expect(props._nextI18Next.initialI18nStore)
         .toEqual({
+          'de-CH': {
+            common: {},
+            'namespace-of-de-CH': {},
+            'namespace-of-en-US': {},
+            'namespace-of-fr-BE': {},
+          },
           'en-US': {
             common: {},
+            'namespace-of-de-CH': {},
             'namespace-of-en-US': {},
             'namespace-of-fr-BE': {},
           },
           'fr-BE': {
             common: {},
+            'namespace-of-de-CH': {},
             'namespace-of-en-US': {},
             'namespace-of-fr-BE': {},
           },
         })
       expect(props._nextI18Next.ns).toEqual([
         'common',
+        'namespace-of-de-CH',
         'namespace-of-en-US',
         'namespace-of-fr-BE',
       ])
     })
 
     it('does not load extra locales when extraLocales is false', async () => {
-      const props = await serverSideTranslations('en-US', undefined, {
+      const props = await serverSideTranslations('de-CH', undefined, {
         i18n: {
           defaultLocale: 'en-US',
-          locales: ['en-US', 'fr-BE', 'nl-BE'],
+          locales: ['en-US', 'fr-BE', 'nl-BE', 'de-CH'],
         },
       } as UserConfig, false)
 
+      expect(fs.readdirSync).toHaveBeenCalledTimes(2)
+      expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/de'))
+      expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en'))
+
       expect(props._nextI18Next.initialI18nStore)
         .toEqual({
+          'de-CH': {
+            common: {},
+            'namespace-of-de-CH': {},
+            'namespace-of-en-US': {},
+          },
           'en-US': {
             common: {},
+            'namespace-of-de-CH': {},
             'namespace-of-en-US': {},
           },
         })
 
       expect(props._nextI18Next.ns).toEqual([
         'common',
+        'namespace-of-de-CH',
         'namespace-of-en-US',
       ])
     })
