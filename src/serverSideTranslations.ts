@@ -11,17 +11,17 @@ import { FallbackLng } from 'i18next'
 
 const DEFAULT_CONFIG_PATH = './next-i18next.config.js'
 
-const getFallbackLocales = (fallbackLng: false | FallbackLng) => {
-  if (typeof fallbackLng === 'string') {
-    return [fallbackLng]
+const flatLocales = (locales: false | FallbackLng) => {
+  if (typeof locales === 'string') {
+    return [locales]
   }
-  if (Array.isArray(fallbackLng)) {
-    return fallbackLng
+  if (Array.isArray(locales)) {
+    return locales
   }
-  if (typeof fallbackLng === 'object' && fallbackLng !== null) {
+  if (typeof locales === 'object' && locales !== null) {
     return Object
-      .values(fallbackLng)
-      .reduce((all, locales) => [...all, ...locales],[])
+      .values(locales)
+      .reduce((all, items) => [...all, ...items],[])
   }
   return []
 }
@@ -38,6 +38,7 @@ export const serverSideTranslations = async (
   initialLocale: string,
   namespacesRequired: string[] | undefined = undefined,
   configOverride: UserConfig | null = null,
+  extraLocales: string[] | false = false,
 ): Promise<SSRConfig> => {
   if (typeof initialLocale !== 'string') {
     throw new Error('Initial locale argument was not passed into serverSideTranslations')
@@ -80,9 +81,11 @@ export const serverSideTranslations = async (
     [initialLocale]: {},
   }
 
-  getFallbackLocales(fallbackLng).forEach((lng: string) => {
-    initialI18nStore[lng] = {}
-  })
+  flatLocales(fallbackLng)
+    .concat(flatLocales(extraLocales))
+    .forEach((lng: string) => {
+      initialI18nStore[lng] = {}
+    })
 
   if (!Array.isArray(namespacesRequired)) {
     if (typeof localePath === 'function') {
