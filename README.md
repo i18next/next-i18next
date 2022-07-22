@@ -162,7 +162,7 @@ Note: `useTranslation` provides namespaces to the component that you use it in. 
 ### 5. Declaring locale dependencies
 
 By default, `next-i18next` will send _only the active locale_ down to the client on each request. This helps reduce the size of the
-initial payload send to the client. However in some cases one may need the translations for other languages at runtime too. For example
+initial payload sent to the client. However in some cases one may need the translations for other languages at runtime too. For example
 when using [getFixedT](https://www.i18next.com/overview/api#getfixedt) of `useTranslation` hook.
 
 To change the behavior and load extra locales just pass in an array of locales as the last argument to `serverSideTranslations`.
