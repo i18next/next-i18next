@@ -51,7 +51,7 @@ describe('createConfig', () => {
         expect(config.interpolation?.escapeValue).toBe(false)
         expect(config.interpolation?.format).toBeUndefined()
 
-        expect(fs.existsSync).toHaveBeenCalledTimes(1)
+        expect(fs.existsSync).toHaveBeenCalledTimes(3)
         expect(fs.readdirSync).toHaveBeenCalledTimes(1)
       })
 
@@ -123,6 +123,7 @@ describe('createConfig', () => {
 
     describe('defaultNS validation', () => {
       it('when filesystem is missing defaultNS throws an error', () => {
+        (fs.existsSync as jest.Mock).mockReset();
         (fs.existsSync as jest.Mock).mockReturnValueOnce(false)
 
         const config = createConfig.bind(null, {
@@ -295,7 +296,7 @@ describe('createConfig', () => {
         expect(config.interpolation?.escapeValue).toBe(false)
         expect(config.interpolation?.format).toBeUndefined()
 
-        expect(fs.existsSync).toHaveBeenCalledTimes(1)
+        expect(fs.existsSync).toHaveBeenCalledTimes(4)
         expect(fs.readdirSync).toHaveBeenCalledTimes(2)
         expect(fs.statSync).toHaveBeenCalledTimes(2)
       })

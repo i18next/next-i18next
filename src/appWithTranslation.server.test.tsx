@@ -79,7 +79,7 @@ describe('appWithTranslation', () => {
     expect(args[0].i18n.language).toBe('en')
     expect(args[0].i18n.isInitialized).toBe(true)
 
-    expect(fs.existsSync).toHaveBeenCalledTimes(1)
+    expect(fs.existsSync).toHaveBeenCalledTimes(3)
     expect(fs.readdirSync).toHaveBeenCalledTimes(1)
   })
 })
