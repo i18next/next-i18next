@@ -132,7 +132,31 @@ describe('createConfig', () => {
         expect(config).toThrow('Default namespace not found at public/locales/en/common.json')
       })
 
+      it('does not throw an error if fallback exists', () => {
+        (fs.existsSync as jest.Mock).mockReset();
+        (fs.existsSync as jest.Mock).mockReturnValueOnce(false)
+          .mockReturnValueOnce(true)
+
+        const config = createConfig({
+          fallbackLng: {
+            'en-US': ['en'],
+          },
+          i18n: {
+            defaultLocale: 'de',
+            locales: ['de', 'en', 'en-US'],
+          },
+          lng: 'en-US',
+        } as UserConfig)
+
+        expect(config.fallbackLng).toStrictEqual({ 'en-US': ['en'] })
+        expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en-US/common.json')
+        expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en/common.json')
+        expect(fs.existsSync).toHaveBeenCalledTimes(4)
+
+      })
+
       it('uses user provided prefix/suffix with localeStructure', () => {
+        (fs.existsSync as jest.Mock).mockReset();
         (fs.existsSync as jest.Mock).mockReturnValueOnce(false)
 
         const config = createConfig.bind(null, {
