@@ -186,6 +186,11 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
               .reduce(((all, fallbackLngs) => [ ...all, ...fallbackLngs ]),[])
             return unique([ lng, ...flattenedFallbacks ])
           }
+
+          if (typeof fallbackLng === 'function') {
+            return getAllLocales(lng, fallbackLng(lng))
+          }
+
           return [lng]
         }
 

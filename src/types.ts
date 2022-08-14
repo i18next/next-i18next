@@ -30,7 +30,6 @@ export type UserConfig = {
 
 export type InternalConfig = Omit<UserConfig, 'i18n'> & NextJsI18NConfig & {
   errorStackTraceLimit: number
-  fallbackLng: boolean
   // end temporal backwards compatibility WHITELIST REMOVAL
   preload: string[]
   supportedLngs: string[]
