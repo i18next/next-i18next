@@ -156,6 +156,26 @@ describe('createConfig', () => {
 
       })
 
+      it('does not throw an error if fallback (as function) exists', () => {
+        (fs.existsSync as jest.Mock).mockReset();
+        (fs.existsSync as jest.Mock).mockReturnValueOnce(false)
+          .mockReturnValueOnce(true)
+
+        const config = createConfig({
+          fallbackLng: (code) => code.split('-')[0],
+          i18n: {
+            defaultLocale: 'de',
+            locales: ['de', 'en', 'en-US'],
+          },
+          lng: 'en-US',
+        } as UserConfig)
+
+        expect(typeof config.fallbackLng).toBe('function')
+        expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en-US/common.json')
+        expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en/common.json')
+        expect(fs.existsSync).toHaveBeenCalledTimes(4)
+      })
+
       it('uses user provided prefix/suffix with localeStructure', () => {
         (fs.existsSync as jest.Mock).mockReset();
         (fs.existsSync as jest.Mock).mockReturnValueOnce(false)
