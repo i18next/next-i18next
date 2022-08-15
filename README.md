@@ -7,8 +7,8 @@
 
 **The easiest way to translate your Next.js apps.**
 
-If you are using next-i18next in production and like to unleash some super powers, you may have a look at [this blog post](https://dev.to/adrai/all-side-optimized-nextjs-translations-4n9i).
-[![](https://locize.com/blog/next-i18next/next-i18next.jpg)](https://dev.to/adrai/all-side-optimized-nextjs-translations-4n9i)
+If you are using next-i18next in production and like to unleash some super powers, you may have a look at [this blog post](https://locize.com/blog/next-i18next/).
+[![](https://locize.com/blog/next-i18next/next-i18next.jpg)](https://locize.com/blog/next-i18next/)
 
 ## What is this?
 
@@ -331,8 +331,8 @@ Are you trying to generate a [static HTML export](https://nextjs.org/docs/advanc
 >Error: i18n support is not compatible with next export. See here for more info on deploying: https://nextjs.org/docs/deployment
 
 But there's a way to workaround that with the help of [next-language-detector](https://github.com/i18next/next-language-detector).
-Check out [this blog post](https://dev.to/adrai/static-html-export-with-i18n-compatibility-in-nextjs-8cd) and [this example project](./examples/ssg/).
-[![](https://locize.com/blog/next-i18n-static/title.jpg)](https://dev.to/adrai/static-html-export-with-i18n-compatibility-in-nextjs-8cd)
+Check out [this blog post](https://locize.com/blog/next-i18n-static/) and [this example project](./examples/ssg/).
+[![](https://locize.com/blog/next-i18n-static/title.jpg)](https://locize.com/blog/next-i18n-static/)
 
 ## Contributors
 
