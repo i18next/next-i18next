@@ -81,7 +81,11 @@ export const serverSideTranslations = async (
     [initialLocale]: {},
   }
 
-  flatLocales(fallbackLng)
+  flatLocales(
+    typeof fallbackLng === 'function'
+      ? fallbackLng(initialLocale)
+      : fallbackLng ?? false
+  )
     .concat(flatLocales(extraLocales))
     .forEach((lng: string) => {
       initialI18nStore[lng] = {}

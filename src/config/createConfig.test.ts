@@ -51,7 +51,7 @@ describe('createConfig', () => {
         expect(config.interpolation?.escapeValue).toBe(false)
         expect(config.interpolation?.format).toBeUndefined()
 
-        expect(fs.existsSync).toHaveBeenCalledTimes(1)
+        expect(fs.existsSync).toHaveBeenCalledTimes(3)
         expect(fs.readdirSync).toHaveBeenCalledTimes(1)
       })
 
@@ -123,6 +123,7 @@ describe('createConfig', () => {
 
     describe('defaultNS validation', () => {
       it('when filesystem is missing defaultNS throws an error', () => {
+        (fs.existsSync as jest.Mock).mockReset();
         (fs.existsSync as jest.Mock).mockReturnValueOnce(false)
 
         const config = createConfig.bind(null, {
@@ -132,7 +133,51 @@ describe('createConfig', () => {
         expect(config).toThrow('Default namespace not found at public/locales/en/common.json')
       })
 
+      it('does not throw an error if fallback exists', () => {
+        (fs.existsSync as jest.Mock).mockReset();
+        (fs.existsSync as jest.Mock).mockReturnValueOnce(false)
+          .mockReturnValueOnce(true)
+
+        const config = createConfig({
+          fallbackLng: {
+            'en-US': ['en'],
+          },
+          i18n: {
+            defaultLocale: 'de',
+            locales: ['de', 'en', 'en-US'],
+          },
+          lng: 'en-US',
+        } as UserConfig)
+
+        expect(config.fallbackLng).toStrictEqual({ 'en-US': ['en'] })
+        expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en-US/common.json')
+        expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en/common.json')
+        expect(fs.existsSync).toHaveBeenCalledTimes(4)
+
+      })
+
+      it('does not throw an error if fallback (as function) exists', () => {
+        (fs.existsSync as jest.Mock).mockReset();
+        (fs.existsSync as jest.Mock).mockReturnValueOnce(false)
+          .mockReturnValueOnce(true)
+
+        const config = createConfig({
+          fallbackLng: (code) => code.split('-')[0],
+          i18n: {
+            defaultLocale: 'de',
+            locales: ['de', 'en', 'en-US'],
+          },
+          lng: 'en-US',
+        } as UserConfig)
+
+        expect(typeof config.fallbackLng).toBe('function')
+        expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en-US/common.json')
+        expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en/common.json')
+        expect(fs.existsSync).toHaveBeenCalledTimes(4)
+      })
+
       it('uses user provided prefix/suffix with localeStructure', () => {
+        (fs.existsSync as jest.Mock).mockReset();
         (fs.existsSync as jest.Mock).mockReturnValueOnce(false)
 
         const config = createConfig.bind(null, {
@@ -271,7 +316,7 @@ describe('createConfig', () => {
         expect(config.interpolation?.escapeValue).toBe(false)
         expect(config.interpolation?.format).toBeUndefined()
 
-        expect(fs.existsSync).toHaveBeenCalledTimes(1)
+        expect(fs.existsSync).toHaveBeenCalledTimes(4)
         expect(fs.readdirSync).toHaveBeenCalledTimes(2)
         expect(fs.statSync).toHaveBeenCalledTimes(2)
       })

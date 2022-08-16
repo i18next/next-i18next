@@ -1,6 +1,6 @@
 import { defaultConfig } from './defaultConfig'
 import { InternalConfig, UserConfig } from '../types'
-import { FallbackLng } from 'i18next'
+import { FallbackLng, FallbackLngObjList } from 'i18next'
 
 const deepMergeObjects = ['backend', 'detection'] as (keyof Pick<UserConfig, 'backend' | 'detection'>)[]
 
@@ -56,6 +56,29 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       // https://github.com/i18next/next-i18next/issues/358
       //
       if (typeof defaultNS === 'string' && typeof lng !== 'undefined') {
+        const getFallbackForLng = (
+          lng: string,
+          fallbackLng: false | FallbackLng
+        ): string[] => {
+          if (typeof fallbackLng === 'string') {
+            return [fallbackLng]
+          }
+
+          if (Array.isArray(fallbackLng)) {
+            return fallbackLng
+          }
+
+          if (typeof fallbackLng === 'object') {
+            return [...(fallbackLng as FallbackLngObjList)[lng] ?? []]
+          }
+
+          if (typeof fallbackLng === 'function') {
+            return getFallbackForLng(lng, fallbackLng(lng))
+          }
+
+          return []
+        }
+
         if (typeof localePath === 'string') {
           const prefix = userConfig?.interpolation?.prefix ?? '{{'
           const suffix = userConfig?.interpolation?.suffix ?? '}}'
@@ -63,13 +86,24 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
           const defaultFile = `/${defaultLocaleStructure}.${localeExtension}`
           const defaultNSPath = path.join(localePath, defaultFile)
           const defaultNSExists = fs.existsSync(defaultNSPath)
-          if (!defaultNSExists && process.env.NODE_ENV !== 'production') {
+          const fallback = getFallbackForLng(lng, combinedConfig.fallbackLng)
+          const defaultFallbackNSExists = fallback.some(f => {
+            const fallbackFile = defaultFile.replace(lng, f)
+            const defaultNSPath = path.join(localePath, fallbackFile)
+            return fs.existsSync(defaultNSPath)
+          })
+          if (!defaultNSExists && !defaultFallbackNSExists && process.env.NODE_ENV !== 'production') {
             throw new Error(`Default namespace not found at ${defaultNSPath}`)
           }
         } else if (typeof localePath === 'function') {
           const defaultNSPath = localePath(lng, defaultNS, false)
           const defaultNSExists = fs.existsSync(defaultNSPath)
-          if (!defaultNSExists && process.env.NODE_ENV !== 'production') {
+          const fallback = getFallbackForLng(lng, combinedConfig.fallbackLng)
+          const defaultFallbackNSExists = fallback.some(f => {
+            const defaultNSPath = localePath(f, defaultNS, false)
+            return fs.existsSync(defaultNSPath)
+          })
+          if (!defaultNSExists && !defaultFallbackNSExists && process.env.NODE_ENV !== 'production') {
             throw new Error(`Default namespace not found at ${defaultNSPath}`)
           }
         }
@@ -106,6 +140,9 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
         const getNamespaces = (locales: string[]): string[] => {
           const getLocaleNamespaces = (p: string) => {
             let ret: string[] = []
+
+            if (!fs.existsSync(p)) return ret
+
             fs.readdirSync(p).map(
               (file: string) => {
                 const joinedP = path.join(p, file)
@@ -149,6 +186,11 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
               .reduce(((all, fallbackLngs) => [ ...all, ...fallbackLngs ]),[])
             return unique([ lng, ...flattenedFallbacks ])
           }
+
+          if (typeof fallbackLng === 'function') {
+            return getAllLocales(lng, fallbackLng(lng))
+          }
+
           return [lng]
         }
 
