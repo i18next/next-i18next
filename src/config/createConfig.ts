@@ -179,7 +179,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
     }
 
     if (typeof combinedConfig.ns !== 'string' && !Array.isArray(combinedConfig.ns)) {
-      combinedConfig.ns = [defaultNS]
+      combinedConfig.ns = [defaultNS as string]
     }
   }
 

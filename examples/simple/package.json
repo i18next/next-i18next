@@ -9,7 +9,7 @@
     "start": "next start -p ${PORT:=3000}"
   },
   "dependencies": {
-    "next": "12.2.3",
+    "next": "12.2.5",
     "next-i18next": "11.3.0",
     "prop-types": "15.8.1",
     "react": "18.2.0",
