@@ -197,6 +197,26 @@ describe('createConfig', () => {
         expect(fs.existsSync).toHaveBeenCalledTimes(4)
       })
 
+      it('does not throw an error if nonExplicitSupportedLngs is true', () => {
+        (fs.existsSync as jest.Mock).mockReset();
+        (fs.existsSync as jest.Mock).mockReturnValueOnce(false)
+          .mockReturnValueOnce(true)
+
+        const config = createConfig({
+          i18n: {
+            defaultLocale: 'de',
+            locales: ['de', 'en-US'],
+          },
+          lng: 'en-US',
+          nonExplicitSupportedLngs: true,
+        } as UserConfig)
+
+        expect(typeof config.nonExplicitSupportedLngs).toBe('boolean')
+        expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en-US/common.json')
+        expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en/common.json')
+        expect(fs.existsSync).toHaveBeenCalledTimes(5)
+      })
+
       it('uses user provided prefix/suffix with localeStructure', () => {
         (fs.existsSync as jest.Mock).mockReset();
         (fs.existsSync as jest.Mock).mockReturnValueOnce(false)

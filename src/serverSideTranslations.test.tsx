@@ -323,6 +323,101 @@ describe('serverSideTranslations', () => {
     ])
   })
 
+  describe('When nonExplicitSupportedLngs is true', () => {
+
+    it('does load fallback locales', async () => {
+      const props = await serverSideTranslations('en-US', ['common'], {
+        i18n: {
+          defaultLocale: 'de',
+          locales: ['de', 'en-US'],
+        },
+        nonExplicitSupportedLngs: true,
+      } as UserConfig, false)
+
+      expect(props._nextI18Next.initialI18nStore)
+        .toEqual({
+          de: {
+            common: {},
+          },
+          en: {
+            common: {},
+          },
+          'en-US': {
+            common: {},
+          },
+        })
+    })
+
+    it('does load fallback locales with fallbackLng (as array)', async () => {
+      const props = await serverSideTranslations('en-US', ['common'], {
+        fallbackLng: ['fr'],
+        i18n: {
+          defaultLocale: 'de',
+          locales: ['de', 'en-US', 'fr'],
+        },
+        nonExplicitSupportedLngs: true,
+      } as UserConfig, false)
+
+      expect(props._nextI18Next.initialI18nStore)
+        .toEqual({
+          en: {
+            common: {},
+          },
+          'en-US': {
+            common: {},
+          },
+          fr: {
+            common: {},
+          },
+        })
+    })
+
+    it('does load fallback locales with fallbackLng (as object)', async () => {
+      const props = await serverSideTranslations('en-US', ['common'], {
+        fallbackLng: {
+          default: ['fr'],
+          'en-US': ['de'],
+        },
+        i18n: {
+          defaultLocale: 'de',
+          locales: ['de', 'en-US', 'de-DE'],
+        },
+        nonExplicitSupportedLngs: true,
+      } as UserConfig, false)
+
+      expect(props._nextI18Next.initialI18nStore)
+        .toEqual({
+          de: {
+            common: {},
+          },
+          en: {
+            common: {},
+          },
+          'en-US': {
+            common: {},
+          },
+          fr: {
+            common: {},
+          },
+
+        })
+    })
+
+    it('does thrown an error with fallbackLng (as function)', async () => {
+      const config: UserConfig = {
+        fallbackLng: (code) => code === 'de-AT' ? 'de' : 'en',
+        i18n: {
+          defaultLocale: 'de',
+          locales: ['de', 'en-US', 'de-DE'],
+        },
+        nonExplicitSupportedLngs: true,
+      }
+
+      await expect(serverSideTranslations('de-DE', ['common'], config))
+        .rejects.toThrow('If nonExplicitSupportedLngs is true, no functions are allowed for fallbackLng')
+    })
+  })
+
   it('returns props', async () => {
     const props = await serverSideTranslations('en-US', [], {
       i18n: {

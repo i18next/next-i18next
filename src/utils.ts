@@ -24,3 +24,5 @@ export const getFallbackForLng = (
 
   return []
 }
+
+export const unique = (list: string[]) => Array.from(new Set<string>(list))

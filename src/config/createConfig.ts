@@ -1,6 +1,7 @@
 import { defaultConfig } from './defaultConfig'
 import { InternalConfig, UserConfig } from '../types'
-import { getFallbackForLng } from '../utils'
+import { getFallbackForLng, unique } from '../utils'
+import { FallbackLngObjList } from 'i18next'
 
 const deepMergeObjects = ['backend', 'detection'] as (keyof Pick<UserConfig, 'backend' | 'detection'>)[]
 
@@ -27,6 +28,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
     localeExtension,
     localePath,
     localeStructure,
+    nonExplicitSupportedLngs,
   } = combinedConfig
 
   const locales = combinedConfig.locales.filter((l) => l !== 'default')
@@ -43,6 +45,40 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
     combinedConfig.fallbackLng = combinedConfig.defaultLocale
     if (combinedConfig.fallbackLng === 'default') [combinedConfig.fallbackLng] = locales
   }
+
+  const { fallbackLng } = combinedConfig
+
+  if (nonExplicitSupportedLngs) {
+    const createFallbackObject = (acc: FallbackLngObjList, l: string) => {
+      const [locale] = l.split('-')
+      acc[l] = [locale]
+      return acc
+    }
+
+    if (typeof fallbackLng === 'string') {
+      combinedConfig.fallbackLng = combinedConfig.locales
+        .filter(l => l.includes('-'))
+        .reduce(createFallbackObject, { default: [fallbackLng] })
+    } else if (Array.isArray(fallbackLng)) {
+      combinedConfig.fallbackLng = combinedConfig.locales
+        .filter(l => l.includes('-'))
+        .reduce(createFallbackObject, { default: fallbackLng })
+    } else if (typeof fallbackLng === 'object') {
+      combinedConfig.fallbackLng = Object
+        .entries((combinedConfig.fallbackLng))
+        .reduce<FallbackLngObjList>((acc, [l, f]) => {
+          acc[l] = l.includes('-')
+            ? unique([l.split('-')[0], ...f])
+            : f
+          return acc
+        },
+        (fallbackLng as FallbackLngObjList)
+        )
+    } else if (typeof fallbackLng === 'function') {
+      throw new Error('If nonExplicitSupportedLngs is true, no functions are allowed for fallbackLng')
+    }
+  }
+
   const hasCustomBackend = userConfig?.use?.some((b) => b.type === 'backend')
   if (!process.browser && typeof window === 'undefined') {
     combinedConfig.preload = locales
@@ -113,7 +149,6 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
           throw new Error('Must provide all namespaces in ns option if using a function as localePath')
         }
 
-        const unique = (list: string[]) => Array.from(new Set<string>(list))
         const getNamespaces = (locales: string[]): string[] => {
           const getLocaleNamespaces = (p: string) => {
             let ret: string[] = []
