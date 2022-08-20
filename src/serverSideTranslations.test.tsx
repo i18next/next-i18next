@@ -150,29 +150,21 @@ describe('serverSideTranslations', () => {
         i18n: {
           defaultLocale: 'nl-BE',
           fallbackLng: { default: ['fr'], 'nl-BE': ['en'] },
-          locales: ['nl-BE', 'fr-BE'],
+          locales: ['nl-BE', 'fr-BE', 'en-US'],
         },
       } as UserConfig)
-      expect(fs.readdirSync).toHaveBeenCalledTimes(3)
-      expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en'))
+      expect(fs.readdirSync).toHaveBeenCalledTimes(2)
+      expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en-US'))
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/fr'))
       expect(props._nextI18Next.initialI18nStore)
         .toEqual({
-          en: {
-            common: {},
-            'namespace-of-en': {},
-            'namespace-of-en-US': {},
-            'namespace-of-fr': {},
-          },
           'en-US': {
             common: {},
-            'namespace-of-en': {},
             'namespace-of-en-US': {},
             'namespace-of-fr': {},
           },
           fr: {
             common: {},
-            'namespace-of-en': {},
             'namespace-of-en-US': {},
             'namespace-of-fr': {},
           },
@@ -181,7 +173,6 @@ describe('serverSideTranslations', () => {
         'common',
         'namespace-of-en-US',
         'namespace-of-fr',
-        'namespace-of-en',
       ])
     })
 
@@ -258,6 +249,78 @@ describe('serverSideTranslations', () => {
         'namespace-of-en-US',
       ])
     })
+  })
+
+  it('does load fallback locales with fallbackLng (as array)', async () => {
+    const props = await serverSideTranslations('en-US', ['common'], {
+      fallbackLng: ['de'],
+      i18n: {
+        defaultLocale: 'de',
+        locales: ['de', 'en-US', 'de-AT'],
+      },
+    } as UserConfig, false)
+
+    expect(props._nextI18Next.initialI18nStore)
+      .toEqual({
+        de: {
+          common: {},
+        },
+        'en-US': {
+          common: {},
+        },
+      })
+
+    expect(props._nextI18Next.ns).toEqual([
+      'common',
+    ])
+  })
+
+  it('does load fallback locales with fallbackLng (as object)', async () => {
+    const props = await serverSideTranslations('en-US', ['common'], {
+      fallbackLng: { 'de-AT': ['de'], default: ['en'] },
+      i18n: {
+        defaultLocale: 'de',
+        locales: ['de', 'en-US', 'de-AT'],
+      },
+    } as UserConfig, false)
+
+    expect(props._nextI18Next.initialI18nStore)
+      .toEqual({
+        en: {
+          common: {},
+        },
+        'en-US': {
+          common: {},
+        },
+      })
+
+    expect(props._nextI18Next.ns).toEqual([
+      'common',
+    ])
+  })
+
+  it('does load fallback locales with fallbackLng (as function)', async () => {
+    const props = await serverSideTranslations('en-US', ['common'], {
+      fallbackLng: (code) => code.split('-')[0],
+      i18n: {
+        defaultLocale: 'de',
+        locales: ['de', 'en-US'],
+      },
+    } as UserConfig, false)
+
+    expect(props._nextI18Next.initialI18nStore)
+      .toEqual({
+        en: {
+          common: {},
+        },
+        'en-US': {
+          common: {},
+        },
+      })
+
+    expect(props._nextI18Next.ns).toEqual([
+      'common',
+    ])
   })
 
   it('returns props', async () => {
