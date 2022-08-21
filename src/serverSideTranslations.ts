@@ -7,24 +7,9 @@ import createClient from './createClient'
 import { globalI18n } from './appWithTranslation'
 
 import { UserConfig, SSRConfig } from './types'
-import { FallbackLng } from 'i18next'
+import { getFallbackForLng } from './utils'
 
 const DEFAULT_CONFIG_PATH = './next-i18next.config.js'
-
-const flatLocales = (locales: false | FallbackLng) => {
-  if (typeof locales === 'string') {
-    return [locales]
-  }
-  if (Array.isArray(locales)) {
-    return locales
-  }
-  if (typeof locales === 'object' && locales !== null) {
-    return Object
-      .values(locales)
-      .reduce((all, items) => [...all, ...items],[])
-  }
-  return []
-}
 
 const flatNamespaces = (namespacesByLocale: string[][]) => {
   const allNamespaces = []
@@ -81,12 +66,8 @@ export const serverSideTranslations = async (
     [initialLocale]: {},
   }
 
-  flatLocales(
-    typeof fallbackLng === 'function'
-      ? fallbackLng(initialLocale)
-      : fallbackLng ?? false
-  )
-    .concat(flatLocales(extraLocales))
+  getFallbackForLng(initialLocale, fallbackLng ?? false)
+    .concat((extraLocales || []))
     .forEach((lng: string) => {
       initialI18nStore[lng] = {}
     })

@@ -68,7 +68,7 @@ describe('createConfig', () => {
       it('gets namespaces from current language + fallback (as object) when ns is not provided', ()=>{
         const fallbackLng = { default: ['fr'], 'en-US': ['en'] } as unknown
         const config = createConfig({ fallbackLng, lng: 'en-US' } as UserConfig)
-        expect(config.ns).toEqual(['namespace-of-en-US', 'namespace-of-fr', 'namespace-of-en'])
+        expect(config.ns).toEqual(['namespace-of-en-US', 'namespace-of-en', 'namespace-of-fr'])
       })
 
       it('deep merges backend', () => {
@@ -153,8 +153,29 @@ describe('createConfig', () => {
         expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en-US/common.json')
         expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en/common.json')
         expect(fs.existsSync).toHaveBeenCalledTimes(4)
-
       })
+
+      it('does not throw error if fallbackLng has default key and it exists', () => {
+        (fs.existsSync as jest.Mock).mockReset();
+        (fs.existsSync as jest.Mock).mockReturnValueOnce(false)
+          .mockReturnValueOnce(true)
+
+        createConfig({
+          fallbackLng: {
+            default: ['en'],
+          },
+          i18n: {
+            defaultLocale: 'de',
+            locales: ['de', 'en', 'en-US'],
+          },
+          lng: 'en-US',
+        } as UserConfig)
+
+        expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en-US/common.json')
+        expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en/common.json')
+        expect(fs.existsSync).toHaveBeenCalledTimes(4)
+      })
+
 
       it('does not throw an error if fallback (as function) exists', () => {
         (fs.existsSync as jest.Mock).mockReset();
@@ -174,6 +195,26 @@ describe('createConfig', () => {
         expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en-US/common.json')
         expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en/common.json')
         expect(fs.existsSync).toHaveBeenCalledTimes(4)
+      })
+
+      it('does not throw an error if nonExplicitSupportedLngs is true', () => {
+        (fs.existsSync as jest.Mock).mockReset();
+        (fs.existsSync as jest.Mock).mockReturnValueOnce(false)
+          .mockReturnValueOnce(true)
+
+        const config = createConfig({
+          i18n: {
+            defaultLocale: 'de',
+            locales: ['de', 'en-US'],
+          },
+          lng: 'en-US',
+          nonExplicitSupportedLngs: true,
+        } as UserConfig)
+
+        expect(typeof config.nonExplicitSupportedLngs).toBe('boolean')
+        expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en-US/common.json')
+        expect(fs.existsSync).toHaveBeenCalledWith('public/locales/en/common.json')
+        expect(fs.existsSync).toHaveBeenCalledTimes(5)
       })
 
       it('uses user provided prefix/suffix with localeStructure', () => {

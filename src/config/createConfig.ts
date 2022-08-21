@@ -1,6 +1,7 @@
 import { defaultConfig } from './defaultConfig'
 import { InternalConfig, UserConfig } from '../types'
-import { FallbackLng, FallbackLngObjList } from 'i18next'
+import { getFallbackForLng, unique } from '../utils'
+import { FallbackLngObjList } from 'i18next'
 
 const deepMergeObjects = ['backend', 'detection'] as (keyof Pick<UserConfig, 'backend' | 'detection'>)[]
 
@@ -27,6 +28,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
     localeExtension,
     localePath,
     localeStructure,
+    nonExplicitSupportedLngs,
   } = combinedConfig
 
   const locales = combinedConfig.locales.filter((l) => l !== 'default')
@@ -43,6 +45,40 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
     combinedConfig.fallbackLng = combinedConfig.defaultLocale
     if (combinedConfig.fallbackLng === 'default') [combinedConfig.fallbackLng] = locales
   }
+
+  const { fallbackLng } = combinedConfig
+
+  if (nonExplicitSupportedLngs) {
+    const createFallbackObject = (acc: FallbackLngObjList, l: string) => {
+      const [locale] = l.split('-')
+      acc[l] = [locale]
+      return acc
+    }
+
+    if (typeof fallbackLng === 'string') {
+      combinedConfig.fallbackLng = combinedConfig.locales
+        .filter(l => l.includes('-'))
+        .reduce(createFallbackObject, { default: [fallbackLng] })
+    } else if (Array.isArray(fallbackLng)) {
+      combinedConfig.fallbackLng = combinedConfig.locales
+        .filter(l => l.includes('-'))
+        .reduce(createFallbackObject, { default: fallbackLng })
+    } else if (typeof fallbackLng === 'object') {
+      combinedConfig.fallbackLng = Object
+        .entries((combinedConfig.fallbackLng))
+        .reduce<FallbackLngObjList>((acc, [l, f]) => {
+          acc[l] = l.includes('-')
+            ? unique([l.split('-')[0], ...f])
+            : f
+          return acc
+        },
+        (fallbackLng as FallbackLngObjList)
+        )
+    } else if (typeof fallbackLng === 'function') {
+      throw new Error('If nonExplicitSupportedLngs is true, no functions are allowed for fallbackLng')
+    }
+  }
+
   const hasCustomBackend = userConfig?.use?.some((b) => b.type === 'backend')
   if (!process.browser && typeof window === 'undefined') {
     combinedConfig.preload = locales
@@ -56,29 +92,6 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       // https://github.com/i18next/next-i18next/issues/358
       //
       if (typeof defaultNS === 'string' && typeof lng !== 'undefined') {
-        const getFallbackForLng = (
-          lng: string,
-          fallbackLng: false | FallbackLng
-        ): string[] => {
-          if (typeof fallbackLng === 'string') {
-            return [fallbackLng]
-          }
-
-          if (Array.isArray(fallbackLng)) {
-            return fallbackLng
-          }
-
-          if (typeof fallbackLng === 'object') {
-            return [...(fallbackLng as FallbackLngObjList)[lng] ?? []]
-          }
-
-          if (typeof fallbackLng === 'function') {
-            return getFallbackForLng(lng, fallbackLng(lng))
-          }
-
-          return []
-        }
-
         if (typeof localePath === 'string') {
           const prefix = userConfig?.interpolation?.prefix ?? '{{'
           const suffix = userConfig?.interpolation?.suffix ?? '}}'
@@ -136,7 +149,6 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
           throw new Error('Must provide all namespaces in ns option if using a function as localePath')
         }
 
-        const unique = (list: string[]) => Array.from(new Set<string>(list))
         const getNamespaces = (locales: string[]): string[] => {
           const getLocaleNamespaces = (p: string) => {
             let ret: string[] = []
@@ -168,34 +180,8 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
           return unique(allNamespaces)
         }
 
-        const getAllLocales = (
-          lng: string,
-          fallbackLng: false | FallbackLng
-        ): string[] => {
-          if (typeof fallbackLng === 'string') {
-            return unique([lng, fallbackLng])
-          }
-
-          if (Array.isArray(fallbackLng)) {
-            return unique([lng, ...fallbackLng])
-          }
-
-          if (typeof fallbackLng === 'object') {
-            const flattenedFallbacks = Object
-              .values(fallbackLng)
-              .reduce(((all, fallbackLngs) => [ ...all, ...fallbackLngs ]),[])
-            return unique([ lng, ...flattenedFallbacks ])
-          }
-
-          if (typeof fallbackLng === 'function') {
-            return getAllLocales(lng, fallbackLng(lng))
-          }
-
-          return [lng]
-        }
-
         combinedConfig.ns = getNamespaces(
-          getAllLocales(lng, combinedConfig.fallbackLng)
+          unique([lng, ...getFallbackForLng(lng, combinedConfig.fallbackLng)])
         )
       }
     }
