@@ -184,6 +184,30 @@ As a result the translations for both `no` and `en` locales will always be loade
 
 > Note: The extra argument should be added to all pages that use `getFixedT` function.
 
+#### Fallback locales
+By default, `next-i18next` will add the `defaultLocale` as fallback. To change this, you can set [`fallbackLng`](https://www.i18next.com/principles/fallback). All values supported by `i18next` (`string`, `array`, `object` and `function`) are supported by `next-i18next` too.
+
+Additionally `nonExplicitSupportedLngs` can be set to `true` to support all variants of a language, without the need to provide JSON files for each of them. Notice that all variants still must be included in `locales` to enable routing within `next.js`.
+
+> Note: `fallbackLng` and `nonExplicitSupportedLngs` can be used at once. There is only one exception: You can not use a function for `fallbackLng` when `nonExplicitSupportedLngs` is `true`,
+
+```js
+module.exports = {
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'fr', 'de-AT', 'de-DE', 'de-CH'],
+  },
+  fallbackLng: [
+    default: ['en'],
+    'de-CH': ['fr']
+  ],
+  nonExplicitSupportedLngs: true,
+  // de, fr and en will be loaded as fallback languages for de-CH
+};
+```
+
+Be aware that using `fallbackLng` and `nonExplicitSupportedLngs` can easily increase the initial size of the page.
+
 ### 6. Advanced configuration
 
 #### Passing other config options
