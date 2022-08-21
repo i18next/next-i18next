@@ -1,3 +1,12 @@
+## 12.0.0
+
+**Why a major version?**
+The following changes could lead to more languages being loaded, which could increase the page size.
+
+- feat: improve fallback language handling (#1927)
+- feat: add support for nonExplicitSupportedLngs (#1930)
+
+
 ## 11.3.0
 
 - feat: introduce extraLocales (#1916)
