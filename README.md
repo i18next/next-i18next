@@ -404,6 +404,6 @@ Needing a translation management? Want to edit your translations with an InConte
 
 ![locize](https://locize.com/img/ads/github_locize.png)
 
-With using [locize](http://locize.com/?utm_source=next_i18next_readme&utm_medium=github) you directly support the future of i18next and react-i18next.
+With using [locize](http://locize.com/?utm_source=next_i18next_readme&utm_medium=github) you directly support the future of i18next and next-i18next.
 
 ---
