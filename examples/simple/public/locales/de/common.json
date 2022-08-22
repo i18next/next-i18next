@@ -8,11 +8,13 @@
   "blog": {
     "optimized": {
       "question": "Möchtest du einige Superkräfte entfesseln, um für alle Seiten optimierte Übersetzungen zu haben?",
-      "answer": "Dann schaue dir vielleicht <1>diesen Blogbeitrag</1> an."
+      "answer": "Dann schaue dir vielleicht <1>diesen Blogbeitrag</1> an.",
+      "link": "https://locize.com/blog/next-i18next-de/"
     },
     "ssg": {
       "question": "Möchtest du SSG (next export) verwenden?",
-      "answer": "Dann schaue dir vielleicht <1>diesen Blogbeitrag</1> an."
+      "answer": "Dann schaue dir vielleicht <1>diesen Blogbeitrag</1> an.",
+      "link": "https://locize.com/blog/next-i18n-statisch/"
     }
   }
 }

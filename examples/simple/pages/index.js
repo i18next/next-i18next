@@ -21,10 +21,10 @@ const Homepage = () => {
             <h3 style={{ minHeight: 70 }}>{t('blog.optimized.question')}</h3>
             <p>
               <Trans i18nKey='blog.optimized.answer'>
-                Then you may have a look at <a href='https://locize.com/blog/next-i18next/'>this blog post</a>.
+                Then you may have a look at <a href={t('blog.optimized.link')}>this blog post</a>.
               </Trans>
             </p>
-            <a href='https://locize.com/blog/next-i18next/'>
+            <a href={t('blog.optimized.link')}>
               <img style={{ width: '50%' }} src='https://locize.com/blog/next-i18next/next-i18next.jpg' />
             </a>
           </div>
@@ -32,10 +32,10 @@ const Homepage = () => {
             <h3 style={{ minHeight: 70 }}>{t('blog.ssg.question')}</h3>
             <p>
               <Trans i18nKey='blog.ssg.answer'>
-                Then you may have a look at <a href='https://locize.com/blog/next-i18n-static/'>this blog post</a>.
+                Then you may have a look at <a href={t('blog.ssg.link')}>this blog post</a>.
               </Trans>
             </p>
-            <a href='https://locize.com/blog/next-i18n-static/'>
+            <a href={t('blog.ssg.link')}>
               <img style={{ width: '50%' }} src='https://locize.com/blog/next-i18n-static/title.jpg' />
             </a>
           </div>
