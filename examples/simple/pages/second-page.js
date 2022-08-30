@@ -27,8 +27,8 @@ const SecondPage = () => {
   )
 }
 
-export const getServerSideProps = async ({ locale }) => ({
-// export const getStaticProps = async ({ locale }) => ({
+// export const getServerSideProps = async ({ locale }) => ({
+export const getStaticProps = async ({ locale }) => ({
   props: {
     ...await serverSideTranslations(locale, ['second-page', 'footer']),
   },
