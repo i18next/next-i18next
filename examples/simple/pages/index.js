@@ -64,8 +64,8 @@ const Homepage = () => {
   )
 }
 
-// export const getServerSideProps = async ({ locale }) => ({
-export const getStaticProps = async ({ locale }) => ({
+export const getServerSideProps = async ({ locale }) => ({
+// export const getStaticProps = async ({ locale }) => ({
   props: {
     ...await serverSideTranslations(locale, ['common', 'footer']),
   },
