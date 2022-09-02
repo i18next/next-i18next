@@ -12,6 +12,14 @@ const Homepage = () => {
   const router = useRouter()
   const { t } = useTranslation('common')
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const onToggleLanguageClick = (newLocale) => {
+    const { pathname, asPath, query } = router
+    router.push({ pathname, query }, asPath, { locale: newLocale })
+  }
+
+  const changeTo = router.locale === 'en' ? 'de' : 'en'
+
   return (
     <>
       <main>
@@ -44,12 +52,17 @@ const Homepage = () => {
         <div>
           <Link
             href='/'
-            locale={router.locale === 'en' ? 'de' : 'en'}
+            locale={changeTo}
           >
             <button>
-              {t('change-locale', { changeTo: router.locale === 'en' ? 'de' : 'en' })}
+              {t('change-locale', { changeTo })}
             </button>
           </Link>
+          {/* alternative language change without using Link component
+          <button onClick={() => onToggleLanguageClick(changeTo)}>
+            {t('change-locale', { changeTo })}
+          </button>
+          */}
           <Link href='/second-page'>
             <button
               type='button'
