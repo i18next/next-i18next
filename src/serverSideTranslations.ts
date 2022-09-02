@@ -7,17 +7,9 @@ import createClient from './createClient'
 import { globalI18n } from './appWithTranslation'
 
 import { UserConfig, SSRConfig } from './types'
-import { getFallbackForLng } from './utils'
+import { getFallbackForLng, unique } from './utils'
 
 const DEFAULT_CONFIG_PATH = './next-i18next.config.js'
-
-const flatNamespaces = (namespacesByLocale: string[][]) => {
-  const allNamespaces = []
-  for (const localNamespaces of namespacesByLocale) {
-    allNamespaces.push(...localNamespaces)
-  }
-  return Array.from(new Set(allNamespaces))
-}
 
 export const serverSideTranslations = async (
   initialLocale: string,
@@ -78,13 +70,15 @@ export const serverSideTranslations = async (
     }
 
     const getLocaleNamespaces = (path: string) =>
-      fs.readdirSync(path)
-        .map(file => file.replace(`.${localeExtension}`, ''))
+      fs.existsSync(path)
+        ? fs.readdirSync(path).map(file => file.replace(`.${localeExtension}`, ''))
+        : []
 
     const namespacesByLocale = Object.keys(initialI18nStore)
       .map(locale => getLocaleNamespaces(path.resolve(process.cwd(), `${localePath}/${locale}`)))
+      .flat()
 
-    namespacesRequired = flatNamespaces(namespacesByLocale)
+    namespacesRequired = unique(namespacesByLocale)
   }
 
   namespacesRequired.forEach((ns) => {

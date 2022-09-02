@@ -41,8 +41,7 @@ const renderDummyComponent = () =>
 
 describe('serverSideTranslations', () => {
   beforeEach(() => {
-    (fs.existsSync as jest.Mock).mockReturnValueOnce(false);
-    (fs.existsSync as jest.Mock).mockReturnValueOnce(true);
+    (fs.existsSync as jest.Mock).mockReturnValue(true);
     (fs.readdirSync as jest.Mock).mockReturnValue([])
   })
   afterEach(jest.resetAllMocks)
@@ -65,7 +64,7 @@ describe('serverSideTranslations', () => {
           locales: ['en-US', 'fr-CA'],
         },
       } as UserConfig)
-      expect(fs.existsSync).toHaveBeenCalledTimes(0)
+      expect(fs.existsSync).toHaveBeenCalledTimes(1)
       expect(fs.readdirSync).toHaveBeenCalledTimes(1)
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en-US'))
       expect(props._nextI18Next.initialI18nStore)
@@ -83,7 +82,7 @@ describe('serverSideTranslations', () => {
         i18n: {
           defaultLocale: 'fr-BE',
           fallbackLng: 'fr',
-          locales: ['nl-BE', 'fr-BE'],
+          locales: ['nl-BE', 'fr-BE', 'en-US'],
         },
       } as UserConfig)
       expect(fs.readdirSync).toHaveBeenCalledTimes(2)
