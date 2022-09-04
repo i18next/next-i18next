@@ -1,6 +1,6 @@
 ## 12.0.1
 
-- fix: fallbackLng if namespaces are undefined (#1943 closes #1302)
+- fix: fallbackLng if namespaces are undefined (#1943 closes #1941)
 
 ## 12.0.0
 
