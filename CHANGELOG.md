@@ -1,3 +1,7 @@
+## 12.0.1
+
+- fix: fallbackLng if namespaces are undefined (#1943 closes #1302)
+
 ## 12.0.0
 
 **Why a major version?**
