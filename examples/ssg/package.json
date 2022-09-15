@@ -15,9 +15,11 @@
     "downloadLocales": "locize download --project-id=0842ada9-1d1d-4d48-ab27-08f6a132f558 --ver=latest --clean=true --path=./public/locales"
   },
   "dependencies": {
+    "i18next": "^21.9.1",
     "next": "12.2.5",
     "next-i18next": "12.0.1",
-    "next-language-detector": "1.0.2"
+    "next-language-detector": "1.0.2",
+    "react-i18next": "^11.18.4"
   },
   "devDependencies": {
     "eslint-config-next": "12.2.5",
