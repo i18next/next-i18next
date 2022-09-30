@@ -78,7 +78,6 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
         i18n={i18n}
       >
         <WrappedComponent
-          key={locale}
           {...props}
         />
       </I18nextProvider>

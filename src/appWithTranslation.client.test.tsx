@@ -314,39 +314,38 @@ describe('appWithTranslation', () => {
   })
 
   it('assures locale key is set to the right value', () => {
+    let lng = 'de'
     const props = createProps('de')
 
-    const { rerender } = render(<DummyApp
+    const DummyAppWithVar = appWithTranslation(() => (
+      <div>language is: {lng}</div>
+    ), {
+      i18n: {
+        defaultLocale: 'en',
+        locales: ['en', 'de'],
+      },
+    })
+
+    const { rerender } = render(<DummyAppWithVar
       {...props}
     />)
 
     props.router.locale = 'en'
     props.pageProps._nextI18Next.initialLocale = 'en'
+    lng = 'en'
 
-    rerender(<DummyApp
+    rerender(<DummyAppWithVar
       {...props}
     />)
-    rerender(<DummyApp
-      {...props}
-    />)
-    rerender(<DummyApp
-      {...props}
-    />)
+    expect(screen.getByText(`language is: ${lng}`)).toBeTruthy()
 
     props.router.locale = 'de'
     props.pageProps._nextI18Next.initialLocale = 'de'
+    lng = 'de'
 
-    rerender(<DummyApp
+    rerender(<DummyAppWithVar
       {...(createProps('de'))}
     />)
-
-    const [[first], [second], [third], [fourth], [fifth]] =
-      (I18nextProvider as jest.Mock).mock.calls
-
-    expect(first.children.key).toBe('de')
-    expect(second.children.key).toBe('en')
-    expect(third.children.key).toBe('en')
-    expect(fourth.children.key).toBe('en')
-    expect(fifth.children.key).toBe('de')
+    expect(screen.getByText(`language is: ${lng}`)).toBeTruthy()
   })
 })
