@@ -291,6 +291,7 @@ This option will reload your translations whenever `serverSideTranslations` is c
 | `reloadOnPrerender` | `false`              |                                        |
 | `serializeConfig`   | `true`               |                                        |
 | `use` (for plugins) | `[]`                 |                                        |
+| `onPreInitI18next` | `undefined`              |  i.e. `(i18n) => i18n.on('failedLoading', handleFailedLoading)`  |
 
 `localePath` as a function is of the form `(locale: string, namespace: string, missing: boolean) => string` returning the entire path including filename and extension. When `missing` is true, return the path for the `addPath` option of `i18next-fs-backend`, when false, return the path for the `loadPath` option. [More info at the `i18next-fs-backend` repo.](https://github.com/i18next/i18next-fs-backend/tree/master#backend-options)
 

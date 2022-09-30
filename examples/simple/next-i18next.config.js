@@ -11,4 +11,5 @@ module.exports = {
   },
   // localePath,
   reloadOnPrerender: process.env.NODE_ENV === 'development',
+  // serializeConfig: false,
 }

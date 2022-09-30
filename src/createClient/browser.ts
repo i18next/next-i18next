@@ -9,6 +9,9 @@ export default (config: InternalConfig): CreateClientReturn => {
 
   if (!instance.isInitialized) {
     config?.use?.forEach(x => instance.use(x))
+    if (typeof config.onPreInitI18next === 'function') {
+      config.onPreInitI18next(instance)
+    }
     initPromise = instance.init(config)
   } else {
     initPromise = Promise.resolve(i18n.t)

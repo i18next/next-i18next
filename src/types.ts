@@ -23,6 +23,7 @@ export type UserConfig = {
   localePath?:
     string | ((locale: string, namespace: string, missing: boolean) => string)
   localeStructure?: string
+  onPreInitI18next?: (i18n: I18n) => void
   reloadOnPrerender?: boolean
   serializeConfig?: boolean
   use?: any[]

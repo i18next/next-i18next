@@ -1,3 +1,8 @@
+## 12.1.0
+
+- fix: appWithTranslation re-renders _app when the locale is changed (#1954)
+- feat: introduce onPreInitI18next option (#1960)
+
 ## 12.0.1
 
 - fix: fallbackLng if namespaces are undefined (#1943 closes #1941)
