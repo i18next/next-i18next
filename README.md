@@ -215,20 +215,20 @@ Be aware that using `fallbackLng` and `nonExplicitSupportedLngs` can easily incr
 If you need to modify more advanced configuration options, you can pass them via `next-i18next.config.js`. For example:
 
 ```js
-const path = require('path');
-
 module.exports = {
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'de'],
   },
-  localePath: path.resolve('./my/custom/path'),
+  localePath: typeof window === 'undefined' ? 
+      require('path').resolve('./my-custom/path'):
+      '/public/my-custom/path',
 };
 ```
 
-#### Unserialisable configs
+#### Unserializable configs
 
-Some `i18next` plugins (which you can pass into `config.use`) are unserialisable, as they contain functions and other JavaScript primitives.
+Some `i18next` plugins (which you can pass into `config.use`) are unserializable, as they contain functions and other JavaScript primitives.
 
 You may run into this if your use case is more advanced. You'll see Next.js throw an error like:
 
