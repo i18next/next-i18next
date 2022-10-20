@@ -14,5 +14,8 @@
     "prop-types": "15.8.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "picocolors": "^1.0.0"
   }
 }
