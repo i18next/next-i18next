@@ -31,11 +31,11 @@ jobs:
       - name: Build examples
         run: npm run build:examples
 
-      - name: Check dist for ecmascript compliance
-        run: npm run check-dist
-
       - name: Check size limits
         run: npm run check-size
+
+      - name: Check dist for ecmascript compliance
+        run: npm run check-dist
 
       - name: Unit tests
         run: npm test
