@@ -25,12 +25,6 @@ jobs:
       - name: ESLint checks
         run: npm run lint
 
-      - name: Unit tests
-        run: npm test
-
-      - name: E2E tests
-        run: npm run test:e2e
-
       - name: Build next-i18next
         run: npm run build
 
@@ -39,4 +33,10 @@ jobs:
 
       - name: Check size limits
         run: npm run check-size
+
+      - name: Unit tests
+        run: npm test
+
+      - name: E2E tests
+        run: npm run test:e2e
 
