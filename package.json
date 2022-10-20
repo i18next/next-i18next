@@ -25,6 +25,10 @@
     "exports.import": [
       "exports.import key is useful for webpack before node standardized it as exports.module",
       "As we support few nextjs/webpack versions, let's keep both for a while to preserve bc."
+    ],
+    "exports.types": [
+      "Older version of typescript won't correctly infer types for subpath exports like serverSideTranslations",
+      "The trick is fallback to typeAliases. Cleanup when dropping support for ts 4.8 (to be confirmed)"
     ]
   },
   "exports": {
@@ -35,6 +39,13 @@
       "browser": "./dist/esm/index.js",
       "require": "./dist/commonjs/index.js",
       "default": "./dist/esm/index.js"
+    },
+    "./serverSideTranslations": {
+      "types": "./dist/types/serverSideTranslations.d.ts",
+      "module": "./dist/esm/serverSideTranslations.js",
+      "import": "./dist/esm/serverSideTranslations.js",
+      "require": "./dist/commonjs/serverSideTranslations.js",
+      "default": "./dist/esm/serverSideTranslations.js"
     },
     "./package.json": "./package.json"
   },
