@@ -1,3 +1,7 @@
+## next
+
+- breaking: drop node 12.x support, requires 14.x. Recommended minimum to `^14.13.1`.
+
 ## 12.1.0
 
 - fix: appWithTranslation re-renders _app when the locale is changed (#1954)
