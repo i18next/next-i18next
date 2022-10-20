@@ -1,0 +1,45 @@
+name: CI
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x, 14.x]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: 📥 Install
+        run: npm install
+
+      - name: Install Examples
+        run: npm run install:examples
+
+      - name: ESLint checks
+        run: npm run lint
+
+      - name: Build next-i18next
+        run: npm run build
+
+      - name: Build examples
+        run: npm run build:examples
+
+      - name: Check size limits
+        run: npm run check-size
+
+      - name: Check dist for ecmascript compliance
+        run: npm run check-dist
+
+      - name: Unit tests
+        run: npm test
+
+      - name: E2E tests
+        run: npm run test:e2e
+
