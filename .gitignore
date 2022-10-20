@@ -27,5 +27,3 @@ coverage/
 cypress.json
 !/cypress/cypress.json
 
-# npm
-package-lock.json
