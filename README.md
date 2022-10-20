@@ -41,8 +41,8 @@ Now our Next.js app is fully translatable!
 
 ### 1. Installation
 
-```jsx
-yarn add next-i18next
+```bash
+yarn add next-i18next react-i18next i18next
 ```
 
 You need to also have `react` and `next` installed.
