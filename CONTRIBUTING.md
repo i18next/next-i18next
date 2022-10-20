@@ -1,16 +1,62 @@
 # Contributing
 
-## Setup local dev environment
+The base branch is **`master`**.
 
-1. Clone the repo
-2. Do `npm i && npm run install:examples && npm run build && build:example:simple`
+## Workflow
 
-## Development
+- Create a [github fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo).
+- On your fork, create a branch make the changes, commit and push.
+- Create the pull-request and provide a clear description to help maintainers.
 
-The dist of the main project is copied to `examples/simple` and can be run in dev mode. Perform your desired changes to the `next-i18next` core and then restart `npm run example` in the root dir.
+## Checklist
 
-## PRs
+When applicable:
 
-All PRs must pass all checks before they will be considered for review.
+- [x] **tests** should be included part of your PR.
+- [x] **lint** Be sure to run `npm run lint`.
+- [x] **documentation** should be updated.
 
-# [Developer's Certificate of Origin](https://github.com/i18next/i18next/blob/master/CONTRIBUTING.md)
+
+## Install
+
+```bash
+npm install && npm install:examples
+```
+
+## Tests
+
+### Unit tests
+
+```bash
+npm run test
+```
+
+### E2E tests
+
+```bash
+npm run test:e2e
+```
+
+### Test a build
+
+```bash
+npm run build
+npm run build:example:simple
+npm run build:example:ssg
+```
+
+### Clean
+
+```bash
+npm run clean
+```
+
+## Structure
+
+```
+.
+├── examples
+│   ├── simple
+│   └── ssg
+└── src  
+```
