@@ -43,3 +43,7 @@ jobs:
       - name: E2E tests
         run: npm run test:e2e
 
+      - name: Build simple example with ESM_EXTERNALS to true
+        run: npm run build:example:simple
+        env:
+          NEXTJS_ESM_EXTERNALS: true
