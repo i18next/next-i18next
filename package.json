@@ -33,7 +33,7 @@
     "typeVersions": [
       "Excluding a specific --module nodenext in tsconfig.json, subpath exports and types aren't well",
       "supported. The trick is to use https://github.com/microsoft/TypeScript/issues/50794#issuecomment-1251278131",
-      "till it works everywhere. There's might edge cases with older IDE though."
+      "till it works everywhere. There might be edge cases with older IDE though (ie auto-imports...)."
     ]
   },
   "exports": {
