@@ -228,7 +228,7 @@ module.exports = {
 
 #### Unserializable configs
 
-Some `i18next` plugins (which you can pass into `config.use`) are unserialisable, as they contain functions and other JavaScript primitives.
+Some `i18next` plugins (which you can pass into `config.use`) are unserializable, as they contain functions and other JavaScript primitives.
 
 You may run into this if your use case is more advanced. You'll see Next.js throw an error like:
 
