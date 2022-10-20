@@ -15,12 +15,12 @@ Before posting an issue, please ensure first that you don't have duplicate versi
 
 Depending on you package manager you can list or fix duplicates by:
 
-| PM           | Check                             | Fix (only on semver)      |
-|--------------|-----------------------------------|---------------------------|
-| yarn 1       | `npx -y yarn-deduplicate --list`  | `npx -y yarn-deduplicate` |
-| yarn 2+      | `yarn dedupe --list`              | `yarn dedupe`             |
-| pnpm 7       | `npx -y pnpm-deduplicate --list`  | `npx -y pnpm-deduplicate` |
-| npm 8        | `npm dedupe --list`               | `npm dedupe`              |
+| PM           | Check                            | Fix (only on semver)      |
+|--------------|----------------------------------|---------------------------|
+| yarn 1       | `npx -y yarn-deduplicate --list` | `npx -y yarn-deduplicate` |
+| yarn 2+      | `yarn dedupe --list`             | `yarn dedupe`             |
+| pnpm 7       | `npx -y pnpm-deduplicate --list` | `npx -y pnpm-deduplicate` |
+| npm 8        | *not available*                  | `npm dedupe`              |
 
 Followed by an installation (or update). A new lock file should be generated.
 
