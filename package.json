@@ -22,7 +22,7 @@
   "types": "dist/types/types.d.ts",
   "license": "MIT",
   "engines": {
-    "node": ">=12"
+    "node": ">=14"
   },
   "description": "The easiest way to translate your NextJs apps.",
   "keywords": [
