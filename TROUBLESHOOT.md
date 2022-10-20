@@ -10,8 +10,8 @@ their configurations and versions, you might encounter the following warning:
 You will need to pass in an i18next instance by using initReactI18next
 ```
 
-Before posting an issue, please ensure first that you don't have duplicate version of
-`ì18next` or `react-i18next` installed. 
+Before posting an issue, please ensure that you don't have duplicate versions of
+`ì18next` and/or `react-i18next` installed. 
 
 Depending on you package manager you can list or fix duplicates by:
 
