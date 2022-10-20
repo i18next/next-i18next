@@ -1,13 +1,18 @@
 // @ts-check
 
-const fullEsmMaxSize = "10KB";
-const fullCjsMaxSize = "10KB";
+const fullEsmMaxSize = "23KB";
+const fullCjsMaxSize = "46KB";
+
+const modifyWebpackConfig = config => {
+  config.resolve = {};
+  config.resolve.fallback = { "path": false, "fs": false };
+}
 
 /**
  * Will ensure esm tree-shakeability and total size are within expectations.
  *
  * @link https://github.com/ai/size-limit/
- * @type {{name: string, path: string[], limit: string, import?: string, webpack?: boolean}[]}
+ * @type {{name: string, path: string[], limit: string, import?: string, webpack?: boolean, modifyWebpackConfig: any}[]}
  */
 module.exports = [
   // ###################################################
@@ -18,6 +23,7 @@ module.exports = [
     path: ["dist/esm/index.js"],
     import: "*",
     limit: fullEsmMaxSize,
+    modifyWebpackConfig,
   },
   // ###################################################
   // Commonjs full bundle
@@ -28,5 +34,6 @@ module.exports = [
     import: "*",
     webpack: true,
     limit: fullCjsMaxSize,
+    modifyWebpackConfig,
   }
 ];
