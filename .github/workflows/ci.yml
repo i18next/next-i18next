@@ -19,6 +19,9 @@ jobs:
       - name: 📥 Install
         run: npm install
 
+      - name: Install Examples
+        run: npm run install:examples
+
       - name: ESLint checks
         run: npm run lint
 
