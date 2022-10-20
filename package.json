@@ -68,7 +68,8 @@
     "check-size": "size-limit",
     "check-dist": "run-s check-dist-esm check-dist-cjs",
     "check-dist-cjs": "es-check --not './dist/commonjs/*.map.js' --not './dist/commonjs/createClient/package.json' -v es2017 './dist/commonjs/**/*'",
-    "check-dist-esm": "es-check --not './dist/esm/*.map.js' --not './dist/esm/createClient/package.json' -v es2017 --module './dist/esm/**/*'"},
+    "check-dist-esm": "es-check --not './dist/esm/*.map.js' --not './dist/esm/createClient/package.json' -v es2017 --module './dist/esm/**/*'"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint"
