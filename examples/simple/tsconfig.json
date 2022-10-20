@@ -16,16 +16,6 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "paths": {
-      "@/backend": ["./src/backend/index"],
-      "@/lib": ["./src/lib/index"],
-      "@belgattitude/http-exception": [
-        "../../packages/http-exception/src/index"
-      ],
-      "@belgattitude/http-exception/serializer": [
-        "../../packages/http-exception/src/serializer/index"
-      ]
-    }
   },
   "include": [
     "next-env.d.ts",
