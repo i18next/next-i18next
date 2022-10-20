@@ -1,4 +1,10 @@
-{
+const browsersList = [
+  "last 2 versions",
+  "ie >= 11",
+  "not dead",
+]
+
+module.exports = {
   "env": {
     "es": {
       "presets": [
@@ -59,10 +65,7 @@
           {
             "modules": false,
             "targets": {
-              "browsers": [
-                "last 2 versions",
-                "ie >= 11"
-              ]
+              "browsers": browsersList
             }
           }
         ],
