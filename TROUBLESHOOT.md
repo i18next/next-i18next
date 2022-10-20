@@ -27,6 +27,6 @@ Followed by an installation (or update). A new lock file should be generated.
 Another way to list duplicate is to use `npm why -r next-i18next i18next`, `pnpm why -r next-i18next i18next` 
 or `yarn why -R next-i18next && yarn why -R i18next`.
 
-If it does not fix the problem, search for similar issues and/or drop a new one, we'll look into it. 
+If it does not fix the problem, search for similar issues and/or drop a new one (having versions helps to narrow possible causes)
 
 
