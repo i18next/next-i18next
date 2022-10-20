@@ -66,9 +66,9 @@
     "postversion": "git push && git push --tags && npm run release",
     "release": "gh-release",
     "check-size": "size-limit",
-    "check-dist": "run-s check-dist-esm check-dist-cjs",
-    "check-dist-cjs": "es-check --not './dist/commonjs/*.map.js' --not './dist/commonjs/createClient/package.json' -v es2017 './dist/commonjs/**/*'",
-    "check-dist-esm": "es-check --not './dist/esm/*.map.js' --not './dist/esm/createClient/package.json' -v es2017 --module './dist/esm/**/*'"
+    "check-dist": "run-s check-dist:*",
+    "check-dist:browser-cjs": "es-check --not 'dist/**/*.map.js,dist/commonjs/createClient/package.json,dist/commonjs/**node**.js,dist/commonjs/serverSideTranslations.js' -v es2017 './dist/commonjs/**/*'",
+    "check-dist:browser-esm": "es-check --not 'dist/**/*.map.js,dist/esm/createClient/package.json,dist/**node**.js,dist/esm/serverSideTranslations.js' -v es2017 --module './dist/esm/**/*'"
   },
   "husky": {
     "hooks": {
