@@ -28,11 +28,14 @@ jobs:
       - name: Build next-i18next
         run: npm run build
 
-      - name: Check dist for ecmascript compliance
-        run: npm run check-dist
+      - name: Build examples
+        run: npm run build:examples
 
       - name: Check size limits
         run: npm run check-size
+
+      - name: Check dist for ecmascript compliance
+        run: npm run check-dist
 
       - name: Unit tests
         run: npm test

@@ -3,6 +3,38 @@
 const fullEsmMaxSize = "23KB";
 const fullCjsMaxSize = "46KB";
 
+const getSimpleExamplePageLimits = () => {
+  const dir = './examples/simple/.next'
+  let manifest;
+  try {
+    manifest = require(`${dir}/build-manifest.json`);
+  } catch (e) {
+    throw new Error(
+        'Cannot find a NextJs build folder, did you forget to run build:examples ?'
+    );
+  }
+  const limitCfg = {
+    defaultSize: '90kb',
+    pages: {
+      '/': '85kb',
+      '/404': '90kb',
+      '/_app': '100kb',
+      '/_error': '80Kb',
+      '/second-page': '85Kb'
+    },
+  };
+  let pageLimits = [];
+  for (const [uri, paths] of Object.entries(manifest.pages)) {
+    pageLimits.push({
+      name: `Example app: page '${uri}'`,
+      limit: limitCfg.pages?.[uri] ?? limitCfg.defaultSize,
+      webpack: false,
+      path: paths.map(p => `${dir}/${p}`)
+    });
+  }
+  return pageLimits;
+}
+
 const modifyWebpackConfig = config => {
   config.resolve = {};
   config.resolve.fallback = { "path": false, "fs": false };
@@ -16,7 +48,7 @@ const modifyWebpackConfig = config => {
  */
 module.exports = [
   // ###################################################
-  // ESM full bundle
+  // Dist ESM full bundle
   // ###################################################
   {
     name: "ESM (import everything *)",
@@ -26,7 +58,7 @@ module.exports = [
     modifyWebpackConfig,
   },
   // ###################################################
-  // Commonjs full bundle
+  // Fist commonjs full bundle
   // ###################################################
   {
     name: "CJS (require everything *)",
@@ -35,5 +67,9 @@ module.exports = [
     webpack: true,
     limit: fullCjsMaxSize,
     modifyWebpackConfig,
-  }
+  },
+  // ###################################################
+  // Example apps
+  // ###################################################
+  ...getSimpleExamplePageLimits(),
 ];
