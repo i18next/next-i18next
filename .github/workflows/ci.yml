@@ -28,6 +28,15 @@ jobs:
       - name: 📥 Install
         run: npm install
 
+      - name: Build next-i18next
+        run: npm run build
+
+      - name: Check dist for ecmascript compliance
+        run: npm run check-dist
+
+      - name: Check size limits
+        run: npm run check-size
+
       - name: ESLint checks
         run: npm run lint
 
@@ -37,12 +46,4 @@ jobs:
       - name: E2E tests
         run: npm run test:e2e
 
-      - name: Build next-i18next
-        run: npm run build
-
-      - name: Check dist for ecmascript compliance
-        run: npm run check-dist
-
-      - name: Check size limits
-        run: npm run check-size
 
