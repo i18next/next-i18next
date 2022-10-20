@@ -64,7 +64,12 @@
     "contributors:generate": "all-contributors generate",
     "preversion": "npm run test && npm run build && git push",
     "postversion": "git push && git push --tags && npm run release",
-    "release": "gh-release"
+    "release": "gh-release",
+    "check-size": "size-limit",
+    "analyze-size:why": "size-limit --why",
+    "check-dist": "run-s check-dist:*",
+    "check-dist:browser-cjs": "es-check --not 'dist/**/*.map.js,dist/commonjs/createClient/package.json,dist/commonjs/**node**.js,dist/commonjs/serverSideTranslations.js' -v es2017 './dist/commonjs/**/*'",
+    "check-dist:browser-esm": "es-check --not 'dist/**/*.map.js,dist/esm/createClient/package.json,dist/**node**.js,dist/esm/serverSideTranslations.js' -v es2017 --module './dist/esm/**/*'"
   },
   "husky": {
     "hooks": {
@@ -93,6 +98,9 @@
     "@babel/preset-env": "^7.18.10",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
+    "@size-limit/file": "^8.1.0",
+    "@size-limit/webpack": "^8.1.0",
+    "@size-limit/webpack-why": "8.1.0",
     "@testing-library/react": "^13.3.0",
     "@types/i18next-fs-backend": "^1.1.2",
     "@types/jest": "^28.1.7",
@@ -108,6 +116,7 @@
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "bundlesize": "^0.18.1",
     "cypress": "^9.1.1",
+    "es-check": "^7.0.1",
     "eslint": "^8.22.0",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-import": "^2.26.0",
@@ -119,10 +128,13 @@
     "husky": "^3.0.0",
     "jest": "^26.6.3",
     "next": "^12.2.5",
+    "npm-run-all": "^4.1.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "start-server-and-test": "^1.14.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "size-limit": "8.1.0",
+    "webpack": "5.74.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.9",
