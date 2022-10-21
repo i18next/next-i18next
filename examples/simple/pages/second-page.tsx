@@ -13,17 +13,17 @@ type Props = {
 
 const SecondPage = (_props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
-  const { t } = useTranslation('second-page')
+  const { t } = useTranslation(['common', 'second-page'])
 
   return (
     <>
       <main>
-        <Header heading={t('h1')} title={t('title')} />
+        <Header heading={t('second-page:h1')} title={t('second-page:title')} />
         <Link href='/'>
           <button
             type='button'
           >
-            {t('back-to-home')}
+            {t('second-page:back-to-home')}
           </button>
         </Link>
       </main>
