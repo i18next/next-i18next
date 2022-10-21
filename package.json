@@ -52,6 +52,8 @@
       "require": "./dist/commonjs/serverSideTranslations.js",
       "default": "./dist/esm/serverSideTranslations.js"
     },
+    "./commonjs/createClient/package.json": "./commonjs/createClient/package.json",
+    "./esm/createClient/package.json": "./esm/createClient/package.json",
     "./package.json": "./package.json"
   },
   "typesVersions": {
