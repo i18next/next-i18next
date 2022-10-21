@@ -117,7 +117,13 @@
         "examples/**/*"
       ],
       "rules": {
-        "react/react-in-jsx-scope": 0
+        "react/react-in-jsx-scope": 0,
+        "max-len": ["error", {
+          "code": 120,
+          "comments": 120,
+          "ignoreStrings": true,
+          "ignoreTemplateLiterals": true
+        }]
       }
     },
     {
