@@ -45,6 +45,13 @@
       "require": "./dist/commonjs/index.js",
       "default": "./dist/esm/index.js"
     },
+    "./appWithTranslations": {
+      "types": "./dist/types/appWithTranslations.d.ts",
+      "module": "./dist/esm/appWithTranslations.js",
+      "import": "./dist/esm/appWithTranslations.js",
+      "require": "./dist/commonjs/appWithTranslations.js",
+      "default": "./dist/esm/appWithTranslations.js"
+    },
     "./serverSideTranslations": {
       "types": "./dist/types/serverSideTranslations.d.ts",
       "module": "./dist/esm/serverSideTranslations.js",
@@ -52,12 +59,13 @@
       "require": "./dist/commonjs/serverSideTranslations.js",
       "default": "./dist/esm/serverSideTranslations.js"
     },
-    "./commonjs/createClient/package.json": "./commonjs/createClient/package.json",
-    "./esm/createClient/package.json": "./esm/createClient/package.json",
     "./package.json": "./package.json"
   },
   "typesVersions": {
     "*": {
+      "appWithTranslations": [
+        "./dist/types/appWithTranslations.d.ts"
+      ],
       "serverSideTranslations": [
         "./dist/types/serverSideTranslations.d.ts"
       ],
@@ -66,6 +74,13 @@
       ]
     }
   },
+  "files": [
+    "dist",
+    "README.md",
+    "package.json",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
   "engines": {
     "node": ">=14"
   },
