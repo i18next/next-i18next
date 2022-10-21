@@ -1,6 +1,9 @@
 // @ts-check
 
 const fullEsmMaxSize = "23KB";
+// Recent Nextjs version have some optimizations for commonjs that
+// aren't available on bare-bone webpack. don't worry about threshold
+// difference here for cjs. We can keep this till cjs is supported.
 const fullCjsMaxSize = "46KB";
 
 const getSimpleExamplePageLimits = () => {
@@ -59,6 +62,8 @@ module.exports = [
   },
   // ###################################################
   // Fist commonjs full bundle
+  // Tip: older versions of nextjs will not tree-shake
+  //      cjs very well. This explains threshold differences
   // ###################################################
   {
     name: "CJS (require everything *)",
