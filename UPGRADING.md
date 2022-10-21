@@ -1,20 +1,16 @@
 ## Version 13.x
 
-From version 13, both `i18next` and `react-i18next` have been moved to peerDependencies.
-Be sure to install them in the consuming app or package by running:
+Both `i18next` and `react-i18next` have been moved to [peerDependencies](https://github.com/npm/rfcs/blob/main/implemented/0030-no-install-optional-peer-deps.md)
+and must be installed part of `next-i18next`. When upgrading don't forget to add them to your dependencies:
 
 ```bash
-yarn add react-i18next i18next
-pnpm add react-i18next i18next --save
-npm install react-i18next i18next --save
+npm install react-i18next i18next --save  # NPM
+yarn add react-i18next i18next            # Yarn
+pnpm add react-i18next i18next --save     # PNPM
 ```
 
-As of version 13.x, next-i18next supports i18next `^21.9.1 || ^22.0.1` range
-react-i18next from `^11.18.4`. It's possible for the consuming application to 
-select a specific supported version, ie `yarn add 'i18next@^21.10.0'`.
+This move was done in the hope to avoid issues regarding duplicates. See the
+[TROUBLESHOOT](https://github.com/i18next/next-i18next/blob/master/TROUBLESHOOT.md#multiple-instances)
+for more info. In the future it will also allow to support multiple ranges.
 
-> **Note**
-> If you're facing issues after upgrading, please first check that your dependencies 
-> are properly deduplicated (ie: `yarn why react-i18next -R`, `pnpm why -r react-i18next i18next`...)
-> or use `yarn dedupe --list`, `npx -y pnpm-dedpuplicate --list`, `npx -y yarn-deduplicate --list`.
 
