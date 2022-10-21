@@ -11,13 +11,15 @@ module.exports = {
     locales: ['en', 'de'],
   },
   reloadOnPrerender: process.env.NODE_ENV === 'development',
+
+  /** To avoid issues when deploying to some paas (vercel...) */
+  localePath: typeof window === 'undefined' ?
+    require('path').resolve('./public/locales') : '/locales',
+
   /**
    * @link https://github.com/i18next/next-i18next#6-advanced-configuration
-   *
-  localePath: typeof window === 'undefined' ?
-      require('path').resolve('./my-custom/path'):
-      '/public/my-custom/path',
-  */
+   */
+
   // saveMissing: false,
   // strictMode: true,
   // serializeConfig: false,
