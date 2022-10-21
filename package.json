@@ -147,7 +147,7 @@
     "react-i18next": "^11.18.4"
   },
   "peerDependencies": {
-    "next": ">= 10.0.0",
-    "react": ">= 16.8.0"
+    "next": ">= 12.0.0",
+    "react": ">= 17.0.2"
   }
 }
