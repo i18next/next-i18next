@@ -18,5 +18,8 @@ module.exports = {
       require('path').resolve('./my-custom/path'):
       '/public/my-custom/path',
   */
+  // saveMissing: false,
+  // strictMode: true,
   // serializeConfig: false,
+  // react: { useSuspense: false }
 }
