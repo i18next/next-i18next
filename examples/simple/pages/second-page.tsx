@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import type { GetStaticProps, InferGetStaticPropsType } from 'next'
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -11,7 +11,7 @@ type Props = {
   // Add custom props here
 }
 
-const SecondPage = (_props: InferGetStaticPropsType<typeof getStaticProps>) => {
+const SecondPage = (_props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
   const { t } = useTranslation('second-page')
 
@@ -32,8 +32,7 @@ const SecondPage = (_props: InferGetStaticPropsType<typeof getStaticProps>) => {
   )
 }
 
-// or getServerSideProps: GetServerSideProps<Props> = async ({ locale })
-export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => ({
+export const getServerSideProps: GetServerSideProps<Props> = async ({ locale }) => ({
   props: {
     ...await serverSideTranslations(locale ?? 'en', ['second-page', 'footer']),
   },
