@@ -1,6 +1,6 @@
 ## next
 
-Although it is a major, there should not be breaking changes apart installation.
+Although it is a major, existing code should not be impacted. Only the install. 
 Read also the [UPGRADING](https://github.com/i18next/next-i18next/blob/master/UPGRADING.md) document
 to know more.
 
