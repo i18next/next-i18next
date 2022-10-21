@@ -22,6 +22,9 @@
   "module": "dist/esm/index.js",
   "types": "dist/types/types.d.ts",
   "helpMaintainers": {
+    "exports.submodules": [
+      "See https://nodejs.org/api/packages.html#subpath-exports"
+    ],
     "exports.import": [
       "exports.import key is useful for webpack before node standardized it as exports.module",
       "As we support few nextjs/webpack versions, let's keep both for a while to preserve bc."
