@@ -154,6 +154,5 @@
     "i18next": ">=21.8.14",
     "i18next-fs-backend": ">=1.1.4",
     "react-i18next": ">=11.18.3"
-  },
-  "packageManager": "yarn@4.0.0-rc.26"
+  }
 }
