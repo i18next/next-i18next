@@ -1,5 +1,6 @@
 ## next
 
+- **new**: initial support for es module exports in [#1973](https://github.com/i18next/next-i18next/pull/1973)
 - breaking: drop nextjs < 12.0.0 and react < 17.0.2 in [#1983](https://github.com/i18next/next-i18next/pull/1983) 
 - breaking: drop node 12.x support, requires 14.x. Recommended minimum to `^14.13.1`, 
   see [#1974](https://github.com/i18next/next-i18next/pull/1974)
