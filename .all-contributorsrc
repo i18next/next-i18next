@@ -165,6 +165,19 @@
         "talk",
         "test"
       ]
+    },
+    {
+      "login": "belgattitude",
+      "name": "Sébastien Vanvelthem",
+      "avatar_url": "https://avatars.githubusercontent.com/u/259798?v=4",
+      "profile": "https://soluble.io/pro",
+      "contributions": [
+        "code",
+        "doc",
+        "example",
+        "maintenance",
+        "userTesting"
+      ]
     }
   ],
   "commitConvention": "none"
