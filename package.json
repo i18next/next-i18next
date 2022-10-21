@@ -151,10 +151,5 @@
     "next": ">= 10.0.0",
     "react": ">= 16.8.0",
     "react-i18next": "^11.18.4 || ^12.0.0"
-  },
-  "resolutions": {
-    "i18next": ">=21.8.14",
-    "i18next-fs-backend": ">=1.1.4",
-    "react-i18next": ">=11.18.3"
   }
 }
