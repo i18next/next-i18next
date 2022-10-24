@@ -21,7 +21,7 @@ export type UserConfig = {
   i18n: NextJsI18NConfig
   localeExtension?: string
   localePath?:
-    string | ((locale: string, namespace: string, missing: boolean) => string)
+  string | ((locale: string, namespace: string, missing: boolean) => string)
   localeStructure?: string
   onPreInitI18next?: (i18n: I18n) => void
   reloadOnPrerender?: boolean
@@ -48,7 +48,7 @@ export type CreateClientReturn = {
 }
 
 export type SSRConfig = {
-  _nextI18Next: {
+  _nextI18Next?: {
     initialI18nStore: any
     initialLocale: string
     ns: string[]
