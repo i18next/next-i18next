@@ -11,19 +11,15 @@ import { SSRConfig, UserConfig } from './types'
 import { i18n as I18NextClient } from 'i18next'
 export { Trans, useTranslation, withTranslation } from 'react-i18next'
 
-type AppProps = NextJsAppProps & {
-  pageProps: SSRConfig
-}
-
 export let globalI18n: I18NextClient | null = null
 
-export const appWithTranslation = <Props extends AppProps = AppProps>(
+export const appWithTranslation = <Props extends NextJsAppProps>(
   WrappedComponent: React.ComponentType<Props>,
   configOverride: UserConfig | null = null,
 ) => {
-  const AppWithTranslation = (props: Props) => {
-    const { _nextI18Next } = props.pageProps as SSRConfig
-    let locale: string | null =
+  const AppWithTranslation = (props: Props & { pageProps: Props['pageProps'] & SSRConfig }) => {
+    const { _nextI18Next } = props.pageProps
+    let locale: string | undefined =
       _nextI18Next?.initialLocale ?? props?.router?.locale
     const ns = _nextI18Next?.ns
 
@@ -34,14 +30,10 @@ export const appWithTranslation = <Props extends AppProps = AppProps>(
     const i18n: I18NextClient | null = useMemo(() => {
       if (!_nextI18Next && !configOverride) return null
 
-      let userConfig = configOverride ?? _nextI18Next?.userConfig
+      const userConfig = configOverride ?? _nextI18Next?.userConfig
 
-      if (!userConfig && configOverride === null) {
+      if (!userConfig) {
         throw new Error('appWithTranslation was called without a next-i18next config')
-      }
-
-      if (configOverride !== null) {
-        userConfig = configOverride
       }
 
       if (!userConfig?.i18n) {

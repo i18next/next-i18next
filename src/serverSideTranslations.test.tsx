@@ -76,14 +76,14 @@ describe('serverSideTranslations', () => {
       expect(fs.existsSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en-US'))
       expect(fs.readdirSync).toHaveBeenCalledTimes(2)
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en-US'))
-      expect(props._nextI18Next.initialI18nStore)
+      expect(props._nextI18Next?.initialI18nStore)
         .toEqual({
           'en-US': {
             common: {},
             'namespace-of-en-US': {},
           },
         })
-      expect(props._nextI18Next.ns).toEqual(['common', 'namespace-of-en-US'])
+      expect(props._nextI18Next?.ns).toEqual(['common', 'namespace-of-en-US'])
     })
 
     it('returns all namespaces with fallbackLng (as string)', async () => {
@@ -101,7 +101,7 @@ describe('serverSideTranslations', () => {
       expect(fs.readdirSync).toHaveBeenCalledTimes(4)
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en-US'))
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/fr'))
-      expect(props._nextI18Next.initialI18nStore)
+      expect(props._nextI18Next?.initialI18nStore)
         .toEqual({
           'en-US': {
             common: {},
@@ -114,7 +114,7 @@ describe('serverSideTranslations', () => {
             'namespace-of-fr': {},
           },
         })
-      expect(props._nextI18Next.ns).toStrictEqual(['common', 'namespace-of-en-US', 'namespace-of-fr'])
+      expect(props._nextI18Next?.ns).toStrictEqual(['common', 'namespace-of-en-US', 'namespace-of-fr'])
     })
 
     it('returns all namespaces with fallbackLng (as array)', async () => {
@@ -131,7 +131,7 @@ describe('serverSideTranslations', () => {
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en-US'))
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en'))
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/fr'))
-      expect(props._nextI18Next.initialI18nStore)
+      expect(props._nextI18Next?.initialI18nStore)
         .toEqual({
           en: {
             common: {},
@@ -152,7 +152,7 @@ describe('serverSideTranslations', () => {
             'namespace-of-fr': {},
           },
         })
-      expect(props._nextI18Next.ns).toEqual([
+      expect(props._nextI18Next?.ns).toEqual([
         'common',
         'namespace-of-en-US',
         'namespace-of-en',
@@ -173,7 +173,7 @@ describe('serverSideTranslations', () => {
       expect(fs.readdirSync).toHaveBeenCalledTimes(4)
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en-US'))
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/fr'))
-      expect(props._nextI18Next.initialI18nStore)
+      expect(props._nextI18Next?.initialI18nStore)
         .toEqual({
           'en-US': {
             common: {},
@@ -186,7 +186,7 @@ describe('serverSideTranslations', () => {
             'namespace-of-fr': {},
           },
         })
-      expect(props._nextI18Next.ns).toEqual([
+      expect(props._nextI18Next?.ns).toEqual([
         'common',
         'namespace-of-en-US',
         'namespace-of-fr',
@@ -206,7 +206,7 @@ describe('serverSideTranslations', () => {
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/de-CH'))
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en-US'))
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/fr-BE'))
-      expect(props._nextI18Next.initialI18nStore)
+      expect(props._nextI18Next?.initialI18nStore)
         .toEqual({
           'de-CH': {
             common: {},
@@ -227,7 +227,7 @@ describe('serverSideTranslations', () => {
             'namespace-of-fr-BE': {},
           },
         })
-      expect(props._nextI18Next.ns).toEqual([
+      expect(props._nextI18Next?.ns).toEqual([
         'common',
         'namespace-of-de-CH',
         'namespace-of-en-US',
@@ -248,7 +248,7 @@ describe('serverSideTranslations', () => {
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/de'))
       expect(fs.readdirSync).toHaveBeenCalledWith(expect.stringMatching('/public/locales/en'))
 
-      expect(props._nextI18Next.initialI18nStore)
+      expect(props._nextI18Next?.initialI18nStore)
         .toEqual({
           'de-CH': {
             common: {},
@@ -262,7 +262,7 @@ describe('serverSideTranslations', () => {
           },
         })
 
-      expect(props._nextI18Next.ns).toEqual([
+      expect(props._nextI18Next?.ns).toEqual([
         'common',
         'namespace-of-de-CH',
         'namespace-of-en-US',
@@ -279,7 +279,7 @@ describe('serverSideTranslations', () => {
       },
     } as UserConfig, false)
 
-    expect(props._nextI18Next.initialI18nStore)
+    expect(props._nextI18Next?.initialI18nStore)
       .toEqual({
         de: {
           common: {},
@@ -289,7 +289,7 @@ describe('serverSideTranslations', () => {
         },
       })
 
-    expect(props._nextI18Next.ns).toEqual([
+    expect(props._nextI18Next?.ns).toEqual([
       'common',
     ])
   })
@@ -303,7 +303,7 @@ describe('serverSideTranslations', () => {
       },
     } as UserConfig, false)
 
-    expect(props._nextI18Next.initialI18nStore)
+    expect(props._nextI18Next?.initialI18nStore)
       .toEqual({
         en: {
           common: {},
@@ -313,7 +313,7 @@ describe('serverSideTranslations', () => {
         },
       })
 
-    expect(props._nextI18Next.ns).toEqual([
+    expect(props._nextI18Next?.ns).toEqual([
       'common',
     ])
   })
@@ -327,7 +327,7 @@ describe('serverSideTranslations', () => {
       },
     } as UserConfig, false)
 
-    expect(props._nextI18Next.initialI18nStore)
+    expect(props._nextI18Next?.initialI18nStore)
       .toEqual({
         en: {
           common: {},
@@ -337,7 +337,7 @@ describe('serverSideTranslations', () => {
         },
       })
 
-    expect(props._nextI18Next.ns).toEqual([
+    expect(props._nextI18Next?.ns).toEqual([
       'common',
     ])
   })
@@ -353,7 +353,7 @@ describe('serverSideTranslations', () => {
         nonExplicitSupportedLngs: true,
       } as UserConfig, false)
 
-      expect(props._nextI18Next.initialI18nStore)
+      expect(props._nextI18Next?.initialI18nStore)
         .toEqual({
           de: {
             common: {},
@@ -377,7 +377,7 @@ describe('serverSideTranslations', () => {
         nonExplicitSupportedLngs: true,
       } as UserConfig, false)
 
-      expect(props._nextI18Next.initialI18nStore)
+      expect(props._nextI18Next?.initialI18nStore)
         .toEqual({
           en: {
             common: {},
@@ -404,7 +404,7 @@ describe('serverSideTranslations', () => {
         nonExplicitSupportedLngs: true,
       } as UserConfig, false)
 
-      expect(props._nextI18Next.initialI18nStore)
+      expect(props._nextI18Next?.initialI18nStore)
         .toEqual({
           de: {
             common: {},
