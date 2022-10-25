@@ -3,6 +3,7 @@
 - breaking: drop nextjs < 12.0.0 and react < 17.0.2 in [#1983](https://github.com/i18next/next-i18next/pull/1983) 
 - breaking: drop node 12.x support, requires 14.x. Recommended minimum to `^14.13.1`, 
   see [#1974](https://github.com/i18next/next-i18next/pull/1974)
+- fix: Fix types for appWithTranslation [#1987](https://github.com/i18next/next-i18next/pull/1987) 
 
 ## 12.1.0
 
