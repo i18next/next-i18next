@@ -5,7 +5,6 @@ import {
   Trans,
   withTranslation,
   WithTranslation as ReactI18nextWithTranslation,
-  Resources,
   DefaultNamespace,
   Translation,
 } from 'react-i18next'
@@ -64,6 +63,5 @@ export {
   Trans,
   Translation,
   withTranslation,
-  Resources,
   DefaultNamespace,
 }
