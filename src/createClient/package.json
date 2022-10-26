@@ -1,5 +1,21 @@
 {
   "name": "next-i18next-create-client",
   "browser": "./browser.js",
-  "main": "./node.js"
+  "main": "./node.js",
+  "helpsMaintainers": {
+    "why": [
+      "Trick to trigger a different module resolution for browser and node parts.",
+      "Worth to re-evaluate in the future (with dual packaging hazards)"
+    ],
+    "exports": [
+      "See https://nodejs.org/api/packages.html#community-conditions-definitions"
+    ]
+  },
+  "exports": {
+    ".": {
+      "browser": "./browser.js",
+      "default": "./node.js"
+    },
+    "./package.json": "./package.json"
+  }
 }

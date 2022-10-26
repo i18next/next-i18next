@@ -3,6 +3,18 @@
   "version": "12.1.0",
   "repository": "git@github.com:i18next/next-i18next.git",
   "author": "i18next",
+  "license": "MIT",
+  "description": "The easiest way to translate your NextJs apps.",
+  "keywords": [
+    "react",
+    "i18next",
+    "nextjs",
+    "next",
+    "translation",
+    "localisation",
+    "localization",
+    "locale"
+  ],
   "funding": [
     {
       "type": "individual",
@@ -20,21 +32,72 @@
   "main": "dist/commonjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/types/types.d.ts",
-  "license": "MIT",
+  "helpMaintainers": {
+    "exports.submodules": [
+      "See https://nodejs.org/api/packages.html#subpath-exports"
+    ],
+    "exports.import": [
+      "exports.import key is useful for webpack before node standardized it as exports.module",
+      "As we support few nextjs/webpack versions, let's keep both for a while to preserve bc."
+    ],
+    "exports.types": [
+      "Older version of typescript won't correctly infer types for subpath exports like serverSideTranslations",
+      "The trick is fallback to typeVersion hack. Cleanup when dropping support for ts 4.8 (to be confirmed)"
+    ],
+    "typeVersions": [
+      "Excluding a specific --module nodenext in tsconfig.json, subpath exports and types aren't well",
+      "supported. The trick is to use https://github.com/microsoft/TypeScript/issues/50794#issuecomment-1251278131",
+      "till it works everywhere. There might be edge cases with older IDE though (ie auto-imports...)."
+    ]
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "module": "./dist/esm/index.js",
+      "import": "./dist/esm/index.js",
+      "browser": "./dist/esm/index.js",
+      "require": "./dist/commonjs/index.js",
+      "default": "./dist/esm/index.js"
+    },
+    "./appWithTranslations": {
+      "types": "./dist/types/appWithTranslations.d.ts",
+      "module": "./dist/esm/appWithTranslations.js",
+      "import": "./dist/esm/appWithTranslations.js",
+      "require": "./dist/commonjs/appWithTranslations.js",
+      "default": "./dist/esm/appWithTranslations.js"
+    },
+    "./serverSideTranslations": {
+      "types": "./dist/types/serverSideTranslations.d.ts",
+      "module": "./dist/esm/serverSideTranslations.js",
+      "import": "./dist/esm/serverSideTranslations.js",
+      "require": "./dist/commonjs/serverSideTranslations.js",
+      "default": "./dist/esm/serverSideTranslations.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "appWithTranslations": [
+        "./dist/types/appWithTranslations.d.ts"
+      ],
+      "serverSideTranslations": [
+        "./dist/types/serverSideTranslations.d.ts"
+      ],
+      "*": [
+        "./dist/types/index.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "package.json",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
   "engines": {
     "node": ">=14"
   },
-  "description": "The easiest way to translate your NextJs apps.",
-  "keywords": [
-    "react",
-    "i18next",
-    "nextjs",
-    "next",
-    "translation",
-    "localisation",
-    "localization",
-    "locale"
-  ],
   "scripts": {
     "check-types": "tsc --noEmit",
     "lint": "eslint src examples",
