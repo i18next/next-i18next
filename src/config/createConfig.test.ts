@@ -76,6 +76,10 @@ describe('createConfig', () => {
           backend: {
             hello: 'world',
           },
+          i18n: {
+            defaultLocale: 'en',
+            locales: ['en'],
+          },
           lng: 'en',
         } as UserConfig)
         expect((config.backend as any).hello).toBe('world')
@@ -401,6 +405,10 @@ describe('createConfig', () => {
         backend: {
           hello: 'world',
         },
+        i18n: {
+          defaultLocale: 'en',
+          locales: ['en'],
+        },
         lng: 'en',
       } as UserConfig)
       expect((config.backend as any).hello).toBe('world')
@@ -427,6 +435,10 @@ describe('createConfig', () => {
         const config = createConfig({
           backend: {
             hello: 'world',
+          },
+          i18n: {
+            defaultLocale: 'en',
+            locales: ['en'],
           },
           lng: 'en',
           use: [{
