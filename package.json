@@ -103,7 +103,6 @@
     "@size-limit/webpack": "^8.1.0",
     "@size-limit/webpack-why": "8.1.0",
     "@testing-library/react": "^13.3.0",
-    "@types/i18next-fs-backend": "^1.1.2",
     "@types/jest": "^28.1.7",
     "@types/node": "^18.7.8",
     "@types/react": "^18.0.17",
@@ -144,7 +143,7 @@
     "@types/hoist-non-react-statics": "^3.3.1",
     "core-js": "^3",
     "hoist-non-react-statics": "^3.3.2",
-    "i18next-fs-backend": "^1.1.5"
+    "i18next-fs-backend": "^1.2.0"
   },
   "peerDependencies": {
     "i18next": "^22.0.2",
