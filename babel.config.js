@@ -1,0 +1,124 @@
+const browsersList = [
+  'last 2 versions',
+  'ie >= 11',
+  'not dead',
+]
+
+module.exports = {
+  env: {
+    es: {
+      presets: [
+        '@babel/preset-typescript',
+        [
+          '@babel/env',
+          {
+            modules: false,
+            targets: {
+              node: 'current',
+            },
+          },
+        ],
+        [
+          '@babel/preset-react',
+        ],
+      ],
+    },
+    cjs: {
+      presets: [
+        '@babel/preset-typescript',
+        [
+          '@babel/preset-env',
+          {
+            useBuiltIns: 'usage',
+            corejs: {
+              version: 3,
+            },
+          },
+        ],
+        [
+          'next/babel',
+          {
+            'transform-runtime': {
+              corejs: false,
+              helpers: true,
+              regenerator: true,
+              useESModules: false,
+            },
+          },
+        ],
+      ],
+      plugins: [
+        '@babel/proposal-class-properties',
+        [
+          'add-module-exports',
+          {
+            addDefaultProperty: true,
+          },
+        ],
+      ],
+    },
+    esm: {
+      presets: [
+        '@babel/preset-typescript',
+        [
+          '@babel/preset-env',
+          {
+            modules: false,
+            targets: {
+              browsers: browsersList,
+            },
+          },
+        ],
+        [
+          'next/babel',
+          {
+            'transform-runtime': {
+              corejs: false,
+              helpers: true,
+              regenerator: true,
+              useESModules: false,
+            },
+            'preset-env': {
+              modules: false,
+            },
+          },
+        ],
+      ],
+      plugins: [
+        '@babel/proposal-class-properties',
+        [
+          'add-module-exports',
+          {
+            addDefaultProperty: true,
+          },
+        ],
+      ],
+    },
+    test: {
+      presets: [
+        '@babel/preset-typescript',
+        [
+          '@babel/env',
+          {
+            targets: {
+              node: 'current',
+            },
+            modules: 'commonjs',
+          },
+        ],
+        [
+          '@babel/preset-react',
+        ],
+      ],
+      plugins: [
+        '@babel/proposal-class-properties',
+        [
+          'add-module-exports',
+          {
+            addDefaultProperty: true,
+          },
+        ],
+      ],
+    },
+  },
+}
