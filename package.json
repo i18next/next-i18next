@@ -146,7 +146,7 @@
     "i18next-fs-backend": "^2.0.0"
   },
   "peerDependencies": {
-    "i18next": "^22.0.2",
+    "i18next": "^22.0.3",
     "next": ">= 12.0.0",
     "react": ">= 17.0.2",
     "react-i18next": "^12.0.0"
