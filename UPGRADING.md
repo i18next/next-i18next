@@ -32,7 +32,7 @@ import type other from '../public/locales/en/other.json';
 
 interface I18nNamespaces {
   common: typeof common,
-  footer: typeof other,
+  other: typeof other,
 }
 declare module 'i18next' {
   interface CustomTypeOptions {
