@@ -29,3 +29,6 @@ cypress.json
 
 # npm
 package-lock.json
+
+# typescript
+tsconfig.tsbuildinfo
