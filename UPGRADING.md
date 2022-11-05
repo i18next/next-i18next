@@ -1,7 +1,7 @@
 ## Version 13.0.0
 
 Version 13.0.0 comes with 2 breaking changes in order to improve developer experience and
-stability. 
+stability.
 
 ### New installation requirements
 
@@ -22,7 +22,7 @@ to ensure peer-dependencies are properly installed.
 
 ### Keys typings
 
-If you're using typescript type augmentation for your locale keys, they've been move from `react-i18next` to [i18next](https://www.i18next.com/overview/typescript). 
+If you're using typescript type augmentation for your locale keys, they've been moved from `react-i18next` to [i18next](https://www.i18next.com/overview/typescript). 
 Rename `@types/react-i18next.d.ts` to `@types/i18next.d.ts` and be sure to update the imports:
 
 ```typescript
