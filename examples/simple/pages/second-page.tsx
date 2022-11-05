@@ -18,7 +18,7 @@ const SecondPage = (_props: InferGetServerSidePropsType<typeof getServerSideProp
   return (
     <>
       <main>
-        <Header heading={t('second-page:h1')} title={t('second-page:title')} />
+        <Header heading={t('second-page:h')} title={t('second-page:title')} />
         <Link href='/'>
           <button
             type='button'
