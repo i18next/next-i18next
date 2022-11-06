@@ -15,12 +15,13 @@ to know more.
   
   If you encounter any issue, please read the [Troubleshoot](https://github.com/i18next/next-i18next/blob/master/TROUBLESHOOT.md) doc.
 
-- **new:**: Upgrade to [i18next v22](https://github.com/i18next/i18next/releases) and react-i18next v12, see [#1966](https://github.com/i18next/next-i18next/pull/1966)
-- **new**: Initial support for es module exports in [#1998](https://github.com/i18next/next-i18next/pull/1998)
-- **breaking**: drop nextjs < 12.0.0 and react < 17.0.2 in [#1983](https://github.com/i18next/next-i18next/pull/1983) 
-- breaking: drop node 12.x support, requires 14.x. Recommended minimum to `^14.13.1`, 
+- **breaking**: Types augmentation is now handled by i18next instead of react-i18next, see [#1997](https://github.com/i18next/next-i18next/pull/1997)
+- **breaking**: Drop nextjs < 12.0.0 and react < 17.0.2 in [#1983](https://github.com/i18next/next-i18next/pull/1983) 
+- **breaking**: Drop node 12.x support, requires 14.x. Recommended minimum to `^14.13.1`, 
   see [#1974](https://github.com/i18next/next-i18next/pull/1974)
-- fix: Fix types for appWithTranslation [#1987](https://github.com/i18next/next-i18next/pull/1987) 
+- **new**: Initial support for es module exports in [#1998](https://github.com/i18next/next-i18next/pull/1998)
+- **new:**: Upgrade to [i18next v22](https://github.com/i18next/i18next/releases) and react-i18next v12, see [#1966](https://github.com/i18next/next-i18next/pull/1966)
+- **fix**: Fix types for appWithTranslation [#1987](https://github.com/i18next/next-i18next/pull/1987) 
 
 ## 12.1.0
 
