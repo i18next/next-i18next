@@ -4,6 +4,7 @@ import type { GetStaticProps, InferGetStaticPropsType } from 'next'
 
 import { useTranslation, Trans } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import nextI18NextConfig from '../next-i18next.config.js'
 
 import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
@@ -85,7 +86,7 @@ const Homepage = (_props: InferGetStaticPropsType<typeof getStaticProps>) => {
 // or getServerSideProps: GetServerSideProps<Props> = async ({ locale })
 export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale ?? 'en', ['common', 'footer']),
+    ...await serverSideTranslations(locale ?? 'en', ['common', 'footer'], nextI18NextConfig),
   },
 })
 
