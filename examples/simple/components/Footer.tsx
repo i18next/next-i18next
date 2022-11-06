@@ -5,6 +5,7 @@ import type { FC } from 'react'
 export const Footer: FC = () => {
 
   const { t } = useTranslation('footer')
+  const { version = 'git' } = pkg as unknown as { version: string }
 
   return (
     <footer>
@@ -12,8 +13,7 @@ export const Footer: FC = () => {
         {t('description')}
       </p>
       <p>
-        next-i18next v
-        {pkg.version}
+        next-i18next v{version}
       </p>
       <p style={{ fontSize: 'smaller', fontStyle: 'italic', marginTop: 20 }}>
         <Trans i18nKey='helpLocize' t={t}>

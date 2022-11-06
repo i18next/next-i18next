@@ -52,7 +52,7 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
+      "types": "./dist/types/types.d.ts",
       "module": "./dist/esm/index.js",
       "import": "./dist/esm/index.js",
       "browser": "./dist/esm/index.js",
@@ -84,7 +84,7 @@
         "./dist/types/serverSideTranslations.d.ts"
       ],
       "*": [
-        "./dist/types/index.d.ts"
+        "./dist/types/types.d.ts"
       ]
     }
   },
@@ -101,7 +101,7 @@
   "scripts": {
     "check-types": "tsc --noEmit",
     "lint": "eslint src examples",
-    "clean": "rm -rf examples/simple/.next && rm -rf examples/ssg/.next && rm -rf dist && mkdir dist",
+    "clean": "rm -rf examples/simple/.next && rm -rf examples/ssg/.next && rm -rf examples/ssg/out && rm -rf dist && mkdir dist",
     "build:es": "BABEL_ENV=es babel src --extensions '.ts,.tsx' --out-dir dist/es --copy-files",
     "build:cjs": "BABEL_ENV=cjs babel src --extensions '.ts,.tsx' --out-dir dist/commonjs --copy-files",
     "build:esm": "BABEL_ENV=esm babel src --extensions '.ts,.tsx' --out-dir dist/esm --copy-files",
@@ -133,7 +133,8 @@
     "analyze-size:why": "size-limit --why",
     "check-dist": "run-s check-dist:*",
     "check-dist:browser-cjs": "es-check --not 'dist/**/*.map.js,dist/commonjs/createClient/package.json,dist/commonjs/**node**.js,dist/commonjs/serverSideTranslations.js' -v es2017 './dist/commonjs/**/*'",
-    "check-dist:browser-esm": "es-check --not 'dist/**/*.map.js,dist/esm/createClient/package.json,dist/**node**.js,dist/esm/serverSideTranslations.js' -v es2017 --module './dist/esm/**/*'"
+    "check-dist:browser-esm": "es-check --not 'dist/**/*.map.js,dist/esm/createClient/package.json,dist/**node**.js,dist/esm/serverSideTranslations.js' -v es2017 --module './dist/esm/**/*'",
+    "nuke:install": "rimraf '**/node_modules' '**/package-lock.json'"
   },
   "husky": {
     "hooks": {
@@ -191,7 +192,7 @@
     "husky": "^3.0.0",
     "i18next": "^22.0.3",
     "jest": "^26.6.3",
-    "next": "^13.0.0",
+    "next": "^13.0.2",
     "npm-run-all": "^4.1.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
