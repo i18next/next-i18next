@@ -34,8 +34,9 @@ jobs:
         shell: bash
         run: npx envinfo --binaries --npmPackages
 
-      - name: ⓘ Debug example/simple installation
+      - name: ⓘ Debug examples/simple installation
         shell: bash
+        working-directory: ./examples/simple
         run: npx envinfo --binaries --npmPackages
 
       - name: ESLint checks
@@ -56,8 +57,19 @@ jobs:
       - name: Unit tests
         run: npm test
 
+      # As the examples aren't part (yet) on the monorepo, they install the
+      # latest published version of next-i18next, not the repo one (git). This will
+      # be fixed soon. But in the meantime let's reproduce the strategy used
+      # in the existing `example:simple` script. Warning it does not fully work.
+      # We need a monorepo (either file:, workspace:...) for that.
       - name: E2E tests
-        run: npm run test:e2e
+        shell: bash
+        run:
+          - cp package.json examples/simple/node_modules/next-i18next/package.json
+          - cp -r dist examples/simple/node_modules/next-i18next
+          - cp package.json examples/ssg/node_modules/next-i18next/package.json
+          - cp -r dist examples/ssg/node_modules/next-i18next
+          - npm run test:e2e
 
       - name: Build example with experimental.esmExternals
         run: npm run build:example:simple
