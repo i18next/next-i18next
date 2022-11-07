@@ -30,9 +30,13 @@ jobs:
       - name: Install Examples
         run: npm run install:examples
 
-      - name: ⓘ Debug runner
+      - name: ⓘ Debug next-i18next installation
         shell: bash
-        run: npx -y envinfo --binaries --npmPackages
+        run: npx envinfo --binaries --npmPackages
+
+      - name: ⓘ Debug example/simple installation
+        shell: bash
+        run: npx envinfo --binaries --npmPackages
 
       - name: ESLint checks
         run: npm run lint
