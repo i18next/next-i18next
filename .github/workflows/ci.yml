@@ -32,7 +32,7 @@ jobs:
 
       - name: ⓘ Debug runner
         shell: bash
-        run: npx -y envinfo --binaries --npmPackages
+        run: npx envinfo --binaries --npmPackages
 
       - name: ESLint checks
         run: npm run lint
