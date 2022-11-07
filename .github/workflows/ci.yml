@@ -30,6 +30,10 @@ jobs:
       - name: Install Examples
         run: npm run install:examples
 
+      - name: ⓘ Debug runner
+        shell: bash
+        run: npx -y envinfo --binaries --npmPackages
+
       - name: ESLint checks
         run: npm run lint
 
