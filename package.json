@@ -43,13 +43,13 @@
     "build:cjs": "BABEL_ENV=cjs babel src --extensions '.ts,.tsx' --out-dir dist/commonjs --copy-files",
     "build:esm": "BABEL_ENV=esm babel src --extensions '.ts,.tsx' --out-dir dist/esm --copy-files",
     "build:types": "tsc --noEmit false --declaration --emitDeclarationOnly --outDir dist/types",
-    "build": "run-s clean build:cjs build:es build:esm build:types",
-    "build:examples": "run-s build:example:*",
+    "build": "npm-run-all -s clean build:cjs build:es build:esm build:types",
+    "build:examples": "npm-run-all -s build:example:*",
     "build:example:simple": "cd examples/simple && npm run build",
     "build:example:ssg": "cd examples/ssg && npm run build",
     "install:example:simple": "cd examples/simple && npm install",
     "install:example:ssg": "cd examples/ssg && npm install",
-    "install:examples": "run-s install:example:*",
+    "install:examples": "npm-run-all -s install:example:*",
     "prepublishOnly": "npm run build",
     "example": "npm run example:simple",
     "example:prod": "npm run example:simple:prod",
@@ -58,7 +58,7 @@
     "example:ssg": "npm run build && cp -r dist examples/ssg/node_modules/next-i18next && cd examples/ssg && npm run dev",
     "example:ssg:prod": "npm run build:example:ssg && cd examples/ssg && npm run start",
     "cypress": "cypress run --config-file cypress/cypress.json",
-    "test": "npm run check-types && npm run clean && npm run build && npm run build:example:simple && bundlesize && NODE_ENV=test jest --maxWorkers=1 --silent",
+    "test": "npm-run-all -s check-types clean build build:example:simple && bundlesize && NODE_ENV=test jest --maxWorkers=1 --silent",
     "test:e2e": "start-server-and-test 'cd examples/simple && npm run start' 3000 'npm run cypress'",
     "contributors:check": "all-contributors check",
     "contributors:add": "all-contributors add",
@@ -68,9 +68,10 @@
     "release": "gh-release",
     "check-size": "size-limit",
     "analyze-size:why": "size-limit --why",
-    "check-dist": "run-s check-dist:*",
+    "check-dist": "npm-run-all -s check-dist:*",
     "check-dist:browser-cjs": "es-check --not 'dist/**/*.map.js,dist/commonjs/createClient/package.json,dist/commonjs/**node**.js,dist/commonjs/serverSideTranslations.js' -v es2017 './dist/commonjs/**/*'",
-    "check-dist:browser-esm": "es-check --not 'dist/**/*.map.js,dist/esm/createClient/package.json,dist/**node**.js,dist/esm/serverSideTranslations.js' -v es2017 --module './dist/esm/**/*'"
+    "check-dist:browser-esm": "es-check --not 'dist/**/*.map.js,dist/esm/createClient/package.json,dist/**node**.js,dist/esm/serverSideTranslations.js' -v es2017 --module './dist/esm/**/*'",
+    "nuke:install": "rimfaf '**/node_modules' '**/package-lock.json'"
   },
   "husky": {
     "hooks": {
