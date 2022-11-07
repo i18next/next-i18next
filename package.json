@@ -38,18 +38,18 @@
   "scripts": {
     "check-types": "tsc --noEmit",
     "lint": "eslint src examples",
-    "clean": "rm -rf examples/simple/.next && rm -rf examples/ssg/.next && rm -rf dist && mkdir dist",
+    "clean": "rm -rf ./examples/simple/.next ./examples/ssg/.next ./dist && mkdir dist",
     "build:es": "BABEL_ENV=es babel src --extensions '.ts,.tsx' --out-dir dist/es --copy-files",
     "build:cjs": "BABEL_ENV=cjs babel src --extensions '.ts,.tsx' --out-dir dist/commonjs --copy-files",
     "build:esm": "BABEL_ENV=esm babel src --extensions '.ts,.tsx' --out-dir dist/esm --copy-files",
     "build:types": "tsc --noEmit false --declaration --emitDeclarationOnly --outDir dist/types",
-    "build": "npm run clean && npm run build:cjs && npm run build:es && npm run build:esm && npm run build:types",
+    "build": "run-s clean build:cjs build:es build:esm build:types",
     "build:examples": "run-s build:example:*",
     "build:example:simple": "cd examples/simple && npm run build",
     "build:example:ssg": "cd examples/ssg && npm run build",
     "install:example:simple": "cd examples/simple && npm install",
     "install:example:ssg": "cd examples/ssg && npm install",
-    "install:examples": "npm run install:example:simple && npm run install:example:ssg",
+    "install:examples": "run-s install:example:*",
     "prepublishOnly": "npm run build",
     "example": "npm run example:simple",
     "example:prod": "npm run example:simple:prod",
@@ -136,7 +136,7 @@
     "react-i18next": "^12.0.0",
     "start-server-and-test": "^1.14.0",
     "typescript": "^4.7.4",
-    "webpack": "5.74.0"
+    "webpack": "^5.74.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.9",
