@@ -40,9 +40,6 @@ jobs:
       - name: Build next-i18next
         run: npm run build
 
-      - name: Unit tests
-        run: npm test
-
       - name: Check dist for ecmascript compliance
         run: npm run check-dist
 
@@ -63,6 +60,9 @@ jobs:
 
       - name: Check size limits
         run: npm run check-size
+
+      - name: Unit tests
+        run: npm test
 
       - name: E2E tests
         run: npm run test:e2e
