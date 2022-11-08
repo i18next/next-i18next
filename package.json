@@ -71,7 +71,7 @@
     "check-dist": "npm-run-all -s check-dist:*",
     "check-dist:browser-cjs": "es-check --not 'dist/**/*.map.js,dist/commonjs/createClient/package.json,dist/commonjs/**node**.js,dist/commonjs/serverSideTranslations.js' -v es2017 './dist/commonjs/**/*'",
     "check-dist:browser-esm": "es-check --not 'dist/**/*.map.js,dist/esm/createClient/package.json,dist/**node**.js,dist/esm/serverSideTranslations.js' -v es2017 --module './dist/esm/**/*'",
-    "nuke:install": "rimfaf '**/node_modules' '**/package-lock.json'"
+    "nuke:install": "rimraf '**/node_modules' '**/package-lock.json'"
   },
   "husky": {
     "hooks": {
