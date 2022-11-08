@@ -1,10 +1,10 @@
 // @ts-check
 
-const fullEsmMaxSize = "23KB";
+const fullEsmMaxSize = "5KB";
 // Recent Nextjs version have some optimizations for commonjs that
 // aren't available on bare-bone webpack. don't worry about threshold
 // difference here for cjs. We can keep this till cjs is supported.
-const fullCjsMaxSize = "46KB";
+const fullCjsMaxSize = "29KB";
 
 const getSimpleExamplePageLimits = () => {
   const dir = './examples/simple/.next'
