@@ -16,6 +16,9 @@ commands:
           name: Replace examples install with repo build
           command: npm run move-build-to-examples
       - run:
+          name: Build examples
+          command: npm run build:examples
+      - run:
           name: Lint
           command: npm run lint
       - run:
