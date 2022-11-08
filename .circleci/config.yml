@@ -10,6 +10,9 @@ commands:
           name: Install examples
           command: npm run install:examples
       - run:
+          name: Replace examples install with repo build
+          command: npm run move-build-to-examples
+      - run:
           name: Lint
           command: npm run lint
       - run:
