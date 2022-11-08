@@ -47,6 +47,7 @@ jobs:
       # by the current build. This is needed cause next-i18next does not work (yet) when the
       # build is below current dir. There's few issues left notably that webpack does not play
       # well with dynamic import of next-i18next config (and there might not be solution to this).
+      # @link https://github.com/i18next/next-i18next/pull/2012
       # (see also the npm file: in package.json)
       - name: Replace examples install with repo build
         run: npm run move-build-to-examples
