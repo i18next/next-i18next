@@ -34,10 +34,6 @@ jobs:
         shell: bash
         run: npx envinfo --binaries --npmPackages
 
-      - name: ⓘ Debug example/simple installation
-        shell: bash
-        run: npx envinfo --binaries --npmPackages
-
       - name: ESLint checks
         run: npm run lint
 
@@ -54,6 +50,10 @@ jobs:
       # (see also the npm file: in package.json)
       - name: Replace examples install with repo build
         run: npm run move-build-to-examples
+
+      - name: ⓘ Debug example/simple installation
+        shell: bash
+        run: npx envinfo --binaries --npmPackages
 
       - name: Build examples
         run: npm run build:examples
