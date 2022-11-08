@@ -7,6 +7,9 @@ commands:
           name: Install dependencies (main)
           command: npm install
       - run:
+          name: Build next-i18next
+          command: npm run build
+      - run:
           name: Install examples
           command: npm run install:examples
       - run:
