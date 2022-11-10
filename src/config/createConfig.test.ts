@@ -12,6 +12,9 @@ jest.mock('fs', () => ({
 
 describe('createConfig', () => {
 
+  /**
+   * @jest-environment node
+   */
   describe('server side', () => {
     beforeAll(() => {
       Object.assign(process, { browser: false })
@@ -368,6 +371,9 @@ describe('createConfig', () => {
     })
   })
 
+  /**
+   * @jest-environment jsdom
+   */
   describe('client side', () => {
     beforeAll(() => {
       Object.assign(process, { browser: true })

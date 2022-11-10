@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import createClientBrowser from './browser'
 
 let onPreInitI18nextCalled: any
