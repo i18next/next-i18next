@@ -13,9 +13,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     strategy:
       matrix:
-        node-version: [16.x, 14.x]
+        node-version: [18.x, 16.x, 14.x]
     steps:
       - uses: actions/checkout@v3
 
