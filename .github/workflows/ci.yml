@@ -34,6 +34,12 @@ jobs:
         shell: bash
         run: npx envinfo --binaries --npmPackages
 
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
       - name: ESLint checks
         run: npm run lint
 
@@ -61,9 +67,6 @@ jobs:
 
       - name: Check size limits
         run: npm run check-size
-
-      - name: Unit tests
-        run: npm test
 
       - name: E2E tests
         run: npm run test:e2e
