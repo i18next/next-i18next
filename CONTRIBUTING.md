@@ -3,7 +3,7 @@
 ## Setup local dev environment
 
 1. Clone the repo
-2. Ensure you have a node version >=14
+2. Ensure you have a node version >=14, npm > 8
 
 ## Working on the code
 
@@ -57,4 +57,4 @@ All PRs must pass all checks before they will be considered for review.
 
 ## Notes 
 
-Please ensure you comply with our [Developer's Certificate of Origin](https://github.com/i18next/i18next/blob/master/CONTRIBUTING.md)
+Please be sure to comply with our [Developer's Certificate of Origin](https://github.com/i18next/i18next/blob/master/CONTRIBUTING.md)
