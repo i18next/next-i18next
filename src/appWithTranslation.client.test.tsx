@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import React from 'react'
 import fs from 'fs'
 import { screen, render } from '@testing-library/react'
