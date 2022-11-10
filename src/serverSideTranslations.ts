@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 
 import { createConfig } from './config/createConfig'
-import createClient from './createClient'
+import createClient from './createClient/node'
 
 import { globalI18n } from './appWithTranslation'
 
