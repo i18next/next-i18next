@@ -34,6 +34,9 @@ jobs:
         shell: bash
         run: npx envinfo --binaries --npmPackages
 
+      - name: Typecheck
+        run: npm run typecheck
+
       - name: ESLint checks
         run: npm run lint
 
