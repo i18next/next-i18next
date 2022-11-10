@@ -29,7 +29,7 @@ Details can be found in the [UPGRADING.md](https://github.com/i18next/next-i18ne
 
 - Support for NextJs 13 (excluding new experimental layout)
 - Upgrade to [i18next v22](https://github.com/i18next/i18next/releases) and react-i18next v12, see [#1966](https://github.com/i18next/next-i18next/pull/1966)
-  
+- Support for node 18 lts [#2017](https://github.com/i18next/next-i18next/pull/2017)   
 
 ### Fix
 
