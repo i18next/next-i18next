@@ -1,26 +1,44 @@
-## next
+## 13.0.0
 
-Although it is a major, existing code should not be impacted. Only the install. 
-Read also the [UPGRADING](https://github.com/i18next/next-i18next/blob/master/UPGRADING.md) document
-to know more.
+The v13.0.0 release is a major version to improve stability and general experience. 
+It comes with 2 easy changes related to installation. Existing code shouldn't be impacted.
+Details can be found in the [UPGRADING.md](https://github.com/i18next/next-i18next/blob/master/UPGRADING.md#version-1300) document.
 
-- **breaking**: react-i18next and i18next are now peer-dependencies and must be installed
-  in the consuming app, see [#1966](https://github.com/i18next/next-i18next/pull/1966)
+### Breaking changes
+
+- [react-i18next](https://github.com/i18next/react-i18next) and [i18next](https://github.com/i18next/i18next) 
+  have been moved to peer-dependencies. They must be installed
+  in your app ([#1966](https://github.com/i18next/next-i18next/pull/1966))
   
   ```bash
+  # Add react-i18next > 12.0.0 and i18next > 22.0.4 to your app dependencies  
   npm install react-i18next i18next --save  # NPM
   yarn add react-i18next i18next            # Yarn
   pnpm add react-i18next i18next --save     # PNPM
   ```
   
-  If you encounter any issue, please read the [Troubleshoot](https://github.com/i18next/next-i18next/blob/master/TROUBLESHOOT.md) doc.
+  This might solve issues with duplicates and multiple i18n context instances.
+  If you encounter any issue, please read the [Troubleshoot](https://github.com/i18next/next-i18next/blob/master/TROUBLESHOOT.md#multiple-instances) doc
+  before posting an issue.
+  
+  
+- Types augmentations are now handled by i18next instead of react-i18next ([#1997](https://github.com/i18next/next-i18next/pull/1997)).
+  See the upgrade [document here](https://github.com/i18next/next-i18next/blob/master/UPGRADING.md#keys-typings).
 
-- **breaking**: Types augmentation is now handled by i18next instead of react-i18next, see [#1997](https://github.com/i18next/next-i18next/pull/1997)
-- **breaking**: Drop nextjs < 12.0.0 and react < 17.0.2 in [#1983](https://github.com/i18next/next-i18next/pull/1983) 
-- **breaking**: Drop node 12.x support, requires 14.x. Recommended minimum to `^14.13.1`, 
-  see [#1974](https://github.com/i18next/next-i18next/pull/1974)
-- **new:**: Upgrade to [i18next v22](https://github.com/i18next/i18next/releases) and react-i18next v12, see [#1966](https://github.com/i18next/next-i18next/pull/1966)
-- **fix**: Fix types for appWithTranslation [#1987](https://github.com/i18next/next-i18next/pull/1987) 
+### New
+
+- Support for NextJs 13 (excluding new experimental layout / rsc)
+- Upgrade to [i18next v22](https://github.com/i18next/i18next/releases) and react-i18next v12, see [#1966](https://github.com/i18next/next-i18next/pull/1966)
+- Support for node 18 lts [#2017](https://github.com/i18next/next-i18next/pull/2017)   
+
+### Fix
+
+- Fix types for appWithTranslation [#1987](https://github.com/i18next/next-i18next/pull/1987) 
+
+### New minimum versions
+
+We've dropped support for nextjs < 12.0.0 / react < 17.0.2 ([#1983](https://github.com/i18next/next-i18next/pull/1983))
+and node < 14 ([#1974](https://github.com/i18next/next-i18next/pull/1974)). 
 
 ## 12.1.0
 
