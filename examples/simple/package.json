@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "i18next": "^22.0.4",
-    "next": "^13.0.2",
+    "next": "13.0.2",
     "next-i18next": "file:../..",
     "react": "^18.2.0",
     "react-i18next": "^12.0.0",
@@ -23,7 +23,7 @@
     "@types/node": "^18.11.3",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
-    "eslint-config-next": "^13.0.2",
+    "eslint-config-next": "13.0.2",
     "rimraf": "^3.0.2",
     "picocolors": "^1.0.0",
     "typescript": "^4.8.4"
