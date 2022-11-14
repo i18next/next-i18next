@@ -39,8 +39,8 @@ export const getServerTranslations = async (
   namespacesRequired?: string[] | undefined,
   configOverride?: UserConfig
 ): Promise<SSRConfig> => {
-  const override = configOverride ?? nextI18nextConfig;
-  return serverSideTranslations(locale, namespacesRequired, override);
+  const config = configOverride ?? nextI18nextConfig;
+  return serverSideTranslations(locale, namespacesRequired, config);
 };
 ```
 
