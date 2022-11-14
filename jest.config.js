@@ -4,7 +4,6 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
   ],
-
   moduleDirectories: [
     'node_modules',
     'src',
@@ -12,7 +11,6 @@ module.exports = {
   moduleNameMapper: {
     createClient: '<rootDir>/src/createClient/browser.ts',
   },
-
   testPathIgnorePatterns: [
     '<rootDir>/.next/',
     '<rootDir>/dist/',

@@ -22,6 +22,9 @@ commands:
           name: Lint
           command: npm run lint
       - run:
+          name: Typecheck
+          command: npm run typecheck
+      - run:
           name: Test
           command: npm test
       - run:

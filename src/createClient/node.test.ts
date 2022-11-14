@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import createClientNode from './node'
 
 let onPreInitI18nextCalled: any

@@ -99,6 +99,14 @@
   "overrides": [
     {
       "files": [
+        "./src/createClient"
+      ],
+      "rules": {
+        "import/no-default-export": 0
+      }
+    },
+    {
+      "files": [
         "cypress/**/*"
       ],
       "plugins": [
@@ -147,7 +155,7 @@
   "settings": {
     "react": {
       "pragma": "React",
-      "version": "16.13.1"
+      "version": "detect"
     }
   }
 }

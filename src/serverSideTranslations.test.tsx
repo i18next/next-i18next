@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import React from 'react'
 import fs from 'fs'
 import { SSRConfig, UserConfig } from './types'
