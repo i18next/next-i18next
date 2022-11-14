@@ -12,7 +12,7 @@
     "nuke:install": "rimraf ./node_modules ./package-lock.json"
   },
   "dependencies": {
-    "i18next": "^22.0.4",
+    "i18next": "^22.0.5",
     "next": "13.0.2",
     "next-i18next": "file:../..",
     "react": "^18.2.0",
