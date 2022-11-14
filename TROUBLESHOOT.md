@@ -24,12 +24,26 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
 export default appWithTranslation(MyApp, nextI18NextConfig)
 ```
 
-For `getServerSideProps()` and `getStaticProps()` usage:
+For `getServerSideProps()` and `getStaticProps()` the recommended approach is
+to wrap our `serverSideTranslations()` in a separate file where you can inject the
+configuration.
 
 ```typescript
-// todo usage and think about a better option
+// ie: ./lib/i18n/getServerTranslations.ts
+import type { SSRConfig, UserConfig } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import nextI18nextConfig from '../../next-i18next.config';
 
+export const getServerTranslations = async (
+  locale: string,
+  namespacesRequired?: string[] | undefined,
+  configOverride?: UserConfig
+): Promise<SSRConfig> => {
+  const override = configOverride ?? nextI18nextConfig;
+  return serverSideTranslations(locale, namespacesRequired, override);
+};
 ```
+
 
 ### Multiple instances
 
