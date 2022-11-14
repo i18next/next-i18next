@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "i18next": "^22.0.3",
-    "next": "^13.0.2",
+    "next": "13.0.2",
     "next-i18next": "file:../..",
     "next-language-detector": "^1.0.2",
     "react": "^18.2.0",
@@ -25,7 +25,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "eslint-config-next": "^13.0.2",
+    "eslint-config-next": "13.0.2",
     "http-server": "14.1.1",
     "locize-cli": "7.12.7",
     "rimraf": "^3.0.2"
