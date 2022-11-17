@@ -1,5 +1,8 @@
 import Link from 'next/link'
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import type {
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+} from 'next'
 
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -11,18 +14,20 @@ type Props = {
   // Add custom props here
 }
 
-const SecondPage = (_props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-
+const SecondPage = (
+  _props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
   const { t } = useTranslation(['common', 'second-page'])
 
   return (
     <>
       <main>
-        <Header heading={t('second-page:h1')} title={t('second-page:title')} />
-        <Link href='/'>
-          <button
-            type='button'
-          >
+        <Header
+          heading={t('second-page:h1')}
+          title={t('second-page:title')}
+        />
+        <Link href="/">
+          <button type="button">
             {t('second-page:back-to-home')}
           </button>
         </Link>
@@ -32,9 +37,14 @@ const SecondPage = (_props: InferGetServerSidePropsType<typeof getServerSideProp
   )
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({ locale }) => ({
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  locale,
+}) => ({
   props: {
-    ...await serverSideTranslations(locale ?? 'en', ['second-page', 'footer']),
+    ...(await serverSideTranslations(locale ?? 'en', [
+      'second-page',
+      'footer',
+    ])),
   },
 })
 

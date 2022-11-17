@@ -31,49 +31,51 @@ jest.mock('react-i18next', () => ({
 
 jest.mock('./createClient', () => jest.fn())
 
-const DummyApp = appWithTranslation(() => (
-  <div>Hello world</div>
-), {
+const DummyApp = appWithTranslation(() => <div>Hello world</div>, {
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'de'],
   },
 })
 
-const createProps = (locale = 'en', router: Partial<NextRouter> = {}) => ({
-  pageProps: {
-    _nextI18Next: {
-      initialLocale: locale,
-      userConfig: {
-        i18n: {
-          defaultLocale: 'en',
-          locales: ['en', 'de'],
+const createProps = (
+  locale = 'en',
+  router: Partial<NextRouter> = {}
+) =>
+  ({
+    pageProps: {
+      _nextI18Next: {
+        initialLocale: locale,
+        userConfig: {
+          i18n: {
+            defaultLocale: 'en',
+            locales: ['en', 'de'],
+          },
         },
       },
+    } as any,
+    router: {
+      locale: locale,
+      route: '/',
+      ...router,
     },
-  } as any,
-  router: {
-    locale: locale,
-    route: '/',
-    ...router,
-  },
-} as any)
+  } as any)
 
 const defaultRenderProps = createProps()
 const renderComponent = (props = defaultRenderProps) =>
-  render(
-    <DummyApp
-      {...props}
-    />
-  )
+  render(<DummyApp {...props} />)
 
 describe('appWithTranslation', () => {
   beforeEach(() => {
-    (fs.existsSync as jest.Mock).mockReturnValue(true);
-    (fs.readdirSync as jest.Mock).mockReturnValue([]);
-    (I18nextProvider as jest.Mock).mockImplementation(DummyI18nextProvider)
-    const actualCreateClient = jest.requireActual('./createClient');
-    (createClient as jest.Mock).mockImplementation(actualCreateClient)
+    ;(fs.existsSync as jest.Mock).mockReturnValue(true)
+    ;(fs.readdirSync as jest.Mock).mockReturnValue([])
+    ;(I18nextProvider as jest.Mock).mockImplementation(
+      DummyI18nextProvider
+    )
+    const actualCreateClient = jest.requireActual('./createClient')
+    ;(createClient as jest.Mock).mockImplementation(
+      actualCreateClient
+    )
   })
   afterEach(jest.resetAllMocks)
 
@@ -83,15 +85,16 @@ describe('appWithTranslation', () => {
   })
 
   it('respects configOverride', () => {
-    const DummyAppConfigOverride = appWithTranslation(() => (
-      <div>Hello world</div>
-    ), {
-      configOverride: 'custom-value',
-      i18n: {
-        defaultLocale: 'en',
-        locales: ['en', 'de'],
-      },
-    } as any)
+    const DummyAppConfigOverride = appWithTranslation(
+      () => <div>Hello world</div>,
+      {
+        configOverride: 'custom-value',
+        i18n: {
+          defaultLocale: 'en',
+          locales: ['en', 'de'],
+        },
+      } as any
+    )
     const customProps = {
       ...createProps(),
       pageProps: {
@@ -100,11 +103,7 @@ describe('appWithTranslation', () => {
         },
       } as any,
     } as any
-    render(
-      <DummyAppConfigOverride
-        {...customProps}
-      />
-    )
+    render(<DummyAppConfigOverride {...customProps} />)
     const [args] = (I18nextProvider as jest.Mock).mock.calls
 
     expect(screen.getByText('Hello world')).toBeTruthy()
@@ -112,24 +111,21 @@ describe('appWithTranslation', () => {
   })
 
   it('allows passing configOverride.resources', () => {
-    const DummyAppConfigOverride = appWithTranslation(() => (
-      <div>Hello world</div>
-    ), {
-      i18n: {
-        defaultLocale: 'en',
-        locales: ['en', 'de'],
-      },
-      resources: {
-        xyz: {
-          custom: 'resources',
+    const DummyAppConfigOverride = appWithTranslation(
+      () => <div>Hello world</div>,
+      {
+        i18n: {
+          defaultLocale: 'en',
+          locales: ['en', 'de'],
         },
-      },
-    } as any)
-    render(
-      <DummyAppConfigOverride
-        {...createProps()}
-      />
+        resources: {
+          xyz: {
+            custom: 'resources',
+          },
+        },
+      } as any
     )
+    render(<DummyAppConfigOverride {...createProps()} />)
     const [args] = (I18nextProvider as jest.Mock).mock.calls
 
     expect(args[0].i18n.options.resources).toMatchObject({
@@ -152,19 +148,18 @@ describe('appWithTranslation', () => {
         },
       } as any,
     } as any
-    expect(
-      () => render(
-        <DummyAppConfigOverride
-          {...customProps}
-        />
-      )
-    ).toThrow('appWithTranslation was called without a next-i18next config')
+    expect(() =>
+      render(<DummyAppConfigOverride {...customProps} />)
+    ).toThrow(
+      'appWithTranslation was called without a next-i18next config'
+    )
   })
 
   it('throws an error if userConfig and configOverride are both missing an i18n property', () => {
-    const DummyAppConfigOverride = appWithTranslation(() => (
-      <div>Hello world</div>
-    ), {} as any)
+    const DummyAppConfigOverride = appWithTranslation(
+      () => <div>Hello world</div>,
+      {} as any
+    )
     const customProps = {
       ...createProps(),
       pageProps: {
@@ -174,35 +169,30 @@ describe('appWithTranslation', () => {
         },
       } as any,
     } as any
-    expect(
-      () => render(
-        <DummyAppConfigOverride
-          {...customProps}
-        />
-      )
+    expect(() =>
+      render(<DummyAppConfigOverride {...customProps} />)
     ).toThrow('appWithTranslation was called without config.i18n')
   })
 
   it('throws an error if userConfig and configOverride are both missing a defaultLocale property', () => {
-    const DummyAppConfigOverride = appWithTranslation(() => (
-      <div>Hello world</div>
-    ), {i18n: {} as any})
+    const DummyAppConfigOverride = appWithTranslation(
+      () => <div>Hello world</div>,
+      { i18n: {} as any }
+    )
     const customProps = {
       ...createProps(),
       pageProps: {
         _nextI18Next: {
           initialLocale: 'en',
-          userConfig: {i18n: {}},
+          userConfig: { i18n: {} },
         },
       } as any,
     } as any
-    expect(
-      () => render(
-        <DummyAppConfigOverride
-          {...customProps}
-        />
-      )
-    ).toThrow('config.i18n does not include a defaultLocale property')
+    expect(() =>
+      render(<DummyAppConfigOverride {...customProps} />)
+    ).toThrow(
+      'config.i18n does not include a defaultLocale property'
+    )
   })
 
   it('should use the initialLocale property if the router locale is undefined', () => {
@@ -214,9 +204,11 @@ describe('appWithTranslation', () => {
       pageProps: {
         _nextI18Next: {
           initialLocale: 'en',
-          userConfig: {i18n: {
-            defaultLocale: 'fr',
-          }},
+          userConfig: {
+            i18n: {
+              defaultLocale: 'fr',
+            },
+          },
         },
       } as any,
     } as any
@@ -226,11 +218,7 @@ describe('appWithTranslation', () => {
       locale: undefined,
     }
 
-    render(
-      <DummyAppConfigOverride
-        {...customProps}
-      />
-    )
+    render(<DummyAppConfigOverride {...customProps} />)
 
     const [args] = (I18nextProvider as jest.Mock).mock.calls
     expect(args[0].i18n.language).toBe('en')
@@ -246,9 +234,11 @@ describe('appWithTranslation', () => {
       pageProps: {
         _nextI18Next: {
           initialLocale: undefined,
-          userConfig: {i18n: {
-            defaultLocale: 'fr',
-          }},
+          userConfig: {
+            i18n: {
+              defaultLocale: 'fr',
+            },
+          },
         },
       } as any,
     } as any
@@ -258,11 +248,7 @@ describe('appWithTranslation', () => {
       locale: undefined,
     }
 
-    render(
-      <DummyAppConfigOverride
-        {...customProps}
-      />
-    )
+    render(<DummyAppConfigOverride {...customProps} />)
 
     const [args] = (I18nextProvider as jest.Mock).mock.calls
     expect(args[0].i18n.language).toBe('fr')
@@ -294,26 +280,14 @@ describe('appWithTranslation', () => {
   it('does not re-call createClient on re-renders unless locale or props have changed', () => {
     const { rerender } = renderComponent()
     expect(createClient).toHaveBeenCalledTimes(1)
-    rerender(
-      <DummyApp
-        {...defaultRenderProps}
-      />
-    )
+    rerender(<DummyApp {...defaultRenderProps} />)
     expect(createClient).toHaveBeenCalledTimes(1)
     const newProps = createProps()
-    rerender(
-      <DummyApp
-        {...newProps}
-      />
-    )
+    rerender(<DummyApp {...newProps} />)
     expect(createClient).toHaveBeenCalledTimes(2)
     newProps.pageProps._nextI18Next.initialLocale = 'de'
     newProps.router.locale = 'de'
-    rerender(
-      <DummyApp
-        {...newProps}
-      />
-    )
+    rerender(<DummyApp {...newProps} />)
     expect(createClient).toHaveBeenCalledTimes(3)
   })
 
@@ -321,35 +295,30 @@ describe('appWithTranslation', () => {
     let lng = 'de'
     const props = createProps('de')
 
-    const DummyAppWithVar = appWithTranslation(() => (
-      <div>language is: {lng}</div>
-    ), {
-      i18n: {
-        defaultLocale: 'en',
-        locales: ['en', 'de'],
-      },
-    })
+    const DummyAppWithVar = appWithTranslation(
+      () => <div>language is: {lng}</div>,
+      {
+        i18n: {
+          defaultLocale: 'en',
+          locales: ['en', 'de'],
+        },
+      }
+    )
 
-    const { rerender } = render(<DummyAppWithVar
-      {...props}
-    />)
+    const { rerender } = render(<DummyAppWithVar {...props} />)
 
     props.router.locale = 'en'
     props.pageProps._nextI18Next.initialLocale = 'en'
     lng = 'en'
 
-    rerender(<DummyAppWithVar
-      {...props}
-    />)
+    rerender(<DummyAppWithVar {...props} />)
     expect(screen.getByText(`language is: ${lng}`)).toBeTruthy()
 
     props.router.locale = 'de'
     props.pageProps._nextI18Next.initialLocale = 'de'
     lng = 'de'
 
-    rerender(<DummyAppWithVar
-      {...(createProps('de'))}
-    />)
+    rerender(<DummyAppWithVar {...createProps('de')} />)
     expect(screen.getByText(`language is: ${lng}`)).toBeTruthy()
   })
 })

@@ -10,13 +10,13 @@
 Run npm install
 
 ```bash
-npm install 
+npm install
 ```
 
 Useful commands:
 
 | Name                     | Description                                                            |
-|--------------------------|------------------------------------------------------------------------|
+| ------------------------ | ---------------------------------------------------------------------- |
 | `npm run lint`           | Run eslint over the codebase.                                          |
 | `npm run typecheck`      | Run typescript typechecking.                                           |
 | `npm run test`           | Run unit tests.                                                        |
@@ -44,7 +44,7 @@ npm run test:e2e
 
 ## Working on examples
 
-Examples nextjs apps live in the `examples/` folder. 
+Examples nextjs apps live in the `examples/` folder.
 
 ```bash
 npm run install:examples
@@ -55,6 +55,6 @@ npm run build:examples
 
 All PRs must pass all checks before they will be considered for review.
 
-## Notes 
+## Notes
 
 Please be sure to comply with our [Developer's Certificate of Origin](https://github.com/i18next/i18next/blob/master/CONTRIBUTING.md)

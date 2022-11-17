@@ -21,25 +21,28 @@
     "**/*package.json"
   ],
   "rules": {
-    "comma-dangle": [
-      "error",
-      "always-multiline"
-    ],
+    "comma-dangle": ["error", "always-multiline"],
     "eol-last": ["error", "always"],
     "indent": ["error", 2],
     "jest/no-conditional-expect": 0,
     "no-console": 2,
     "no-trailing-spaces": 2,
-    "max-len": ["error", {
-      "code": 80,
-      "comments": 80,
-      "ignorePattern": "^import\\s.+\\sfrom\\s.+$",
-      "ignoreStrings": true,
-      "ignoreTemplateLiterals": true
-    }],
+    "max-len": [
+      "error",
+      {
+        "code": 80,
+        "comments": 80,
+        "ignorePattern": "^import\\s.+\\sfrom\\s.+$",
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true
+      }
+    ],
     "multiline-comment-style": ["error", "separate-lines"],
     "no-multiple-empty-lines": "error",
-    "no-multi-spaces": ["error", { "exceptions": { "Property": false } }],
+    "no-multi-spaces": [
+      "error",
+      { "exceptions": { "Property": false } }
+    ],
     "no-return-await": 2,
     "arrow-body-style": ["error", "as-needed"],
     "import/no-amd": 2,
@@ -50,7 +53,9 @@
     "keyword-spacing": ["error", { "overrides": {} }],
     "react/prefer-stateless-function": 2,
     "react/prop-types": 0,
-    "react/jsx-wrap-multilines": ["error", {
+    "react/jsx-wrap-multilines": [
+      "error",
+      {
         "declaration": "parens-new-line",
         "assignment": "parens-new-line",
         "return": "parens-new-line",
@@ -65,16 +70,19 @@
     "space-before-blocks": 2,
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/explicit-module-boundary-types": 0,
-    "@typescript-eslint/member-delimiter-style": ["error", {
-      "multiline": {
-        "delimiter": "none",
-        "requireLast": false
-      },
-      "singleline": {
-        "delimiter": "comma",
-        "requireLast": false
+    "@typescript-eslint/member-delimiter-style": [
+      "error",
+      {
+        "multiline": {
+          "delimiter": "none",
+          "requireLast": false
+        },
+        "singleline": {
+          "delimiter": "comma",
+          "requireLast": false
+        }
       }
-    }],
+    ],
     "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/no-unused-vars": [
       2,
@@ -91,27 +99,24 @@
         "classPropertiesAllowed": false
       }
     ],
-    "prefer-destructuring": ["error", {"object": true, "array": true}],
+    "prefer-destructuring": [
+      "error",
+      { "object": true, "array": true }
+    ],
     "quotes": ["error", "single"],
     "quote-props": ["error", "as-needed"],
     "jsx-quotes": ["error", "prefer-single"]
   },
   "overrides": [
     {
-      "files": [
-        "./src/createClient"
-      ],
+      "files": ["./src/createClient"],
       "rules": {
         "import/no-default-export": 0
       }
     },
     {
-      "files": [
-        "cypress/**/*"
-      ],
-      "plugins": [
-        "cypress"
-      ],
+      "files": ["cypress/**/*"],
+      "plugins": ["cypress"],
       "env": {
         "cypress/globals": true
       },
@@ -121,31 +126,28 @@
       }
     },
     {
-      "files": [
-        "examples/**/*"
-      ],
+      "files": ["examples/**/*"],
       "rules": {
         "react/react-in-jsx-scope": 0,
-        "max-len": ["error", {
-          "code": 120,
-          "comments": 120,
-          "ignoreStrings": true,
-          "ignoreTemplateLiterals": true
-        }]
+        "max-len": [
+          "error",
+          {
+            "code": 120,
+            "comments": 120,
+            "ignoreStrings": true,
+            "ignoreTemplateLiterals": true
+          }
+        ]
       }
     },
     {
-      "files": [
-        "examples/**/pages/**/*"
-      ],
+      "files": ["examples/**/pages/**/*"],
       "rules": {
         "import/no-default-export": 0
       }
     },
     {
-      "files": [
-        "**/*.config.js"
-      ],
+      "files": ["**/*.config.js"],
       "rules": {
         "import/no-commonjs": 0,
         "no-undef": 0

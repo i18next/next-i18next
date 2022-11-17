@@ -25,10 +25,12 @@ describe('createClientBrowser', () => {
     expect(typeof client.initPromise.then).toBe('function')
     expect(typeof client.i18n.addResource).toBe('function')
     expect(typeof (client.i18n as any).translator).toBe('object')
-    expect(
-      (client.i18n.options as any).defaultLocale
-    ).toEqual(config.defaultLocale)
-    expect((client.i18n.options as any).locales).toEqual(config.locales)
+    expect((client.i18n.options as any).defaultLocale).toEqual(
+      config.defaultLocale
+    )
+    expect((client.i18n.options as any).locales).toEqual(
+      config.locales
+    )
     expect(onPreInitI18nextCalled).toEqual(client.i18n)
   })
 })

@@ -9,7 +9,7 @@ We advise migrating as soon as possible, as new versions of NextJs won't be comp
 
 This package, `next-i18next`, has changed a lot because it now is _not_ providing internationalised routing anymore, as [NextJs has first class support for it.](https://nextjs.org/docs/advanced-features/i18n-routing)
 
-Before the translation functionality was initialised on a global level, in `_app.js`. Now, you must use a new method, called `serverSideTranslations` on *each* page in your `pages` directory.
+Before the translation functionality was initialised on a global level, in `_app.js`. Now, you must use a new method, called `serverSideTranslations` on _each_ page in your `pages` directory.
 
 The object `i18n` which was imported directly from `i18n.js` in `next-i18next@<8` suppored only client-side-rendering. Now in the v8 the `i18n` object also supports server-side rendering. So you can use the `i18n.language` for server-side rendered elements.
 
@@ -19,7 +19,6 @@ The object `i18n` which was imported directly from `i18n.js` in `next-i18next@<8
 2. `withTranslation` works the same way
 3. `useTranslation` works the same way
 4. The [translation content structure](https://github.com/i18next/next-i18next/blob/master/README.md#2-translation-content) remains the same
-
 
 ## What is different?
 

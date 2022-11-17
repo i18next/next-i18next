@@ -3,9 +3,14 @@ import { InternalConfig, UserConfig } from '../types'
 import { getFallbackForLng, unique } from '../utils'
 import { FallbackLngObjList } from 'i18next'
 
-const deepMergeObjects = ['backend', 'detection'] as (keyof Pick<UserConfig, 'backend' | 'detection'>)[]
+const deepMergeObjects = ['backend', 'detection'] as (keyof Pick<
+  UserConfig,
+  'backend' | 'detection'
+>)[]
 
-export const createConfig = (userConfig: UserConfig): InternalConfig => {
+export const createConfig = (
+  userConfig: UserConfig
+): InternalConfig => {
   if (typeof userConfig?.lng !== 'string') {
     throw new Error('config.lng was not passed into createConfig')
   }
@@ -14,7 +19,8 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
   // Initial merge of default and user-provided config
   //
   const { i18n: userI18n, ...userConfigStripped } = userConfig
-  const { i18n: defaultI18n, ...defaultConfigStripped } = defaultConfig
+  const { i18n: defaultI18n, ...defaultConfigStripped } =
+    defaultConfig
   const combinedConfig = {
     ...defaultConfigStripped,
     ...userConfigStripped,
@@ -31,25 +37,29 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
     nonExplicitSupportedLngs,
   } = combinedConfig
 
-  const locales = combinedConfig.locales.filter((l) => l !== 'default')
+  const locales = combinedConfig.locales.filter(l => l !== 'default')
 
   /**
    * Skips translation file resolution while in cimode
    * https://github.com/i18next/next-i18next/pull/851#discussion_r503113620
-  */
+   */
   if (lng === 'cimode') {
     return combinedConfig as InternalConfig
   }
 
   if (typeof combinedConfig.fallbackLng === 'undefined') {
     combinedConfig.fallbackLng = combinedConfig.defaultLocale
-    if (combinedConfig.fallbackLng === 'default') [combinedConfig.fallbackLng] = locales
+    if (combinedConfig.fallbackLng === 'default')
+      [combinedConfig.fallbackLng] = locales
   }
 
   const { fallbackLng } = combinedConfig
 
   if (nonExplicitSupportedLngs) {
-    const createFallbackObject = (acc: FallbackLngObjList, l: string) => {
+    const createFallbackObject = (
+      acc: FallbackLngObjList,
+      l: string
+    ) => {
       const [locale] = l.split('-')
       acc[l] = [locale]
       return acc
@@ -64,22 +74,24 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
         .filter(l => l.includes('-'))
         .reduce(createFallbackObject, { default: fallbackLng })
     } else if (typeof fallbackLng === 'object') {
-      combinedConfig.fallbackLng = Object
-        .entries((combinedConfig.fallbackLng))
-        .reduce<FallbackLngObjList>((acc, [l, f]) => {
-          acc[l] = l.includes('-')
-            ? unique([l.split('-')[0], ...f])
-            : f
-          return acc
-        },
-        (fallbackLng as FallbackLngObjList)
-        )
+      combinedConfig.fallbackLng = Object.entries(
+        combinedConfig.fallbackLng
+      ).reduce<FallbackLngObjList>((acc, [l, f]) => {
+        acc[l] = l.includes('-')
+          ? unique([l.split('-')[0], ...f])
+          : f
+        return acc
+      }, fallbackLng as FallbackLngObjList)
     } else if (typeof fallbackLng === 'function') {
-      throw new Error('If nonExplicitSupportedLngs is true, no functions are allowed for fallbackLng')
+      throw new Error(
+        'If nonExplicitSupportedLngs is true, no functions are allowed for fallbackLng'
+      )
     }
   }
 
-  const hasCustomBackend = userConfig?.use?.some((b) => b.type === 'backend')
+  const hasCustomBackend = userConfig?.use?.some(
+    b => b.type === 'backend'
+  )
   if (!process.browser && typeof window === 'undefined') {
     combinedConfig.preload = locales
 
@@ -91,33 +103,56 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       // Validate defaultNS
       // https://github.com/i18next/next-i18next/issues/358
       //
-      if (typeof defaultNS === 'string' && typeof lng !== 'undefined') {
+      if (
+        typeof defaultNS === 'string' &&
+        typeof lng !== 'undefined'
+      ) {
         if (typeof localePath === 'string') {
           const prefix = userConfig?.interpolation?.prefix ?? '{{'
           const suffix = userConfig?.interpolation?.suffix ?? '}}'
-          const defaultLocaleStructure = localeStructure.replace(`${prefix}lng${suffix}`, lng).replace(`${prefix}ns${suffix}`, defaultNS)
+          const defaultLocaleStructure = localeStructure
+            .replace(`${prefix}lng${suffix}`, lng)
+            .replace(`${prefix}ns${suffix}`, defaultNS)
           const defaultFile = `/${defaultLocaleStructure}.${localeExtension}`
           const defaultNSPath = path.join(localePath, defaultFile)
           const defaultNSExists = fs.existsSync(defaultNSPath)
-          const fallback = getFallbackForLng(lng, combinedConfig.fallbackLng)
+          const fallback = getFallbackForLng(
+            lng,
+            combinedConfig.fallbackLng
+          )
           const defaultFallbackNSExists = fallback.some(f => {
             const fallbackFile = defaultFile.replace(lng, f)
             const defaultNSPath = path.join(localePath, fallbackFile)
             return fs.existsSync(defaultNSPath)
           })
-          if (!defaultNSExists && !defaultFallbackNSExists && process.env.NODE_ENV !== 'production') {
-            throw new Error(`Default namespace not found at ${defaultNSPath}`)
+          if (
+            !defaultNSExists &&
+            !defaultFallbackNSExists &&
+            process.env.NODE_ENV !== 'production'
+          ) {
+            throw new Error(
+              `Default namespace not found at ${defaultNSPath}`
+            )
           }
         } else if (typeof localePath === 'function') {
           const defaultNSPath = localePath(lng, defaultNS, false)
           const defaultNSExists = fs.existsSync(defaultNSPath)
-          const fallback = getFallbackForLng(lng, combinedConfig.fallbackLng)
+          const fallback = getFallbackForLng(
+            lng,
+            combinedConfig.fallbackLng
+          )
           const defaultFallbackNSExists = fallback.some(f => {
             const defaultNSPath = localePath(f, defaultNS, false)
             return fs.existsSync(defaultNSPath)
           })
-          if (!defaultNSExists && !defaultFallbackNSExists && process.env.NODE_ENV !== 'production') {
-            throw new Error(`Default namespace not found at ${defaultNSPath}`)
+          if (
+            !defaultNSExists &&
+            !defaultFallbackNSExists &&
+            process.env.NODE_ENV !== 'production'
+          ) {
+            throw new Error(
+              `Default namespace not found at ${defaultNSPath}`
+            )
           }
         }
       }
@@ -127,8 +162,14 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       //
       if (typeof localePath === 'string') {
         combinedConfig.backend = {
-          addPath: path.resolve(process.cwd(), `${localePath}/${localeStructure}.missing.${localeExtension}`),
-          loadPath: path.resolve(process.cwd(), `${localePath}/${localeStructure}.${localeExtension}`),
+          addPath: path.resolve(
+            process.cwd(),
+            `${localePath}/${localeStructure}.missing.${localeExtension}`
+          ),
+          loadPath: path.resolve(
+            process.cwd(),
+            `${localePath}/${localeStructure}.${localeExtension}`
+          ),
         }
       } else if (typeof localePath === 'function') {
         combinedConfig.backend = {
@@ -138,7 +179,9 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
             localePath(locale, namespace, false),
         }
       } else {
-        throw new Error(`Unsupported localePath type: ${typeof localePath}`)
+        throw new Error(
+          `Unsupported localePath type: ${typeof localePath}`
+        )
       }
 
       //
@@ -146,7 +189,9 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       //
       if (!combinedConfig.ns && typeof lng !== 'undefined') {
         if (typeof localePath === 'function') {
-          throw new Error('Must provide all namespaces in ns option if using a function as localePath')
+          throw new Error(
+            'Must provide all namespaces in ns option if using a function as localePath'
+          )
         }
 
         const getNamespaces = (locales: string[]): string[] => {
@@ -155,22 +200,25 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
 
             if (!fs.existsSync(p)) return ret
 
-            fs.readdirSync(p).map(
-              (file: string) => {
-                const joinedP = path.join(p, file)
-                if (fs.statSync(joinedP).isDirectory()) {
-                  const subRet = getLocaleNamespaces(joinedP).map((n) => `${file}/${n}`)
-                  ret = ret.concat(subRet)
-                  return
-                }
-                ret.push(file.replace(`.${localeExtension}`, ''))
+            fs.readdirSync(p).map((file: string) => {
+              const joinedP = path.join(p, file)
+              if (fs.statSync(joinedP).isDirectory()) {
+                const subRet = getLocaleNamespaces(joinedP).map(
+                  n => `${file}/${n}`
+                )
+                ret = ret.concat(subRet)
+                return
               }
-            )
+              ret.push(file.replace(`.${localeExtension}`, ''))
+            })
             return ret
           }
 
-          const namespacesByLocale = locales
-            .map(locale => getLocaleNamespaces(path.resolve(process.cwd(), `${localePath}/${locale}`)))
+          const namespacesByLocale = locales.map(locale =>
+            getLocaleNamespaces(
+              path.resolve(process.cwd(), `${localePath}/${locale}`)
+            )
+          )
 
           const allNamespaces = []
           for (const localNamespaces of namespacesByLocale) {
@@ -181,12 +229,14 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
         }
 
         combinedConfig.ns = getNamespaces(
-          unique([lng, ...getFallbackForLng(lng, combinedConfig.fallbackLng)])
+          unique([
+            lng,
+            ...getFallbackForLng(lng, combinedConfig.fallbackLng),
+          ])
         )
       }
     }
   } else {
-
     //
     // Set client side backend, if there is no custom backend
     //
@@ -206,7 +256,10 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
       }
     }
 
-    if (typeof combinedConfig.ns !== 'string' && !Array.isArray(combinedConfig.ns)) {
+    if (
+      typeof combinedConfig.ns !== 'string' &&
+      !Array.isArray(combinedConfig.ns)
+    ) {
       combinedConfig.ns = [defaultNS as string]
     }
   }
@@ -214,7 +267,7 @@ export const createConfig = (userConfig: UserConfig): InternalConfig => {
   //
   // Deep merge with overwrite - goes last
   //
-  deepMergeObjects.forEach((obj) => {
+  deepMergeObjects.forEach(obj => {
     if (userConfig[obj]) {
       combinedConfig[obj] = {
         ...combinedConfig[obj],

@@ -8,8 +8,5 @@
     "target": "es5",
     "jsx": "react"
   },
-  "include": [
-    "src/**/*",
-    "node_modules/next/types/global.d.ts"
-  ]
+  "include": ["src/**/*", "node_modules/next/types/global.d.ts"]
 }

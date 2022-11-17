@@ -18,26 +18,26 @@ Minimum versions supported are `i18next@^22.0.3` and `react-i18next@^12.0.0`.
 
 This move was done in the hope to avoid issues regarding duplicates. In case of issue when
 uĝrading, see the [TROUBLESHOOT](https://github.com/i18next/next-i18next/blob/master/TROUBLESHOOT.md#multiple-instances)
-to ensure peer-dependencies are properly installed. 
+to ensure peer-dependencies are properly installed.
 
 ### Keys typings
 
-If you're using typescript type augmentation for your locale keys, they've been moved from `react-i18next` to [i18next](https://www.i18next.com/overview/typescript). 
+If you're using typescript type augmentation for your locale keys, they've been moved from `react-i18next` to [i18next](https://www.i18next.com/overview/typescript).
 Rename `@types/react-i18next.d.ts` to `@types/i18next.d.ts` and be sure to update the imports:
 
 ```typescript
-import 'i18next';
-import type common from '../public/locales/en/common.json';
-import type other from '../public/locales/en/other.json';
+import 'i18next'
+import type common from '../public/locales/en/common.json'
+import type other from '../public/locales/en/other.json'
 
 interface I18nNamespaces {
-  common: typeof common,
-  other: typeof other,
+  common: typeof common
+  other: typeof other
 }
 declare module 'i18next' {
   interface CustomTypeOptions {
-    defaultNS: 'common',
-    resources: I18nNamespaces,
+    defaultNS: 'common'
+    resources: I18nNamespaces
   }
 }
 ```

@@ -18,7 +18,6 @@ You may have arrived here from the [Next.js](https://github.com/zeit/next.js) re
 
 Before "deploying" your app, you can run the [downloadLocales script](https://github.com/i18next/next-language-detector/blob/main/examples/basic/package.json#L15) (or similar), which will use the [cli](https://github.com/locize/locize-cli) to download the translations from locize into the appropriate folder next-i18next is looking in to (i.e. ./public/locales).
 
-
 ## Verify yourself
 
 To prove that this works, pull this example to your local machine and run:

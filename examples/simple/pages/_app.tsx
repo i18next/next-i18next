@@ -7,4 +7,4 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
 )
 
 // https://github.com/i18next/next-i18next#unserialisable-configs
-export default appWithTranslation(MyApp/*, nextI18NextConfig */)
+export default appWithTranslation(MyApp /*, nextI18NextConfig */)

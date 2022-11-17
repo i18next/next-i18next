@@ -16,7 +16,7 @@ const config = {
 } as any
 
 describe('createClientNode', () => {
-  let client: { i18n: any, initPromise: any }
+  let client: { i18n: any; initPromise: any }
 
   beforeEach(() => {
     onPreInitI18nextCalled = null
@@ -27,10 +27,12 @@ describe('createClientNode', () => {
     expect(typeof client.initPromise.then).toBe('function')
     expect(typeof client.i18n.addResource).toBe('function')
     expect(typeof (client.i18n as any).translator).toBe('object')
-    expect(
-      (client.i18n.options as any).defaultLocale
-    ).toEqual(config.defaultLocale)
-    expect((client.i18n.options as any).locales).toEqual(config.locales)
+    expect((client.i18n.options as any).defaultLocale).toEqual(
+      config.defaultLocale
+    )
+    expect((client.i18n.options as any).locales).toEqual(
+      config.locales
+    )
     expect((client.i18n.options as any).isClone).not.toBe(true)
     expect(onPreInitI18nextCalled).toEqual(client.i18n)
   })
@@ -40,14 +42,20 @@ describe('createClientNode', () => {
       const secondClient = createClientNode(config)
       expect(typeof secondClient.initPromise.then).toBe('function')
       expect(typeof secondClient.i18n.addResource).toBe('function')
-      expect(typeof (secondClient.i18n as any).translator).toBe('object')
+      expect(typeof (secondClient.i18n as any).translator).toBe(
+        'object'
+      )
       expect(
         (secondClient.i18n.options as any).defaultLocale
       ).toEqual(config.defaultLocale)
-      expect((secondClient.i18n.options as any).locales).toEqual(config.locales)
+      expect((secondClient.i18n.options as any).locales).toEqual(
+        config.locales
+      )
       expect((secondClient.i18n.options as any).isClone).toBe(true)
       expect(secondClient).not.toEqual(client)
-      expect((secondClient as any).store).toEqual((client as any).store)
+      expect((secondClient as any).store).toEqual(
+        (client as any).store
+      )
       expect(onPreInitI18nextCalled).toBeNull()
     })
   })

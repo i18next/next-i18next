@@ -14,8 +14,9 @@ export const getFallbackForLng = (
 
   if (typeof fallbackLng === 'object') {
     const fallbackList = (fallbackLng as FallbackLngObjList)[lng]
-    const fallbackDefault = (fallbackLng as FallbackLngObjList).default
-    return [...(fallbackList ?? []), ...fallbackDefault ?? []]
+    const fallbackDefault = (fallbackLng as FallbackLngObjList)
+      .default
+    return [...(fallbackList ?? []), ...(fallbackDefault ?? [])]
   }
 
   if (typeof fallbackLng === 'function') {
@@ -25,4 +26,5 @@ export const getFallbackForLng = (
   return []
 }
 
-export const unique = (list: string[]) => Array.from(new Set<string>(list))
+export const unique = (list: string[]) =>
+  Array.from(new Set<string>(list))

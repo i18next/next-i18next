@@ -79,7 +79,7 @@ module.exports = {
     defaultLocale: 'en',
     locales: ['en', 'de'],
   },
-};
+}
 ```
 
 Now, create or modify your `next.config.js` file, by passing the `i18n` object into your `next.config.js` file, to enable localised URL routing:
@@ -87,11 +87,11 @@ Now, create or modify your `next.config.js` file, by passing the `i18n` object i
 #### [`next.config.js`](https://nextjs.org/docs/api-reference/next.config.js/introduction)
 
 ```js
-const { i18n } = require('./next-i18next.config');
+const { i18n } = require('./next-i18next.config')
 
 module.exports = {
   i18n,
-};
+}
 ```
 
 There are three functions that `next-i18next` exports, which you will need to use to translate your project:
@@ -101,11 +101,13 @@ There are three functions that `next-i18next` exports, which you will need to us
 This is a HOC which wraps your [`_app`](https://nextjs.org/docs/advanced-features/custom-app):
 
 ```tsx
-import { appWithTranslation } from 'next-i18next';
+import { appWithTranslation } from 'next-i18next'
 
-const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />;
+const MyApp = ({ Component, pageProps }) => (
+  <Component {...pageProps} />
+)
 
-export default appWithTranslation(MyApp);
+export default appWithTranslation(MyApp)
 ```
 
 The `appWithTranslation` HOC is primarily responsible for adding a [`I18nextProvider`](https://react.i18next.com/latest/i18nextprovider).
@@ -115,15 +117,18 @@ The `appWithTranslation` HOC is primarily responsible for adding a [`I18nextProv
 This is an async function that you need to include on your page-level components, via either [`getStaticProps`](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [`getServerSideProps`](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) (depending on your use case):
 
 ```tsx
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export async function getStaticProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common', 'footer'])),
+      ...(await serverSideTranslations(locale, [
+        'common',
+        'footer',
+      ])),
       // Will be passed to the page component as props
     },
-  };
+  }
 }
 ```
 
@@ -138,17 +143,17 @@ The `serverSideTranslations` HOC is primarily responsible for passing translatio
 This is the hook which you'll actually use to do the translation itself. The `useTranslation` hook [comes from `react-i18next`](https://react.i18next.com/latest/usetranslation-hook), but can be imported from `next-i18next` directly:
 
 ```tsx
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next'
 
 export const Footer = () => {
-  const { t } = useTranslation('footer');
+  const { t } = useTranslation('footer')
 
   return (
     <footer>
       <p>{t('description')}</p>
     </footer>
-  );
-};
+  )
+}
 ```
 
 ### 4. Declaring namespace dependencies
@@ -185,6 +190,7 @@ As a result the translations for both `no` and `en` locales will always be loade
 > Note: The extra argument should be added to all pages that use `getFixedT` function.
 
 #### Fallback locales
+
 By default, `next-i18next` will add the `defaultLocale` as fallback. To change this, you can set [`fallbackLng`](https://www.i18next.com/principles/fallback). All values supported by `i18next` (`string`, `array`, `object` and `function`) are supported by `next-i18next` too.
 
 Additionally `nonExplicitSupportedLngs` can be set to `true` to support all variants of a language, without the need to provide JSON files for each of them. Notice that all variants still must be included in `locales` to enable routing within `next.js`.
@@ -199,11 +205,11 @@ module.exports = {
   },
   fallbackLng: {
     default: ['en'],
-    'de-CH': ['fr']
+    'de-CH': ['fr'],
   },
   nonExplicitSupportedLngs: true,
   // de, fr and en will be loaded as fallback languages for de-CH
-};
+}
 ```
 
 Be aware that using `fallbackLng` and `nonExplicitSupportedLngs` can easily increase the initial size of the page.
@@ -220,10 +226,11 @@ module.exports = {
     defaultLocale: 'en',
     locales: ['en', 'de'],
   },
-  localePath: typeof window === 'undefined' ? 
-      require('path').resolve('./my-custom/path'):
-      '/public/my-custom/path',
-};
+  localePath:
+    typeof window === 'undefined'
+      ? require('path').resolve('./my-custom/path')
+      : '/public/my-custom/path',
+}
 ```
 
 #### Unserializable configs
@@ -240,18 +247,20 @@ Reason: `function` cannot be serialized as JSON. Please only return JSON seriali
 To fix this, you'll need to set `config.serializeConfig` to `false`, and manually pass your config into `appWithTranslation`:
 
 ```tsx
-import { appWithTranslation } from 'next-i18next';
-import nextI18NextConfig from '../next-i18next.config.js';
+import { appWithTranslation } from 'next-i18next'
+import nextI18NextConfig from '../next-i18next.config.js'
 
-const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />;
+const MyApp = ({ Component, pageProps }) => (
+  <Component {...pageProps} />
+)
 
-export default appWithTranslation(MyApp, nextI18NextConfig);
+export default appWithTranslation(MyApp, nextI18NextConfig)
 ```
 
 ```tsx
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-import nextI18NextConfig from '../next-i18next.config.js';
+import nextI18NextConfig from '../next-i18next.config.js'
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
@@ -261,7 +270,7 @@ export const getStaticProps = async ({ locale }) => ({
       nextI18NextConfig
     )),
   },
-});
+})
 ```
 
 #### Client side loading of translations via HTTP
@@ -282,21 +291,20 @@ This option will reload your translations whenever `serverSideTranslations` is c
 
 #### Options
 
-| Key                 | Default value        | Note                                   |
-| ------------------- | -------------------- | -------------------------------------- |
-| `defaultNS`         | `'common'`           |                                        |
-| `localePath`        | `'./public/locales'` | Can be a function, see note below.     |
-| `localeExtension`   | `'json'`             | Ignored if `localePath` is a function. |
-| `localeStructure`   | `'{{lng}}/{{ns}}'`   | Ignored if `localePath` is a function. |
-| `reloadOnPrerender` | `false`              |                                        |
-| `serializeConfig`   | `true`               |                                        |
-| `use` (for plugins) | `[]`                 |                                        |
-| `onPreInitI18next` | `undefined`              |  i.e. `(i18n) => i18n.on('failedLoading', handleFailedLoading)`  |
+| Key                 | Default value        | Note                                                           |
+| ------------------- | -------------------- | -------------------------------------------------------------- |
+| `defaultNS`         | `'common'`           |                                                                |
+| `localePath`        | `'./public/locales'` | Can be a function, see note below.                             |
+| `localeExtension`   | `'json'`             | Ignored if `localePath` is a function.                         |
+| `localeStructure`   | `'{{lng}}/{{ns}}'`   | Ignored if `localePath` is a function.                         |
+| `reloadOnPrerender` | `false`              |                                                                |
+| `serializeConfig`   | `true`               |                                                                |
+| `use` (for plugins) | `[]`                 |                                                                |
+| `onPreInitI18next`  | `undefined`          | i.e. `(i18n) => i18n.on('failedLoading', handleFailedLoading)` |
 
 `localePath` as a function is of the form `(locale: string, namespace: string, missing: boolean) => string` returning the entire path including filename and extension. When `missing` is true, return the path for the `addPath` option of `i18next-fs-backend`, when false, return the path for the `loadPath` option. [More info at the `i18next-fs-backend` repo.](https://github.com/i18next/i18next-fs-backend/tree/master#backend-options)
 
 All other [i18next options](https://www.i18next.com/overview/configuration-options) and [react-i18next options](https://react.i18next.com/latest/i18next-instance) can be passed in as well.
-
 
 #### Custom interpolation prefix/suffix
 
@@ -325,7 +333,6 @@ For example, if you want to use `{` and `}` the config would look like this:
 
 Some serverless PaaS may not be able to locate the path of your translations and require additional configuration. If you have filesystem issues using `serverSideTranslations`, set `config.localePath` to use `path.resolve`. An example can be [found here](https://github.com/i18next/next-i18next/issues/1552#issuecomment-981156476).
 
-
 ### Docker
 
 For Docker deployment, note that if you use the `Dockerfile` from [Next.js docs](https://nextjs.org/docs/deployment#docker-image) do not forget to copy `next.config.js` and `next-i18next.config.js` into the Docker image.
@@ -349,11 +356,11 @@ Set the `ns` option, like in [this example](https://github.com/locize/next-i18ne
 If you cannot or do not want to provide the `ns` array, calls to the `t` function will cause namespaces to be loaded on the fly. This means you'll need to handle the "not ready" state by checking `ready === true` or `props.tReady === true`. Not doing so will result in rendering your translations before they loaded, which will cause "save missing" be called despite the translations actually existing (just yet not loaded).
 This can be done with the [useTranslation hook](https://react.i18next.com/latest/usetranslation-hook#not-using-suspense) or the [withTranslation HOC](https://react.i18next.com/latest/withtranslation-hoc#not-using-suspense).
 
-
 ### Static HTML Export SSG
 
 Are you trying to generate a [static HTML export](https://nextjs.org/docs/advanced-features/static-html-export) by executing `next export` and are getting this error?
->Error: i18n support is not compatible with next export. See here for more info on deploying: https://nextjs.org/docs/deployment
+
+> Error: i18n support is not compatible with next export. See here for more info on deploying: https://nextjs.org/docs/deployment
 
 But there's a way to workaround that with the help of [next-language-detector](https://github.com/i18next/next-language-detector).
 Check out [this blog post](https://locize.com/blog/next-i18n-static/) and [this example project](./examples/ssg/).

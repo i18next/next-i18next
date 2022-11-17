@@ -15,15 +15,20 @@ export const serverSideTranslations = async (
   initialLocale: string,
   namespacesRequired: string[] | undefined = undefined,
   configOverride: UserConfig | null = null,
-  extraLocales: string[] | false = false,
+  extraLocales: string[] | false = false
 ): Promise<SSRConfig> => {
   if (typeof initialLocale !== 'string') {
-    throw new Error('Initial locale argument was not passed into serverSideTranslations')
+    throw new Error(
+      'Initial locale argument was not passed into serverSideTranslations'
+    )
   }
 
   let userConfig = configOverride
 
-  if (!userConfig && fs.existsSync(path.resolve(DEFAULT_CONFIG_PATH))) {
+  if (
+    !userConfig &&
+    fs.existsSync(path.resolve(DEFAULT_CONFIG_PATH))
+  ) {
     userConfig = await import(path.resolve(DEFAULT_CONFIG_PATH))
   }
 
@@ -59,33 +64,40 @@ export const serverSideTranslations = async (
   }
 
   getFallbackForLng(initialLocale, fallbackLng ?? false)
-    .concat((extraLocales || []))
+    .concat(extraLocales || [])
     .forEach((lng: string) => {
       initialI18nStore[lng] = {}
     })
 
   if (!Array.isArray(namespacesRequired)) {
     if (typeof localePath === 'function') {
-      throw new Error('Must provide namespacesRequired to serverSideTranslations when using a function as localePath')
+      throw new Error(
+        'Must provide namespacesRequired to serverSideTranslations when using a function as localePath'
+      )
     }
 
     const getLocaleNamespaces = (path: string) =>
       fs.existsSync(path)
-        ? fs.readdirSync(path).map(file => file.replace(`.${localeExtension}`, ''))
+        ? fs
+            .readdirSync(path)
+            .map(file => file.replace(`.${localeExtension}`, ''))
         : []
 
     const namespacesByLocale = Object.keys(initialI18nStore)
-      .map(locale => getLocaleNamespaces(path.resolve(process.cwd(), `${localePath}/${locale}`)))
+      .map(locale =>
+        getLocaleNamespaces(
+          path.resolve(process.cwd(), `${localePath}/${locale}`)
+        )
+      )
       .flat()
 
     namespacesRequired = unique(namespacesByLocale)
   }
 
-  namespacesRequired.forEach((ns) => {
+  namespacesRequired.forEach(ns => {
     for (const locale in initialI18nStore) {
-      initialI18nStore[locale][ns] = (
+      initialI18nStore[locale][ns] =
         (i18n.services.resourceStore.data[locale] || {})[ns] || {}
-      )
     }
   })
 
