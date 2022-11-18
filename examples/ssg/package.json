@@ -16,8 +16,8 @@
     "clean": "rimraf .next out"
   },
   "dependencies": {
-    "i18next": "^22.0.5",
-    "next": "13.0.2",
+    "i18next": "^22.0.6",
+    "next": "13.0.4",
     "next-i18next": "file:../..",
     "next-language-detector": "^1.0.2",
     "react": "^18.2.0",
