@@ -58,6 +58,7 @@ You will need to pass in an i18next instance by using initReactI18next
 Before posting an issue, please ensure that you don't have duplicate versions of
 `ì18next` and/or `react-i18next` installed. See [debug installation](#debug-installation)
 
+See also [cant-find-next-i18nextconfigjs](https://github.com/i18next/next-i18next/blob/master/TROUBLESHOOT.md#cant-find-next-i18nextconfigjs)
 
 ### Debug installation
 
