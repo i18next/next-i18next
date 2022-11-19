@@ -26,7 +26,7 @@ If you're using typescript type augmentation for your locale keys, they've been 
 Rename `@types/react-i18next.d.ts` to `@types/i18next.d.ts` and be sure to update the imports:
 
 ```typescript
-import 'i18next';
+import 'i18next'; // before v13.0.0 -> import 'react-i18next';
 import type common from '../public/locales/en/common.json';
 import type other from '../public/locales/en/other.json';
 
@@ -34,6 +34,7 @@ interface I18nNamespaces {
   common: typeof common,
   other: typeof other,
 }
+// before v13.0.0 -> declare module 'react-i18next'
 declare module 'i18next' {
   interface CustomTypeOptions {
     defaultNS: 'common',
