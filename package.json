@@ -6,7 +6,11 @@
   "funding": [
     {
       "type": "individual",
-      "url": "https://github.com/belgattitude"
+      "url": "https://locize.com/i18next.html"
+    },
+    {
+      "type": "individual",
+      "url": "https://www.i18next.com/how-to/faq#i18next-is-awesome.-how-can-i-support-the-project"
     },
     {
       "type": "individual",
@@ -14,11 +18,7 @@
     },
     {
       "type": "individual",
-      "url": "https://locize.com/i18next.html"
-    },
-    {
-      "type": "individual",
-      "url": "https://www.i18next.com/how-to/faq#i18next-is-awesome.-how-can-i-support-the-project"
+      "url": "https://github.com/belgattitude"
     }
   ],
   "main": "dist/commonjs/index.js",
