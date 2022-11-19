@@ -40,3 +40,13 @@ greenkeeper.json
 Procfile
 *.md
 scripts
+docs
+cypress
+cypress.config.ts
+jest.config.js
+.eslintrc
+.gitignore
+examples
+src
+.husky
+coverage
