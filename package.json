@@ -1,13 +1,9 @@
 {
   "name": "next-i18next",
-  "version": "12.1.0",
+  "version": "13.0.0",
   "repository": "git@github.com:i18next/next-i18next.git",
   "author": "i18next",
   "funding": [
-    {
-      "type": "individual",
-      "url": "https://locize.com"
-    },
     {
       "type": "individual",
       "url": "https://locize.com/i18next.html"
@@ -15,6 +11,14 @@
     {
       "type": "individual",
       "url": "https://www.i18next.com/how-to/faq#i18next-is-awesome.-how-can-i-support-the-project"
+    },
+    {
+      "type": "individual",
+      "url": "https://locize.com"
+    },
+    {
+      "type": "individual",
+      "url": "https://github.com/belgattitude"
     }
   ],
   "main": "dist/commonjs/index.js",

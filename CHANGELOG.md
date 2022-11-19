@@ -18,7 +18,7 @@ Details can be found in the [UPGRADING.md](https://github.com/i18next/next-i18ne
   ```
   
   This might solve issues with duplicates and multiple i18n context instances.
-  If you encounter any issue, please read the [Troubleshoot](https://github.com/i18next/next-i18next/blob/master/TROUBLESHOOT.md#multiple-instances) doc
+  If you encounter any issue, please read the [Troubleshoot](https://github.com/i18next/next-i18next/blob/master/TROUBLESHOOT.md) doc
   before posting an issue.
   
   
