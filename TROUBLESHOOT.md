@@ -1,9 +1,27 @@
 ## Troubleshoot
 
-### Can't find next-i18next.config.js
+### Issues
 
-When working in a monorepo or with a package manager that makes use of symlinks (ie pnpm),
-you might experience the following issue:
+#### Need to pass in an i18next instance
+
+The `next-i18next` / `react-i18next` packages are relying on a react context to
+share data. Due to the nature of nextjs/ssr/react, the variety of package managers,
+their configurations and versions, you might encounter the following warning:
+
+```
+You will need to pass in an i18next instance by using initReactI18next
+```
+
+To fix:
+
+1. Adapt your setup to [explicitly pass the config](#how-to-explicitly-pass-the-config) recommendations.
+2. Ensure no duplicate versions of `ì18next` and/or `react-i18next` co-exists. See [debug installation](#how-to-debug-installation).
+
+
+#### Can't find next-i18next.config.js
+
+In monorepo or package managers creating symlinks in node_modules (ie: pnpm) you
+might experience.
 
 ```
 (...)next-i18next/dist/commonjs/serverSideTranslations.js
@@ -11,7 +29,17 @@ Critical dependency: the request of a dependency is an expression
 Cannot find module '(...)app/next-i18next.config.js'
 ```
 
-As a workaround you can explicitly provide the configuration:
+You can solve it by [explicitly passing the config](#how-to-explicitly-pass-the-config). 
+
+
+
+### Recipes
+
+
+#### How to explicitly pass the config
+
+To fix [need to pass in an i18next instance](#need-to-pass-in-an-i18next-instance) and [can't find next-i18next.config.js](#cant-find-next-i18nextconfigjs)
+the best
 
 ```tsx
 // _app.tsx
@@ -44,27 +72,11 @@ export const getServerTranslations = async (
 };
 ```
 
+#### How to debug installation
 
-### Multiple instances
-
-The `next-i18next` / `react-i18next` packages are relying on a react context to 
-share data. Due to the nature of nextjs/ssr/react, the variety of package managers,
-their configurations and versions, you might encounter the following warning: 
-
-```
-You will need to pass in an i18next instance by using initReactI18next
-```
-
-Before posting an issue, please ensure that you don't have duplicate versions of
-`ì18next` and/or `react-i18next` installed. See [debug installation](#debug-installation)
-
-See also [cant-find-next-i18nextconfigjs](https://github.com/i18next/next-i18next/blob/master/TROUBLESHOOT.md#cant-find-next-i18nextconfigjs)
-
-### Debug installation
-
-Since v13.0.0, i18next and react-i18next must be installed in your app dependencies. 
+Since v13.0.0, i18next and react-i18next must be installed in your app dependencies.
 Some package managers might install them for you (auto install peer-deps). To avoid
-install issues, please ensure i18next is `>=22.0.3` / next-i18next `>=12.0.0` and that  you don't have duplicates: 
+install issues, please ensure i18next is `>=22.0.3` / next-i18next `>=12.0.0` and that  you don't have duplicates:
 
 | PM           | Check                            | Fix (only on semver)      |
 |--------------|----------------------------------|---------------------------|
@@ -77,7 +89,6 @@ Another way to list duplicate is to use `npm why -r next-i18next i18next`, `pnpm
 or `yarn why -R next-i18next && yarn why -R i18next`.
 
 After fixing potential duplicates, run an installation (or update). A new lock file should be generated.
-
 
 
 
