@@ -14,7 +14,7 @@ yarn add react-i18next i18next            # Yarn
 pnpm add react-i18next i18next --save     # PNPM
 ```
 
-Minimum versions supported are `i18next@^22.0.3` and `react-i18next@^12.0.0`.
+Minimum versions supported are `i18next@^22.0.6` and `react-i18next@^12.0.0`.
 
 This move was done in the hope to avoid issues regarding duplicates. In case of issue when
 uĝrading, see the [TROUBLESHOOT](https://github.com/i18next/next-i18next/blob/master/TROUBLESHOOT.md#multiple-instances)
