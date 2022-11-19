@@ -75,8 +75,12 @@ export const getServerTranslations = async (
 #### How to debug installation
 
 Since v13.0.0, i18next and react-i18next must be installed in your app dependencies.
-Some package managers might install them for you (auto install peer-deps). To avoid
-install issues, please ensure i18next is `>=22.0.3` / next-i18next `>=12.0.0` and that  you don't have duplicates:
+Some package managers might install them for you (auto install peer-deps). 
+
+To prevent install issue, ensure: 
+
+1. `"i18next": "^22.0.6"` and `"next-i18next": "^12.0.0"` are explicitly listed in your package.json dependencies
+2. check that you don't have duplicates in your install (especially with pnpm)
 
 | PM           | Check                            | Fix (only on semver)      |
 |--------------|----------------------------------|---------------------------|
