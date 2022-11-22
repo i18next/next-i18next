@@ -107,6 +107,7 @@
     "cypress": "^11.0.1",
     "es-check": "^7.0.1",
     "eslint": "^8.22.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jest": "^27.1.4",
