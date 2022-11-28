@@ -5,10 +5,14 @@ on:
     branches:
       - master
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - '**'
+    paths-ignore:
+      - 'docs/**'
+
+permissions:
+  contents: read
 
 jobs:
   test:
