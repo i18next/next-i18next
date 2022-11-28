@@ -8,7 +8,11 @@ import {
   DefaultNamespace,
   Translation,
 } from 'react-i18next'
-import { InitOptions, i18n as I18NextClient, TFunction as I18NextTFunction } from 'i18next'
+import {
+  InitOptions,
+  i18n as I18NextClient,
+  TFunction as I18NextTFunction,
+} from 'i18next'
 import { appWithTranslation, i18n } from './'
 
 type NextJsI18NConfig = {
@@ -20,7 +24,12 @@ export type UserConfig = {
   i18n: NextJsI18NConfig
   localeExtension?: string
   localePath?:
-  string | ((locale: string, namespace: string, missing: boolean) => string)
+    | string
+    | ((
+        locale: string,
+        namespace: string,
+        missing: boolean
+      ) => string)
   localeStructure?: string
   onPreInitI18next?: (i18n: I18n) => void
   reloadOnPrerender?: boolean
@@ -28,11 +37,12 @@ export type UserConfig = {
   use?: any[]
 } & InitOptions
 
-export type InternalConfig = Omit<UserConfig, 'i18n'> & NextJsI18NConfig & {
-  errorStackTraceLimit: number
-  preload: string[]
-  supportedLngs: string[]
-}
+export type InternalConfig = Omit<UserConfig, 'i18n'> &
+  NextJsI18NConfig & {
+    errorStackTraceLimit: number
+    preload: string[]
+    supportedLngs: string[]
+  }
 
 export type UseTranslation = typeof useTranslation
 export type AppWithTranslation = typeof appWithTranslation

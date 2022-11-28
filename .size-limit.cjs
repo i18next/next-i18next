@@ -1,20 +1,20 @@
 // @ts-check
 
-const fullEsmMaxSize = "5KB";
+const fullEsmMaxSize = '5KB'
 // Recent Nextjs version have some optimizations for commonjs that
 // aren't available on bare-bone webpack. don't worry about threshold
 // difference here for cjs. We can keep this till cjs is supported.
-const fullCjsMaxSize = "29KB";
+const fullCjsMaxSize = '29KB'
 
 const getSimpleExamplePageLimits = () => {
   const dir = './examples/simple/.next'
-  let manifest;
+  let manifest
   try {
-    manifest = require(`${dir}/build-manifest.json`);
+    manifest = require(`${dir}/build-manifest.json`)
   } catch (e) {
     throw new Error(
-        'Cannot find a NextJs build folder, did you forget to run build:examples ?'
-    );
+      'Cannot find a NextJs build folder, did you forget to run build:examples ?'
+    )
   }
   const limitCfg = {
     defaultSize: '90kb',
@@ -23,24 +23,24 @@ const getSimpleExamplePageLimits = () => {
       '/404': '90kb',
       '/_app': '100kb',
       '/_error': '80Kb',
-      '/second-page': '85Kb'
+      '/second-page': '85Kb',
     },
-  };
-  let pageLimits = [];
+  }
+  let pageLimits = []
   for (const [uri, paths] of Object.entries(manifest.pages)) {
     pageLimits.push({
       name: `Example app: page '${uri}'`,
       limit: limitCfg.pages?.[uri] ?? limitCfg.defaultSize,
       webpack: false,
-      path: paths.map(p => `${dir}/${p}`)
-    });
+      path: paths.map(p => `${dir}/${p}`),
+    })
   }
-  return pageLimits;
+  return pageLimits
 }
 
 const modifyWebpackConfig = config => {
-  config.resolve = {};
-  config.resolve.fallback = { "path": false, "fs": false };
+  config.resolve = {}
+  config.resolve.fallback = { path: false, fs: false }
 }
 
 /**
@@ -54,9 +54,9 @@ module.exports = [
   // Dist ESM full bundle
   // ###################################################
   {
-    name: "ESM (import everything *)",
-    path: ["dist/esm/index.js"],
-    import: "*",
+    name: 'ESM (import everything *)',
+    path: ['dist/esm/index.js'],
+    import: '*',
     limit: fullEsmMaxSize,
     modifyWebpackConfig,
   },
@@ -66,9 +66,9 @@ module.exports = [
   //      cjs very well. This explains threshold differences
   // ###################################################
   {
-    name: "CJS (require everything *)",
-    path: ["dist/commonjs/index.js"],
-    import: "*",
+    name: 'CJS (require everything *)',
+    path: ['dist/commonjs/index.js'],
+    import: '*',
     webpack: true,
     limit: fullCjsMaxSize,
     modifyWebpackConfig,
@@ -77,4 +77,4 @@ module.exports = [
   // Example apps
   // ###################################################
   ...getSimpleExamplePageLimits(),
-];
+]

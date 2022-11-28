@@ -12,9 +12,7 @@
             }
           }
         ],
-        [
-          "@babel/preset-react"
-        ]
+        ["@babel/preset-react"]
       ]
     },
     "cjs": {
@@ -59,10 +57,7 @@
           {
             "modules": false,
             "targets": {
-              "browsers": [
-                "last 2 versions",
-                "ie >= 11"
-              ]
+              "browsers": ["last 2 versions", "ie >= 11"]
             }
           }
         ],
@@ -103,9 +98,7 @@
             "modules": "commonjs"
           }
         ],
-        [
-          "@babel/preset-react"
-        ]
+        ["@babel/preset-react"]
       ],
       "plugins": [
         "@babel/proposal-class-properties",

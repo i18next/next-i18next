@@ -5,7 +5,10 @@ describe('basic e2e test run', () => {
     // Test English content
     cy.contains('A simple example')
     cy.contains('To second page').click()
-    cy.location('pathname', { timeout: 10000 }).should('equal', '/second-page')
+    cy.location('pathname', { timeout: 10000 }).should(
+      'equal',
+      '/second-page'
+    )
     cy.contains('A second page')
     cy.contains('Back to home').click()
     cy.location('pathname', { timeout: 10000 }).should('equal', '/')
@@ -13,13 +16,22 @@ describe('basic e2e test run', () => {
 
     // Test German content
     cy.contains('Change locale').click()
-    cy.location('pathname', { timeout: 10000 }).should('equal', '/de')
+    cy.location('pathname', { timeout: 10000 }).should(
+      'equal',
+      '/de'
+    )
     cy.contains('Ein einfaches Beispiel')
     cy.contains('Zur zweiten Seite').click()
-    cy.location('pathname', { timeout: 10000 }).should('equal', '/de/second-page')
+    cy.location('pathname', { timeout: 10000 }).should(
+      'equal',
+      '/de/second-page'
+    )
     cy.contains('Eine zweite Seite')
     cy.contains('Zurück zur Hauptseite').click()
-    cy.location('pathname', { timeout: 10000 }).should('equal', '/de')
+    cy.location('pathname', { timeout: 10000 }).should(
+      'equal',
+      '/de'
+    )
     cy.contains('Ein einfaches Beispiel')
 
     cy.contains('Sprache wechseln zu').click()

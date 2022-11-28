@@ -28,12 +28,13 @@ jest.mock('react-i18next', () => ({
   __esmodule: true,
 }))
 
-const MyApp = ({ Component, pageProps }: AppProps<{ example: string }>) => {
+const MyApp = ({
+  Component,
+  pageProps,
+}: AppProps<{ example: string }>) => {
   Component
   pageProps
-  return (
-    <div>Hello world</div>
-  )
+  return <div>Hello world</div>
 }
 
 const DummyApp = appWithTranslation(MyApp)
@@ -56,21 +57,17 @@ const props = {
   },
 } as any
 
-const renderComponent = () =>
-  renderToString(
-    <DummyApp
-      {...props}
-    />,
-  )
+const renderComponent = () => renderToString(<DummyApp {...props} />)
 
 describe('appWithTranslation', () => {
   beforeEach(() => {
-    (fs.existsSync as jest.Mock).mockReturnValue(true);
-    (fs.readdirSync as jest.Mock).mockReturnValue([]);
-    (I18nextProvider as jest.Mock).mockImplementation(DummyI18nextProvider)
+    ;(fs.existsSync as jest.Mock).mockReturnValue(true)
+    ;(fs.readdirSync as jest.Mock).mockReturnValue([])
+    ;(I18nextProvider as jest.Mock).mockImplementation(
+      DummyI18nextProvider
+    )
   })
   afterEach(jest.resetAllMocks)
-
 
   it('returns an I18nextProvider', () => {
     renderComponent()
