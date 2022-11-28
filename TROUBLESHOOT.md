@@ -13,9 +13,8 @@ You will need to pass in an i18next instance by using initReactI18next
 ```
 
 To fix:
-
-1. Adapt your setup to [explicitly pass the config](#how-to-explicitly-pass-the-config) recommendations.
-2. Ensure no duplicate versions of `ì18next` and/or `react-i18next` co-exists. See [debug installation](#how-to-debug-installation).
+1. Ensure no duplicate versions of `ì18next` and/or `react-i18next` co-exists. See [debug installation](#how-to-debug-installation).
+2. Optionally adapt your setup to [explicitly pass the config](#how-to-explicitly-pass-the-config) recommendations.
 
 
 #### Can't find next-i18next.config.js
@@ -29,7 +28,7 @@ Critical dependency: the request of a dependency is an expression
 Cannot find module '(...)app/next-i18next.config.js'
 ```
 
-You can solve it by [explicitly passing the config](#how-to-explicitly-pass-the-config). 
+You can solve it by [explicitly passing the config](#how-to-explicitly-pass-the-config).
 
 
 
@@ -38,8 +37,8 @@ You can solve it by [explicitly passing the config](#how-to-explicitly-pass-the-
 
 #### How to explicitly pass the config
 
-To fix [need to pass in an i18next instance](#need-to-pass-in-an-i18next-instance) and [can't find next-i18next.config.js](#cant-find-next-i18nextconfigjs)
-the best
+To fix [can't find next-i18next.config.js](#cant-find-next-i18nextconfigjs) (and eventual [need to pass in an i18next instance](#need-to-pass-in-an-i18next-instance))
+a possible way is to pass the `next-i18n.config.js explicitly.
 
 ```tsx
 // _app.tsx
@@ -75,9 +74,9 @@ export const getServerTranslations = async (
 #### How to debug installation
 
 Since v13.0.0, i18next and react-i18next must be installed in your app dependencies.
-Some package managers might install them for you (auto install peer-deps). 
+Some package managers might install them for you (auto install peer-deps).
 
-To prevent install issue, ensure: 
+To prevent install issue, ensure:
 
 1. `"i18next": "^22.0.6"` and `"next-i18next": "^12.0.0"` are explicitly listed in your package.json dependencies
 2. check that you don't have duplicates in your install (especially with pnpm)
