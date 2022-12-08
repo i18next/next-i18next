@@ -31,7 +31,25 @@ const Homepage = (
       <main>
         <Header heading={t('h1')} title={t('title')} />
         <div style={{ display: 'inline-flex', width: '90%' }}>
-          <div style={{ width: '50%' }}>
+          <div style={{ width: '33%' }}>
+            <h3 style={{ minHeight: 70 }}>
+              {t('blog.appDir.question')}
+            </h3>
+            <p>
+              <Trans i18nKey="blog.appDir.answer">
+                Then check out 
+                <a href={t('blog.optimized.link')}>this blog post</a>
+                .
+              </Trans>
+            </p>
+            <a href={t('blog.appDir.link')}>
+              <img
+                style={{ width: '50%' }}
+                src="https://locize.com/blog/next-13-app-dir-i18n/next-13-app-dir-i18n.jpg"
+              />
+            </a>
+          </div>
+          <div style={{ width: '33%' }}>
             <h3 style={{ minHeight: 70 }}>
               {t('blog.optimized.question')}
             </h3>
@@ -49,7 +67,7 @@ const Homepage = (
               />
             </a>
           </div>
-          <div style={{ width: '50%' }}>
+          <div style={{ width: '33%' }}>
             <h3 style={{ minHeight: 70 }}>
               {t('blog.ssg.question')}
             </h3>
