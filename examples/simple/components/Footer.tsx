@@ -17,11 +17,11 @@ export const Footer: FC = () => {
         }}
       >
         <Trans i18nKey="helpLocize" t={t}>
-          With using{' '}
+          With using 
           <a href="https://locize.com" target="_new">
             locize
-          </a>{' '}
-          you directly support the future of{' '}
+          </a>
+          you directly support the future of
           <a href="https://www.i18next.com" target="_new">
             i18next
           </a>

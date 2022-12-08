@@ -37,7 +37,7 @@ const Homepage = (
             </h3>
             <p>
               <Trans i18nKey="blog.optimized.answer">
-                Then you may have a look at{' '}
+                Then you may have a look at
                 <a href={t('blog.optimized.link')}>this blog post</a>
                 .
               </Trans>
@@ -55,7 +55,7 @@ const Homepage = (
             </h3>
             <p>
               <Trans i18nKey="blog.ssg.answer">
-                Then you may have a look at{' '}
+                Then you may have a look at
                 <a href={t('blog.ssg.link')}>this blog post</a>.
               </Trans>
             </p>
