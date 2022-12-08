@@ -75,7 +75,7 @@ Some package managers might install them for you (auto install peer-deps).
 
 To prevent install issue, ensure:
 
-1. `"i18next": "^22.0.6"` and `"next-i18next": "^12.0.0"` are explicitly listed in your package.json dependencies
+1. `"i18next": "^22.0.6"` and `"react-i18next": "^12.0.0"` are explicitly listed in your package.json dependencies
 2. check that you don't have duplicates in your install (especially with pnpm)
 
 | PM      | Check                            | Fix (only on semver)      |
