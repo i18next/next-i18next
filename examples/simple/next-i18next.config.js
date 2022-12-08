@@ -1,14 +1,17 @@
-// @ts-check
+//because of this it doesn't complain in the _app.tsx
+// // @ts-check
 
-/**
- * @type {import('next-i18next').UserConfig}
- */
+// /**
+//  * @type {import('next-i18next').UserConfig}
+//  */
 module.exports = {
   // https://www.i18next.com/overview/configuration-options#logging
   debug: process.env.NODE_ENV === 'development',
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'de'],
+    // add this line
+    localeDetection: false,
   },
   /** To avoid issues when deploying to some paas (vercel...) */
   localePath:
