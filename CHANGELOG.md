@@ -1,3 +1,9 @@
+## 13.0.1
+
+### Fix
+
+- Fix missing `i18n.localeDetection` in UserConfig, see [#2057](https://github.com/i18next/next-i18next/pull/2057).
+
 ## 13.0.0
 
 The v13.0.0 release is a major version to improve stability and general experience.
