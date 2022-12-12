@@ -3,6 +3,13 @@
 ### Fix
 
 - Fix missing `i18n.localeDetection` in UserConfig, see [#2057](https://github.com/i18next/next-i18next/pull/2057).
+- Update examples to latest i18next in [#2058](https://github.com/i18next/next-i18next/pull/2058)
+
+**Caution**
+
+If you're experiencing typecheck errors regarding keys: ensure `i18next` is at least `^22.4.3` in your
+package.json (then run install), see [#2058](https://github.com/i18next/next-i18next/pull/2058).
+
 
 ## 13.0.0
 
