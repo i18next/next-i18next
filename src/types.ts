@@ -26,7 +26,7 @@ type NextJsI18NConfig = {
     domain: string;
     http?: true;
     locales?: string[];
-  };
+  }[];
   localeDetection?: false;
   locales: string[];
 }
