@@ -15,9 +15,20 @@ import {
 } from 'i18next'
 import { appWithTranslation, i18n } from './'
 
+/**
+ * Inlined from `import('next').NextConfig.i18n` v13.0.6. As we support
+ * multiple nextjs versions it's safer to inline and keep it up-to-date.
+ */
 type NextJsI18NConfig = {
-  defaultLocale: string
-  locales: string[]
+  defaultLocale: string;
+  domains?: {
+    defaultLocale: string;
+    domain: string;
+    http?: true;
+    locales?: string[];
+  }[];
+  localeDetection?: false;
+  locales: string[];
 }
 
 export type UserConfig = {
