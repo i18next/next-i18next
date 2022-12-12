@@ -12,11 +12,11 @@
     "nuke:install": "rimraf ./node_modules ./package-lock.json"
   },
   "dependencies": {
-    "i18next": "^22.0.6",
+    "i18next": "^22.4.1",
     "next": "^13.0.6",
     "next-i18next": "^13.0.0",
     "react": "^18.2.0",
-    "react-i18next": "^12.0.0",
+    "react-i18next": "^12.1.1",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
@@ -26,6 +26,6 @@
     "eslint-config-next": "^13.0.6",
     "rimraf": "^3.0.2",
     "picocolors": "^1.0.0",
-    "typescript": "^4.9.3"
+    "typescript": "^4.9.4"
   }
 }
