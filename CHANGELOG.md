@@ -1,3 +1,9 @@
+## 13.0.2
+
+### Fix
+
+- Types: DefaultNamespace import, see [#2061](https://github.com/i18next/next-i18next/pull/2061).
+
 ## 13.0.1
 
 ### Fix
