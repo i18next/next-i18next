@@ -5,13 +5,13 @@ import {
   Trans,
   withTranslation,
   WithTranslation as ReactI18nextWithTranslation,
-  DefaultNamespace,
   Translation,
 } from 'react-i18next'
 import {
   InitOptions,
   i18n as I18NextClient,
   TFunction as I18NextTFunction,
+  TypeOptions,
 } from 'i18next'
 import { appWithTranslation, i18n } from './'
 
@@ -20,16 +20,18 @@ import { appWithTranslation, i18n } from './'
  * multiple nextjs versions it's safer to inline and keep it up-to-date.
  */
 type NextJsI18NConfig = {
-  defaultLocale: string;
+  defaultLocale: string
   domains?: {
-    defaultLocale: string;
-    domain: string;
-    http?: true;
-    locales?: string[];
-  }[];
-  localeDetection?: false;
-  locales: string[];
+    defaultLocale: string
+    domain: string
+    http?: true
+    locales?: string[]
+  }[]
+  localeDetection?: false
+  locales: string[]
 }
+
+type DefaultNamespace = TypeOptions['defaultNS']
 
 export type UserConfig = {
   i18n: NextJsI18NConfig
