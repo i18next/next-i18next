@@ -228,6 +228,14 @@ export const createConfig = (
           return unique(allNamespaces)
         }
 
+        const prefix = userConfig?.interpolation?.prefix ?? '{{'
+        const suffix = userConfig?.interpolation?.suffix ?? '}}'
+        if (localeStructure.indexOf(`${prefix}lng${suffix}`) > localeStructure.indexOf(`${prefix}ns${suffix}`)) {
+          throw new Error(
+            'Must provide all namespaces in ns option if using a localeStructure that is not namespace-listable like lng/ns'
+          )
+        }
+
         combinedConfig.ns = getNamespaces(
           unique([
             lng,

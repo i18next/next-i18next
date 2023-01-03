@@ -1,3 +1,7 @@
+## 13.0.3
+
+- Error if custom localeStructure provided, but no ns option defined.
+
 ## 13.0.2
 
 ### Fix
