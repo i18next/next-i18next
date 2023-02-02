@@ -1,3 +1,7 @@
+## 13.1.2
+
+- different code snippet for #2084 to try to fix for dynamic pages
+
 ## 13.1.1
 
 - log config path if no config found

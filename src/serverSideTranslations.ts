@@ -9,7 +9,7 @@ import { globalI18n } from './appWithTranslation'
 import { UserConfig, SSRConfig } from './types'
 import { getFallbackForLng, unique } from './utils'
 
-const { I18NEXT_DEFAULT_CONFIG_PATH: DEFAULT_CONFIG_PATH = './next-i18next.config.js' } = process.env
+const DEFAULT_CONFIG_PATH = process.env.I18NEXT_DEFAULT_CONFIG_PATH || './next-i18next.config.js'
 
 export const serverSideTranslations = async (
   initialLocale: string,
