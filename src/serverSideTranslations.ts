@@ -24,7 +24,8 @@ export const serverSideTranslations = async (
   }
 
   let userConfig = configOverride
-  const configPath = path.resolve(process.env.I18NEXT_DEFAULT_CONFIG_PATH || DEFAULT_CONFIG_PATH)
+  // const configPath = path.resolve(process.env.I18NEXT_DEFAULT_CONFIG_PATH || DEFAULT_CONFIG_PATH)
+  const configPath = path.resolve(DEFAULT_CONFIG_PATH)
 
   if (
     !userConfig &&

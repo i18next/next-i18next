@@ -1,3 +1,7 @@
+## 13.1.4
+
+- revert #2084
+
 ## 13.1.3
 
 - another code snippet for #2084 to try to fix for dynamic pages
