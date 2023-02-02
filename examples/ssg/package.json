@@ -18,7 +18,7 @@
   "dependencies": {
     "i18next": "22.4.9",
     "next": "13.1.6",
-    "next-i18next": "13.1.0",
+    "next-i18next": "13.1.1",
     "next-language-detector": "^1.0.2",
     "react": "^18.2.0",
     "react-i18next": "^12.1.4",
