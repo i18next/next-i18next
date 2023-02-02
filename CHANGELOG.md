@@ -1,3 +1,7 @@
+## 13.1.1
+
+- log config path if no config found
+
 ## 13.1.0
 
 - feat(server-side): custom default config path [#2084](https://github.com/i18next/next-i18next/pull/2084)

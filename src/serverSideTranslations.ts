@@ -33,7 +33,7 @@ export const serverSideTranslations = async (
   }
 
   if (userConfig === null) {
-    throw new Error('next-i18next was unable to find a user config')
+    throw new Error(`next-i18next was unable to find a user config at ${path.resolve(DEFAULT_CONFIG_PATH)}`)
   }
 
   const config = createConfig({
