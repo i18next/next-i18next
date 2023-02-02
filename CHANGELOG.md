@@ -1,3 +1,7 @@
+## 13.1.0
+
+- feat(server-side): custom default config path [#2084](https://github.com/i18next/next-i18next/pull/2084)
+
 ## 13.0.3
 
 - Error if custom localeStructure provided, but no ns option defined.
