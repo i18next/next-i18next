@@ -9,7 +9,7 @@ import { globalI18n } from './appWithTranslation'
 import { UserConfig, SSRConfig } from './types'
 import { getFallbackForLng, unique } from './utils'
 
-const DEFAULT_CONFIG_PATH = process.env.I18NEXT_DEFAULT_CONFIG_PATH || './next-i18next.config.js'
+const DEFAULT_CONFIG_PATH = './next-i18next.config.js'
 
 export const serverSideTranslations = async (
   initialLocale: string,
@@ -24,16 +24,17 @@ export const serverSideTranslations = async (
   }
 
   let userConfig = configOverride
+  const configPath = path.resolve(process.env.I18NEXT_DEFAULT_CONFIG_PATH || DEFAULT_CONFIG_PATH)
 
   if (
     !userConfig &&
-    fs.existsSync(path.resolve(DEFAULT_CONFIG_PATH))
+    fs.existsSync(configPath)
   ) {
-    userConfig = await import(path.resolve(DEFAULT_CONFIG_PATH))
+    userConfig = await import(configPath)
   }
 
   if (userConfig === null) {
-    throw new Error(`next-i18next was unable to find a user config at ${path.resolve(DEFAULT_CONFIG_PATH)}`)
+    throw new Error(`next-i18next was unable to find a user config at ${configPath}`)
   }
 
   const config = createConfig({
