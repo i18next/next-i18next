@@ -24,10 +24,10 @@ type NextJsI18NConfig = {
   domains?: {
     defaultLocale: string
     domain: string
-    http?: true
+    http?: boolean
     locales?: string[]
   }[]
-  localeDetection?: false
+  localeDetection?: boolean
   locales: string[]
 }
 
