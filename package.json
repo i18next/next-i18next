@@ -124,7 +124,7 @@
     "prettier": "2.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-i18next": "^12.1.1",
+    "react-i18next": "^12.1.5",
     "rimraf": "^3.0.2",
     "size-limit": "^8.1.0",
     "start-server-and-test": "^1.15.2",
@@ -142,6 +142,6 @@
     "i18next": "^22.0.6",
     "next": ">= 12.0.0",
     "react": ">= 17.0.2",
-    "react-i18next": "^12.1.1"
+    "react-i18next": "^12.1.5"
   }
 }
