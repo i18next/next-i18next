@@ -329,7 +329,6 @@ For example, if you want to use `{` and `}` the config would look like this:
 }
 ```
 
-<!-- 
 #### Custom `next-i18next.config.js` path
 
 If you want to change the default config path, you can set the environment variable `I18NEXT_DEFAULT_CONFIG_PATH`.
@@ -357,7 +356,8 @@ module.exports = {
 ```
 
 This means that the i18n configuration file will be in the same directory as `next.config.js` and it doesn't matter where your current working directory is. This helps for example for `nx` when you have monorepo and start your application from project root but the application is in `apps/{appName}`.
--->
+
+**Notice** If your config `next-i18next.config.js` is not in the same directory as `next.config.js`, you must copy it manually (or by custom script).
 
 ## Notes
 
