@@ -9,7 +9,17 @@ import { globalI18n } from './appWithTranslation'
 import { UserConfig, SSRConfig } from './types'
 import { getFallbackForLng, unique } from './utils'
 
-const DEFAULT_CONFIG_PATH = './next-i18next.config.js'
+let DEFAULT_CONFIG_PATH = './next-i18next.config.js'
+
+/**
+ * One line expression like `const { I18NEXT_DEFAULT_CONFIG_PATH: DEFAULT_CONFIG_PATH = './next-i18next.config.js' } = process.env;`
+ * is breaking the build, so keep it like this.
+ *
+ * @see https://github.com/i18next/next-i18next/pull/2084#issuecomment-1420511358
+ */
+if (process.env.I18NEXT_DEFAULT_CONFIG_PATH) {
+  DEFAULT_CONFIG_PATH = process.env.I18NEXT_DEFAULT_CONFIG_PATH
+}
 
 export const serverSideTranslations = async (
   initialLocale: string,
@@ -24,7 +34,6 @@ export const serverSideTranslations = async (
   }
 
   let userConfig = configOverride
-  // const configPath = path.resolve(process.env.I18NEXT_DEFAULT_CONFIG_PATH || DEFAULT_CONFIG_PATH)
   const configPath = path.resolve(DEFAULT_CONFIG_PATH)
 
   if (
