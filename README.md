@@ -216,6 +216,8 @@ module.exports = {
 
 Be aware that using `fallbackLng` and `nonExplicitSupportedLngs` can easily increase the initial size of the page.
 
+fyi: Setting `fallbackLng` to `false` will NOT serialize your fallback language (usually `defaultLocale`). This will decrease the size of your initial page load.
+
 ### 6. Advanced configuration
 
 #### Passing other config options
