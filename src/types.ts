@@ -12,6 +12,7 @@ import {
   i18n as I18NextClient,
   TFunction as I18NextTFunction,
   TypeOptions,
+  Namespace,
 } from 'i18next'
 import { appWithTranslation, i18n } from './'
 
@@ -73,7 +74,7 @@ export type SSRConfig = {
   _nextI18Next?: {
     initialI18nStore: any
     initialLocale: string
-    ns: string[]
+    ns: Namespace[]
     userConfig: UserConfig | null
   }
 }
