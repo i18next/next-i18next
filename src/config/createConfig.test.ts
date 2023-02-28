@@ -304,6 +304,26 @@ describe('createConfig', () => {
           'public/locales/en/common.json'
         )
       })
+
+      it('uses user provided prefix/suffix without user provided localeStructure', () => {
+        ;(fs.existsSync as jest.Mock).mockReset()
+        ;(fs.existsSync as jest.Mock).mockReturnValueOnce(false)
+
+        const config = createConfig.bind(null, {
+          interpolation: {
+            prefix: '^^',
+            suffix: '$$',
+          },
+          lng: 'en',
+        } as UserConfig)
+
+        expect(config).toThrow(
+          'Default namespace not found at public/locales/en/common.json'
+        )
+        expect(fs.existsSync).toHaveBeenCalledWith(
+          'public/locales/en/common.json'
+        )
+      })
     })
 
     describe('hasCustomBackend', () => {
