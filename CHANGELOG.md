@@ -1,3 +1,7 @@
+## 13.1.6
+
+- fix: allow user provided affixes to be used without providing localeStructure [#2100](https://github.com/i18next/next-i18next/pull/2100)"
+
 ## 13.1.5
 
 - [#2089](https://github.com/i18next/next-i18next/pull/2089), more stable impelementation of "feat(server-side): custom default config path [#2084](https://github.com/i18next/next-i18next/pull/2084)"
