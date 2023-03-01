@@ -1,3 +1,7 @@
+## 13.2.0
+
+- types: Update serverSideTranslation args type [#2097](https://github.com/i18next/next-i18next/pull/2097)"
+
 ## 13.1.6
 
 - fix: allow user provided affixes to be used without providing localeStructure [#2100](https://github.com/i18next/next-i18next/pull/2100)"

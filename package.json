@@ -15,10 +15,6 @@
     {
       "type": "individual",
       "url": "https://locize.com"
-    },
-    {
-      "type": "individual",
-      "url": "https://github.com/belgattitude"
     }
   ],
   "main": "dist/commonjs/index.js",
