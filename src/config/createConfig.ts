@@ -33,7 +33,6 @@ export const createConfig = (
     lng,
     localeExtension,
     localePath,
-    localeStructure,
     nonExplicitSupportedLngs,
   } = combinedConfig
 
@@ -53,7 +52,15 @@ export const createConfig = (
       [combinedConfig.fallbackLng] = locales
   }
 
-  const { fallbackLng } = combinedConfig
+  const userPrefix = userConfig?.interpolation?.prefix;
+  const userSuffix = userConfig?.interpolation?.suffix;
+  const prefix = userPrefix ?? '{{';
+  const suffix = userSuffix ?? '}}';
+  if (typeof userConfig?.localeStructure !== 'string' && (userPrefix || userSuffix)) {
+    combinedConfig.localeStructure = `${prefix}lng${suffix}/${prefix}ns${suffix}`;
+  }
+
+  const { fallbackLng, localeStructure } = combinedConfig
 
   if (nonExplicitSupportedLngs) {
     const createFallbackObject = (
@@ -108,8 +115,6 @@ export const createConfig = (
         typeof lng !== 'undefined'
       ) {
         if (typeof localePath === 'string') {
-          const prefix = userConfig?.interpolation?.prefix ?? '{{'
-          const suffix = userConfig?.interpolation?.suffix ?? '}}'
           const defaultLocaleStructure = localeStructure
             .replace(`${prefix}lng${suffix}`, lng)
             .replace(`${prefix}ns${suffix}`, defaultNS)
@@ -228,8 +233,6 @@ export const createConfig = (
           return unique(allNamespaces)
         }
 
-        const prefix = userConfig?.interpolation?.prefix ?? '{{'
-        const suffix = userConfig?.interpolation?.suffix ?? '}}'
         if (localeStructure.indexOf(`${prefix}lng${suffix}`) > localeStructure.indexOf(`${prefix}ns${suffix}`)) {
           throw new Error(
             'Must provide all namespaces in ns option if using a localeStructure that is not namespace-listable like lng/ns'

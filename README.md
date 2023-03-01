@@ -234,6 +234,7 @@ module.exports = {
     typeof window === 'undefined'
       ? require('path').resolve('./my-custom/path')
       : '/public/my-custom/path',
+  ns: ['common']
 }
 ```
 
@@ -307,6 +308,8 @@ This option will reload your translations whenever `serverSideTranslations` is c
 | `onPreInitI18next`  | `undefined`          | i.e. `(i18n) => i18n.on('failedLoading', handleFailedLoading)` |
 
 `localePath` as a function is of the form `(locale: string, namespace: string, missing: boolean) => string` returning the entire path including filename and extension. When `missing` is true, return the path for the `addPath` option of `i18next-fs-backend`, when false, return the path for the `loadPath` option. [More info at the `i18next-fs-backend` repo.](https://github.com/i18next/i18next-fs-backend/tree/master#backend-options)
+<br />
+If the localePath is a function, make sure you also define the ns option, because on server side we're not able to preload the namespaces then.
 
 All other [i18next options](https://www.i18next.com/overview/configuration-options) and [react-i18next options](https://react.i18next.com/latest/i18next-instance) can be passed in as well.
 
