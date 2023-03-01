@@ -8,6 +8,7 @@ import { globalI18n } from './appWithTranslation'
 
 import { UserConfig, SSRConfig } from './types'
 import { getFallbackForLng, unique } from './utils'
+import { Namespace } from 'i18next'
 
 let DEFAULT_CONFIG_PATH = './next-i18next.config.js'
 
@@ -22,8 +23,8 @@ if (process.env.I18NEXT_DEFAULT_CONFIG_PATH) {
 }
 
 export const serverSideTranslations = async (
-  initialLocale: string,
-  namespacesRequired: string[] | undefined = undefined,
+  initialLocale: Namespace[number],
+  namespacesRequired: Namespace[number][] | undefined = undefined,
   configOverride: UserConfig | null = null,
   extraLocales: string[] | false = false
 ): Promise<SSRConfig> => {
