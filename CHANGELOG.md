@@ -1,3 +1,7 @@
+## 13.2.1
+
+- types: fix serverSideTranslations args [#2104](https://github.com/i18next/next-i18next/pull/2104)"
+
 ## 13.2.0
 
 - types: Update serverSideTranslation args type [#2097](https://github.com/i18next/next-i18next/pull/2097)"
