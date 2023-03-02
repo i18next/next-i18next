@@ -22,9 +22,13 @@ if (process.env.I18NEXT_DEFAULT_CONFIG_PATH) {
   DEFAULT_CONFIG_PATH = process.env.I18NEXT_DEFAULT_CONFIG_PATH
 }
 
+type ArrayElementOrSelf<T> = T extends Array<infer U> ? U[] : T[]
+
 export const serverSideTranslations = async (
-  initialLocale: Namespace[number],
-  namespacesRequired: Namespace[number][] | undefined = undefined,
+  initialLocale: string,
+  namespacesRequired:
+    | ArrayElementOrSelf<Namespace>
+    | undefined = undefined,
   configOverride: UserConfig | null = null,
   extraLocales: string[] | false = false
 ): Promise<SSRConfig> => {
