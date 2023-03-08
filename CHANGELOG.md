@@ -1,3 +1,7 @@
+## 13.2.2
+
+- pageProps may be undefined on strange setups [#2109](https://github.com/i18next/next-i18next/issues/2109)"
+
 ## 13.2.1
 
 - types: fix serverSideTranslations args [#2104](https://github.com/i18next/next-i18next/pull/2104)"

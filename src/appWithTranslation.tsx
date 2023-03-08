@@ -24,7 +24,7 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
   const AppWithTranslation = (
     props: Props & { pageProps: Props['pageProps'] & SSRConfig }
   ) => {
-    const { _nextI18Next } = props.pageProps
+    const { _nextI18Next } = props.pageProps || {} // pageProps may be undefined on strange setups, i.e. https://github.com/i18next/next-i18next/issues/2109
     let locale: string | undefined =
       _nextI18Next?.initialLocale ?? props?.router?.locale
     const ns = _nextI18Next?.ns
