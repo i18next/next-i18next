@@ -9,14 +9,6 @@ module.exports = {
   arrowParens: 'avoid',
   bracketSpacing: true,
   endOfLine: 'lf', // end_of_line = lf
-  overrides: [
-    {
-      files: '**/*.{yml,yaml,json,md}',
-      options: {
-        singleQuote: false,
-      },
-    },
-  ],
   printWidth: 69, // default: 80
   semi: false, // default: true
   singleQuote: true, // default: false

@@ -76,8 +76,8 @@ This tells `next-i18next` what your `defaultLocale` and other locales are, so th
 ```js
 module.exports = {
   i18n: {
-    defaultLocale: "en",
-    locales: ["en", "de"],
+    defaultLocale: 'en',
+    locales: ['en', 'de'],
   },
 }
 ```
@@ -87,7 +87,7 @@ Now, create or modify your `next.config.js` file, by passing the `i18n` object i
 #### [`next.config.js`](https://nextjs.org/docs/api-reference/next.config.js/introduction)
 
 ```js
-const { i18n } = require("./next-i18next.config")
+const { i18n } = require('./next-i18next.config')
 
 module.exports = {
   i18n,
@@ -101,7 +101,7 @@ There are three functions that `next-i18next` exports, which you will need to us
 This is a HOC which wraps your [`_app`](https://nextjs.org/docs/advanced-features/custom-app):
 
 ```tsx
-import { appWithTranslation } from "next-i18next"
+import { appWithTranslation } from 'next-i18next'
 
 const MyApp = ({ Component, pageProps }) => (
   <Component {...pageProps} />
@@ -117,14 +117,14 @@ The `appWithTranslation` HOC is primarily responsible for adding a [`I18nextProv
 This is an async function that you need to include on your page-level components, via either [`getStaticProps`](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [`getServerSideProps`](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) (depending on your use case):
 
 ```tsx
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export async function getStaticProps({ locale }) {
   return {
     props: {
       ...(await serverSideTranslations(locale, [
-        "common",
-        "footer",
+        'common',
+        'footer',
       ])),
       // Will be passed to the page component as props
     },
@@ -145,14 +145,14 @@ This is the hook which you'll actually use to do the translation itself. The `us
 **Do NOT use the `useTranslation` export of `react-i18next`, but ONLY use the on of `next-i18next`!**
 
 ```tsx
-import { useTranslation } from "next-i18next"
+import { useTranslation } from 'next-i18next'
 
 export const Footer = () => {
-  const { t } = useTranslation("footer")
+  const { t } = useTranslation('footer')
 
   return (
     <footer>
-      <p>{t("description")}</p>
+      <p>{t('description')}</p>
     </footer>
   )
 }
@@ -202,12 +202,12 @@ Additionally `nonExplicitSupportedLngs` can be set to `true` to support all vari
 ```js
 module.exports = {
   i18n: {
-    defaultLocale: "en",
-    locales: ["en", "fr", "de-AT", "de-DE", "de-CH"],
+    defaultLocale: 'en',
+    locales: ['en', 'fr', 'de-AT', 'de-DE', 'de-CH'],
   },
   fallbackLng: {
-    default: ["en"],
-    "de-CH": ["fr"],
+    default: ['en'],
+    'de-CH': ['fr'],
   },
   nonExplicitSupportedLngs: true,
   // de, fr and en will be loaded as fallback languages for de-CH
@@ -227,14 +227,14 @@ If you need to modify more advanced configuration options, you can pass them via
 ```js
 module.exports = {
   i18n: {
-    defaultLocale: "en",
-    locales: ["en", "de"],
+    defaultLocale: 'en',
+    locales: ['en', 'de'],
   },
   localePath:
-    typeof window === "undefined"
-      ? require("path").resolve("./my-custom/path")
-      : "/public/my-custom/path",
-  ns: ["common"],
+    typeof window === 'undefined'
+      ? require('path').resolve('./my-custom/path')
+      : '/public/my-custom/path',
+  ns: ['common'],
 }
 ```
 
@@ -252,8 +252,8 @@ Reason: `function` cannot be serialized as JSON. Please only return JSON seriali
 To fix this, you'll need to set `config.serializeConfig` to `false`, and manually pass your config into `appWithTranslation`:
 
 ```tsx
-import { appWithTranslation } from "next-i18next"
-import nextI18NextConfig from "../next-i18next.config.js"
+import { appWithTranslation } from 'next-i18next'
+import nextI18NextConfig from '../next-i18next.config.js'
 
 const MyApp = ({ Component, pageProps }) => (
   <Component {...pageProps} />
@@ -263,15 +263,15 @@ export default appWithTranslation(MyApp, nextI18NextConfig)
 ```
 
 ```tsx
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-import nextI18NextConfig from "../next-i18next.config.js"
+import nextI18NextConfig from '../next-i18next.config.js'
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
     ...(await serverSideTranslations(
       locale,
-      ["common", "footer"],
+      ['common', 'footer'],
       nextI18NextConfig
     )),
   },
