@@ -52,12 +52,15 @@ export const createConfig = (
       [combinedConfig.fallbackLng] = locales
   }
 
-  const userPrefix = userConfig?.interpolation?.prefix;
-  const userSuffix = userConfig?.interpolation?.suffix;
-  const prefix = userPrefix ?? '{{';
-  const suffix = userSuffix ?? '}}';
-  if (typeof userConfig?.localeStructure !== 'string' && (userPrefix || userSuffix)) {
-    combinedConfig.localeStructure = `${prefix}lng${suffix}/${prefix}ns${suffix}`;
+  const userPrefix = userConfig?.interpolation?.prefix
+  const userSuffix = userConfig?.interpolation?.suffix
+  const prefix = userPrefix ?? '{{'
+  const suffix = userSuffix ?? '}}'
+  if (
+    typeof userConfig?.localeStructure !== 'string' &&
+    (userPrefix || userSuffix)
+  ) {
+    combinedConfig.localeStructure = `${prefix}lng${suffix}/${prefix}ns${suffix}`
   }
 
   const { fallbackLng, localeStructure } = combinedConfig
@@ -233,7 +236,10 @@ export const createConfig = (
           return unique(allNamespaces)
         }
 
-        if (localeStructure.indexOf(`${prefix}lng${suffix}`) > localeStructure.indexOf(`${prefix}ns${suffix}`)) {
+        if (
+          localeStructure.indexOf(`${prefix}lng${suffix}`) >
+          localeStructure.indexOf(`${prefix}ns${suffix}`)
+        ) {
           throw new Error(
             'Must provide all namespaces in ns option if using a localeStructure that is not namespace-listable like lng/ns'
           )

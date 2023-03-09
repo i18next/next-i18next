@@ -37,7 +37,7 @@ const Homepage = (
             </h3>
             <p>
               <Trans i18nKey="blog.appDir.answer">
-                Then check out 
+                Then check out
                 <a href={t('blog.optimized.link')}>this blog post</a>
                 .
               </Trans>

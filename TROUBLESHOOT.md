@@ -39,9 +39,9 @@ a possible way is to pass the `next-i18n.config.js explicitly.
 
 ```tsx
 // _app.tsx
-import type { AppProps } from 'next/app'
-import { appWithTranslation } from 'next-i18next'
-import nextI18NextConfig from '../next-i18next.config.js'
+import type { AppProps } from "next/app"
+import { appWithTranslation } from "next-i18next"
+import nextI18NextConfig from "../next-i18next.config.js"
 const MyApp = ({ Component, pageProps }: AppProps) => (
   <Component {...pageProps} />
 )
@@ -54,9 +54,9 @@ configuration.
 
 ```typescript
 // ie: ./lib/i18n/getServerTranslations.ts
-import type { SSRConfig, UserConfig } from 'next-i18next'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import nextI18nextConfig from '../../next-i18next.config'
+import type { SSRConfig, UserConfig } from "next-i18next"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import nextI18nextConfig from "../../next-i18next.config"
 
 export const getServerTranslations = async (
   locale: string,

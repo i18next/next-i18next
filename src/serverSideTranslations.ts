@@ -41,15 +41,14 @@ export const serverSideTranslations = async (
   let userConfig = configOverride
   const configPath = path.resolve(DEFAULT_CONFIG_PATH)
 
-  if (
-    !userConfig &&
-    fs.existsSync(configPath)
-  ) {
+  if (!userConfig && fs.existsSync(configPath)) {
     userConfig = await import(configPath)
   }
 
   if (userConfig === null) {
-    throw new Error(`next-i18next was unable to find a user config at ${configPath}`)
+    throw new Error(
+      `next-i18next was unable to find a user config at ${configPath}`
+    )
   }
 
   const config = createConfig({
