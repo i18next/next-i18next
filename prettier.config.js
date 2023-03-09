@@ -6,13 +6,13 @@
 
 module.exports = {
   // These settings are duplicated in .editorconfig:
-  tabWidth: 2, // indent_size = 2
-  useTabs: false, // indent_style = space
+  arrowParens: 'avoid',
+  bracketSpacing: true,
   endOfLine: 'lf', // end_of_line = lf
+  printWidth: 69, // default: 80
   semi: false, // default: true
   singleQuote: true, // default: false
-  printWidth: 69, // default: 80
+  tabWidth: 2, // indent_size = 2
   trailingComma: 'es5',
-  bracketSpacing: true,
-  arrowParens: 'avoid',
+  useTabs: false, // indent_style = space
 }

@@ -60,7 +60,6 @@
 If you're experiencing typecheck errors regarding keys: ensure `i18next` is at least `^22.4.3` in your
 package.json (then run install), see [#2058](https://github.com/i18next/next-i18next/pull/2058).
 
-
 ## 13.0.0
 
 The v13.0.0 release is a major version to improve stability and general experience.

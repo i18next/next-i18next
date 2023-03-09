@@ -42,6 +42,9 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      - name: Prettier
+        run: npm run prettier
+
       - name: Unit tests
         run: npm test
 

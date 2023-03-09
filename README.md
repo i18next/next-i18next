@@ -234,7 +234,7 @@ module.exports = {
     typeof window === 'undefined'
       ? require('path').resolve('./my-custom/path')
       : '/public/my-custom/path',
-  ns: ['common']
+  ns: ['common'],
 }
 ```
 
@@ -339,6 +339,7 @@ For example, if you want to use `{` and `}` the config would look like this:
 If you want to change the default config path, you can set the environment variable `I18NEXT_DEFAULT_CONFIG_PATH`.
 
 For example, inside the `.env` file you can set a static path:
+
 ```
 I18NEXT_DEFAULT_CONFIG_PATH=/path/to/project/apps/my-app/next-i18next.config.js
 ```
@@ -403,7 +404,6 @@ But there's a way to workaround that with the help of [next-language-detector](h
 Check out [this blog post](https://locize.com/blog/next-i18n-static/) and [this example project](./examples/ssg/).
 [![](https://locize.com/blog/next-i18n-static/title.jpg)](https://locize.com/blog/next-i18n-static/)
 
-
 ### Translate in child components
 
 You have multiple ways to use the t function in your child component:
@@ -413,7 +413,7 @@ You have multiple ways to use the t function in your child component:
 3. Use the [`useTranslation`](https://react.i18next.com/latest/usetranslation-hook) function, like in this example: https://github.com/i18next/next-i18next/blob/e6b5085b5e92004afa9516bd444b19b2c8cf5758/examples/simple/components/Footer.tsx#L6
 4. Use the [`withTranslation`](https://react.i18next.com/latest/withtranslation-hoc) function
 
-*And in general, you always needs to be sure serverSideTranslations contains all namespaces you need in the tree.*
+_And in general, you always needs to be sure serverSideTranslations contains all namespaces you need in the tree._
 
 ## Contributors
 

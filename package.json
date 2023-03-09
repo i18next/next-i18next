@@ -36,6 +36,7 @@
     "locale"
   ],
   "scripts": {
+    "prettier": "prettier --ignore-path .gitignore --write .",
     "lint": "eslint src examples",
     "clean": "rm -rf ./examples/simple/.next ./examples/ssg/.next ./dist && mkdir dist",
     "build:es": "BABEL_ENV=es babel src --extensions '.ts,.tsx' --out-dir dist/es --copy-files",
