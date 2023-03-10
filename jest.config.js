@@ -6,6 +6,7 @@ module.exports = {
   moduleNameMapper: {
     createClient: '<rootDir>/src/createClient/browser.ts',
   },
+  rootDir: '.',
   testPathIgnorePatterns: [
     '<rootDir>/.next/',
     '<rootDir>/dist/',
