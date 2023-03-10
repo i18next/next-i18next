@@ -34,39 +34,72 @@ You can solve it by [explicitly passing the config](#how-to-explicitly-pass-the-
 
 #### How to explicitly pass the config
 
-To fix [can't find next-i18next.config.js](#cant-find-next-i18nextconfigjs) (and eventual [need to pass in an i18next instance](#need-to-pass-in-an-i18next-instance))
-a possible way is to pass the `next-i18n.config.js explicitly.
+By default, next-i18next will automatically load a `next-i18n.config.js` located in the project root
+directory. In monorepos / workspace enabled projects the detection of the current project directory
+might fail (depending on where the package manager actually hoist the next-i18next package). If you're impacted
+a good way to circumvent the issue is to pass the config explicitly. It also allows
+to choose a different extension (.mjs, .cjs).
 
-```tsx
-// _app.tsx
-import type { AppProps } from 'next/app'
-import { appWithTranslation } from 'next-i18next'
-import nextI18NextConfig from '../next-i18next.config.js'
-const MyApp = ({ Component, pageProps }: AppProps) => (
-  <Component {...pageProps} />
-)
-export default appWithTranslation(MyApp, nextI18NextConfig)
-```
+This generally fix [can't find next-i18next.config.js](#cant-find-next-i18nextconfigjs) (and eventual [need to pass in an i18next instance](#need-to-pass-in-an-i18next-instance)).
 
-For `getServerSideProps()` and `getStaticProps()` the recommended approach is
-to wrap our `serverSideTranslations()` in a separate file where you can inject the
-configuration.
+1. in _app.tsx
 
-```typescript
-// ie: ./lib/i18n/getServerTranslations.ts
-import type { SSRConfig, UserConfig } from 'next-i18next'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import nextI18nextConfig from '../../next-i18next.config'
+   ```tsx
+   // _app.tsx
+   import type { AppProps } from 'next/app'
+   import { appWithTranslation } from 'next-i18next'
+   import nextI18NextConfig from '../next-i18next.config.js'
+   const MyApp = ({ Component, pageProps }: AppProps) => (
+     <Component {...pageProps} />
+   )
+   export default appWithTranslation(MyApp, nextI18NextConfig)
+   ```
 
-export const getServerTranslations = async (
-  locale: string,
-  namespacesRequired?: string[] | undefined,
-  configOverride?: UserConfig
-): Promise<SSRConfig> => {
-  const config = configOverride ?? nextI18nextConfig
-  return serverSideTranslations(locale, namespacesRequired, config)
-}
-```
+2. For `getServerSideProps()` and `getStaticProps()` the recommended approach is
+   to wrap our [serverSideTranslations()](https://github.com/i18next/next-i18next/blob/master/src/serverSideTranslations.ts) in a separate file where you can inject the
+   configuration.
+
+   ```typescript
+   // ie: ./lib/i18n/getServerTranslations.ts
+   import type { Namespace } from 'i18next';
+   import type { SSRConfig, UserConfig } from 'next-i18next'
+   import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+   import nextI18nextConfig from '../../next-i18next.config'
+
+   type ArrayElementOrSelf<T> = T extends Array<infer U> ? U[] : T[];
+
+   export const getServerTranslations = async (
+     locale: string,
+     namespacesRequired?: ArrayElementOrSelf<Namespace> | undefined,
+     configOverride?: UserConfig,
+     extraLocales?: string[] | false
+   ): Promise<SSRConfig> => {
+     const config = configOverride ?? nextI18nextConfig
+     return serverSideTranslations(locale, namespacesRequired, config,  extraLocales)
+   }
+   ```
+
+   And use it instead of `serverSideTranslations`:
+
+   ```typescript
+   import { getServerTranslations } from '@/lib/i18n';
+   const i18nNamespaces = ['demo'];
+
+   export default function DemoRoute(
+      props: InferGetStaticPropsType<typeof getStaticProps>
+   ) {
+     // ...
+   }
+
+   export const getStaticProps: GetStaticProps<Props> = async (context) => {
+      const { locale } = context;
+      return {
+        props: {
+          ...(await getServerTranslations(locale, i18nNamespaces)),
+        },
+      };
+   };
+   ```
 
 #### How to debug installation
 
