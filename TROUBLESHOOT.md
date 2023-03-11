@@ -103,22 +103,34 @@ This generally fix [can't find next-i18next.config.js](#cant-find-next-i18nextco
 
 #### How to debug installation
 
-Since v13.0.0, i18next and react-i18next must be installed in your app dependencies.
-Some package managers might install them for you (auto install peer-deps).
+1. Since v13.0.0, [i18next](https://github.com/i18next/i18next) and [react-i18next](https://github.com/i18next/react-i18next)
+   must be explicitly installed in your app dependencies as well (peer-deps of next-i8next). Check first they are well present
+   in your package.json (`"i18next": "^22.0.6"` and `"react-i18next": "^12.0.0"`)
 
-To prevent install issue, ensure:
 
-1. `"i18next": "^22.0.6"` and `"react-i18next": "^12.0.0"` are explicitly listed in your package.json dependencies
-2. check that you don't have duplicates in your install (especially with pnpm)
+2. Recent versions of pnpm (>=7.29) / yarn (>=3) / npm (>=8) should be able to dedupe installed versions for you.
+   In case of issue, try to dedupe manually
 
-| PM      | Check                            | Fix (only on semver)      |
-| ------- | -------------------------------- | ------------------------- |
-| yarn 1  | `npx -y yarn-deduplicate --list` | `npx -y yarn-deduplicate` |
-| yarn 2+ | `yarn dedupe --list`             | `yarn dedupe`             |
-| pnpm 7  | `npx -y pnpm-deduplicate --list` | `npx -y pnpm-deduplicate` |
-| npm 8   | _not available_                  | `npm dedupe`              |
+   | PM             | Check                            | Fix (only on semver)      |
+   |----------------|----------------------------------|---------------------------|
+   | yarn 1         | `npx -y yarn-deduplicate --list` | `npx -y yarn-deduplicate` |
+   | yarn 2+        | `yarn dedupe --list`             | `yarn dedupe`             |
+   | pnpm < 7.23.0  | `npx -y pnpm-deduplicate --list` | `npx -y pnpm-deduplicate` |
+   | pnpm >= 7.23.0 | _not available_                  | `pnpm dedupe`             |
+   | npm 8          | _not available_                  | `npm dedupe`              |
 
-Another way to list duplicate is to use `npm why -r next-i18next i18next`, `pnpm why -r next-i18next i18next`
-or `yarn why -R next-i18next && yarn why -R i18next`.
+   > You can also list duplicate with `npm why -r next-i18next i18next`, `pnpm why -r next-i18next i18next`
+   > or `yarn why -R next-i18next && yarn why -R i18next`.
+
+3. PNPM < 7.29.0 might have issues with peer deduplication in monorepo. This will be addressed in v8, but
+   starting with 7.29.0 you can already set these settings in `.npmrc`.
+
+   ```
+   # https://pnpm.io/next/npmrc
+   use-lockfile-v6=true
+   # https://github.com/pnpm/pnpm/releases/tag/v7.29.0
+   dedupe-peer-dependents=true
+   resolve-peers-from-workspace-root=true
+   ```
 
 After fixing potential duplicates, run an installation (or update). A new lock file should be generated.
