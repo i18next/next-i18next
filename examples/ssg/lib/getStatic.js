@@ -14,7 +14,7 @@ export const getStaticPaths = () => ({
 })
 
 export const getI18nProps = async (ctx, ns = ['common']) => {
-  const locale = ctx?.params?.locale
+  const locale = ctx?.params?.locale || i18nextConfig.i18n.defaultLocale
   let props = {
     ...(await serverSideTranslations(locale, ns)),
   }

@@ -17,6 +17,9 @@ const LanguageSwitchLink = ({ locale, ...rest }) => {
   if (locale) {
     href = rest.href ? `/${locale}${rest.href}` : pName
   }
+  if (href.indexOf(`/${locale}`) < 0) {
+    href = `/${locale}${href}`
+  }
 
   return (
     <Link href={href}>
