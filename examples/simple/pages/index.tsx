@@ -16,7 +16,7 @@ const Homepage = (
   _props: InferGetStaticPropsType<typeof getStaticProps>
 ) => {
   const router = useRouter()
-  const { t } = useTranslation('common')
+  const { t, i18n } = useTranslation('common')
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onToggleLanguageClick = (newLocale: string) => {
@@ -24,7 +24,13 @@ const Homepage = (
     router.push({ pathname, query }, asPath, { locale: newLocale })
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const clientSideLanguageChange = (newLocale: string) => {
+    i18n.changeLanguage(newLocale);
+  }
+
   const changeTo = router.locale === 'en' ? 'de' : 'en'
+  // const changeTo = i18n.resolvedLanguage === 'en' ? 'de' : 'en'
 
   return (
     <>
@@ -95,6 +101,10 @@ const Homepage = (
             {t('change-locale', { changeTo })}
           </button>
           */}
+          {/* alternative language change without using Link component, but this will change language only on client side
+          <button onClick={() => clientSideLanguageChange(changeTo)}>
+            {t('change-locale', { changeTo })}
+          </button> */}
           <Link href="/second-page">
             <button type="button">{t('to-second-page')}</button>
           </Link>
