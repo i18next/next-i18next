@@ -5,7 +5,7 @@
 [![npm version](https://img.shields.io/npm/v/next-i18next.svg?style=flat-square)](https://www.npmjs.com/package/next-i18next)
 ![npm](https://img.shields.io/npm/dw/next-i18next)
 
-**The easiest way to translate your Next.js apps.**
+**The easiest way to translate your Next.js apps *(with pages setup)*.**
 
 If you are using next-i18next *(pages directory)* in production and like to unleash some super powers, you may have a look at [this blog post](https://locize.com/blog/next-i18next/).
 [![](https://locize.com/blog/next-i18next/next-i18next.jpg)](https://locize.com/blog/next-i18next/)
