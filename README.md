@@ -7,8 +7,11 @@
 
 **The easiest way to translate your Next.js apps.**
 
-If you are using next-i18next in production and like to unleash some super powers, you may have a look at [this blog post](https://locize.com/blog/next-i18next/).
+If you are using next-i18next *(pages directory)* in production and like to unleash some super powers, you may have a look at [this blog post](https://locize.com/blog/next-i18next/).
 [![](https://locize.com/blog/next-i18next/next-i18next.jpg)](https://locize.com/blog/next-i18next/)
+
+If you're using Next.js 13 with app directory, there is no need for next-i18next, you can directly use i18next and react-i18next, like described [in this blog post](https://locize.com/blog/next-13-app-dir-i18n/).
+[![](https://locize.com/blog/next-13-app-dir-i18n/next-13-app-dir-i18n.jpg)](https://locize.com/blog/next-13-app-dir-i18n/)
 
 ## What is this?
 
