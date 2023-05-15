@@ -77,6 +77,7 @@ This tells `next-i18next` what your `defaultLocale` and other locales are, so th
 #### `next-i18next.config.js`
 
 ```js
+/** @type {i18n: import('next-i18next').UserConfig} */
 module.exports = {
   i18n: {
     defaultLocale: 'en',
