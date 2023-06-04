@@ -1,3 +1,7 @@
+## 13.3.0
+
+- using a custom backend on server side should also lazy load the passed namespaces
+
 ## 13.2.2
 
 - pageProps may be undefined on strange setups [#2109](https://github.com/i18next/next-i18next/issues/2109)"

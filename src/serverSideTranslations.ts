@@ -74,6 +74,13 @@ export const serverSideTranslations = async (
 
   await initPromise
 
+  const hasCustomBackend = userConfig?.use?.some(
+    b => b.type === 'backend'
+  )
+  if (hasCustomBackend && namespacesRequired) {
+    await i18n.loadNamespaces(namespacesRequired)
+  }
+
   const initialI18nStore: Record<string, any> = {
     [initialLocale]: {},
   }
