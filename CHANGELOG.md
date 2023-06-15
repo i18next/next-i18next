@@ -1,3 +1,8 @@
+## 14.0.0
+
+- requires i18next >= v23.0.1
+- requires react-i18next >= v13.0.0
+
 ## 13.3.0
 
 - using a custom backend on server side should also lazy load the passed namespaces

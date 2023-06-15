@@ -113,7 +113,7 @@
     "eslint-plugin-typescript-sort-keys": "^2.1.0",
     "gh-release": "7.0.2",
     "husky": "^8.0.3",
-    "i18next": "^22.4.10",
+    "i18next": "^23.0.1",
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
     "next": "^13.1.6",
@@ -121,7 +121,7 @@
     "prettier": "2.8.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-i18next": "^12.2.0",
+    "react-i18next": "^13.0.0",
     "rimraf": "^4.1.2",
     "size-limit": "^8.1.2",
     "start-server-and-test": "^1.15.3",
@@ -133,12 +133,12 @@
     "@types/hoist-non-react-statics": "^3.3.1",
     "core-js": "^3",
     "hoist-non-react-statics": "^3.3.2",
-    "i18next-fs-backend": "^2.1.1"
+    "i18next-fs-backend": "^2.1.5"
   },
   "peerDependencies": {
-    "i18next": "^22.0.6",
+    "i18next": "^23.0.1",
     "next": ">= 12.0.0",
     "react": ">= 17.0.2",
-    "react-i18next": "^12.2.0"
+    "react-i18next": "^13.0.0"
   }
 }
