@@ -9,12 +9,15 @@
     "start": "next start -p ${PORT:=3000}",
     "typecheck": "tsc --project ./tsconfig.json --noEmit",
     "clean": "rimraf .next",
-    "nuke:install": "rimraf ./node_modules ./package-lock.json"
+    "nuke:install": "rimraf ./node_modules ./package-lock.json",
+    "toc": "i18next-resources-for-ts toc -i ./public/locales/en -o ./@types/resources.ts",
+    "merge": "i18next-resources-for-ts merge -i ./public/locales/en -o ./@types/resources.json",
+    "interface": "i18next-resources-for-ts interface -i ./public/locales/en -o ./@types/resources.d.ts"
   },
   "dependencies": {
     "i18next": "23.0.1",
     "next": "^13.4.5",
-    "next-i18next": "^13.3.0",
+    "next-i18next": "^14.0.0",
     "react": "^18.2.0",
     "react-i18next": "^13.0.0",
     "react-dom": "^18.2.0"
@@ -24,6 +27,7 @@
     "@types/react": "^18.2.12",
     "@types/react-dom": "^18.2.5",
     "eslint-config-next": "^13.4.5",
+    "i18next-resources-for-ts": "1.2.1",
     "rimraf": "^5.0.1",
     "picocolors": "^1.0.0",
     "typescript": "^5.1.3"
