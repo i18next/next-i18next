@@ -83,3 +83,6 @@ jobs:
         run: npm run build:example:simple
         env:
           NEXTJS_ESM_EXTERNALS: true
+
+      - name: Typecheck simple example
+        run: npm run typecheck:example:simple

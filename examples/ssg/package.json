@@ -1,6 +1,6 @@
 {
-  "name": "example-ssg",
-  "version": "1.0.0",
+  "name": "next-i18next-example-ssg",
+  "version": "13.0.0",
   "license": "MIT",
   "scripts": {
     "404": "cp out/404/index.html out/404.html",
