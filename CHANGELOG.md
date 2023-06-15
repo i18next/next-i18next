@@ -5,7 +5,7 @@
 
 ### Breaking changes
 
-[i18next 13.0.0](https://github.com/i18next/i18next/releases/tag/v23.0.0) dropped support for older browsers.
+[i18next 23.0.0](https://github.com/i18next/i18next/releases/tag/v23.0.0) dropped support for older browsers.
 From nextjs 13, you can use the [transpilePackages](https://nextjs.org/docs/app/api-reference/next-config-js/transpilePackages)
 to avoid issues.
 
