@@ -49,7 +49,6 @@
     "build:example:ssg": "cd examples/ssg && npm run build",
     "typecheck": "tsc --project ./tsconfig.json --noEmit",
     "typecheck:example:simple": "cd examples/simple && npm run typecheck",
-    "typecheck:example:ssg": "cd examples/ssg && npm run typecheck",
     "check-size": "size-limit",
     "check-size:why": "size-limit --why",
     "check-dist": "npm-run-all -s check-dist:*",
