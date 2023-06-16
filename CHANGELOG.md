@@ -3,6 +3,20 @@
 - requires i18next >= v23.0.1
 - requires react-i18next >= v13.0.0
 
+### Breaking changes
+
+[i18next 23.0.0](https://github.com/i18next/i18next/releases/tag/v23.0.0) dropped support for older browsers.
+From nextjs 13, you can use the [transpilePackages](https://nextjs.org/docs/app/api-reference/next-config-js/transpilePackages)
+to avoid issues.
+
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  transpilePackages: ['i18next'],
+}
+module.exports = nextConfig
+```
+
 ## 13.3.0
 
 - using a custom backend on server side should also lazy load the passed namespaces
