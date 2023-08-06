@@ -391,7 +391,7 @@ describe('serverSideTranslations', () => {
       'en-US',
       ['common'],
       {
-        fallbackLng: code => code.split('-')[0],
+        fallbackLng: (code: string) => code.split('-')[0],
         i18n: {
           defaultLocale: 'de',
           locales: ['de', 'en-US'],
@@ -504,7 +504,7 @@ describe('serverSideTranslations', () => {
 
     it('does thrown an error with fallbackLng (as function)', async () => {
       const config: UserConfig = {
-        fallbackLng: code => (code === 'de-AT' ? 'de' : 'en'),
+        fallbackLng: (code: string) => (code === 'de-AT' ? 'de' : 'en'),
         i18n: {
           defaultLocale: 'de',
           locales: ['de', 'en-US', 'de-DE'],
@@ -583,10 +583,10 @@ describe('serverSideTranslations', () => {
 
   it('throws if a function is used for localePath and namespaces are not provided', async () => {
     const localePathFn: UserConfig['localePath'] = (
-      locale,
-      namespace,
-      missing
-    ) => `${missing}/${namespace}/${locale}.json`
+      locale: string,
+      namespace: string,
+      missing: boolean
+    ) => `${missing ? 'true' : 'false'}/${namespace}/${locale}.json`
     const config: UserConfig = {
       i18n: {
         defaultLocale: 'en',

@@ -239,7 +239,7 @@ describe('createConfig', () => {
           .mockReturnValueOnce(true)
 
         const config = createConfig({
-          fallbackLng: code => code.split('-')[0],
+          fallbackLng: (code: string) => code.split('-')[0],
           i18n: {
             defaultLocale: 'de',
             locales: ['de', 'en', 'en-US'],
@@ -356,10 +356,10 @@ describe('createConfig', () => {
 
     describe('with a function for localePath', () => {
       const localePathFn: UserConfig['localePath'] = (
-        locale,
-        namespace,
-        missing
-      ) => `${missing}/${namespace}/${locale}.json`
+        locale: string,
+        namespace: string,
+        missing: boolean
+      ) => `${missing ? 'true' : 'false'}/${namespace}/${locale}.json`
 
       it('returns a config whose localePath works as expected', () => {
         ;(fs.existsSync as jest.Mock).mockReturnValueOnce(true)
@@ -594,10 +594,10 @@ describe('createConfig', () => {
 
     describe('with a function for localePath', () => {
       const localePathFn: UserConfig['localePath'] = (
-        locale,
-        namespace,
-        missing
-      ) => `${missing}/${namespace}/${locale}.json`
+        locale: string,
+        namespace: string,
+        missing: boolean
+      ) => `${missing ? 'true' : 'false'}/${namespace}/${locale}.json`
 
       it('returns a config whose localePath works as expected', () => {
         const config = createConfig({

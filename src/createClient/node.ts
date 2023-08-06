@@ -1,4 +1,4 @@
-import i18n from 'i18next'
+import i18n, { Module } from 'i18next'
 import i18nextFSBackend from 'i18next-fs-backend'
 
 import {
@@ -19,6 +19,8 @@ export default (config: InternalConfig): CreateClientReturn => {
   } else {
     instance = globalInstance.cloneInstance({
       ...config,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       initImmediate: false,
     })
   }
@@ -26,13 +28,13 @@ export default (config: InternalConfig): CreateClientReturn => {
 
   if (!instance.isInitialized) {
     const hasCustomBackend = config?.use?.some(
-      b => b.type === 'backend'
+      (b: Module) => b.type === 'backend'
     )
     if (!hasCustomBackend) {
       instance.use(i18nextFSBackend)
     }
 
-    config?.use?.forEach(x => instance.use(x))
+    config?.use?.forEach((x: Module) => instance.use(x))
     if (typeof config.onPreInitI18next === 'function') {
       config.onPreInitI18next(instance)
     }

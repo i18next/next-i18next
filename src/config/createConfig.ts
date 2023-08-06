@@ -1,7 +1,7 @@
 import { defaultConfig } from './defaultConfig'
 import { InternalConfig, UserConfig } from '../types'
 import { getFallbackForLng, unique } from '../utils'
-import { FallbackLngObjList } from 'i18next'
+import { FallbackLngObjList, Module } from 'i18next'
 
 const deepMergeObjects = ['backend', 'detection'] as (keyof Pick<
   UserConfig,
@@ -36,7 +36,7 @@ export const createConfig = (
     nonExplicitSupportedLngs,
   } = combinedConfig
 
-  const locales = combinedConfig.locales.filter(l => l !== 'default')
+  const locales = combinedConfig.locales.filter((l: string) => l !== 'default')
 
   /**
    * Skips translation file resolution while in cimode
@@ -77,16 +77,16 @@ export const createConfig = (
 
     if (typeof fallbackLng === 'string') {
       combinedConfig.fallbackLng = combinedConfig.locales
-        .filter(l => l.includes('-'))
+        .filter((l: string) => l.includes('-'))
         .reduce(createFallbackObject, { default: [fallbackLng] })
     } else if (Array.isArray(fallbackLng)) {
       combinedConfig.fallbackLng = combinedConfig.locales
-        .filter(l => l.includes('-'))
+        .filter((l: string) => l.includes('-'))
         .reduce(createFallbackObject, { default: fallbackLng })
     } else if (typeof fallbackLng === 'object') {
       combinedConfig.fallbackLng = Object.entries(
         combinedConfig.fallbackLng
-      ).reduce<FallbackLngObjList>((acc, [l, f]) => {
+      ).reduce<FallbackLngObjList>((acc, [l, f]: [string, any]) => {
         acc[l] = l.includes('-')
           ? unique([l.split('-')[0], ...f])
           : f
@@ -100,7 +100,7 @@ export const createConfig = (
   }
 
   const hasCustomBackend = userConfig?.use?.some(
-    b => b.type === 'backend'
+    (b: Module) => b.type === 'backend'
   )
   if (!process.browser && typeof window === 'undefined') {
     combinedConfig.preload = locales

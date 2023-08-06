@@ -1,4 +1,4 @@
-import i18n from 'i18next'
+import i18n, { Module } from 'i18next'
 
 import {
   InternalConfig,
@@ -12,7 +12,7 @@ export default (config: InternalConfig): CreateClientReturn => {
   let initPromise: InitPromise
 
   if (!instance.isInitialized) {
-    config?.use?.forEach(x => instance.use(x))
+    config?.use?.forEach((x: Module) => instance.use(x))
     if (typeof config.onPreInitI18next === 'function') {
       config.onPreInitI18next(instance)
     }

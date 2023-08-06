@@ -8,6 +8,7 @@ import { globalI18n } from './appWithTranslation'
 
 import { UserConfig, SSRConfig } from './types'
 import { getFallbackForLng, unique } from './utils'
+import { Module } from 'i18next'
 
 let DEFAULT_CONFIG_PATH = './next-i18next.config.js'
 
@@ -73,7 +74,7 @@ export const serverSideTranslations = async (
   await initPromise
 
   const hasCustomBackend = userConfig?.use?.some(
-    b => b.type === 'backend'
+    (b: Module) => b.type === 'backend'
   )
   if (hasCustomBackend && namespacesRequired) {
     await i18n.loadNamespaces(namespacesRequired)
