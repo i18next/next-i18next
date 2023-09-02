@@ -1,4 +1,4 @@
-## 14.0.1
+## 14.0.2
 
 - try to fix namespacesRequired in serverSideTranslations is not type-safe anymore [#2201](https://github.com/i18next/next-i18next/issues/2201)
 

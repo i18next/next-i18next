@@ -28,6 +28,8 @@ export const serverSideTranslations = async (
   initialLocale: string,
   namespacesRequired:
     | ArrayElementOrSelf<Namespace>
+    | string
+    | string[]
     | undefined = undefined,
   configOverride: UserConfig | null = null,
   extraLocales: string[] | false = false
