@@ -8,7 +8,7 @@ import { globalI18n } from './appWithTranslation'
 
 import { UserConfig, SSRConfig } from './types'
 import { getFallbackForLng, unique } from './utils'
-import { Module } from 'i18next'
+import { Module, Namespace } from 'i18next'
 
 let DEFAULT_CONFIG_PATH = './next-i18next.config.js'
 
@@ -22,11 +22,12 @@ if (process.env.I18NEXT_DEFAULT_CONFIG_PATH) {
   DEFAULT_CONFIG_PATH = process.env.I18NEXT_DEFAULT_CONFIG_PATH
 }
 
+type ArrayElementOrSelf<T> = T extends Array<infer U> ? U[] : T[]
+
 export const serverSideTranslations = async (
   initialLocale: string,
   namespacesRequired:
-    | string
-    | string[]
+    | ArrayElementOrSelf<Namespace>
     | undefined = undefined,
   configOverride: UserConfig | null = null,
   extraLocales: string[] | false = false
@@ -77,7 +78,7 @@ export const serverSideTranslations = async (
     (b: Module) => b.type === 'backend'
   )
   if (hasCustomBackend && namespacesRequired) {
-    await i18n.loadNamespaces(namespacesRequired)
+    await i18n.loadNamespaces(Array.isArray(namespacesRequired) ? (namespacesRequired as string[]) : (namespacesRequired as string))
   }
 
   const initialI18nStore: Record<string, any> = {
