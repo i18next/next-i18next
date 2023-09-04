@@ -22,7 +22,7 @@ if (process.env.I18NEXT_DEFAULT_CONFIG_PATH) {
   DEFAULT_CONFIG_PATH = process.env.I18NEXT_DEFAULT_CONFIG_PATH
 }
 
-type ArrayElementOrSelf<T> = T extends Array<infer U> ? U[] : T[]
+type ArrayElementOrSelf<T> = T extends ReadonlyArray<infer U> ? U[] : T[]
 
 export const serverSideTranslations = async (
   initialLocale: string,
