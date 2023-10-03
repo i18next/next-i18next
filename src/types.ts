@@ -13,7 +13,7 @@ import {
   TFunction as I18NextTFunction,
   TypeOptions,
 } from 'i18next'
-import { appWithTranslation, i18n } from './'
+import { appWithTranslation } from './'
 
 /**
  * Inlined from `import('next').NextConfig.i18n` v13.0.6. As we support
@@ -79,7 +79,6 @@ export type SSRConfig = {
 }
 
 export {
-  i18n,
   I18nContext,
   appWithTranslation,
   useTranslation,

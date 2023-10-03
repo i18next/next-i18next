@@ -6,7 +6,8 @@ import React from 'react'
 import fs from 'fs'
 import { SSRConfig, UserConfig } from './types'
 import { serverSideTranslations } from './serverSideTranslations'
-import { globalI18n } from './appWithTranslation'
+import { i18nContainer } from './globali18n'
+
 import { renderToString } from 'react-dom/server'
 import { appWithTranslation } from './appWithTranslation'
 
@@ -19,7 +20,6 @@ jest.mock('fs', () => ({
 const DummyApp = appWithTranslation(() => <div>Hello world</div>)
 
 const props = {
-  pageProps: {
     _nextI18Next: {
       initialLocale: 'en-US',
       userConfig: {
@@ -28,11 +28,7 @@ const props = {
           locales: ['en', 'fr'],
         },
       },
-    },
   } as SSRConfig,
-  router: {
-    locale: 'en',
-  },
 } as any
 
 const renderDummyComponent = () =>
@@ -547,7 +543,7 @@ describe('serverSideTranslations', () => {
 
   it('calls reloadResources when reloadOnPrerender option is true', async () => {
     renderDummyComponent()
-
+    const globalI18n = i18nContainer.get();
     if (globalI18n) {
       globalI18n.reloadResources = jest.fn()
     }
@@ -565,7 +561,7 @@ describe('serverSideTranslations', () => {
 
   it('does not call reloadResources when reloadOnPrerender option is false', async () => {
     renderDummyComponent()
-
+    const globalI18n = i18nContainer.get();
     if (globalI18n) {
       globalI18n.reloadResources = jest.fn()
     }

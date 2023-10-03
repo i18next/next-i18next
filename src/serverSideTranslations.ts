@@ -4,7 +4,7 @@ import path from 'path'
 import { createConfig } from './config/createConfig'
 import createClient from './createClient/node'
 
-import { globalI18n } from './appWithTranslation'
+import { i18nContainer } from './globali18n'
 
 import { UserConfig, SSRConfig } from './types'
 import { getFallbackForLng, unique } from './utils'
@@ -66,6 +66,7 @@ export const serverSideTranslations = async (
   } = config
 
   if (reloadOnPrerender) {
+    const globalI18n = i18nContainer.get();
     await globalI18n?.reloadResources()
   }
 

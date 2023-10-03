@@ -8,5 +8,4 @@ export {
 
 export {
   appWithTranslation,
-  globalI18n as i18n,
 } from './appWithTranslation'

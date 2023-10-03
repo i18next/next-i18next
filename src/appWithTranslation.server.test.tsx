@@ -28,19 +28,11 @@ jest.mock('react-i18next', () => ({
   __esmodule: true,
 }))
 
-const MyApp = ({
-  Component,
-  pageProps,
-}: AppProps<{ example: string }>) => {
-  Component
-  pageProps
-  return <div>Hello world</div>
-}
+const MyApp = () => <div>Hello world</div>
 
 const DummyApp = appWithTranslation(MyApp)
 
 const props = {
-  pageProps: {
     _nextI18Next: {
       initialLocale: 'en',
       userConfig: {
@@ -49,12 +41,7 @@ const props = {
           locales: ['en', 'fr'],
         },
       },
-    },
   } as any,
-  router: {
-    locale: 'en',
-    route: '/',
-  },
 } as any
 
 const renderComponent = () => renderToString(<DummyApp {...props} />)

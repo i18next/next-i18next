@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import { I18nextProvider } from 'react-i18next'
-import type { AppProps as NextJsAppProps } from 'next/app'
 
 import { createConfig } from './config/createConfig'
 import createClient from './createClient'
 
 import { SSRConfig, UserConfig } from './types'
+
+import { i18nContainer } from './globali18n'
 
 import { i18n as I18NextClient } from 'i18next'
 export {
@@ -15,18 +16,17 @@ export {
   withTranslation,
 } from 'react-i18next'
 
-export let globalI18n: I18NextClient | null = null
-
-export const appWithTranslation = <Props extends NextJsAppProps>(
+export const appWithTranslation = <
+  Props extends Record<string, unknown>
+>(
   WrappedComponent: React.ComponentType<Props>,
   configOverride: UserConfig | null = null
 ) => {
-  const AppWithTranslation = (
-    props: Props & { pageProps: Props['pageProps'] & SSRConfig }
-  ) => {
-    const { _nextI18Next } = props.pageProps || {} // pageProps may be undefined on strange setups, i.e. https://github.com/i18next/next-i18next/issues/2109
+  const AppWithTranslation = (props: Props & SSRConfig) => {
+    const { _nextI18Next } = props || {} // pageProps may be undefined on strange setups, i.e. https://github.com/i18next/next-i18next/issues/2109
     let locale: string | undefined =
-      _nextI18Next?.initialLocale ?? props?.router?.locale
+      _nextI18Next?.initialLocale;
+      
     const ns = _nextI18Next?.ns
 
     // Memoize the instance and only re-initialize when either:
@@ -73,7 +73,7 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
         resources,
       }).i18n
 
-      globalI18n = instance
+      i18nContainer.set(() => instance)
 
       return instance
     }, [_nextI18Next, locale, configOverride, ns])

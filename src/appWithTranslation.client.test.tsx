@@ -9,7 +9,6 @@ import { I18nextProvider } from 'react-i18next'
 import createClient from './createClient'
 
 import { appWithTranslation } from './appWithTranslation'
-import { NextRouter } from 'next/router'
 
 jest.mock('fs', () => ({
   existsSync: jest.fn(),
@@ -38,27 +37,17 @@ const DummyApp = appWithTranslation(() => <div>Hello world</div>, {
   },
 })
 
-const createProps = (
-  locale = 'en',
-  router: Partial<NextRouter> = {}
-) =>
+const createProps = (locale = 'en') =>
   ({
-    pageProps: {
-      _nextI18Next: {
-        initialLocale: locale,
-        userConfig: {
-          i18n: {
-            defaultLocale: 'en',
-            locales: ['en', 'de'],
-          },
+    _nextI18Next: {
+      initialLocale: locale,
+      userConfig: {
+        i18n: {
+          defaultLocale: 'en',
+          locales: ['en', 'de'],
         },
       },
     } as any,
-    router: {
-      locale: locale,
-      route: '/',
-      ...router,
-    },
   } as any)
 
 const defaultRenderProps = createProps()
@@ -97,10 +86,8 @@ describe('appWithTranslation', () => {
     )
     const customProps = {
       ...createProps(),
-      pageProps: {
-        _nextI18Next: {
-          initialLocale: 'en',
-        },
+      _nextI18Next: {
+        initialLocale: 'en',
       } as any,
     } as any
     render(<DummyAppConfigOverride {...customProps} />)
@@ -141,11 +128,9 @@ describe('appWithTranslation', () => {
     ))
     const customProps = {
       ...createProps(),
-      pageProps: {
-        _nextI18Next: {
-          initialLocale: 'en',
-          userConfig: null,
-        },
+      _nextI18Next: {
+        initialLocale: 'en',
+        userConfig: null,
       } as any,
     } as any
     expect(() =>
@@ -162,11 +147,9 @@ describe('appWithTranslation', () => {
     )
     const customProps = {
       ...createProps(),
-      pageProps: {
-        _nextI18Next: {
-          initialLocale: 'en',
-          userConfig: {},
-        },
+      _nextI18Next: {
+        initialLocale: 'en',
+        userConfig: {},
       } as any,
     } as any
     expect(() =>
@@ -181,11 +164,9 @@ describe('appWithTranslation', () => {
     )
     const customProps = {
       ...createProps(),
-      pageProps: {
-        _nextI18Next: {
-          initialLocale: 'en',
-          userConfig: { i18n: {} },
-        },
+      _nextI18Next: {
+        initialLocale: 'en',
+        userConfig: { i18n: {} },
       } as any,
     } as any
     expect(() =>
@@ -201,13 +182,11 @@ describe('appWithTranslation', () => {
     ))
     const customProps = {
       ...createProps(),
-      pageProps: {
-        _nextI18Next: {
-          initialLocale: 'en',
-          userConfig: {
-            i18n: {
-              defaultLocale: 'fr',
-            },
+      _nextI18Next: {
+        initialLocale: 'en',
+        userConfig: {
+          i18n: {
+            defaultLocale: 'fr',
           },
         },
       } as any,
@@ -230,8 +209,6 @@ describe('appWithTranslation', () => {
     ))
     const customProps = {
       ...createProps(),
-
-      pageProps: {
         _nextI18Next: {
           initialLocale: undefined,
           userConfig: {
@@ -239,7 +216,6 @@ describe('appWithTranslation', () => {
               defaultLocale: 'fr',
             },
           },
-        },
       } as any,
     } as any
 
@@ -285,8 +261,7 @@ describe('appWithTranslation', () => {
     const newProps = createProps()
     rerender(<DummyApp {...newProps} />)
     expect(createClient).toHaveBeenCalledTimes(2)
-    newProps.pageProps._nextI18Next.initialLocale = 'de'
-    newProps.router.locale = 'de'
+    newProps._nextI18Next.initialLocale = 'de'
     rerender(<DummyApp {...newProps} />)
     expect(createClient).toHaveBeenCalledTimes(3)
   })
@@ -307,15 +282,13 @@ describe('appWithTranslation', () => {
 
     const { rerender } = render(<DummyAppWithVar {...props} />)
 
-    props.router.locale = 'en'
-    props.pageProps._nextI18Next.initialLocale = 'en'
+    props._nextI18Next.initialLocale = 'en'
     lng = 'en'
 
     rerender(<DummyAppWithVar {...props} />)
     expect(screen.getByText(`language is: ${lng}`)).toBeTruthy()
 
-    props.router.locale = 'de'
-    props.pageProps._nextI18Next.initialLocale = 'de'
+    props._nextI18Next.initialLocale = 'de'
     lng = 'de'
 
     rerender(<DummyAppWithVar {...createProps('de')} />)
