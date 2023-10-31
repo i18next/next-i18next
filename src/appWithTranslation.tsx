@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useRef } from 'react'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import { I18nextProvider } from 'react-i18next'
 import type { AppProps as NextJsAppProps } from 'next/app'
@@ -28,6 +28,8 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
     let locale: string | undefined =
       _nextI18Next?.initialLocale ?? props?.router?.locale
     const ns = _nextI18Next?.ns
+
+    const instanceRef = useRef<I18NextClient | null>(null)
 
     // Memoize the instance and only re-initialize when either:
     // 1. The route changes (non-shallowly)
@@ -63,20 +65,38 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
 
       if (!locale) locale = userConfig.i18n.defaultLocale
 
-      const instance = createClient({
-        ...createConfig({
-          ...userConfig,
+      let instance = instanceRef.current
+      if (instance) {
+        if (resources) {
+          for (const locale of Object.keys(resources)) {
+            for (const ns of Object.keys(resources[locale])) {
+              instance.addResourceBundle(
+                locale,
+                ns,
+                resources[locale][ns],
+                true,
+                true
+              )
+            }
+          }
+        }
+      } else {
+        instance = createClient({
+          ...createConfig({
+            ...userConfig,
+            lng: locale,
+          }),
           lng: locale,
-        }),
-        lng: locale,
-        ns,
-        resources,
-      }).i18n
+          ns,
+          resources,
+        }).i18n
 
-      globalI18n = instance
+        globalI18n = instance
+        instanceRef.current = instance
+      }
 
       return instance
-    }, [_nextI18Next, locale, configOverride, ns])
+    }, [_nextI18Next, locale, ns])
 
     return i18n !== null ? (
       <I18nextProvider i18n={i18n}>
