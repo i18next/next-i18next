@@ -35,90 +35,82 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
     /**
      * Memoize i18n instance and reuse it rather than creating new instance.
      * When the locale or resources are changed after instance was created,
-     * we will update the instance in `useLayoutEffect` below.
+     * we will update the instance by calling addResourceBundle method on it.
      */
-    const [i18n, updateData]: [I18NextClient | null, any?] =
-      useMemo(() => {
-        if (!_nextI18Next && !configOverride) return [null]
+    const i18n: I18NextClient | null = useMemo(() => {
+      if (!_nextI18Next && !configOverride) return null
 
-        const userConfig = configOverride ?? _nextI18Next?.userConfig
+      const userConfig = configOverride ?? _nextI18Next?.userConfig
 
-        if (!userConfig) {
-          throw new Error(
-            'appWithTranslation was called without a next-i18next config'
-          )
-        }
-
-        if (!userConfig?.i18n) {
-          throw new Error(
-            'appWithTranslation was called without config.i18n'
-          )
-        }
-
-        if (!userConfig?.i18n?.defaultLocale) {
-          throw new Error(
-            'config.i18n does not include a defaultLocale property'
-          )
-        }
-
-        const { initialI18nStore } = _nextI18Next || {}
-        const resources = configOverride?.resources
-          ? configOverride.resources
-          : initialI18nStore
-
-        if (!locale) locale = userConfig.i18n.defaultLocale
-
-        let instance = instanceRef.current
-        if (instance) {
-          return [
-            instance,
-            {
-              locale,
-              resources,
-            },
-          ]
-        } else {
-          instance = createClient({
-            ...createConfig({
-              ...userConfig,
-              lng: locale,
-            }),
-            lng: locale,
-            ns,
-            resources,
-          }).i18n
-
-          globalI18n = instance
-          instanceRef.current = instance
-          return [instance]
-        }
-      }, [_nextI18Next, locale, ns])
-
-    /**
-     * Since calling some methods on existing i18n instance can cause state update in react,
-     * we need to call the methods in `useLayoutEffect` to prevent state update in render phase.
-     */
-    useIsomorphicLayoutEffect(() => {
-      if (!i18n || !updateData) {
-        return
+      if (!userConfig) {
+        throw new Error(
+          'appWithTranslation was called without a next-i18next config'
+        )
       }
-      const { locale, resources } = updateData
 
-      i18n.changeLanguage(locale)
-      if (resources) {
-        for (const locale of Object.keys(resources)) {
-          for (const ns of Object.keys(resources[locale])) {
-            i18n.addResourceBundle(
-              locale,
-              ns,
-              resources[locale][ns],
-              true,
-              true
-            )
+      if (!userConfig?.i18n) {
+        throw new Error(
+          'appWithTranslation was called without config.i18n'
+        )
+      }
+
+      if (!userConfig?.i18n?.defaultLocale) {
+        throw new Error(
+          'config.i18n does not include a defaultLocale property'
+        )
+      }
+
+      const { initialI18nStore } = _nextI18Next || {}
+      const resources = configOverride?.resources
+        ? configOverride.resources
+        : initialI18nStore
+
+      if (!locale) locale = userConfig.i18n.defaultLocale
+
+      let instance = instanceRef.current
+      if (instance) {
+        if (resources) {
+          for (const locale of Object.keys(resources)) {
+            for (const ns of Object.keys(resources[locale])) {
+              instance.addResourceBundle(
+                locale,
+                ns,
+                resources[locale][ns],
+                true,
+                true
+              )
+            }
           }
         }
+      } else {
+        instance = createClient({
+          ...createConfig({
+            ...userConfig,
+            lng: locale,
+          }),
+          lng: locale,
+          ns,
+          resources,
+        }).i18n
+
+        globalI18n = instance
+        instanceRef.current = instance
       }
-    }, [i18n, updateData])
+
+      return instance
+    }, [_nextI18Next, locale, ns])
+
+    /**
+     * Since calling changeLanguage method on existing i18n instance cause state update in react,
+     * we need to call the method in `useLayoutEffect` to prevent state update in render phase.
+     */
+    useIsomorphicLayoutEffect(() => {
+      if (!i18n || !locale) {
+        return
+      }
+
+      i18n.changeLanguage(locale)
+    }, [i18n, locale])
 
     return i18n !== null ? (
       <I18nextProvider i18n={i18n}>
