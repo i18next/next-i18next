@@ -1,6 +1,7 @@
 ## 15.0.0
 
 - refactor: reuse existing i18next instance [#2226](https://github.com/i18next/next-i18next/pull/2226)
+  -> If you use client side pages (not lazy loading translations), like described [here](https://github.com/i18next/i18next-http-backend/tree/master/example/next#4-setup-your-client-rendered-pagescomponents), make sure you set the `partialBundledLanguages` option to true, like [here](https://github.com/i18next/i18next-http-backend/tree/master/example/next#4-setup-your-client-rendered-pagescomponents).
 
 ## 14.0.3
 
