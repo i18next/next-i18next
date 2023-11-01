@@ -7,7 +7,7 @@
   "title": "Home | next-i18next",
   "blog": {
     "appDir": {
-      "question": "Are you using the new Next.js 13 app directory?",
+      "question": "Are you using the new Next.js 13/14 app directory?",
       "answer": "Then check out <1>this blog post</1>.",
       "link": "https://locize.com/blog/next-13-app-dir-i18n/"
     },
