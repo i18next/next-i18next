@@ -67,6 +67,7 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
 
       let instance = instanceRef.current
       if (instance) {
+        instance.changeLanguage(locale)
         if (resources) {
           for (const locale of Object.keys(resources)) {
             for (const ns of Object.keys(resources[locale])) {
