@@ -62,5 +62,5 @@ workflows:
     jobs:
       # - node-v12
       # - node-v14
-      - node-v16
-      # - node-v18
+      # - node-v16
+      - node-v18
