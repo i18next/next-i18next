@@ -105,10 +105,7 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
      * we need to call the method in `useLayoutEffect` to prevent state update in render phase.
      */
     useIsomorphicLayoutEffect(() => {
-      if (!i18n || !locale) {
-        return
-      }
-
+      if (!i18n || !locale) return
       i18n.changeLanguage(locale)
     }, [i18n, locale])
 

@@ -1,3 +1,7 @@
+## 15.0.0
+
+- refactor: reuse existing i18next instance [#2226](https://github.com/i18next/next-i18next/pull/2226)
+
 ## 14.0.3
 
 - fix: correct namespacesRequired type in serverSideTranslations [#2203](https://github.com/i18next/next-i18next/pull/2201)
