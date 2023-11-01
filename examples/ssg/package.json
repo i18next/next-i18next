@@ -5,7 +5,7 @@
   "scripts": {
     "404": "cp out/404/index.html out/404.html",
     "dev": "next dev",
-    "build": "next build && next export",
+    "build": "next build",
     "postbuild": "npm run 404",
     "server": "next start",
     "start": "npm run dev",
