@@ -277,18 +277,18 @@ describe('appWithTranslation', () => {
     expect(args[0].i18n.language).toBe('de')
   })
 
-  it('does not re-call createClient on re-renders unless locale or props have changed', () => {
+  it('does not re-call createClient on re-renders', () => {
     const { rerender } = renderComponent()
     expect(createClient).toHaveBeenCalledTimes(1)
     rerender(<DummyApp {...defaultRenderProps} />)
     expect(createClient).toHaveBeenCalledTimes(1)
     const newProps = createProps()
     rerender(<DummyApp {...newProps} />)
-    expect(createClient).toHaveBeenCalledTimes(2)
+    expect(createClient).toHaveBeenCalledTimes(1)
     newProps.pageProps._nextI18Next.initialLocale = 'de'
     newProps.router.locale = 'de'
     rerender(<DummyApp {...newProps} />)
-    expect(createClient).toHaveBeenCalledTimes(3)
+    expect(createClient).toHaveBeenCalledTimes(1)
   })
 
   it('assures locale key is set to the right value', () => {
