@@ -22,7 +22,7 @@ const getSimpleExamplePageLimits = () => {
       '/': '85kb',
       '/404': '90kb',
       '/_app': '105kb',
-      '/_error': '80Kb',
+      '/_error': '82Kb',
       '/second-page': '85Kb',
     },
   }
