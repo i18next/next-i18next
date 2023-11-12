@@ -4,11 +4,12 @@ import {
   InternalConfig,
   CreateClientReturn,
   InitPromise,
+  I18n,
 } from '../types'
 
 export default (config: InternalConfig): CreateClientReturn => {
   if (config.ns === undefined) config.ns = []
-  const instance = i18n.createInstance(config)
+  const instance = i18n.createInstance(config) as I18n
   let initPromise: InitPromise
 
   if (!instance.isInitialized) {

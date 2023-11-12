@@ -14,7 +14,7 @@ export default (config: InternalConfig): CreateClientReturn => {
   if (config.ns === undefined) config.ns = []
   let instance: I18n
   if (!globalInstance) {
-    globalInstance = i18n.createInstance(config)
+    globalInstance = i18n.createInstance(config) as I18n
     instance = globalInstance
   } else {
     instance = globalInstance.cloneInstance({
@@ -22,7 +22,7 @@ export default (config: InternalConfig): CreateClientReturn => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       initImmediate: false,
-    })
+    }) as I18n
   }
   let initPromise: InitPromise
 
