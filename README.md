@@ -146,7 +146,7 @@ The `serverSideTranslations` HOC is primarily responsible for passing translatio
 
 This is the hook which you'll actually use to do the translation itself. The `useTranslation` hook [comes from `react-i18next`](https://react.i18next.com/latest/usetranslation-hook), but needs to be imported from `next-i18next` directly.
 <br/>
-**Do NOT use the `useTranslation` export of `react-i18next`, but ONLY use the on of `next-i18next`!**
+**Do NOT use the `useTranslation` export of `react-i18next`, but ONLY use the one from `next-i18next`!**
 
 ```tsx
 import { useTranslation } from 'next-i18next'
