@@ -286,7 +286,7 @@ export const getStaticProps = async ({ locale }) => ({
 
 When using on server-side generated pages with [`getStaticPaths`](https://nextjs.org/docs/pages/api-reference/functions/get-static-paths) and [`fallback: true`](https://nextjs.org/docs/pages/api-reference/functions/get-static-paths#fallback-true) or [`fallback: 'blocking'`](https://nextjs.org/docs/pages/api-reference/functions/get-static-paths#fallback-blocking), the default setup indicated above will cause the app to be unmounted and remounted on every load, causing various adverse consequences like calling every `useEffect(() => {...}, [])` hook twice and slight performance degradation.
 
-This is due to the fact that, for those pages, Next.js does a first renders with empty `serverSideProps` and then a second render with the `serverSideProps`, that include the `next-i18next` translations. With the default setup, the `i18n` instance is initially `undefined` when `serverSideProps` is `empty`, causing the unmount-remount.
+This is due to the fact that, for those pages, Next.js does a first render with empty `serverSideProps` and then a second render with the `serverSideProps` that include the `next-i18next` translations. With the default setup, the `i18n` instance is initially `undefined` when `serverSideProps` is `empty`, causing the unmount-remount.
 
 To mitigate this issue, you can do the following:
 
