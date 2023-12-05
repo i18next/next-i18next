@@ -282,6 +282,35 @@ export const getStaticProps = async ({ locale }) => ({
 })
 ```
 
+#### Usage with fallback SSG pages 
+
+When using on server-side generated pages with [`getStaticPaths`](https://nextjs.org/docs/pages/api-reference/functions/get-static-paths) and [`fallback: true`](https://nextjs.org/docs/pages/api-reference/functions/get-static-paths#fallback-true) or [`fallback: 'blocking'`](https://nextjs.org/docs/pages/api-reference/functions/get-static-paths#fallback-blocking), the default setup indicated above will cause the app to be unmounted and remounted on every load, causing various adverse consequences like calling every `useEffect(() => {...}, [])` hook twice and slight performance degradation.
+
+This is due to the fact that, for those pages, Next.js does a first renders with empty `serverSideProps` and then a second render with the `serverSideProps`, that include the `next-i18next` translations. With the default setup, the `i18n` instance is initially `undefined` when `serverSideProps` is `empty`, causing the unmount-remount.
+
+To mitigate this issue, you can do the following:
+
+```tsx
+import { UserConfig } from 'next-i18next';
+import nextI18NextConfig from '../next-i18next.config.js'
+
+const emptyInitialI18NextConfig: UserConfig = {
+  i18n: {
+    defaultLocale: nextI18NextConfig.i18n.defaultLocale,
+    locales: nextI18NextConfig.i18n.locales,
+  },
+};
+
+const MyApp = ({ Component, pageProps }) => (
+  <Component {...pageProps} />
+)
+
+export default appWithTranslation(MyApp, emptyInitialI18NextConfig) // Makes sure the initial i18n instance is not undefined
+```
+
+This will work as long as you make sure that, in the fallback page state, your client-side code is not trying to display any translation since otherwise you will get a "server-client mismatch" error from Next.js (due to the fact that the server has an actual translation in its html while the client html has the translation key in the same place).   
+This is normal and fine: you shouldn't be displaying a translation key to your user anyway!
+
 #### Client side loading of translations via HTTP
 
 Since [v11.0.0](https://github.com/i18next/next-i18next/releases/tag/v11.0.0) next-i18next also provides support for client side loading of translations.
