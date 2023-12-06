@@ -1,3 +1,7 @@
+## 15.1.1
+
+- optimize/fix last change for turbo
+
 ## 15.1.0
 
 - try to fix for turbo [#2222](https://github.com/i18next/next-i18next/issues/2222)
