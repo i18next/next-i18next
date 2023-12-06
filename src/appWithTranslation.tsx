@@ -22,8 +22,6 @@ const addResourcesToI18next = (instance: I18NextClient, resources: Resource) => 
   if (resources && instance.isInitialized) {
     for (const locale of Object.keys(resources)) {
       for (const ns of Object.keys(resources[locale])) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         if (!instance?.store?.data || !instance.store.data[locale] || !instance.store.data[locale][ns]) {
           instance.addResourceBundle(
             locale,
