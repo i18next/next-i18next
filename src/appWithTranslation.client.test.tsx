@@ -119,8 +119,10 @@ describe('appWithTranslation', () => {
           locales: ['en', 'de'],
         },
         resources: {
-          xyz: {
-            custom: 'resources',
+          en: {
+            xyz: {
+              custom: 'resources',
+            },
           },
         },
       } as any
@@ -129,9 +131,11 @@ describe('appWithTranslation', () => {
     const [args] = (I18nextProvider as jest.Mock).mock.calls
 
     expect(args[0].i18n.options.resources).toMatchObject({
-      xyz: {
-        custom: 'resources',
-      },
+      en: {
+        xyz: {
+          custom: 'resources',
+        },
+      }
     })
   })
 

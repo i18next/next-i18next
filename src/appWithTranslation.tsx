@@ -8,7 +8,7 @@ import createClient from './createClient'
 
 import { SSRConfig, UserConfig } from './types'
 
-import { i18n as I18NextClient } from 'i18next'
+import { i18n as I18NextClient, Resource } from 'i18next'
 import { useIsomorphicLayoutEffect } from './utils'
 export {
   Trans,
@@ -17,6 +17,26 @@ export {
 } from 'react-i18next'
 
 export let globalI18n: I18NextClient | null = null
+
+const addResourcesToI18next = (instance: I18NextClient, resources: Resource) => {
+  if (resources && instance.isInitialized) {
+    for (const locale of Object.keys(resources)) {
+      for (const ns of Object.keys(resources[locale])) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (instance.hasLoadedNamespace(ns, { lng: locale })) {
+          instance.addResourceBundle(
+            locale,
+            ns,
+            resources[locale][ns],
+            true,
+            true
+          )
+        }
+      }
+    }
+  }
+}
 
 export const appWithTranslation = <Props extends NextJsAppProps>(
   WrappedComponent: React.ComponentType<Props>,
@@ -69,19 +89,7 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
 
       let instance = instanceRef.current
       if (instance) {
-        if (resources) {
-          for (const locale of Object.keys(resources)) {
-            for (const ns of Object.keys(resources[locale])) {
-              instance.addResourceBundle(
-                locale,
-                ns,
-                resources[locale][ns],
-                true,
-                true
-              )
-            }
-          }
-        }
+        addResourcesToI18next(instance, resources)
       } else {
         instance = createClient({
           ...createConfig({
@@ -92,6 +100,8 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
           ns,
           resources,
         }).i18n
+
+        addResourcesToI18next(instance, resources)
 
         globalI18n = instance
         instanceRef.current = instance

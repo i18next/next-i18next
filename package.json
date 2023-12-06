@@ -134,7 +134,7 @@
     "@types/hoist-non-react-statics": "^3.3.4",
     "core-js": "^3",
     "hoist-non-react-statics": "^3.3.2",
-    "i18next-fs-backend": "^2.3.0"
+    "i18next-fs-backend": "^2.3.1"
   },
   "peerDependencies": {
     "i18next": "^23.7.7",
