@@ -16,18 +16,18 @@
     "clean": "rimraf .next out"
   },
   "dependencies": {
-    "i18next": "23.7.8",
-    "next": "14.0.3",
-    "next-i18next": "^15.1.1",
+    "i18next": "23.7.13",
+    "next": "14.0.4",
+    "next-i18next": "^15.1.2",
     "next-language-detector": "^1.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-i18next": "^13.5.0"
+    "react-i18next": "^14.0.0"
   },
   "devDependencies": {
-    "eslint-config-next": "14.0.3",
+    "eslint-config-next": "14.0.4",
     "http-server": "14.1.1",
-    "locize-cli": "7.14.14",
+    "locize-cli": "7.15.1",
     "rimraf": "^5.0.5"
   }
 }

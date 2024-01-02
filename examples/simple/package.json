@@ -15,18 +15,18 @@
     "interface": "i18next-resources-for-ts interface -i ./public/locales/en -o ./@types/resources.d.ts"
   },
   "dependencies": {
-    "i18next": "23.7.8",
-    "next": "^14.0.3",
-    "next-i18next": "^15.1.1",
+    "i18next": "23.7.13",
+    "next": "^14.0.4",
+    "next-i18next": "^15.1.2",
     "react": "^18.2.0",
-    "react-i18next": "^13.5.0",
+    "react-i18next": "^14.0.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@types/node": "^20.10.3",
-    "@types/react": "^18.2.42",
-    "@types/react-dom": "^18.2.17",
-    "eslint-config-next": "^14.0.3",
+    "@types/node": "^20.10.6",
+    "@types/react": "^18.2.46",
+    "@types/react-dom": "^18.2.18",
+    "eslint-config-next": "^14.0.4",
     "i18next-resources-for-ts": "1.4.0",
     "rimraf": "^5.0.5",
     "picocolors": "^1.0.0",
