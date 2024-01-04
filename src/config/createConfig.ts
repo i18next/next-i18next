@@ -186,7 +186,7 @@ export const createConfig = (
           loadPath: (locale: string, namespace: string) =>
             localePath(locale, namespace, false),
         }
-      } else {
+      } else if (localePath) {
         throw new Error(
           `Unsupported localePath type: ${typeof localePath}`
         )
@@ -222,11 +222,17 @@ export const createConfig = (
             return ret
           }
 
-          const namespacesByLocale = locales.map(locale =>
-            getLocaleNamespaces(
-              path.resolve(process.cwd(), `${localePath}/${locale}`)
+          let namespacesByLocale
+          const r = combinedConfig.resources
+          if (!localePath && r) {
+            namespacesByLocale = locales.map(locale => Object.keys(r[locale]))
+          } else {
+            namespacesByLocale = locales.map(locale =>
+              getLocaleNamespaces(
+                path.resolve(process.cwd(), `${localePath}/${locale}`)
+              )
             )
-          )
+          }
 
           const allNamespaces = []
           for (const localNamespaces of namespacesByLocale) {

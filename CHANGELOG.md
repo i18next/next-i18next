@@ -1,3 +1,7 @@
+## 15.2.0
+
+- add possibility to pass resources directly via config and set localePath to null
+
 ## 15.1.2
 
 - fix: Install error with react-i18next v14 [#2248](https://github.com/i18next/next-i18next/issues/2248)

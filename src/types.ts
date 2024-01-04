@@ -43,6 +43,7 @@ export type UserConfig = {
         namespace: string,
         missing: boolean
       ) => string)
+    | null
   localeStructure?: string
   onPreInitI18next?: (i18n: I18n) => void
   reloadOnPrerender?: boolean

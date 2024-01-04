@@ -332,7 +332,7 @@ This option will reload your translations whenever `serverSideTranslations` is c
 | Key                 | Default value        | Note                                                           |
 | ------------------- | -------------------- | -------------------------------------------------------------- |
 | `defaultNS`         | `'common'`           |                                                                |
-| `localePath`        | `'./public/locales'` | Can be a function, see note below.                             |
+| `localePath`        | `'./public/locales'` | Can be a function, see note below. (can also be null, if passing resources option directly via config, like [here](https://www.i18next.com/how-to/add-or-load-translations#add-on-init))                            |
 | `localeExtension`   | `'json'`             | Ignored if `localePath` is a function.                         |
 | `localeStructure`   | `'{{lng}}/{{ns}}'`   | Ignored if `localePath` is a function.                         |
 | `reloadOnPrerender` | `false`              |                                                                |
@@ -345,6 +345,8 @@ This option will reload your translations whenever `serverSideTranslations` is c
 If the localePath is a function, make sure you also define the ns option, because on server side we're not able to preload the namespaces then.
 
 All other [i18next options](https://www.i18next.com/overview/configuration-options) and [react-i18next options](https://react.i18next.com/latest/i18next-instance) can be passed in as well.
+</br>
+You can also pass in the [`resources`](https://www.i18next.com/overview/configuration-options#languages-namespaces-resources) directly in combination with setting `localePath` to `null`.
 
 #### Custom interpolation prefix/suffix
 
