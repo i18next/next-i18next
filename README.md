@@ -400,6 +400,20 @@ This means that the i18n configuration file will be in the same directory as `ne
 
 **Notice** If your config `next-i18next.config.js` is not in the same directory as `next.config.js`, you must copy it manually (or by custom script).
 
+#### Adding next-i18next incrementally
+
+If you are planning on incrementally add next-i18next to you project we recommended that you will pass your `next-i18next.config` to `appWithTranslation` to avoid any issues.
+
+i.e
+
+```js
+import nextI18nextConfig from '../../next-i18next.config';
+//...
+export default appWithTranslation(MyApp, nextI18nextConfig);
+```
+
+See Issue [#2259](https://github.com/i18next/next-i18next/issues/2259) for more information.
+
 ## Notes
 
 ### Vercel and Netlify
