@@ -59,13 +59,16 @@ const createProps = (
       route: '/',
       ...router,
     },
-  } as any)
+  }) as any
 
 const defaultRenderProps = createProps()
 const renderComponent = (props = defaultRenderProps) =>
   render(<DummyApp {...props} />)
 
 describe('appWithTranslation', () => {
+  beforeAll(() => {
+    Object.assign(process, { browser: true })
+  })
   beforeEach(() => {
     ;(fs.existsSync as jest.Mock).mockReturnValue(true)
     ;(fs.readdirSync as jest.Mock).mockReturnValue([])
@@ -135,7 +138,7 @@ describe('appWithTranslation', () => {
         xyz: {
           custom: 'resources',
         },
-      }
+      },
     })
   })
 
