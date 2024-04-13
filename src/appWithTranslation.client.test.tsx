@@ -66,9 +66,6 @@ const renderComponent = (props = defaultRenderProps) =>
   render(<DummyApp {...props} />)
 
 describe('appWithTranslation', () => {
-  beforeAll(() => {
-    Object.assign(process, { browser: true })
-  })
   beforeEach(() => {
     ;(fs.existsSync as jest.Mock).mockReturnValue(true)
     ;(fs.readdirSync as jest.Mock).mockReturnValue([])
@@ -272,7 +269,7 @@ describe('appWithTranslation', () => {
     expect(args[0].children).toBeTruthy()
     expect(args[0].i18n.addResource).toBeTruthy()
     expect(args[0].i18n.language).toBe('en')
-    expect(args[0].i18n.isInitialized).toBe(true)
+    expect(args[0].i18n.isInitialized).toBeUndefined()
 
     expect(fs.existsSync).toHaveBeenCalledTimes(0)
     expect(fs.readdirSync).toHaveBeenCalledTimes(0)
