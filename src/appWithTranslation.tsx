@@ -95,7 +95,7 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
             lng: locale,
           }),
           lng: locale,
-          ns,
+          ...(ns && { ns }),
           resources,
         }).i18n
 

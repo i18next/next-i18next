@@ -59,7 +59,7 @@ const createProps = (
       route: '/',
       ...router,
     },
-  } as any)
+  }) as any
 
 const defaultRenderProps = createProps()
 const renderComponent = (props = defaultRenderProps) =>
@@ -135,7 +135,7 @@ describe('appWithTranslation', () => {
         xyz: {
           custom: 'resources',
         },
-      }
+      },
     })
   })
 
@@ -269,7 +269,7 @@ describe('appWithTranslation', () => {
     expect(args[0].children).toBeTruthy()
     expect(args[0].i18n.addResource).toBeTruthy()
     expect(args[0].i18n.language).toBe('en')
-    expect(args[0].i18n.isInitialized).toBe(true)
+    expect(args[0].i18n.isInitialized).toBeUndefined()
 
     expect(fs.existsSync).toHaveBeenCalledTimes(0)
     expect(fs.readdirSync).toHaveBeenCalledTimes(0)
