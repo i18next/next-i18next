@@ -26,11 +26,13 @@ module.exports = {
     defaultLocale: 'en',
     locales: ['en', 'de'],
   },
+  initImmediate: false,
   /** To avoid issues when deploying to some paas (vercel...) */
   localePath:
     typeof window === 'undefined'
       ? require('path').resolve('./public/locales')
       : '/locales',
+  ns: ['common', 'footer', 'second-page', 'staticpage'],
   partialBundledLanguages: isBrowser,
   reloadOnPrerender: process.env.NODE_ENV === 'development',
   use: isBrowser ? [ChainedBackend] : [],
