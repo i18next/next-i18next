@@ -62,7 +62,7 @@
     "install:example:auto-static-optimize": "cd examples/auto-static-optimize && npm install",
     "move-build-to-examples?": "Hack: see # @link https://github.com/i18next/next-i18next/pull/2012",
     "move-build-to-examples": "rimraf ./examples/*/node_modules/next-i18next && cpy './package.json' './*.js' './*.ts' './dist' ./examples/simple/node_modules/next-i18next && cpy './package.json' './*.js' './*.ts' './dist' ./examples/ssg/node_modules/next-i18next && cpy './package.json' './*.js' './*.ts' './dist' ./examples/auto-static-optimize/node_modules/next-i18next ",
-    "test:e2e": "start-server-and-test 'cd examples/auto-static-optimize && npm run start' http://127.0.0.1:3000 cy:run",
+    "test:e2e": "start-server-and-test 'cd examples/simple && npm run start' http://127.0.0.1:3000 cy:run",
     "cy:run": "cypress run",
     "example": "npm run example:simple",
     "example:prod": "npm run example:simple:prod",

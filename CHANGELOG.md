@@ -1,3 +1,7 @@
+## 15.3.0
+
+- Only overwrite ns config if it provided [#2270](https://github.com/i18next/next-i18next/pull/2270)
+
 ## 15.2.0
 
 - add possibility to pass resources directly via config and set localePath to null
