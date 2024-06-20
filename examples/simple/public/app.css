@@ -16,6 +16,10 @@
   min-width: 100vw;
 }
 
+* body {
+  overflow-x: hidden; /* Hide x-axis overflow */
+}
+
 h1,
 h2 {
   font-family: 'Oswald', sans-serif;
@@ -33,6 +37,87 @@ h2 {
 h3 {
   font-size: 1.5rem;
   opacity: 0.5;
+}
+
+.mainBox {
+  display: grid;
+  gap: 20px;
+  width: 90%;
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-align: center;
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease; /* Smooth transition for the hover effect */
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increased shadow on hover */
+}
+
+.card-title {
+  padding-top: 11px;
+  min-height: 70px;
+  font-size: 1.5em;
+  margin: 0 0 10px;
+}
+
+.card-text {
+  font-size: 1em;
+  color: #666;
+  margin-bottom: 15px;
+  padding: 0 10px; /* Add padding for text inside the card */
+}
+
+.card-text a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.card-text a:hover {
+  text-decoration: underline;
+}
+
+.card-img {
+  width: 100%; /* Full width of the parent div */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 0 0 10px 10px; /* Rounded corners on the bottom only */
+  display: block; /* Prevent extra space below the image */
+  transition:
+    transform 0.5s ease,
+    box-shadow 0.5s ease; /* Smooth transition for hover effects with longer duration */
+}
+
+.card-img:hover {
+  transform: scale(1.05); /* Slightly scale up the image */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+/* Media queries for responsive design */
+@media (min-width: 600px) {
+  .mainBox {
+    grid-template-columns: repeat(
+      2,
+      1fr
+    ); /* Show 2 cards per row on medium screens */
+  }
+}
+
+@media (min-width: 900px) {
+  .mainBox {
+    grid-template-columns: repeat(
+      3,
+      1fr
+    ); /* Show 3 cards per row on large screens */
+  }
 }
 
 p {
@@ -73,6 +158,7 @@ button {
   min-height: 40px;
   padding: 0 0.8em;
   border: 0;
+  border-radius: 5px;
   color: inherit;
   position: relative;
   transform: translateZ(0);
