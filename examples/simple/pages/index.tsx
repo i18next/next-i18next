@@ -26,7 +26,7 @@ const Homepage = (
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const clientSideLanguageChange = (newLocale: string) => {
-    i18n.changeLanguage(newLocale);
+    i18n.changeLanguage(newLocale)
   }
 
   const changeTo = router.locale === 'en' ? 'de' : 'en'
@@ -36,30 +36,30 @@ const Homepage = (
     <>
       <main>
         <Header heading={t('h1')} title={t('title')} />
-        <div style={{ display: 'inline-flex', width: '90%' }}>
-          <div style={{ width: '33%' }}>
-            <h3 style={{ minHeight: 70 }}>
+        <div className="mainBox">
+          <div className="card">
+            <h3 className="card-title">
               {t('blog.appDir.question')}
             </h3>
-            <p>
+            <p className="card-text">
               <Trans i18nKey="blog.appDir.answer">
                 Then check out
-                <a href={t('blog.appDir.link')}>this blog post</a>
-                .
+                <a href={t('blog.appDir.link')}>this blog post</a>.
               </Trans>
             </p>
             <a href={t('blog.appDir.link')}>
               <img
-                style={{ width: '50%' }}
+                className="card-img"
                 src="https://locize.com/blog/next-app-dir-i18n/next-app-dir-i18n.jpg"
               />
             </a>
           </div>
-          <div style={{ width: '33%' }}>
-            <h3 style={{ minHeight: 70 }}>
+
+          <div className="card">
+            <h3 className="card-title">
               {t('blog.optimized.question')}
             </h3>
-            <p>
+            <p className="card-text">
               <Trans i18nKey="blog.optimized.answer">
                 Then you may have a look at
                 <a href={t('blog.optimized.link')}>this blog post</a>
@@ -68,16 +68,14 @@ const Homepage = (
             </p>
             <a href={t('blog.optimized.link')}>
               <img
-                style={{ width: '50%' }}
+                className="card-img"
                 src="https://locize.com/blog/next-i18next/next-i18next.jpg"
               />
             </a>
           </div>
-          <div style={{ width: '33%' }}>
-            <h3 style={{ minHeight: 70 }}>
-              {t('blog.ssg.question')}
-            </h3>
-            <p>
+          <div className="card">
+            <h3 className="card-title">{t('blog.ssg.question')}</h3>
+            <p className="card-text">
               <Trans i18nKey="blog.ssg.answer">
                 Then you may have a look at
                 <a href={t('blog.ssg.link')}>this blog post</a>.
@@ -85,7 +83,7 @@ const Homepage = (
             </p>
             <a href={t('blog.ssg.link')}>
               <img
-                style={{ width: '50%' }}
+                className="card-img"
                 src="https://locize.com/blog/next-i18n-static/title.jpg"
               />
             </a>
