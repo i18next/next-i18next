@@ -4,11 +4,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
 	plugins: [react()],
 	test: {
-		environment: "jsdom",
-		setupFiles: ["./vitest.setup.ts"],
 		coverage: {
-			provider: "v8",
-			include: ["components/**/*", "pages/**/*"],
 			exclude: [
 				"**/_app.tsx",
 				"**/_document.tsx",
@@ -29,6 +25,10 @@ export default defineConfig({
 				"**/vitest.{workspace,projects}.[jt]s?(on)",
 				"**/.{eslint,mocha,prettier}rc.{?(c|m)js,yml}",
 			],
+			include: ["components/**/*", "pages/**/*"],
+			provider: "v8",
 		},
+		environment: "jsdom",
+		setupFiles: ["./vitest.setup.ts"],
 	},
 });

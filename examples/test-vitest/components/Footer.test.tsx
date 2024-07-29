@@ -3,10 +3,10 @@ import { describe, expect, it, vi } from "vitest";
 import { Footer } from "./Footer";
 
 vi.mock("next-i18next", () => ({
+	Trans: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 	useTranslation: () => ({
 		t: (key: string) => key,
 	}),
-	Trans: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
 vi.mock("next-i18next/package.json", () => ({

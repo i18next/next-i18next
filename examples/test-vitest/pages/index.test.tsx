@@ -7,22 +7,22 @@ const mockChangeLanguage = vi.fn();
 
 vi.mock("next/router", () => ({
 	useRouter: () => ({
-		locale: "en",
-		push: mockPush,
-		pathname: "/",
 		asPath: "/",
+		locale: "en",
+		pathname: "/",
+		push: mockPush,
 		query: {},
 	}),
 }));
 
 vi.mock("next-i18next", () => ({
+	Trans: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 	useTranslation: () => ({
-		t: (key: string) => key,
 		i18n: {
 			changeLanguage: mockChangeLanguage,
 		},
+		t: (key: string) => key,
 	}),
-	Trans: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
 vi.mock("../components/Footer", () => ({
