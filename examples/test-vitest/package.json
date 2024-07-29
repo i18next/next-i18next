@@ -1,0 +1,45 @@
+{
+	"name": "next-i18next-example-test-vitest",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"scripts": {
+		"dev": "next",
+		"build": "next build",
+		"start": "next start -p ${PORT:=3000}",
+		"typecheck": "tsc --project ./tsconfig.json --noEmit",
+		"clean": "rimraf .next",
+		"nuke:install": "rimraf ./node_modules ./package-lock.json",
+		"toc": "i18next-resources-for-ts toc -i ./public/locales/en -o ./@types/resources.ts",
+		"merge": "i18next-resources-for-ts merge -i ./public/locales/en -o ./@types/resources.json",
+		"interface": "i18next-resources-for-ts interface -i ./public/locales/en -o ./@types/resources.d.ts",
+		"test": "vitest",
+		"coverage": "vitest run --coverage"
+	},
+	"dependencies": {
+		"i18next": "23.11.5",
+		"next": "^14.2.4",
+		"next-i18next": "^15.3.0",
+		"react": "^18.3.1",
+		"react-i18next": "^14.1.2",
+		"react-dom": "^18.3.1"
+	},
+	"devDependencies": {
+		"@testing-library/jest-dom": "^6.4.8",
+		"@testing-library/react": "^16.0.0",
+		"@types/node": "^20.14.6",
+		"@types/react": "^18.3.3",
+		"@types/react-dom": "^18.3.0",
+		"@vitejs/plugin-react": "^4.3.1",
+		"@vitest/coverage-v8": "^2.0.4",
+		"eslint-config-next": "^14.2.4",
+		"i18next-resources-for-ts": "1.5.0",
+		"jsdom": "^24.1.1",
+		"picocolors": "^1.0.1",
+		"rimraf": "^5.0.7",
+		"typescript": "^5.4.5",
+		"vitest": "^2.0.4",
+		"whatwg-fetch": "^3.6.20"
+	},
+	"trustedDependencies": ["core-js"]
+}
