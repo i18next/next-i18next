@@ -1,3 +1,7 @@
+## 15.3.1
+
+- update some i18next dependencies to address [#2288](https://github.com/i18next/next-i18next/issues/2288)
+
 ## 15.3.0
 
 - Only overwrite ns config if it provided [#2270](https://github.com/i18next/next-i18next/pull/2270)
