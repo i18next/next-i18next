@@ -15,11 +15,11 @@
     "interface": "i18next-resources-for-ts interface -i ./public/locales/en -o ./@types/resources.d.ts"
   },
   "dependencies": {
-    "i18next": "23.11.5",
+    "i18next": "23.12.2",
     "next": "^14.2.4",
-    "next-i18next": "^15.3.0",
+    "next-i18next": "^15.3.1",
     "react": "^18.3.1",
-    "react-i18next": "^14.1.2",
+    "react-i18next": "^15.0.0",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {

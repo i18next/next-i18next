@@ -12,7 +12,7 @@ export const Header = ({ heading, title }) => (
     <h1>{heading}</h1>
     <a
       className="github"
-      href="//github.com/i18next/next-language-detector"
+      href="https://github.com/i18next/next-language-detector"
     >
       <i className="typcn typcn-social-github-circular" />
     </a>

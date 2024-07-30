@@ -17,7 +17,7 @@ export const Header: FC<Props> = ({ heading, title }) => (
       <hr />
     </h2>
     <h1>{heading}</h1>
-    <Link className="github" href="//github.com/i18next/next-i18next">
+    <Link className="github" href="https://github.com/i18next/next-i18next">
       <i className="typcn typcn-social-github-circular" />
     </Link>
   </>
