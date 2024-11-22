@@ -21,7 +21,10 @@ export default (config: InternalConfig): CreateClientReturn => {
       ...config,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      initImmediate: false,
+      initAsync: false,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      initImmediate: false, // i18next < 24
     }) as I18n
   }
   let initPromise: InitPromise

@@ -1,3 +1,7 @@
+## 15.4.0
+
+- support i18next v24
+
 ## 15.3.1
 
 - update some i18next dependencies to address [#2288](https://github.com/i18next/next-i18next/issues/2288)
