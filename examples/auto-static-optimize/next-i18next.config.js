@@ -26,7 +26,7 @@ module.exports = {
     defaultLocale: 'en',
     locales: ['en', 'de'],
   },
-  initImmediate: false,
+  initAsync: false,
   /** To avoid issues when deploying to some paas (vercel...) */
   localePath:
     typeof window === 'undefined'
