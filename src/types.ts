@@ -49,6 +49,7 @@ export type UserConfig = {
   reloadOnPrerender?: boolean
   serializeConfig?: boolean
   use?: any[]
+  clientAwaitInit?: boolean
 } & InitOptions
 
 export type InternalConfig = Omit<UserConfig, 'i18n'> &

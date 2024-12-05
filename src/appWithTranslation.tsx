@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useMemo, useState, useRef } from 'react'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import { I18nextProvider } from 'react-i18next'
 import type { AppProps as NextJsAppProps } from 'next/app'
@@ -18,11 +18,18 @@ export {
 
 export let globalI18n: I18NextClient | null = null
 
-const addResourcesToI18next = (instance: I18NextClient, resources: Resource) => {
+const addResourcesToI18next = (
+  instance: I18NextClient,
+  resources: Resource
+) => {
   if (resources && instance.isInitialized) {
     for (const locale of Object.keys(resources)) {
       for (const ns of Object.keys(resources[locale])) {
-        if (!instance?.store?.data || !instance.store.data[locale] || !instance.store.data[locale][ns]) {
+        if (
+          !instance?.store?.data ||
+          !instance.store.data[locale] ||
+          !instance.store.data[locale][ns]
+        ) {
           instance.addResourceBundle(
             locale,
             ns,
@@ -49,6 +56,9 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
     const ns = _nextI18Next?.ns
 
     const instanceRef = useRef<I18NextClient | null>(null)
+    const [ready, setReady] = useState<boolean>(
+      !configOverride?.clientAwaitInit
+    )
 
     /**
      * Memoize i18n instance and reuse it rather than creating new instance.
@@ -89,7 +99,7 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
       if (instance) {
         addResourcesToI18next(instance, resources)
       } else {
-        instance = createClient({
+        const { i18n: ins, initPromise } = createClient({
           ...createConfig({
             ...userConfig,
             lng: locale,
@@ -97,7 +107,13 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
           lng: locale,
           ...(ns && { ns }),
           resources,
-        }).i18n
+        })
+
+        instance = ins
+
+        if (configOverride?.clientAwaitInit) {
+          initPromise.then(() => setReady(true))
+        }
 
         addResourcesToI18next(instance, resources)
 
@@ -117,7 +133,7 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
       i18n.changeLanguage(locale)
     }, [i18n, locale])
 
-    return i18n !== null ? (
+    return i18n !== null && ready ? (
       <I18nextProvider i18n={i18n}>
         <WrappedComponent {...props} />
       </I18nextProvider>
