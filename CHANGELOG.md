@@ -1,3 +1,7 @@
+## 15.4.1
+
+- Move @types/hoist-non-react-statics to devDependencies [#2310](https://github.com/i18next/next-i18next/pull/2310)
+
 ## 15.4.0
 
 - support i18next v24
