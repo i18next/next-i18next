@@ -92,7 +92,6 @@
     "@size-limit/webpack": "^10.0.2",
     "@size-limit/webpack-why": "^10.0.2",
     "@testing-library/react": "^14.0.0",
-    "@types/hoist-non-react-statics": "^3.3.6",
     "@types/jest": "^29.5.7",
     "@types/node": "^20.8.10",
     "@types/react": "^18.2.33",
@@ -133,6 +132,7 @@
     "webpack": "^5.89.0"
   },
   "dependencies": {
+    "@types/hoist-non-react-statics": "^3.3.6",
     "@babel/runtime": "^7.23.2",
     "core-js": "^3",
     "hoist-non-react-statics": "^3.3.2",
