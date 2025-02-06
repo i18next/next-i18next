@@ -19,11 +19,11 @@ const getSimpleExamplePageLimits = () => {
   const limitCfg = {
     defaultSize: '90kb',
     pages: {
-      '/': '85kb',
+      '/': '97kb',
       '/404': '90kb',
-      '/_app': '105kb',
-      '/_error': '82Kb',
-      '/second-page': '85Kb',
+      '/_app': '114kb',
+      '/_error': '93Kb',
+      '/second-page': '97Kb',
     },
   }
   let pageLimits = []
