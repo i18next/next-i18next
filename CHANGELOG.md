@@ -1,3 +1,7 @@
+## 15.4.2
+
+- types: re-add @types/hoist-non-react-statics to dependencies [#2316](https://github.com/i18next/next-i18next/pull/2316)
+
 ## 15.4.1
 
 - Move @types/hoist-non-react-statics to devDependencies [#2310](https://github.com/i18next/next-i18next/pull/2310)
