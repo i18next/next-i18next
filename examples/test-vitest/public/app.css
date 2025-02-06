@@ -1,0 +1,185 @@
+#__next {
+  font-family: 'Open Sans', sans-serif;
+  text-align: center;
+  background-image: linear-gradient(
+    to left top,
+    #ffffff,
+    #f5f5f5,
+    #eaeaea,
+    #e0e0e0,
+    #d6d6d6
+  );
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+* body {
+  overflow-x: hidden; /* Hide x-axis overflow */
+}
+
+h1,
+h2 {
+  font-family: 'Oswald', sans-serif;
+}
+
+h1 {
+  font-size: 3rem;
+  margin: 5rem 0;
+}
+h2 {
+  min-width: 18rem;
+  font-size: 2rem;
+  opacity: 0.3;
+}
+h3 {
+  font-size: 1.5rem;
+  opacity: 0.5;
+}
+
+.mainBox {
+  display: grid;
+  gap: 20px;
+  width: 90%;
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-align: center;
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease; /* Smooth transition for the hover effect */
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increased shadow on hover */
+}
+
+.card-title {
+  padding-top: 11px;
+  min-height: 70px;
+  font-size: 1.5em;
+  margin: 0 0 10px;
+}
+
+.card-text {
+  font-size: 1em;
+  color: #666;
+  margin-bottom: 15px;
+  padding: 0 10px; /* Add padding for text inside the card */
+}
+
+.card-text a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.card-text a:hover {
+  text-decoration: underline;
+}
+
+.card-img {
+  width: 100%; /* Full width of the parent div */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 0 0 10px 10px; /* Rounded corners on the bottom only */
+  display: block; /* Prevent extra space below the image */
+  transition:
+    transform 0.5s ease,
+    box-shadow 0.5s ease; /* Smooth transition for hover effects with longer duration */
+}
+
+.card-img:hover {
+  transform: scale(1.05); /* Slightly scale up the image */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+/* Media queries for responsive design */
+@media (min-width: 600px) {
+  .mainBox {
+    grid-template-columns: repeat(
+      2,
+      1fr
+    ); /* Show 2 cards per row on medium screens */
+  }
+}
+
+@media (min-width: 900px) {
+  .mainBox {
+    grid-template-columns: repeat(
+      3,
+      1fr
+    ); /* Show 3 cards per row on large screens */
+  }
+}
+
+p {
+  line-height: 1.65em;
+}
+p:nth-child(2) {
+  font-style: italic;
+  opacity: 0.65;
+  margin-top: 1rem;
+}
+
+a.github {
+  position: fixed;
+  top: 0.5rem;
+  right: 0.75rem;
+  font-size: 4rem;
+  color: #888;
+  opacity: 0.8;
+}
+a.github:hover {
+  opacity: 1;
+}
+
+button {
+  display: inline-block;
+  vertical-align: bottom;
+  outline: 0;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.5);
+  box-sizing: border-box;
+  font-size: 1em;
+  font-family: inherit;
+  border-radius: 3px;
+  transition: box-shadow 0.2s ease;
+  user-select: none;
+  line-height: 2.5em;
+  min-height: 40px;
+  padding: 0 0.8em;
+  border: 0;
+  border-radius: 5px;
+  color: inherit;
+  position: relative;
+  transform: translateZ(0);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  margin: 0.8rem;
+}
+
+button:hover,
+button:focus {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+footer {
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 100vw;
+  padding: 3rem 0;
+}
