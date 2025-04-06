@@ -7,19 +7,19 @@
   "title": "Hauptseite | next-i18next",
   "blog": {
     "appDir": {
-      "question": "Verwendest du das neue Next.js 13/14 mit app directory?",
+      "question": "Verwendest du das neue Next.js App Router?",
       "answer": "Dann schau dir <1>diesen Blogbeitrag</1> an.",
-      "link": "https://locize.com/blog/next-app-dir-i18n/"
+      "link": "https://www.locize.com/blog/i18n-next-app-router"
     },
     "optimized": {
       "question": "Möchtest du einige Superkräfte entfesseln, um für alle Seiten optimierte Übersetzungen zu haben?",
       "answer": "Dann schaue dir vielleicht <1>diesen Blogbeitrag</1> an.",
-      "link": "https://locize.com/blog/next-i18next-de/"
+      "link": "https://locize.com/blog/next-i18next"
     },
     "ssg": {
       "question": "Möchtest du SSG (next export) verwenden?",
       "answer": "Dann schaue dir vielleicht <1>diesen Blogbeitrag</1> an.",
-      "link": "https://locize.com/blog/next-i18n-statisch/"
+      "link": "https://locize.com/blog/next-i18n-static"
     }
   }
 }

@@ -8,10 +8,10 @@
 **The easiest way to translate your Next.js apps *(with pages setup)*.**
 
 If you are using next-i18next *(pages directory)* in production and like to unleash some super powers, you may have a look at [this blog post](https://locize.com/blog/next-i18next/).
-[![](https://locize.com/blog/next-i18next/next-i18next.jpg)](https://locize.com/blog/next-i18next/)
+[![](https://cdn.prod.website-files.com/67a323e323a50df7f24f0a94/67ab24f30259692f8593a923_next-i18next.jpg)](https://locize.com/blog/next-i18next/)
 
 If you're using Next.js 13/14 with app directory, there is no need for next-i18next, you can directly use i18next and react-i18next, like described [in this blog post](https://locize.com/blog/next-app-dir-i18n/).
-[![](https://locize.com/blog/next-app-dir-i18n/next-app-dir-i18n.jpg)](https://locize.com/blog/next-app-dir-i18n/)
+[![](https://cdn.prod.website-files.com/67a323e323a50df7f24f0a94/67ab23a11128dcf4b9533ed0_next-app-dir-i18n.jpg)](https://locize.com/blog/next-app-dir-i18n/)
 
 ## What is this?
 
@@ -451,7 +451,7 @@ Are you trying to generate a [static HTML export](https://nextjs.org/docs/advanc
 
 But there's a way to workaround that with the help of [next-language-detector](https://github.com/i18next/next-language-detector).
 Check out [this blog post](https://locize.com/blog/next-i18n-static/) and [this example project](./examples/ssg/).
-[![](https://locize.com/blog/next-i18n-static/title.jpg)](https://locize.com/blog/next-i18n-static/)
+[![](https://cdn.prod.website-files.com/67a323e323a50df7f24f0a94/67a627037d01688d9ccb79dd_title%20(2).jpg)](https://locize.com/blog/next-i18n-static/)
 
 ### Translate in child components
 
