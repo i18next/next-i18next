@@ -79,9 +79,7 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
       }
 
       const { initialI18nStore } = _nextI18Next || {}
-      const resources = configOverride?.resources
-        ? configOverride.resources
-        : initialI18nStore
+      const resources = configOverride?.resources ?? initialI18nStore
 
       if (!locale) locale = userConfig.i18n.defaultLocale
 
