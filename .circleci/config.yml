@@ -56,7 +56,7 @@ jobs:
   #     - image: cimg/node:18.4
   #   steps:
   #     - build-and-test
-  node-v16:
+  node-v24:
     docker:
       - image: circleci/node:24-browsers
     steps:
