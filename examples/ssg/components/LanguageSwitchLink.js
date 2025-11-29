@@ -25,7 +25,11 @@ const LanguageSwitchLink = ({ locale, ...rest }) => {
     <Link href={href}>
       <button
         style={{ fontSize: 'small' }}
-        onClick={() => languageDetector.cache(locale)}
+        onClick={() => {
+          languageDetector.cache(locale)
+          // eslint-disable-next-line no-undef
+          document.documentElement.lang = locale
+        }}
       >
         {locale}
       </button>
