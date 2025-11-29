@@ -63,4 +63,7 @@ workflows:
       # - node-v12
       # - node-v14
       # - node-v16
-      - node-v18
+      # - node-v18
+      # - node-v20
+      # - node-v22
+      - node-v24
