@@ -20,6 +20,8 @@ export const useRedirect = to => {
 
     languageDetector.cache(detectedLng)
     router.replace('/' + detectedLng + to)
+    // eslint-disable-next-line no-undef
+    document.documentElement.lang = detectedLng
   })
 
   return <></>
