@@ -1,3 +1,7 @@
+## 15.4.3
+
+- types: fix: WithTranslation type from next-i18next is not generic (TS error) [#2329](https://github.com/i18next/next-i18next/issues/2329)
+
 ## 15.4.2
 
 - types: re-add @types/hoist-non-react-statics to dependencies [#2316](https://github.com/i18next/next-i18next/pull/2316)

@@ -6,12 +6,17 @@ import {
   withTranslation,
   WithTranslation as ReactI18nextWithTranslation,
   Translation,
+  FallbackNs,
+  UseTranslationOptions,
+  UseTranslationResponse,
 } from 'react-i18next'
 import {
   InitOptions,
   i18n as I18NextClient,
   TFunction as I18NextTFunction,
   TypeOptions,
+  FlatNamespace,
+  KeyPrefix,
 } from 'i18next'
 import { appWithTranslation, i18n } from './'
 
@@ -58,12 +63,23 @@ export type InternalConfig = Omit<UserConfig, 'i18n'> &
     supportedLngs: string[]
   }
 
-export type UseTranslation = typeof useTranslation
+type $Tuple<T> = readonly [T?, ...T[]];
+
+export type UseTranslation<
+  Ns extends FlatNamespace | $Tuple<FlatNamespace> | undefined = undefined,
+  KPrefix extends KeyPrefix<FallbackNs<Ns>> = undefined,
+> = (
+  ns?: Ns,
+  options?: UseTranslationOptions<KPrefix>,
+) => UseTranslationResponse<FallbackNs<Ns>, KPrefix>
 export type AppWithTranslation = typeof appWithTranslation
 export type TFunction = I18NextTFunction
 export type I18n = I18NextClient
 export type WithTranslationHocType = typeof withTranslation
-export type WithTranslation = ReactI18nextWithTranslation
+export type WithTranslation<
+  Ns extends FlatNamespace | $Tuple<FlatNamespace> | undefined = undefined,
+  KPrefix extends KeyPrefix<FallbackNs<Ns>> = undefined,
+> = ReactI18nextWithTranslation<Ns, KPrefix>
 export type InitPromise = Promise<TFunction>
 export type CreateClientReturn = {
   i18n: I18n
