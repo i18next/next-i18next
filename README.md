@@ -10,7 +10,7 @@
 If you are using next-i18next *(pages directory)* in production and like to unleash some super powers, you may have a look at [this blog post](https://locize.com/blog/next-i18next/).
 [![](https://cdn.prod.website-files.com/67a323e323a50df7f24f0a94/67ab24f30259692f8593a923_next-i18next.jpg)](https://locize.com/blog/next-i18next/)
 
-If you're using Next.js 13/14/15 with App Router, there is no need for next-i18next, you can directly use i18next and react-i18next, like described [in this blog post](https://www.locize.com/blog/i18n-next-app-router).
+If you're using Next.js 13/14/15/16/etc... with App Router, there is no need for next-i18next, you can directly use i18next and react-i18next, like described [in this blog post](https://www.locize.com/blog/i18n-next-app-router).
 [![](https://cdn.prod.website-files.com/67a323e323a50df7f24f0a94/67f268673fcfae53e5d4697c_i18n-next-app-router.jpg)](https://www.locize.com/blog/i18n-next-app-router)
 
 ## What is this?
