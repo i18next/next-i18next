@@ -8,10 +8,10 @@
 **The easiest way to translate your Next.js apps *(with pages setup)*.**
 
 If you are using next-i18next *(pages directory)* in production and like to unleash some super powers, you may have a look at [this blog post](https://locize.com/blog/next-i18next/).
-[![](https://cdn.prod.website-files.com/67a323e323a50df7f24f0a94/67ab24f30259692f8593a923_next-i18next.jpg)](https://locize.com/blog/next-i18next/)
+[![](https://www.locize.com/img/blog/next-i18next/next-i18next.jpg)](https://locize.com/blog/next-i18next/)
 
 If you're using Next.js 13/14/15/16/etc... with App Router, there is no need for next-i18next, you can directly use i18next and react-i18next, like described [in this blog post](https://www.locize.com/blog/i18n-next-app-router).
-[![](https://cdn.prod.website-files.com/67a323e323a50df7f24f0a94/67f268673fcfae53e5d4697c_i18n-next-app-router.jpg)](https://www.locize.com/blog/i18n-next-app-router)
+[![](https://www.locize.com/img/blog/i18n-next-app-router/i18n-next-app-router.jpg)](https://www.locize.com/blog/i18n-next-app-router)
 
 ## What is this?
 
@@ -451,7 +451,7 @@ Are you trying to generate a [static HTML export](https://nextjs.org/docs/advanc
 
 But there's a way to workaround that with the help of [next-language-detector](https://github.com/i18next/next-language-detector).
 Check out [this blog post](https://locize.com/blog/next-i18n-static/) and [this example project](./examples/ssg/).
-[![](https://cdn.prod.website-files.com/67a323e323a50df7f24f0a94/67a627037d01688d9ccb79dd_title%20(2).jpg)](https://locize.com/blog/next-i18n-static/)
+[![](https://www.locize.com/img/blog/next-i18n-static/title.jpg)](https://locize.com/blog/next-i18n-static/)
 
 ### Translate in child components
 
@@ -513,7 +513,7 @@ This project follows the [all-contributors](https://github.com/kentcdodds/all-co
 
 Needing a translation management? Want to edit your translations with an InContext Editor? Use the original provided to you by the maintainers of i18next!
 
-![locize](https://cdn.prod.website-files.com/67a323e323a50df7f24f0a6f/67b8bbb29365c3a3c21c0898_github_locize.png)
+![locize](https://www.locize.com/img/ads/github_locize.png)
 
 With using [locize](http://locize.com/?utm_source=next_i18next_readme&utm_medium=github) you directly support the future of i18next and next-i18next.
 

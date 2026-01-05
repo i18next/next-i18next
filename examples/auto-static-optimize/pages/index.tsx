@@ -50,7 +50,7 @@ const Homepage = (
             <a href={t('blog.appDir.link')}>
               <img
                 style={{ width: '50%' }}
-                src="https://cdn.prod.website-files.com/67a323e323a50df7f24f0a94/67ab23a11128dcf4b9533ed0_next-app-dir-i18n.jpg"
+                src="https://www.locize.com/img/blog/i18n-next-app-router/i18n-next-app-router.jpg"
               />
             </a>
           </div>
@@ -68,7 +68,7 @@ const Homepage = (
             <a href={t('blog.optimized.link')}>
               <img
                 style={{ width: '50%' }}
-                src="https://cdn.prod.website-files.com/67a323e323a50df7f24f0a94/67ab24f30259692f8593a923_next-i18next.jpg"
+                src="https://www.locize.com/img/blog/next-i18next/next-i18next.jpg"
               />
             </a>
           </div>
@@ -85,7 +85,7 @@ const Homepage = (
             <a href={t('blog.ssg.link')}>
               <img
                 style={{ width: '50%' }}
-                src="https://cdn.prod.website-files.com/67a323e323a50df7f24f0a94/67a627037d01688d9ccb79dd_title%20(2).jpg"
+                src="https://www.locize.com/img/blog/next-i18n-static/title.jpg"
               />
             </a>
           </div>
