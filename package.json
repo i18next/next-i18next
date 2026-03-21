@@ -91,7 +91,7 @@
     "@size-limit/file": "^10.0.2",
     "@size-limit/webpack": "^10.0.2",
     "@size-limit/webpack-why": "^10.0.2",
-    "@testing-library/react": "^14.0.0",
+    "@testing-library/react": "^16.3.2",
     "@types/jest": "^29.5.7",
     "@types/node": "^20.8.10",
     "@types/react": "^18.2.33",
