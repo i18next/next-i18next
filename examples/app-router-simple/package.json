@@ -1,0 +1,34 @@
+{
+  "name": "next-app-dir-i18next-example-ts",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "dev-turbo": "next dev --turbo",
+    "lint": "next lint",
+    "start": "next start",
+    "migrateToLocize": "locize migrate --project-id=01b2e5e8-6243-47d1-b36f-963dbb8bcae3 --api-key=c9805cd1-fd50-4d98-967a-383b39066de8 --cdn-type pro --path=./app/i18n/locales",
+    "downloadLocales": "locize download --project-id=01b2e5e8-6243-47d1-b36f-963dbb8bcae3 --cdn-type pro --ver=latest --clean=true --path=./app/i18n/locales && npm run i18next-resources-for-ts",
+    "syncLocales": "locize sync --project-id=01b2e5e8-6243-47d1-b36f-963dbb8bcae3 --api-key=bd8cb856-d6b3-4c82-a456-862c729a1674 --cdn-type pro --ver=latest --path=./app/i18n/locales --dry=true",
+    "i18next-resources-for-ts": "i18next-resources-for-ts interface -i ./app/i18n/locales/en -o ./@types/resources.d.ts",
+    "ts": "next build && tsc --noEmit && rm tsconfig.tsbuildinfo"
+  },
+  "dependencies": {
+    "i18next": "25.10.3",
+    "next": "16.2.1",
+    "next-i18next": "^16.0.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-i18next": "16.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "25.5.0",
+    "@types/react": "19.2.14",
+    "eslint": "10.1.0",
+    "eslint-config-next": "16.2.1",
+    "i18next-resources-for-ts": "2.0.2",
+    "locize-cli": "12.0.9",
+    "typescript": "5.9.3"
+  }
+}

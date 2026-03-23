@@ -1,0 +1,11 @@
+{
+  "h1": "Ein einfaches Beispiel",
+  "title": "Hauptseite",
+  "to-client-page": "Zur client seitigen Seite",
+  "to-second-page": "Zur zweiten Seite",
+  "welcome": "Willkommen zu Next.js 16 <1>mit dem App Router</1> und next-i18next",
+  "blog": {
+    "text": "Schau dir den entsprechenden <1>Blogbeitrag</1> dieses Beispiels an.",
+    "link": "https://www.locize.com/blog/next-i18next-v16"
+  }
+}

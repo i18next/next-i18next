@@ -1,0 +1,34 @@
+{
+  "name": "next-i18next-example-ssg",
+  "version": "13.0.0",
+  "license": "MIT",
+  "scripts": {
+    "404": "cp out/404/index.html out/404.html",
+    "dev": "next dev",
+    "build": "next build",
+    "postbuild": "npm run 404",
+    "server": "next start",
+    "start": "npm run dev",
+    "lint": "next lint",
+    "test": "npm run lint",
+    "serve": "http-server out -p 8080",
+    "downloadLocales": "locize download --project-id=0842ada9-1d1d-4d48-ab27-08f6a132f558 --cdn-type pro --ver=latest --clean=true --path=./public/locales",
+    "clean": "rimraf .next out"
+  },
+  "dependencies": {
+    "i18next": "25.10.3",
+    "next": "16.2.1",
+    "next-i18next": "^16.0.0",
+    "next-language-detector": "^1.1.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-i18next": "^16.6.0"
+  },
+  "devDependencies": {
+    "eslint": "10.1.0",
+    "eslint-config-next": "16.2.1",
+    "http-server": "14.1.1",
+    "locize-cli": "12.0.9",
+    "rimraf": "^6.1.3"
+  }
+}

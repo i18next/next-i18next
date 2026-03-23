@@ -1,3 +1,38 @@
+## 16.0.0
+
+### BREAKING CHANGES
+
+- **Import paths changed for Pages Router**: `next-i18next` → `next-i18next/pages`, `next-i18next/serverSideTranslations` → `next-i18next/pages/serverSideTranslations`
+- **Root export is now App Router**: The default `next-i18next` import now exports App Router utilities (`defineConfig`, `normalizeConfig`, `I18nConfig`). Pages Router users must update to `next-i18next/pages`.
+- **Removed `i18next-fs-backend` dependency**: Pages Router server-side loading now uses `i18next-resources-to-backend` with `fs.readFileSync` internally. No change needed for users — the behavior is identical.
+
+### New Features
+
+- **App Router support** — first-class support for Next.js App Router with Server Components and Client Components
+  - `getT(ns?, options?)` — async translation function for Server Components, layouts, and `generateMetadata`. Returns namespace-typed `{ t, i18n, lng }`.
+  - `useT(ns?, options?)` — translation hook for Client Components. Reads language from `[lng]` or `[locale]` URL params automatically.
+  - `I18nProvider` — client-side provider for hydrating server-loaded translations. Supports custom backends via `use` prop.
+  - `initServerI18next(config)` — one-time server configuration setup
+  - `getResources(i18n, namespaces?)` — extract loaded resources for client hydration
+  - `generateI18nStaticParams()` — helper for `generateStaticParams`
+- **Proxy support (Next.js 16+)** — `createProxy()` from `next-i18next/proxy` for the new `proxy.ts` file convention. `createMiddleware()` from `next-i18next/middleware` remains available for Next.js 14/15.
+  - Edge-safe language detection (cookie → Accept-Language → fallback)
+  - Locale-in-path routing with automatic redirects
+  - Custom header for Server Component language detection
+- **`basePath` option** — scope the proxy to a URL prefix (e.g., `/app-router`) for mixed App Router + Pages Router setups
+- **No-locale-path mode** — `localeInPath: false` for cookie-based language without URL prefixes. Use `useChangeLanguage()` hook for language switching.
+- **`defineConfig()`** — type-safe configuration helper
+- **Custom backend support** — pass any i18next backend plugin (http-backend, locize-backend, chained-backend) via the `use` config option. The default resource loader is skipped automatically when a custom backend is provided.
+- **`resourceLoader` option** — custom async loader function `(lng, ns) => Promise<object>` for dynamic imports or custom loading logic
+- **Server-side singleton caching** — translations loaded once and reused across requests. Custom backends benefit from this — no re-fetching per request.
+- **`nonExplicitSupportedLngs`** — match `'en'` to `'en-US'` etc. in language detection
+
+### Pages Router
+
+- All existing v15 APIs preserved under `next-i18next/pages` and `next-i18next/pages/serverSideTranslations`
+- `appWithTranslation`, `useTranslation`, `Trans`, `serverSideTranslations` — unchanged behavior
+- Defensive `.filter(Boolean)` on `config.use` arrays to handle CJS/ESM interop edge cases with Turbopack
+
 ## 15.4.3
 
 - types: fix: WithTranslation type from next-i18next is not generic (TS error) [#2329](https://github.com/i18next/next-i18next/issues/2329)

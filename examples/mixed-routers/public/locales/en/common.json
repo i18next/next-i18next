@@ -1,0 +1,21 @@
+{
+  "h1": "next-i18next",
+  "description": "The easiest way to translate your Next.js apps.",
+  "change-locale": "Change locale to \"{{changeTo}}\"",
+  "to-second-page": "To second page",
+  "to-app-router": "Go to App Router section",
+  "to-pages-router": "Go to Pages Router section",
+  "title": "Home | next-i18next",
+  "blog.v16.question": "What's new in next-i18next v16?",
+  "blog.v16.answer": "Check out <1>the blog post</1> for the full story.",
+  "blog.v16.link": "https://www.locize.com/blog/next-i18next-v16",
+  "blog.appDir.question": "Are you using the Next.js App Router?",
+  "blog.appDir.answer": "Then check out <1>this blog post</1>.",
+  "blog.appDir.link": "https://www.locize.com/blog/i18n-next-app-router",
+  "blog.optimized.question": "Do you like to unleash some super powers to have all side optimized translations?",
+  "blog.optimized.answer": "Then you may have a look at <1>this blog post</1>.",
+  "blog.optimized.link": "https://www.locize.com/blog/next-i18next",
+  "blog.ssg.question": "Do you want to use SSG (next export)?",
+  "blog.ssg.answer": "Then you may have a look at <1>this blog post</1>.",
+  "blog.ssg.link": "https://www.locize.com/blog/next-i18n-static"
+}

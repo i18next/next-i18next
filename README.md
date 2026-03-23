@@ -1,468 +1,644 @@
 # next-i18next
 
-[![CircleCI](https://circleci.com/gh/i18next/next-i18next.svg?style=shield)](https://circleci.com/gh/i18next/next-i18next)
-[![Package Quality](https://npm.packagequality.com/shield/next-i18next.svg)](https://packagequality.com/#?package=next-i18next)
 [![npm version](https://img.shields.io/npm/v/next-i18next.svg?style=flat-square)](https://www.npmjs.com/package/next-i18next)
 ![npm](https://img.shields.io/npm/dw/next-i18next)
 
-**The easiest way to translate your Next.js apps *(with pages setup)*.**
+**The easiest way to translate your Next.js apps.**
 
-If you are using next-i18next *(pages directory)* in production and like to unleash some super powers, you may have a look at [this blog post](https://locize.com/blog/next-i18next/).
-[![](https://www.locize.com/img/blog/next-i18next/next-i18next.jpg)](https://locize.com/blog/next-i18next/)
+Supports the **App Router** (Server Components, Client Components, middleware), the **Pages Router**, and **mixed** setups where both routers coexist.
 
-If you're using Next.js 13/14/15/16/etc... with App Router, there is no need for next-i18next, you can directly use i18next and react-i18next, like described [in this blog post](https://www.locize.com/blog/i18n-next-app-router).
-[![](https://www.locize.com/img/blog/i18n-next-app-router/i18n-next-app-router.jpg)](https://www.locize.com/blog/i18n-next-app-router)
+If you already know i18next: next-i18next v16 is a thin layer on top of [i18next](https://www.i18next.com) and [react-i18next](https://react.i18next.com) that handles the Next.js-specific wiring — middleware, server/client split, resource hydration — so you don't have to.
 
-## What is this?
+## What's new in v16
 
-Although Next.js [provides internationalised routing directly](https://nextjs.org/docs/advanced-features/i18n-routing), it does not handle any management of translation content, or the actual translation functionality itself. All Next.js does is keep your locales and URLs in sync.
+- **App Router support**: `getT()` for Server Components, `useT()` for Client Components, `createProxy()` for language detection and routing
+- **Locale-in-path** (`/en/about`) and **no-locale-path** (cookie-based) modes
+- **Mixed Router**: Use both App Router and Pages Router in the same app with `basePath` scoping
+- **Custom Backends**: `i18next-http-backend`, `i18next-locize-backend`, `i18next-chained-backend`, etc.
+- **Edge-safe Proxy**: Zero Node.js dependencies in the proxy/middleware path
+- **Pages Router**: Existing `appWithTranslation` / `serverSideTranslations` API preserved under `next-i18next/pages`
 
-To complement this, `next-i18next` provides the remaining functionality – management of translation content, and components/hooks to translate your React components – while fully supporting SSG/SSR, multiple [namespaces](https://www.i18next.com/principles/namespaces), codesplitting, etc.
+---
 
-While `next-i18next` uses [i18next](https://www.i18next.com/) and [react-i18next](https://github.com/i18next/react-i18next) under the hood, users of `next-i18next` simply need to include their translation content as JSON files and don't have to worry about much else.
+## Table of Contents
 
-A live demo is [available here](https://next.i18next.com/). This demo app is the [simple example](./examples/simple/) - nothing more, nothing less.
+- [App Router Setup](#app-router-setup)
+- [No-Locale-Path Mode](#no-locale-path-mode)
+- [Mixed Router Setup](#mixed-router-setup-app-router--pages-router)
+- [Pages Router Setup](#pages-router-setup)
+- [Custom i18next Backends](#custom-i18next-backends)
+- [API Reference](#api-reference)
+- [Examples](#examples)
+- [Migration from v15](#migration-from-v15)
 
-## Why next-i18next?
+---
 
-Easy to set up, easy to use: setup only takes a few steps, and configuration is simple.
+## App Router Setup
 
-No other requirements: `next-i18next` simplifies internationalisation for your [Next.js](https://nextjs.org/) app without extra dependencies.
-
-Production ready: `next-i18next` supports passing translations and configuration options into pages as props with SSG/SSR support.
-
-## How does it work?
-
-Your `next-i18next.config.js` file will provide configuration for `next-i18next`.
-After configuration, `appWithTranslation` allows us to use the `t` (translate) function in our components via hooks.
-
-Then we add `serverSideTranslation` to [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) (depending on your case) in our page-level components.
-
-Now our Next.js app is fully translatable!
-
-## Setup
-
-### 1. Installation
+### 1. Install
 
 ```bash
-yarn add next-i18next react-i18next i18next
+npm install next-i18next i18next react-i18next
 ```
 
-You need to also have `react` and `next` installed.
+### 2. Translation files
 
-### 2. Translation content
+Place JSON translation files in your project. There are two common patterns:
 
-By default, `next-i18next` expects your translations to be organised as such:
+**In `public/locales/`** (served statically, works with default config):
 
 ```
-.
-└── public
-    └── locales
-        ├── en
-        |   └── common.json
-        └── de
-            └── common.json
+public/locales/en/common.json
+public/locales/en/home.json
+public/locales/de/common.json
+public/locales/de/home.json
 ```
 
-This structure can also be seen in the [simple example](./examples/simple).
+**In `app/i18n/locales/`** (bundled via dynamic imports, requires `resourceLoader`):
 
-If you want to structure your translations/namespaces in a custom way, you will need to pass modified `localePath` and `localeStructure` values into the initialisation config.
+```
+app/i18n/locales/en/common.json
+app/i18n/locales/de/common.json
+```
 
-### 3. Project setup
+### 3. Configuration
 
-First, create a `next-i18next.config.js` file in the root of your project. The syntax for the nested `i18n` object [comes from Next.js directly](https://nextjs.org/docs/advanced-features/i18n-routing).
+Create a config file (e.g., `i18n.config.ts`):
 
-This tells `next-i18next` what your `defaultLocale` and other locales are, so that it can preload translations on the server:
+```ts
+import type { I18nConfig } from 'next-i18next/proxy'
 
-#### `next-i18next.config.js`
+const i18nConfig: I18nConfig = {
+  supportedLngs: ['en', 'de'],
+  fallbackLng: 'en',
+  defaultNS: 'common',
+  ns: ['common', 'home'],
+}
 
-```js
-/** @type {import('next-i18next').UserConfig} */
-module.exports = {
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'de'],
-  },
+export default i18nConfig
+```
+
+Or with a custom `resourceLoader` for non-public locale files:
+
+```ts
+import type { I18nConfig } from 'next-i18next/proxy'
+
+const i18nConfig: I18nConfig = {
+  supportedLngs: ['en', 'de'],
+  fallbackLng: 'en',
+  defaultNS: 'common',
+  ns: ['common', 'home'],
+  resourceLoader: (language, namespace) =>
+    import(`./app/i18n/locales/${language}/${namespace}.json`),
+}
+
+export default i18nConfig
+```
+
+> **Tip**: Import `I18nConfig` from `next-i18next/proxy` (not from `next-i18next`) to keep the config file Edge-safe.
+
+### 4. Proxy
+
+Create `proxy.ts` at your project root (Next.js 16+ replaces `middleware.ts` with `proxy.ts`):
+
+```ts
+import { createProxy } from 'next-i18next/proxy'
+import i18nConfig from './i18n.config'
+
+export const proxy = createProxy(i18nConfig)
+
+export const config = {
+  matcher: ['/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|site.webmanifest).*)'],
 }
 ```
 
-Now, create or modify your `next.config.js` file, by passing the `i18n` object into your `next.config.js` file, to enable localised URL routing:
+> **Note**: `createMiddleware` from `next-i18next/middleware` is still available for projects on Next.js < 16.
 
-#### [`next.config.js`](https://nextjs.org/docs/api-reference/next.config.js/introduction)
+The proxy:
+- Detects language from cookie > Accept-Language header > fallback
+- Redirects bare URLs to locale-prefixed paths (e.g., `/about` -> `/en/about`)
+- Sets a custom header (`x-i18next-current-language`) for Server Components
 
-```js
-const { i18n } = require('./next-i18next.config')
+### 5. Root Layout
 
-module.exports = {
-  i18n,
+```tsx
+// app/[lng]/layout.tsx
+import { initServerI18next, getT, getResources, generateI18nStaticParams } from 'next-i18next/server'
+import { I18nProvider } from 'next-i18next/client'
+import i18nConfig from '../../i18n.config'
+
+initServerI18next(i18nConfig)
+
+export async function generateStaticParams() {
+  return generateI18nStaticParams()
 }
-```
 
-There are three functions that `next-i18next` exports, which you will need to use to translate your project:
-
-#### appWithTranslation
-
-This is a HOC which wraps your [`_app`](https://nextjs.org/docs/advanced-features/custom-app):
-
-```tsx
-import { appWithTranslation } from 'next-i18next'
-
-const MyApp = ({ Component, pageProps }) => (
-  <Component {...pageProps} />
-)
-
-export default appWithTranslation(MyApp)
-```
-
-The `appWithTranslation` HOC is primarily responsible for adding a [`I18nextProvider`](https://react.i18next.com/latest/i18nextprovider).
-
-#### serverSideTranslations
-
-This is an async function that you need to include on your page-level components, via either [`getStaticProps`](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [`getServerSideProps`](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) (depending on your use case):
-
-```tsx
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-
-export async function getStaticProps({ locale }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, [
-        'common',
-        'footer',
-      ])),
-      // Will be passed to the page component as props
-    },
-  }
-}
-```
-
-Note that `serverSideTranslations` must be imported from `next-i18next/serverSideTranslations` – this is a separate module that contains NodeJs-specific code.
-
-Also, note that `serverSideTranslations` is not compatible with `getInitialProps`, as it _only_ can execute in a server environment, whereas `getInitialProps` is called on the client side when navigating between pages.
-
-The `serverSideTranslations` HOC is primarily responsible for passing translations and configuration options into pages, as props – you need to add it to any page that has translations.
-
-### useTranslation
-
-This is the hook which you'll actually use to do the translation itself. The `useTranslation` hook [comes from `react-i18next`](https://react.i18next.com/latest/usetranslation-hook), but needs to be imported from `next-i18next` directly.
-<br/>
-**Do NOT use the `useTranslation` export of `react-i18next`, but ONLY use the one from `next-i18next`!**
-
-```tsx
-import { useTranslation } from 'next-i18next'
-
-export const Footer = () => {
-  const { t } = useTranslation('footer')
+export default async function RootLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode
+  params: Promise<{ lng: string }>
+}) {
+  const { lng } = await params
+  const { i18n } = await getT()
+  const resources = getResources(i18n)
 
   return (
-    <footer>
-      <p>{t('description')}</p>
-    </footer>
+    <html lang={lng}>
+      <body>
+        <I18nProvider language={lng} resources={resources}>
+          {children}
+        </I18nProvider>
+      </body>
+    </html>
   )
 }
 ```
 
-### 4. Declaring namespace dependencies
+Key points:
+- `initServerI18next(config)` — call once at module scope in the root layout
+- `getResources(i18n)` — serializes loaded translations for client hydration
+- `I18nProvider` — wraps children so client components can use `useT()`
 
-By default, `next-i18next` will send _all your namespaces_ down to the client on each initial request. This can be an appropriate approach for smaller apps with less content, but a lot of apps will benefit from splitting namespaces based on route.
+### 6. Server Components
 
-To do that, you can pass an array of required namespaces for each page into `serverSideTranslations`. You can see this approach in [examples/simple/pages/index.tsx](./examples/simple/pages/index.tsx). Passing in an empty array of required namespaces will send no namespaces.
+```tsx
+// app/[lng]/page.tsx
+import { getT } from 'next-i18next/server'
 
-Note: `useTranslation` provides namespaces to the component that you use it in. However, `serverSideTranslations` provides the total available namespaces to the entire React tree and belongs on the page level. Both are required.
+export default async function Home() {
+  const { t } = await getT('home')
+  return <h1>{t('title')}</h1>
+}
 
-### 5. Declaring locale dependencies
-
-By default, `next-i18next` will send _only the active locale_ down to the client on each request. This helps reduce the size of the
-initial payload sent to the client. However in some cases one may need the translations for other languages at runtime too. For example
-when using [getFixedT](https://www.i18next.com/overview/api#getfixedt) of `useTranslation` hook.
-
-To change the behavior and load extra locales just pass in an array of locales as the last argument to `serverSideTranslations`.
-
-```diff
-  import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-
-  export async function getStaticProps({ locale }) {
-    return {
-      props: {
--       ...(await serverSideTranslations(locale, ['common', 'footer'])),
-+       ...(await serverSideTranslations(locale, ['common', 'footer'], null, ['en', 'no'])),
-      },
-    };
-  }
-```
-
-As a result the translations for both `no` and `en` locales will always be loaded regardless of the current language.
-
-> Note: The extra argument should be added to all pages that use `getFixedT` function.
-
-#### Fallback locales
-
-By default, `next-i18next` will add the `defaultLocale` as fallback. To change this, you can set [`fallbackLng`](https://www.i18next.com/principles/fallback). All values supported by `i18next` (`string`, `array`, `object` and `function`) are supported by `next-i18next` too.
-
-Additionally `nonExplicitSupportedLngs` can be set to `true` to support all variants of a language, without the need to provide JSON files for each of them. Notice that all variants still must be included in `locales` to enable routing within `next.js`.
-
-> Note: `fallbackLng` and `nonExplicitSupportedLngs` can be used at once. There is only one exception: You can not use a function for `fallbackLng` when `nonExplicitSupportedLngs` is `true`,
-
-```js
-module.exports = {
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'fr', 'de-AT', 'de-DE', 'de-CH'],
-  },
-  fallbackLng: {
-    default: ['en'],
-    'de-CH': ['fr'],
-  },
-  nonExplicitSupportedLngs: true,
-  // de, fr and en will be loaded as fallback languages for de-CH
+export async function generateMetadata() {
+  const { t } = await getT('home')
+  return { title: t('meta_title') }
 }
 ```
 
-Be aware that using `fallbackLng` and `nonExplicitSupportedLngs` can easily increase the initial size of the page.
+For the `Trans` component in Server Components, use `react-i18next/TransWithoutContext` and pass both `t` and `i18n`:
 
-fyi: Setting `fallbackLng` to `false` will NOT serialize your fallback language (usually `defaultLocale`). This will decrease the size of your initial page load.
+```tsx
+import { Trans } from 'react-i18next/TransWithoutContext'
+import { getT } from 'next-i18next/server'
 
-### 6. Advanced configuration
+export default async function Page() {
+  const { t, i18n } = await getT()
+  return (
+    <Trans t={t} i18n={i18n} i18nKey="welcome">
+      Welcome to <strong>next-i18next</strong>
+    </Trans>
+  )
+}
+```
 
-#### Passing other config options
+### 7. Client Components
 
-If you need to modify more advanced configuration options, you can pass them via `next-i18next.config.js`. For example:
+```tsx
+'use client'
+import { useT } from 'next-i18next/client'
+
+export default function Counter() {
+  const { t } = useT('home')
+  return <button>{t('click_me')}</button>
+}
+```
+
+`useT` works in both locale-in-path (`/en/about`) and no-locale-path modes. It accepts `[lng]` or `[locale]` as the dynamic route param name.
+
+For the `Trans` component in Client Components:
+
+```tsx
+'use client'
+import { Trans } from 'next-i18next/client'
+import { useT } from 'next-i18next/client'
+
+export default function Greeting() {
+  const { t } = useT()
+  return <Trans t={t} i18nKey="greeting">Hello <strong>world</strong></Trans>
+}
+```
+
+---
+
+## No-Locale-Path Mode
+
+If you prefer clean URLs without a locale prefix (e.g., `/about` instead of `/en/about`), set `localeInPath: false`:
+
+```ts
+const i18nConfig: I18nConfig = {
+  supportedLngs: ['en', 'de'],
+  fallbackLng: 'en',
+  localeInPath: false,
+  resourceLoader: (language, namespace) =>
+    import(`./app/i18n/locales/${language}/${namespace}.json`),
+}
+```
+
+In this mode:
+- Routes live directly under `app/` (no `[lng]` segment)
+- The middleware detects language from cookies / Accept-Language, sets the header, but does **not** redirect
+- Server Components use `getT()` as usual (language is read from the header)
+- Client Components use `useT()` as usual (language comes from `I18nProvider`)
+- Use `useChangeLanguage()` for language switching (updates cookie + triggers server re-render):
+
+```tsx
+'use client'
+import { useChangeLanguage } from 'next-i18next/client'
+
+export function LanguageSwitcher() {
+  const changeLanguage = useChangeLanguage()
+  return (
+    <div>
+      <button onClick={() => changeLanguage('en')}>English</button>
+      <button onClick={() => changeLanguage('de')}>Deutsch</button>
+    </div>
+  )
+}
+```
+
+The root layout reads the language from `i18n.resolvedLanguage` instead of URL params:
+
+```tsx
+// app/layout.tsx (no [lng] segment)
+export default async function RootLayout({ children }) {
+  const { i18n } = await getT()
+  const lng = i18n.resolvedLanguage
+  const resources = getResources(i18n)
+
+  return (
+    <I18nProvider language={lng} resources={resources}>
+      <html lang={lng}>
+        <body>{children}</body>
+      </html>
+    </I18nProvider>
+  )
+}
+```
+
+See [`examples/app-router-no-locale-path`](examples/app-router-no-locale-path) for a complete example.
+
+---
+
+## Mixed Router Setup (App Router + Pages Router)
+
+For projects that use both routers, next-i18next supports a `basePath` option that scopes the App Router middleware to a specific URL prefix while the Pages Router uses Next.js built-in i18n routing for everything else.
+
+### Configuration
+
+Create a shared config file for common settings:
 
 ```js
+// i18n.shared.js
+module.exports = {
+  supportedLngs: ['en', 'de'],
+  fallbackLng: 'en',
+  defaultNS: 'common',
+  ns: ['common', 'footer'],
+}
+```
+
+App Router config with `basePath`:
+
+```ts
+// i18n.config.ts
+import type { I18nConfig } from 'next-i18next/proxy'
+const shared = require('./i18n.shared.js')
+
+const i18nConfig: I18nConfig = {
+  ...shared,
+  basePath: '/app-router',
+  resourceLoader: (language, namespace) =>
+    import(`./public/locales/${language}/${namespace}.json`),
+}
+
+export default i18nConfig
+```
+
+Pages Router config:
+
+```js
+// next-i18next.config.js
+const shared = require('./i18n.shared.js')
+
+module.exports = {
+  i18n: {
+    defaultLocale: shared.fallbackLng,
+    locales: shared.supportedLngs,
+  },
+  localePath:
+    typeof window === 'undefined'
+      ? require('path').resolve('./public/locales')
+      : '/locales',
+}
+```
+
+### Proxy/Middleware
+
+With `basePath: '/app-router'`, `createProxy` automatically:
+- **Skips** any request not under `/app-router/...` (letting Pages Router handle those)
+- Redirects `/app-router/page` to `/app-router/en/page`
+- Sets the language header for Server Components under that prefix
+
+```ts
+// proxy.ts
+import { createProxy } from 'next-i18next/proxy'
+import i18nConfig from './i18n.config'
+
+export const proxy = createProxy(i18nConfig)
+
+export const config = {
+  matcher: ['/app-router/:path*'],
+}
+```
+
+### next.config.js
+
+Include the Pages Router i18n config so Next.js handles locale routing for Pages:
+
+```js
+const { i18n } = require('./next-i18next.config.js')
+
+module.exports = {
+  i18n,
+  reactStrictMode: true,
+}
+```
+
+### Directory structure
+
+```
+app/app-router/[locale]/layout.tsx    -- App Router layout
+app/app-router/[locale]/page.tsx      -- App Router pages
+pages/_app.tsx                         -- appWithTranslation
+pages/index.tsx                        -- Pages Router pages
+public/locales/en/common.json         -- shared translation files
+```
+
+App Router pages import from `next-i18next/server` and `next-i18next/client`.
+Pages Router pages import from `next-i18next/pages` and `next-i18next/pages/serverSideTranslations`.
+
+See [`examples/mixed-routers`](examples/mixed-routers) for a complete example.
+
+---
+
+## Pages Router Setup
+
+For projects using only the Pages Router, the familiar v15 API is available under `next-i18next/pages`:
+
+```js
+// next-i18next.config.js
 module.exports = {
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'de'],
   },
-  localePath:
-    typeof window === 'undefined'
-      ? require('path').resolve('./my-custom/path')
-      : '/public/my-custom/path',
-  ns: ['common'],
 }
 ```
 
-#### Unserializable configs
-
-Some `i18next` plugins (which you can pass into `config.use`) are unserializable, as they contain functions and other JavaScript primitives.
-
-You may run into this if your use case is more advanced. You'll see Next.js throw an error like:
-
-```
-Error: Error serializing `._nextI18Next.userConfig.use[0].process` returned from `getStaticProps` in "/my-page".
-Reason: `function` cannot be serialized as JSON. Please only return JSON serializable data types.
-```
-
-To fix this, you'll need to set `config.serializeConfig` to `false`, and manually pass your config into `appWithTranslation`:
-
-```tsx
-import { appWithTranslation } from 'next-i18next'
-import nextI18NextConfig from '../next-i18next.config.js'
-
-const MyApp = ({ Component, pageProps }) => (
-  <Component {...pageProps} />
-)
-
-export default appWithTranslation(MyApp, nextI18NextConfig)
+```js
+// next.config.js
+const { i18n } = require('./next-i18next.config.js')
+module.exports = { i18n }
 ```
 
 ```tsx
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+// pages/_app.tsx
+import { appWithTranslation } from 'next-i18next/pages'
 
-import nextI18NextConfig from '../next-i18next.config.js'
+const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />
+export default appWithTranslation(MyApp)
+```
+
+```tsx
+// pages/index.tsx
+import { serverSideTranslations } from 'next-i18next/pages/serverSideTranslations'
+import { useTranslation } from 'next-i18next/pages'
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(
-      locale,
-      ['common', 'footer'],
-      nextI18NextConfig
-    )),
+    ...(await serverSideTranslations(locale, ['common'])),
+  },
+})
+
+export default function Home() {
+  const { t } = useTranslation('common')
+  return <h1>{t('title')}</h1>
+}
+```
+
+See [`examples/pages-router-simple`](examples/pages-router-simple), [`examples/pages-router-ssg`](examples/pages-router-ssg), and [`examples/pages-router-auto-static-optimize`](examples/pages-router-auto-static-optimize) for more.
+
+---
+
+## Custom i18next Backends
+
+next-i18next supports any i18next backend plugin for loading translations from an API, CDN, or services like [Locize](https://www.locize.com).
+
+When a custom backend is provided via `use`, next-i18next will **not** add its default resource loader, giving you full control.
+
+### i18next-http-backend
+
+```ts
+import { defineConfig } from 'next-i18next'
+import HttpBackend from 'i18next-http-backend'
+
+export default defineConfig({
+  supportedLngs: ['en', 'de'],
+  fallbackLng: 'en',
+  use: [HttpBackend],
+  i18nextOptions: {
+    backend: {
+      loadPath: 'https://cdn.example.com/locales/{{lng}}/{{ns}}.json',
+    },
   },
 })
 ```
 
-#### Usage with fallback SSG pages 
+### i18next-locize-backend
 
-When using on server-side generated pages with [`getStaticPaths`](https://nextjs.org/docs/pages/api-reference/functions/get-static-paths) and [`fallback: true`](https://nextjs.org/docs/pages/api-reference/functions/get-static-paths#fallback-true) or [`fallback: 'blocking'`](https://nextjs.org/docs/pages/api-reference/functions/get-static-paths#fallback-blocking), the default setup indicated above will cause the app to be unmounted and remounted on every load, causing various adverse consequences like calling every `useEffect(() => {...}, [])` hook twice and slight performance degradation.
+```ts
+import { defineConfig } from 'next-i18next'
+import LocizeBackend from 'i18next-locize-backend'
 
-This is due to the fact that, for those pages, Next.js does a first render with empty `serverSideProps` and then a second render with the `serverSideProps` that include the `next-i18next` translations. With the default setup, the `i18n` instance is initially `undefined` when `serverSideProps` is `empty`, causing the unmount-remount.
+export default defineConfig({
+  supportedLngs: ['en', 'de'],
+  fallbackLng: 'en',
+  use: [LocizeBackend],
+  i18nextOptions: {
+    backend: {
+      projectId: 'your-project-id',
+      apiKey: 'your-api-key', // only needed for saving missing keys
+    },
+  },
+})
+```
 
-To mitigate this issue, you can do the following:
+### i18next-chained-backend
+
+For client-side caching with a remote fallback:
+
+```ts
+import { defineConfig } from 'next-i18next'
+import ChainedBackend from 'i18next-chained-backend'
+import HttpBackend from 'i18next-http-backend'
+import LocalStorageBackend from 'i18next-localstorage-backend'
+
+export default defineConfig({
+  supportedLngs: ['en', 'de'],
+  fallbackLng: 'en',
+  use: [ChainedBackend],
+  i18nextOptions: {
+    backend: {
+      backends: [LocalStorageBackend, HttpBackend],
+      backendOptions: [
+        { expirationTime: 7 * 24 * 60 * 60 * 1000 },
+        { loadPath: '/locales/{{lng}}/{{ns}}.json' },
+      ],
+    },
+  },
+})
+```
+
+For the client-side `I18nProvider`, pass custom backend plugins via the `use` prop:
 
 ```tsx
-import { UserConfig } from 'next-i18next';
-import nextI18NextConfig from '../next-i18next.config.js'
-
-const emptyInitialI18NextConfig: UserConfig = {
-  i18n: {
-    defaultLocale: nextI18NextConfig.i18n.defaultLocale,
-    locales: nextI18NextConfig.i18n.locales,
-  },
-};
-
-const MyApp = ({ Component, pageProps }) => (
-  <Component {...pageProps} />
-)
-
-export default appWithTranslation(MyApp, emptyInitialI18NextConfig) // Makes sure the initial i18n instance is not undefined
+<I18nProvider
+  language={lng}
+  resources={resources}
+  use={[HttpBackend]}
+  i18nextOptions={{
+    backend: { loadPath: '/locales/{{lng}}/{{ns}}.json' },
+  }}
+>
+  {children}
+</I18nProvider>
 ```
 
-This will work as long as you make sure that, in the fallback page state, your client-side code is not trying to display any translation since otherwise you will get a "server-client mismatch" error from Next.js (due to the fact that the server has an actual translation in its html while the client html has the translation key in the same place).   
-This is normal and fine: you shouldn't be displaying a translation key to your user anyway!
+### Server-side caching
 
-#### Client side loading of translations via HTTP
+On the server, next-i18next uses a **module-level singleton** i18next instance:
 
-Since [v11.0.0](https://github.com/i18next/next-i18next/releases/tag/v11.0.0) next-i18next also provides support for client side loading of translations.
+- Translations are loaded **once** and reused across all subsequent requests
+- Custom backends benefit from this — no re-fetching per request
+- Additional namespaces are loaded on demand and cached
 
-In some use cases, you might want to load a translation file dynamically without having to use `serverSideTranslations`. This can be especially useful for lazy-loaded components that you don't want slowing down pages.
+In **serverless environments** (Lambda, Vercel Serverless, etc.), the cache only lives as long as the warm function instance. For serverless, prefer:
+1. Bundling translations at build time via `resources` or `resourceLoader` with dynamic imports
+2. Downloading translations in CI/CD via [Locize CLI](https://github.com/locize/locize-cli)
 
-More information about that can be found [here](https://github.com/i18next/i18next-http-backend/tree/master/example/next).
+---
 
-#### Reloading Resources in Development
+## API Reference
 
-Because resources are loaded once when the server is started, any changes made to your translation JSON files in development will not be loaded until the server is restarted.
+### `next-i18next` (root export)
 
-In production this does not tend to be an issue, but in development you may want to see updates to your translation JSON files without having to restart your development server each time. To do this, set the `reloadOnPrerender` config option to `true`.
+| Export | Description |
+|---|---|
+| `defineConfig(config)` | Type-safe config helper (identity function) |
+| `normalizeConfig(config)` | Fill in defaults and validate config |
+| `I18nConfig` | Config type |
 
-This option will reload your translations whenever `serverSideTranslations` is called (in `getStaticProps` or `getServerSideProps`). If you are using `serverSideTranslations` in `getServerSideProps`, it is recommended to disable `reloadOnPrerender` in production environments as to avoid reloading resources on each server call.
+### `next-i18next/proxy` (also available as `next-i18next/middleware`)
 
-#### Options
+| Export | Description |
+|---|---|
+| `createProxy(config)` | Returns a Next.js proxy function (for `proxy.ts`) |
+| `createMiddleware(config)` | Alias for `createProxy` (for `middleware.ts` on Next.js < 16) |
+| `defineConfig`, `normalizeConfig`, `I18nConfig` | Re-exported for Edge-safe config usage |
 
-| Key                 | Default value        | Note                                                           |
-| ------------------- | -------------------- | -------------------------------------------------------------- |
-| `defaultNS`         | `'common'`           |                                                                |
-| `localePath`        | `'./public/locales'` | Can be a function, see note below. (can also be null, if passing resources option directly via config, like [here](https://www.i18next.com/how-to/add-or-load-translations#add-on-init))                            |
-| `localeExtension`   | `'json'`             | Ignored if `localePath` is a function.                         |
-| `localeStructure`   | `'{{lng}}/{{ns}}'`   | Ignored if `localePath` is a function.                         |
-| `reloadOnPrerender` | `false`              |                                                                |
-| `serializeConfig`   | `true`               |                                                                |
-| `use` (for plugins) | `[]`                 |                                                                |
-| `onPreInitI18next`  | `undefined`          | i.e. `(i18n) => i18n.on('failedLoading', handleFailedLoading)` |
+### `next-i18next/server`
 
-`localePath` as a function is of the form `(locale: string, namespace: string, missing: boolean) => string` returning the entire path including filename and extension. When `missing` is true, return the path for the `addPath` option of `i18next-fs-backend`, when false, return the path for the `loadPath` option. [More info at the `i18next-fs-backend` repo.](https://github.com/i18next/i18next-fs-backend/tree/master#backend-options)
-<br />
-If the localePath is a function, make sure you also define the ns option, because on server side we're not able to preload the namespaces then.
+| Export | Description |
+|---|---|
+| `initServerI18next(config)` | Initialize server config (call once at module scope) |
+| `getT(ns?, options?)` | Get `{ t, i18n }` for Server Components. Options: `{ lng?, keyPrefix? }` |
+| `getResources(i18n, namespaces?)` | Extract loaded resources for client hydration |
+| `generateI18nStaticParams()` | Returns `[{ lng: 'en' }, { lng: 'de' }, ...]` for `generateStaticParams` |
 
-All other [i18next options](https://www.i18next.com/overview/configuration-options) and [react-i18next options](https://react.i18next.com/latest/i18next-instance) can be passed in as well.
-</br>
-You can also pass in the [`resources`](https://www.i18next.com/overview/configuration-options#languages-namespaces-resources) directly in combination with setting `localePath` to `null`.
+### `next-i18next/client`
 
-#### Custom interpolation prefix/suffix
+| Export | Description |
+|---|---|
+| `I18nProvider` | Client-side provider wrapping `I18nextProvider` |
+| `useT(ns?, options?)` | Translation hook for Client Components (works in all modes) |
+| `useChangeLanguage(cookieName?)` | Language switcher hook for no-locale-path mode |
+| `Trans` | Re-exported from `react-i18next` |
 
-By default, i18next uses `{{` as prefix and `}}` as suffix for [interpolation](https://www.i18next.com/translation-function/interpolation).
-If you want/need to override these interpolation settings, you **must** also specify an alternative `localeStructure` setting that matches your custom prefix and suffix.
+### `next-i18next/pages`
 
-For example, if you want to use `{` and `}` the config would look like this:
+| Export | Description |
+|---|---|
+| `appWithTranslation` | HOC for `_app` |
+| `useTranslation` | Translation hook (re-exported from react-i18next) |
+| `Trans`, `I18nContext`, `withTranslation` | Re-exported from react-i18next |
 
-```js
-{
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'nl'],
-  },
-  interpolation: {
-    prefix: '{',
-    suffix: '}',
-  },
-  localeStructure: '{lng}/{ns}',
-}
-```
+### `next-i18next/pages/serverSideTranslations`
 
-#### Custom `next-i18next.config.js` path
+| Export | Description |
+|---|---|
+| `serverSideTranslations(locale, ns?, config?, extraLocales?)` | Load translations for `getStaticProps` / `getServerSideProps` |
 
-If you want to change the default config path, you can set the environment variable `I18NEXT_DEFAULT_CONFIG_PATH`.
+### Config Options
 
-For example, inside the `.env` file you can set a static path:
+| Option | Default | Description |
+|---|---|---|
+| `supportedLngs` | *required* | Array of supported language codes |
+| `fallbackLng` | *required* | Default language |
+| `defaultNS` | `'common'` | Default namespace |
+| `ns` | `[defaultNS]` | All known namespaces |
+| `localeInPath` | `true` | Include locale in URL path |
+| `localePath` | `'/locales'` | Path to locale files relative to `/public` |
+| `localeStructure` | `'{{lng}}/{{ns}}'` | Locale file directory structure |
+| `localeExtension` | `'json'` | Locale file extension |
+| `resources` | — | Pre-loaded resources (skips dynamic loading) |
+| `resourceLoader` | — | Custom async loader `(lng, ns) => Promise<object>` |
+| `basePath` | — | URL prefix for proxy/middleware scoping (e.g., `'/app-router'`) |
+| `cookieName` | `'i18next'` | Cookie name for language persistence |
+| `headerName` | `'x-i18next-current-language'` | Header name for server-side language passing |
+| `cookieMaxAge` | `31536000` (1 year) | Cookie max age in seconds |
+| `ignoredPaths` | `['/api', '/_next', '/static']` | Paths the proxy/middleware should skip |
+| `use` | `[]` | Extra i18next plugins |
+| `i18nextOptions` | `{}` | Additional i18next init options |
+| `nonExplicitSupportedLngs` | `false` | Match `'en'` to `'en-US'` etc. |
 
-```
-I18NEXT_DEFAULT_CONFIG_PATH=/path/to/project/apps/my-app/next-i18next.config.js
-```
+---
 
-Or you can use a trick for dynamic path and set the following inside `next.config.js`:
+## Examples
 
-```js
-process.env.I18NEXT_DEFAULT_CONFIG_PATH = `${__dirname}/next-i18next.config.js`;
+| Example | Description |
+|---|---|
+| [`app-router-simple`](examples/app-router-simple) | App Router with locale-in-path (`/en/...`) |
+| [`app-router-no-locale-path`](examples/app-router-no-locale-path) | App Router with cookie-based language (no locale in URL) |
+| [`mixed-routers`](examples/mixed-routers) | App Router + Pages Router in the same project |
+| [`pages-router-simple`](examples/pages-router-simple) | Pages Router with `getStaticProps` / `getServerSideProps` |
+| [`pages-router-ssg`](examples/pages-router-ssg) | Pages Router with static export (`output: 'export'`) |
+| [`pages-router-auto-static-optimize`](examples/pages-router-auto-static-optimize) | Pages Router with client-side loading via chained backend |
 
-// ... Some other imports
+---
 
-const { i18n } = require('./next-i18next.config');
+## Migration from v15
 
-// ... Some other code
+### App Router users
 
-module.exports = {
-  i18n,
-  ...
-};
-```
+If you were using i18next and react-i18next directly (as recommended in v15):
 
-This means that the i18n configuration file will be in the same directory as `next.config.js` and it doesn't matter where your current working directory is. This helps for example for `nx` when you have monorepo and start your application from project root but the application is in `apps/{appName}`.
+1. `npm install next-i18next@16`
+2. Create an `i18n.config.ts` with your languages and namespaces
+3. Replace your custom proxy/middleware with `createProxy(config)` in `proxy.ts`
+4. Replace your custom `getT` / translation init with `initServerI18next` + `getT` from `next-i18next/server`
+5. Replace your custom `I18nProvider` with the one from `next-i18next/client`
+6. Replace `useTranslation` with `useT` from `next-i18next/client` in client components
 
-**Notice** If your config `next-i18next.config.js` is not in the same directory as `next.config.js`, you must copy it manually (or by custom script).
+### Pages Router users
 
-#### Adding next-i18next incrementally
+1. Update imports from `next-i18next` to `next-i18next/pages`
+2. Update `serverSideTranslations` import to `next-i18next/pages/serverSideTranslations`
+3. Everything else works the same
 
-If you are planning on incrementally add next-i18next to you project we recommended that you will pass your `next-i18next.config` to `appWithTranslation` to avoid any issues.
-
-i.e
-
-```js
-import nextI18nextConfig from '../../next-i18next.config';
-//...
-export default appWithTranslation(MyApp, nextI18nextConfig);
-```
-
-See Issue [#2259](https://github.com/i18next/next-i18next/issues/2259) for more information.
-
-## Notes
-
-### Vercel and Netlify
-
-Some serverless PaaS may not be able to locate the path of your translations and require additional configuration. If you have filesystem issues using `serverSideTranslations`, set `config.localePath` to use `path.resolve`. An example can be [found here](https://github.com/i18next/next-i18next/issues/1552#issuecomment-1538452722).
-
-### Docker
-
-For Docker deployment, note that if you use the `Dockerfile` from [Next.js docs](https://nextjs.org/docs/deployment#docker-image) do not forget to copy `next.config.js` and `next-i18next.config.js` into the Docker image.
-
-```
-COPY --from=builder /app/next.config.js ./next.config.js
-COPY --from=builder /app/next-i18next.config.js ./next-i18next.config.js
-```
-
-### Asynchronous i18next backends
-
-If you choose to use an i18next backend different to the built-in [i18next-fs-backend](https://github.com/i18next/i18next-fs-backend), you will need to ensure the translation resources are loaded before you call the `t` function.
-Since [React suspense is not yet supported for SSR](https://github.com/i18next/next-i18next/issues/1255), this can be solved in 2 different ways:
-
-**1) Preload the namespaces:**
-
-Set the `ns` option, like in [this example](https://github.com/locize/next-i18next-locize/blob/main/next-i18next.config.js#L48). Doing this will ensure all translation resources are loaded on initialization.
-
-**2) Check the ready flag:**
-
-If you cannot or do not want to provide the `ns` array, calls to the `t` function will cause namespaces to be loaded on the fly. This means you'll need to handle the "not ready" state by checking `ready === true` or `props.tReady === true`. Not doing so will result in rendering your translations before they loaded, which will cause "save missing" be called despite the translations actually existing (just yet not loaded).
-This can be done with the [useTranslation hook](https://react.i18next.com/latest/usetranslation-hook#not-using-suspense) or the [withTranslation HOC](https://react.i18next.com/latest/withtranslation-hoc#not-using-suspense).
-
-### Static HTML Export SSG
-
-Are you trying to generate a [static HTML export](https://nextjs.org/docs/advanced-features/static-html-export) by executing `next export` and are getting this error?
-
-> Error: i18n support is not compatible with next export. See here for more info on deploying: https://nextjs.org/docs/deployment
-
-But there's a way to workaround that with the help of [next-language-detector](https://github.com/i18next/next-language-detector).
-Check out [this blog post](https://locize.com/blog/next-i18n-static/) and [this example project](./examples/ssg/).
-[![](https://www.locize.com/img/blog/next-i18n-static/title.jpg)](https://locize.com/blog/next-i18n-static/)
-
-### Translate in child components
-
-You have multiple ways to use the t function in your child component:
-
-1. Pass the `t` function via props down to the children
-2. Pass the translated text via props down to the children, like in this example: https://github.com/i18next/next-i18next/blob/master/examples/simple/components/Header.tsx#L12
-3. Use the [`useTranslation`](https://react.i18next.com/latest/usetranslation-hook) function, like in this example: https://github.com/i18next/next-i18next/blob/e6b5085b5e92004afa9516bd444b19b2c8cf5758/examples/simple/components/Footer.tsx#L6
-4. Use the [`withTranslation`](https://react.i18next.com/latest/withtranslation-hoc) function
-
-_And in general, you always needs to be sure serverSideTranslations contains all namespaces you need in the tree._
+---
 
 ## Contributors
 
@@ -480,12 +656,12 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
       <td align="center" valign="top" width="14.28%"><a href="http://lucasfeliciano.com"><img src="https://avatars3.githubusercontent.com/u/968014?v=4?s=100" width="100px;" alt="Lucas Feliciano"/><br /><sub><b>Lucas Feliciano</b></sub></a><br /><a href="#ideas-lucasfeliciano" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/i18next/next-i18next/pulls?q=is%3Apr+reviewed-by%3Alucasfeliciano" title="Reviewed Pull Requests">👀</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://www.fifteenprospects.com"><img src="https://avatars2.githubusercontent.com/u/6932550?v=4?s=100" width="100px;" alt="Ryan Leung"/><br /><sub><b>Ryan Leung</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=minocys" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://nathanfriemel.com"><img src="https://avatars3.githubusercontent.com/u/1325835?v=4?s=100" width="100px;" alt="Nathan Friemel"/><br /><sub><b>Nathan Friemel</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=nathanfriemel" title="Code">💻</a> <a href="https://github.com/i18next/next-i18next/commits?author=nathanfriemel" title="Documentation">📖</a> <a href="#example-nathanfriemel" title="Examples">💡</a> <a href="#ideas-nathanfriemel" title="Ideas, Planning, & Feedback">🤔</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://isaachinman.com/"><img src="https://avatars.githubusercontent.com/u/10575782?v=4?s=100" width="100px;" alt="Isaac Hinman"/><br /><sub><b>Isaac Hinman</b></sub></a><br /><a href="#a11y-isaachinman" title="Accessibility">️️️️♿️</a> <a href="#question-isaachinman" title="Answering Questions">💬</a> <a href="#audio-isaachinman" title="Audio">🔊</a> <a href="#blog-isaachinman" title="Blogposts">📝</a> <a href="https://github.com/i18next/next-i18next/issues?q=author%3Aisaachinman" title="Bug reports">🐛</a> <a href="#business-isaachinman" title="Business development">💼</a> <a href="https://github.com/i18next/next-i18next/commits?author=isaachinman" title="Code">💻</a> <a href="#content-isaachinman" title="Content">🖋</a> <a href="#data-isaachinman" title="Data">🔣</a> <a href="#design-isaachinman" title="Design">🎨</a> <a href="https://github.com/i18next/next-i18next/commits?author=isaachinman" title="Documentation">📖</a> <a href="#eventOrganizing-isaachinman" title="Event Organizing">📋</a> <a href="#example-isaachinman" title="Examples">💡</a> <a href="#financial-isaachinman" title="Financial">💵</a> <a href="#fundingFinding-isaachinman" title="Funding Finding">🔍</a> <a href="#ideas-isaachinman" title="Ideas, Planning, & Feedback">🤔</a> <a href="#infra-isaachinman" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#maintenance-isaachinman" title="Maintenance">🚧</a> <a href="#mentoring-isaachinman" title="Mentoring">🧑‍🏫</a> <a href="#platform-isaachinman" title="Packaging/porting to new platform">📦</a> <a href="#plugin-isaachinman" title="Plugin/utility libraries">🔌</a> <a href="#projectManagement-isaachinman" title="Project Management">📆</a> <a href="#research-isaachinman" title="Research">🔬</a> <a href="https://github.com/i18next/next-i18next/pulls?q=is%3Apr+reviewed-by%3Aisaachinman" title="Reviewed Pull Requests">👀</a> <a href="#security-isaachinman" title="Security">🛡️</a> <a href="#talk-isaachinman" title="Talks">📢</a> <a href="https://github.com/i18next/next-i18next/commits?author=isaachinman" title="Tests">⚠️</a> <a href="#tool-isaachinman" title="Tools">🔧</a> <a href="#translation-isaachinman" title="Translation">🌍</a> <a href="#tutorial-isaachinman" title="Tutorials">✅</a> <a href="#userTesting-isaachinman" title="User Testing">📓</a> <a href="#video-isaachinman" title="Videos">📹</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://isaachinman.com/"><img src="https://avatars.githubusercontent.com/u/10575782?v=4?s=100" width="100px;" alt="Isaac Hinman"/><br /><sub><b>Isaac Hinman</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=isaachinman" title="Code">💻</a> <a href="https://github.com/i18next/next-i18next/commits?author=isaachinman" title="Documentation">📖</a> <a href="#ideas-isaachinman" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-isaachinman" title="Maintenance">🚧</a></td>
     </tr>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://locize.com/"><img src="https://avatars.githubusercontent.com/u/1086194?v=4?s=100" width="100px;" alt="Adriano Raiano"/><br /><sub><b>Adriano Raiano</b></sub></a><br /><a href="#a11y-adrai" title="Accessibility">️️️️♿️</a> <a href="#question-adrai" title="Answering Questions">💬</a> <a href="#audio-adrai" title="Audio">🔊</a> <a href="#blog-adrai" title="Blogposts">📝</a> <a href="https://github.com/i18next/next-i18next/issues?q=author%3Aadrai" title="Bug reports">🐛</a> <a href="#business-adrai" title="Business development">💼</a> <a href="https://github.com/i18next/next-i18next/commits?author=adrai" title="Code">💻</a> <a href="#content-adrai" title="Content">🖋</a> <a href="#data-adrai" title="Data">🔣</a> <a href="#design-adrai" title="Design">🎨</a> <a href="https://github.com/i18next/next-i18next/commits?author=adrai" title="Documentation">📖</a> <a href="#eventOrganizing-adrai" title="Event Organizing">📋</a> <a href="#example-adrai" title="Examples">💡</a> <a href="#financial-adrai" title="Financial">💵</a> <a href="#fundingFinding-adrai" title="Funding Finding">🔍</a> <a href="#ideas-adrai" title="Ideas, Planning, & Feedback">🤔</a> <a href="#infra-adrai" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#maintenance-adrai" title="Maintenance">🚧</a> <a href="#mentoring-adrai" title="Mentoring">🧑‍🏫</a> <a href="#platform-adrai" title="Packaging/porting to new platform">📦</a> <a href="#plugin-adrai" title="Plugin/utility libraries">🔌</a> <a href="#projectManagement-adrai" title="Project Management">📆</a> <a href="#research-adrai" title="Research">🔬</a> <a href="https://github.com/i18next/next-i18next/pulls?q=is%3Apr+reviewed-by%3Aadrai" title="Reviewed Pull Requests">👀</a> <a href="#security-adrai" title="Security">🛡️</a> <a href="#talk-adrai" title="Talks">📢</a> <a href="https://github.com/i18next/next-i18next/commits?author=adrai" title="Tests">⚠️</a> <a href="#tool-adrai" title="Tools">🔧</a> <a href="#translation-adrai" title="Translation">🌍</a> <a href="#tutorial-adrai" title="Tutorials">✅</a> <a href="#userTesting-adrai" title="User Testing">📓</a> <a href="#video-adrai" title="Videos">📹</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/felixmosh"><img src="https://avatars.githubusercontent.com/u/9304194?v=4?s=100" width="100px;" alt="Felix Mosheev"/><br /><sub><b>Felix Mosheev</b></sub></a><br /><a href="#question-felixmosh" title="Answering Questions">💬</a> <a href="https://github.com/i18next/next-i18next/commits?author=felixmosh" title="Code">💻</a> <a href="#talk-felixmosh" title="Talks">📢</a> <a href="https://github.com/i18next/next-i18next/commits?author=felixmosh" title="Tests">⚠️</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://soluble.io/pro"><img src="https://avatars.githubusercontent.com/u/259798?v=4?s=100" width="100px;" alt="Sébastien Vanvelthem"/><br /><sub><b>Sébastien Vanvelthem</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=belgattitude" title="Code">💻</a> <a href="https://github.com/i18next/next-i18next/commits?author=belgattitude" title="Documentation">📖</a> <a href="#example-belgattitude" title="Examples">💡</a> <a href="#maintenance-belgattitude" title="Maintenance">🚧</a> <a href="#userTesting-belgattitude" title="User Testing">📓</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://locize.com/"><img src="https://avatars.githubusercontent.com/u/1086194?v=4?s=100" width="100px;" alt="Adriano Raiano"/><br /><sub><b>Adriano Raiano</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=adrai" title="Code">💻</a> <a href="https://github.com/i18next/next-i18next/commits?author=adrai" title="Documentation">📖</a> <a href="#ideas-adrai" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-adrai" title="Maintenance">🚧</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/felixmosh"><img src="https://avatars.githubusercontent.com/u/9304194?v=4?s=100" width="100px;" alt="Felix Mosheev"/><br /><sub><b>Felix Mosheev</b></sub></a><br /><a href="#question-felixmosh" title="Answering Questions">💬</a> <a href="https://github.com/i18next/next-i18next/commits?author=felixmosh" title="Code">💻</a> <a href="https://github.com/i18next/next-i18next/commits?author=felixmosh" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://soluble.io/pro"><img src="https://avatars.githubusercontent.com/u/259798?v=4?s=100" width="100px;" alt="Sébastien Vanvelthem"/><br /><sub><b>Sébastien Vanvelthem</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=belgattitude" title="Code">💻</a> <a href="https://github.com/i18next/next-i18next/commits?author=belgattitude" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
@@ -509,12 +685,14 @@ This project follows the [all-contributors](https://github.com/kentcdodds/all-co
 
 ---
 
-**localization as a service - locize.com**
+**localization as a service - [Locize](https://www.locize.com)**
 
 Needing a translation management? Want to edit your translations with an InContext Editor? Use the original provided to you by the maintainers of i18next!
 
-![locize](https://www.locize.com/img/ads/github_locize.png)
+**Now with a [Free plan](https://www.locize.com/pricing) for small projects!** Perfect for hobbyists or getting started.
 
-With using [locize](http://locize.com/?utm_source=next_i18next_readme&utm_medium=github) you directly support the future of i18next and next-i18next.
+![Locize](https://www.locize.com/img/ads/github_locize.png)
+
+By using [Locize](http://www.locize.com/?utm_source=next_i18next_readme&utm_medium=github) you directly support the future of i18next and next-i18next.
 
 ---

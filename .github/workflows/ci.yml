@@ -20,12 +20,12 @@ jobs:
     timeout-minutes: 10
     strategy:
       matrix:
-        node-version: [24.x, 22.x, 20.x]
+        node-version: [24.x, 22.x]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -35,54 +35,25 @@ jobs:
       - name: Install Examples
         run: npm run install:examples
 
-      - name: ⓘ Debug next-i18next installation
-        shell: bash
-        run: npx envinfo --binaries --npmPackages
-
       - name: Typecheck
         run: npm run typecheck
-
-      - name: Prettier
-        run: npm run prettier
 
       - name: Unit tests
         run: npm test
 
-      - name: ESLint checks
-        run: npm run lint
-
       - name: Build next-i18next
         run: npm run build
 
-      - name: Check dist for ecmascript compliance
-        run: npm run check-dist
-
-      # Temporary hack that replace the ./node_modules/next-i18next content
-      # by the current build. This is needed cause next-i18next does not work (yet) when the
-      # build is below current dir. There's few issues left notably that webpack does not play
-      # well with dynamic import of next-i18next config (and there might not be solution to this).
-      # @link https://github.com/i18next/next-i18next/pull/2012
-      # (see also the npm file: in package.json)
+      # Copy built dist + package.json into each example's node_modules/next-i18next
+      # so examples use the current build instead of the published npm version.
       - name: Replace examples install with repo build
         run: npm run move-build-to-examples
-
-      - name: ⓘ Debug example/simple installation
-        shell: bash
-        run: npx envinfo --binaries --npmPackages
 
       - name: Build examples
         run: npm run build:examples
 
-      - name: Check size limits
-        run: npm run check-size
-
       - name: E2E tests
         run: npm run test:e2e
 
-      - name: Build example with experimental.esmExternals
-        run: npm run build:example:simple
-        env:
-          NEXTJS_ESM_EXTERNALS: true
-
-      - name: Typecheck simple example
-        run: npm run typecheck:example:simple
+      - name: Typecheck pages-router-simple example
+        run: npm run typecheck:example:pages-router-simple

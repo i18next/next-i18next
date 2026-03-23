@@ -1,5 +1,0 @@
-{
-  "name": "next-i18next-create-client",
-  "browser": "./browser.js",
-  "main": "./node.js"
-}
