@@ -49,11 +49,23 @@ function createResourceBackend(config: NormalizedConfig) {
 
     // Node.js runtime: read from filesystem
     if (typeof process !== 'undefined' && process.versions?.node) {
-      const fs = await import('fs/promises')
-      const pathMod = await import('path')
-      const resolved = pathMod.resolve(process.cwd(), `public${filePath}`)
-      const content = await fs.readFile(resolved, 'utf-8')
-      return JSON.parse(content)
+      try {
+        const fs = await import('fs/promises')
+        const pathMod = await import('path')
+        const resolved = pathMod.resolve(process.cwd(), `public${filePath}`)
+        const content = await fs.readFile(resolved, 'utf-8')
+        return JSON.parse(content)
+      } catch {
+        throw new Error(
+          `next-i18next: Could not read locale file "public${filePath}". ` +
+          'On serverless platforms (Vercel, AWS Lambda, etc.), files in public/ are served via CDN ' +
+          'but are NOT available on the filesystem at runtime. Use the `resourceLoader` option with ' +
+          'dynamic imports instead:\n\n' +
+          '  resourceLoader: (language, namespace) =>\n' +
+          // eslint-disable-next-line no-template-curly-in-string
+          '    import(`./public/locales/${language}/${namespace}.json`)\n'
+        )
+      }
     }
 
     // Edge runtime: filesystem not available
@@ -79,8 +91,12 @@ async function getSharedInstance(config: NormalizedConfig): Promise<I18NextClien
   _sharedInstancePromise = (async () => {
     const i18nInstance = createInstance()
 
-    // Only add a backend if resources are not pre-loaded and no custom backend is provided
-    if (!config.resources && !hasCustomBackend(config.use)) {
+    // Add a backend when needed:
+    // - No resources provided → backend loads everything
+    // - Resources provided with partialBundledLanguages → backend loads the rest
+    // - Custom backend in config.use → user handles it, skip default backend
+    const partialBundled = config.i18nextOptions?.partialBundledLanguages
+    if ((!config.resources || partialBundled) && !hasCustomBackend(config.use)) {
       i18nInstance.use(createResourceBackend(config))
     }
 

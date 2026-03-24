@@ -1,3 +1,8 @@
+## 16.0.2
+
+- **Serverless/Vercel: better error when `public/locales/` is not available at runtime** — the default filesystem backend now catches read failures and shows a clear error message explaining the serverless limitation with a `resourceLoader` code example [#2337](https://github.com/i18next/next-i18next/issues/2337)
+- **`partialBundledLanguages` + `resources`** — when both `resources` and `partialBundledLanguages: true` are provided, the default backend is now correctly kept so it can load additional namespaces not included in the pre-loaded resources
+
 ## 16.0.1
 
 - **App Router: `config.resources` now works on the server** — `resources` was typed and documented but ignored at runtime by `initServerI18next` / `getT`. The resource backend is now skipped when `resources` is provided, and the pre-loaded translations are passed directly to `i18next.init()`. [#2336](https://github.com/i18next/next-i18next/issues/2336)

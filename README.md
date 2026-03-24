@@ -45,7 +45,7 @@ npm install next-i18next i18next react-i18next
 
 Place JSON translation files in your project. There are two common patterns:
 
-**In `public/locales/`** (served statically, works with default config):
+**In `public/locales/`** (served statically, works with default config — **local/traditional hosting only**):
 
 ```
 public/locales/en/common.json
@@ -54,7 +54,9 @@ public/locales/de/common.json
 public/locales/de/home.json
 ```
 
-**In `app/i18n/locales/`** (bundled via dynamic imports, requires `resourceLoader`):
+> **Serverless platforms (Vercel, AWS Lambda, etc.)**: Files in `public/` are served via CDN but are **not** available on the filesystem at runtime. Use `resourceLoader` with dynamic imports instead (see below).
+
+**In `app/i18n/locales/`** (bundled via dynamic imports, requires `resourceLoader` — **works everywhere including serverless**):
 
 ```
 app/i18n/locales/en/common.json
@@ -73,27 +75,15 @@ const i18nConfig: I18nConfig = {
   fallbackLng: 'en',
   defaultNS: 'common',
   ns: ['common', 'home'],
-}
-
-export default i18nConfig
-```
-
-Or with a custom `resourceLoader` for non-public locale files:
-
-```ts
-import type { I18nConfig } from 'next-i18next/proxy'
-
-const i18nConfig: I18nConfig = {
-  supportedLngs: ['en', 'de'],
-  fallbackLng: 'en',
-  defaultNS: 'common',
-  ns: ['common', 'home'],
+  // Recommended: works on all platforms including Vercel/serverless
   resourceLoader: (language, namespace) =>
     import(`./app/i18n/locales/${language}/${namespace}.json`),
 }
 
 export default i18nConfig
 ```
+
+The `resourceLoader` uses dynamic `import()` which the bundler can trace, ensuring translation files are included in the serverless function bundle. If you prefer to keep translations in `public/locales/` and are **not** deploying to a serverless platform, you can omit `resourceLoader` — next-i18next will read from the filesystem at runtime.
 
 > **Tip**: Import `I18nConfig` from `next-i18next/proxy` (not from `next-i18next`) to keep the config file Edge-safe.
 
