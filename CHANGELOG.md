@@ -1,3 +1,7 @@
+## 16.0.1
+
+- **App Router: `config.resources` now works on the server** — `resources` was typed and documented but ignored at runtime by `initServerI18next` / `getT`. The resource backend is now skipped when `resources` is provided, and the pre-loaded translations are passed directly to `i18next.init()`. [#2336](https://github.com/i18next/next-i18next/issues/2336)
+
 ## 16.0.0
 
 ### BREAKING CHANGES

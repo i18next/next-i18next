@@ -79,7 +79,8 @@ async function getSharedInstance(config: NormalizedConfig): Promise<I18NextClien
   _sharedInstancePromise = (async () => {
     const i18nInstance = createInstance()
 
-    if (!hasCustomBackend(config.use)) {
+    // Only add a backend if resources are not pre-loaded and no custom backend is provided
+    if (!config.resources && !hasCustomBackend(config.use)) {
       i18nInstance.use(createResourceBackend(config))
     }
 
@@ -97,6 +98,7 @@ async function getSharedInstance(config: NormalizedConfig): Promise<I18NextClien
       fallbackNS: config.defaultNS,
       preload: config.supportedLngs, // preload ALL languages upfront
       interpolation: { escapeValue: false },
+      ...(config.resources ? { resources: config.resources } : {}),
       ...config.i18nextOptions,
     })
 
