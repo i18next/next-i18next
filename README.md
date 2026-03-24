@@ -212,14 +212,43 @@ For the `Trans` component in Client Components:
 
 ```tsx
 'use client'
-import { Trans } from 'next-i18next/client'
-import { useT } from 'next-i18next/client'
+import { Trans, useT } from 'next-i18next/client'
 
 export default function Greeting() {
   const { t } = useT()
   return <Trans t={t} i18nKey="greeting">Hello <strong>world</strong></Trans>
 }
 ```
+
+### 8. Language Switching (locale-in-path)
+
+When the locale is part of the URL path (e.g., `/en/about` → `/de/about`), switch languages by navigating to the new locale prefix:
+
+```tsx
+'use client'
+import { usePathname, useRouter } from 'next/navigation'
+
+export function LanguageSwitcher({ supportedLngs }: { supportedLngs: string[] }) {
+  const pathname = usePathname()
+  const router = useRouter()
+
+  const switchLocale = (locale: string) => {
+    const segments = pathname.split('/')
+    segments[1] = locale
+    router.push(segments.join('/'))
+  }
+
+  return (
+    <div>
+      {supportedLngs.map((lng) => (
+        <button key={lng} onClick={() => switchLocale(lng)}>{lng}</button>
+      ))}
+    </div>
+  )
+}
+```
+
+For the no-locale-path mode (cookie-based), see `useChangeLanguage` [below](#no-locale-path-mode).
 
 ---
 
