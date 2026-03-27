@@ -27,6 +27,10 @@ export interface I18nConfig {
   // Routing
   /** Whether to include locale in URL path (defaults to true) */
   localeInPath?: boolean
+  /** When true (and localeInPath is true), the default language has no URL prefix.
+   *  e.g. `/about` serves the default language, `/de/about` serves German.
+   *  Requests to the explicit default prefix (`/en/about`) are redirected to `/about`. */
+  hideDefaultLocale?: boolean
 
   // Middleware behavior
   /** Cookie name for storing selected language (defaults to 'i18next') */
@@ -73,6 +77,7 @@ export interface NormalizedConfig {
   defaultNS: string
   ns: string[]
   localeInPath: boolean
+  hideDefaultLocale: boolean
   localePath: string
   localeStructure: string
   localeExtension: string

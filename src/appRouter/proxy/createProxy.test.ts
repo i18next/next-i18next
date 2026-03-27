@@ -4,6 +4,7 @@
 
 // Mock next/server before importing the module under test
 const mockRedirect = jest.fn()
+const mockRewrite = jest.fn()
 const mockNext = jest.fn()
 
 jest.mock('next/server', () => {
@@ -24,6 +25,12 @@ jest.mock('next/server', () => {
     static redirect(url: URL | string) {
       const resp = new MockNextResponse()
       mockRedirect(url)
+      return resp
+    }
+
+    static rewrite(url: URL | string, opts?: { request?: { headers?: Headers } }) {
+      const resp = new MockNextResponse()
+      mockRewrite(url, opts)
       return resp
     }
 
@@ -71,6 +78,7 @@ const { NextRequest } = require('next/server')
 describe('createProxy', () => {
   beforeEach(() => {
     mockRedirect.mockClear()
+    mockRewrite.mockClear()
     mockNext.mockClear()
   })
 
@@ -280,6 +288,162 @@ describe('createProxy', () => {
       const redirectUrl = mockRedirect.mock.calls[0][0] as URL
       // Falls back to default since 'de' doesn't match any of 'en-US', 'en-GB', 'de-DE' without the flag
       expect(redirectUrl.pathname).toBe('/en-US/about')
+    })
+  })
+
+  describe('hideDefaultLocale', () => {
+    const hideConfig = {
+      supportedLngs: ['en', 'de', 'fr'],
+      fallbackLng: 'en',
+      hideDefaultLocale: true,
+    }
+
+    it('rewrites root path to default locale internally', () => {
+      const middleware = createProxy(hideConfig)
+      const req = new NextRequest('http://localhost/')
+      middleware(req)
+
+      expect(mockRedirect).not.toHaveBeenCalled()
+      expect(mockRewrite).toHaveBeenCalledTimes(1)
+      const rewriteUrl = mockRewrite.mock.calls[0][0] as URL
+      expect(rewriteUrl.pathname).toBe('/en/')
+    })
+
+    it('rewrites non-locale path to default locale internally', () => {
+      const middleware = createProxy(hideConfig)
+      const req = new NextRequest('http://localhost/about')
+      middleware(req)
+
+      expect(mockRedirect).not.toHaveBeenCalled()
+      expect(mockRewrite).toHaveBeenCalledTimes(1)
+      const rewriteUrl = mockRewrite.mock.calls[0][0] as URL
+      expect(rewriteUrl.pathname).toBe('/en/about')
+    })
+
+    it('preserves query string in rewrite', () => {
+      const middleware = createProxy(hideConfig)
+      const req = new NextRequest('http://localhost/about?tab=1')
+      middleware(req)
+
+      expect(mockRewrite).toHaveBeenCalledTimes(1)
+      const rewriteUrl = mockRewrite.mock.calls[0][0] as URL
+      expect(rewriteUrl.pathname).toBe('/en/about')
+      expect(rewriteUrl.search).toBe('?tab=1')
+    })
+
+    it('sets header with default language on rewrite', () => {
+      const middleware = createProxy(hideConfig)
+      const req = new NextRequest('http://localhost/about')
+      middleware(req)
+
+      expect(mockRewrite).toHaveBeenCalledTimes(1)
+      const opts = mockRewrite.mock.calls[0][1]
+      const headers = opts?.request?.headers as Headers
+      expect(headers.get('x-i18next-current-language')).toBe('en')
+    })
+
+    it('redirects explicit default locale path to clean URL', () => {
+      const middleware = createProxy(hideConfig)
+      const req = new NextRequest('http://localhost/en/about')
+      middleware(req)
+
+      expect(mockRedirect).toHaveBeenCalledTimes(1)
+      const redirectUrl = mockRedirect.mock.calls[0][0] as URL
+      expect(redirectUrl.pathname).toBe('/about')
+    })
+
+    it('redirects explicit default locale root to /', () => {
+      const middleware = createProxy(hideConfig)
+      const req = new NextRequest('http://localhost/en')
+      middleware(req)
+
+      expect(mockRedirect).toHaveBeenCalledTimes(1)
+      const redirectUrl = mockRedirect.mock.calls[0][0] as URL
+      expect(redirectUrl.pathname).toBe('/')
+    })
+
+    it('preserves query string when redirecting default locale', () => {
+      const middleware = createProxy(hideConfig)
+      const req = new NextRequest('http://localhost/en/about?tab=1')
+      middleware(req)
+
+      expect(mockRedirect).toHaveBeenCalledTimes(1)
+      const redirectUrl = mockRedirect.mock.calls[0][0] as URL
+      expect(redirectUrl.pathname).toBe('/about')
+      expect(redirectUrl.search).toBe('?tab=1')
+    })
+
+    it('passes through non-default locale normally', () => {
+      const middleware = createProxy(hideConfig)
+      const req = new NextRequest('http://localhost/de/about')
+      middleware(req)
+
+      expect(mockRedirect).not.toHaveBeenCalled()
+      expect(mockRewrite).not.toHaveBeenCalled()
+      expect(mockNext).toHaveBeenCalledTimes(1)
+    })
+
+    it('sets header for non-default locale', () => {
+      const middleware = createProxy(hideConfig)
+      const req = new NextRequest('http://localhost/de/about')
+      middleware(req)
+
+      const opts = mockNext.mock.calls[0][0]
+      const headers = opts?.request?.headers as Headers
+      expect(headers.get('x-i18next-current-language')).toBe('de')
+    })
+
+    it('ignores cookie language and always rewrites to default locale', () => {
+      const middleware = createProxy(hideConfig)
+      const req = new NextRequest('http://localhost/about', {
+        cookies: { i18next: 'de' },
+      })
+      middleware(req)
+
+      // Should rewrite (not redirect), because hideDefaultLocale treats no-prefix as default
+      expect(mockRewrite).toHaveBeenCalledTimes(1)
+      const rewriteUrl = mockRewrite.mock.calls[0][0] as URL
+      expect(rewriteUrl.pathname).toBe('/en/about')
+      expect(mockRedirect).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('hideDefaultLocale with basePath', () => {
+    const hideBaseConfig = {
+      supportedLngs: ['en', 'de', 'fr'],
+      fallbackLng: 'en',
+      hideDefaultLocale: true,
+      basePath: '/app-router',
+    }
+
+    it('rewrites basePath request to default locale internally', () => {
+      const middleware = createProxy(hideBaseConfig)
+      const req = new NextRequest('http://localhost/app-router/page')
+      middleware(req)
+
+      expect(mockRewrite).toHaveBeenCalledTimes(1)
+      const rewriteUrl = mockRewrite.mock.calls[0][0] as URL
+      expect(rewriteUrl.pathname).toBe('/app-router/en/page')
+    })
+
+    it('redirects explicit default locale under basePath', () => {
+      const middleware = createProxy(hideBaseConfig)
+      const req = new NextRequest('http://localhost/app-router/en/page')
+      middleware(req)
+
+      expect(mockRedirect).toHaveBeenCalledTimes(1)
+      const redirectUrl = mockRedirect.mock.calls[0][0] as URL
+      expect(redirectUrl.pathname).toBe('/app-router/page')
+    })
+
+    it('passes through non-default locale under basePath', () => {
+      const middleware = createProxy(hideBaseConfig)
+      const req = new NextRequest('http://localhost/app-router/de/page')
+      middleware(req)
+
+      expect(mockRedirect).not.toHaveBeenCalled()
+      expect(mockRewrite).not.toHaveBeenCalled()
+      expect(mockNext).toHaveBeenCalledTimes(1)
     })
   })
 

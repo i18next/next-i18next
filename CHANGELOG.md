@@ -1,3 +1,7 @@
+## 16.0.3
+
+- **New `hideDefaultLocale` option (App Router)** — when enabled, the default language is served without a URL prefix (`/about` instead of `/en/about`). Non-default locales keep their prefix (`/de/about`). Explicit default-locale paths (`/en/about`) are automatically redirected to the clean URL. Works with `basePath` too. [#2338](https://github.com/i18next/next-i18next/issues/2338)
+
 ## 16.0.2
 
 - **Serverless/Vercel: better error when `public/locales/` is not available at runtime** — the default filesystem backend now catches read failures and shows a clear error message explaining the serverless limitation with a `resourceLoader` code example [#2337](https://github.com/i18next/next-i18next/issues/2337)

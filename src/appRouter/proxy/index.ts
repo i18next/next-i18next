@@ -71,14 +71,41 @@ export function createProxy(userConfig: I18nConfig) {
     const lngInPath = findLocaleInPath(pathForLocale, config.supportedLngs, nonExplicit)
 
     if (config.localeInPath) {
+      const prefix = basePath ?? ''
+      const pathAfterBase = basePath ? pathname.slice(basePath.length) : pathname
+
+      // hideDefaultLocale: redirect explicit default-locale paths to the clean URL
+      if (config.hideDefaultLocale && lngInPath === config.fallbackLng) {
+        const pathWithoutLocale = pathAfterBase.replace(/^\/[^/]+/, '') || '/'
+        const redirectUrl = new URL(`${prefix}${pathWithoutLocale}${search}`, req.url)
+        const response = NextResponse.redirect(redirectUrl)
+        response.cookies.set(config.cookieName, config.fallbackLng, {
+          path: '/',
+          maxAge: config.cookieMaxAge,
+          sameSite: 'lax',
+        })
+        return response
+      }
+
       // Set custom header for server components to read
       const headers = new Headers(req.headers)
       headers.set(config.headerName, lngInPath || lng)
 
       // Redirect if no locale in path
       if (!lngInPath) {
-        const prefix = basePath ?? ''
-        const pathAfterBase = basePath ? pathname.slice(basePath.length) : pathname
+        if (config.hideDefaultLocale) {
+          // Rewrite internally to the default-locale path, keeping the clean URL
+          const rewriteUrl = new URL(`${prefix}/${config.fallbackLng}${pathAfterBase}${search}`, req.url)
+          headers.set(config.headerName, config.fallbackLng)
+          const response = NextResponse.rewrite(rewriteUrl, { request: { headers } })
+          response.cookies.set(config.cookieName, config.fallbackLng, {
+            path: '/',
+            maxAge: config.cookieMaxAge,
+            sameSite: 'lax',
+          })
+          return response
+        }
+
         const redirectUrl = new URL(`${prefix}/${lng}${pathAfterBase}${search}`, req.url)
         const response = NextResponse.redirect(redirectUrl)
         response.cookies.set(config.cookieName, lng, {

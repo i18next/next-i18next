@@ -28,6 +28,7 @@ export function normalizeConfig(userConfig: I18nConfig): NormalizedConfig {
     defaultNS,
     ns: userConfig.ns ?? [defaultNS],
     localeInPath: userConfig.localeInPath ?? true,
+    hideDefaultLocale: userConfig.hideDefaultLocale ?? false,
     localePath: userConfig.localePath ?? '/locales',
     localeStructure: userConfig.localeStructure ?? '{{lng}}/{{ns}}',
     localeExtension: userConfig.localeExtension ?? 'json',
