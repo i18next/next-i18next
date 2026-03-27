@@ -15,7 +15,7 @@
     "interface": "i18next-resources-for-ts interface -i ./public/locales/en -o ./@types/resources.d.ts"
   },
   "dependencies": {
-    "i18next": "25.10.3",
+    "i18next": "^25.10.10",
     "i18next-chained-backend": "^5.0.2",
     "i18next-http-backend": "^3.0.2",
     "i18next-localstorage-backend": "^4.3.1",
