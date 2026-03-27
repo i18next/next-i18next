@@ -242,9 +242,29 @@ For the no-locale-path mode (cookie-based), see `useChangeLanguage` [below](#no-
 
 ---
 
+## Hide Default Locale
+
+If you want clean URLs for the default language while keeping locale prefixes for other languages, set `hideDefaultLocale: true`:
+
+```ts
+const i18nConfig: I18nConfig = {
+  supportedLngs: ['en', 'de'],
+  fallbackLng: 'en',
+  hideDefaultLocale: true,
+}
+```
+
+In this mode:
+- `/about` serves the default language (English) — no prefix needed
+- `/de/about` serves German — non-default locales keep their prefix
+- `/en/about` automatically redirects to `/about` (canonical clean URL)
+- The `[lng]` folder structure stays the same — the proxy rewrites internally
+
+---
+
 ## No-Locale-Path Mode
 
-If you prefer clean URLs without a locale prefix (e.g., `/about` instead of `/en/about`), set `localeInPath: false`:
+If you prefer clean URLs without a locale prefix for **all** languages (e.g., `/about` instead of `/en/about`), set `localeInPath: false`:
 
 ```ts
 const i18nConfig: I18nConfig = {
@@ -609,6 +629,7 @@ In **serverless environments** (Lambda, Vercel Serverless, etc.), the cache only
 | `defaultNS` | `'common'` | Default namespace |
 | `ns` | `[defaultNS]` | All known namespaces |
 | `localeInPath` | `true` | Include locale in URL path |
+| `hideDefaultLocale` | `false` | When `true` (with `localeInPath: true`), the default language has no URL prefix |
 | `localePath` | `'/locales'` | Path to locale files relative to `/public` |
 | `localeStructure` | `'{{lng}}/{{ns}}'` | Locale file directory structure |
 | `localeExtension` | `'json'` | Locale file extension |
