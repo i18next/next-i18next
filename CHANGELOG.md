@@ -1,3 +1,7 @@
+## 16.0.4
+
+- **TypeScript compatibility with i18next v26** — fixed type error in Pages Router `createConfig` where i18next v26's readonly `preload` type was incompatible with the internal config type
+
 ## 16.0.3
 
 - **New `hideDefaultLocale` option (App Router)** — when enabled, the default language is served without a URL prefix (`/about` instead of `/en/about`). Non-default locales keep their prefix (`/de/about`). Explicit default-locale paths (`/en/about`) are automatically redirected to the clean URL. Works with `basePath` too. [#2338](https://github.com/i18next/next-i18next/issues/2338)
