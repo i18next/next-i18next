@@ -43,7 +43,7 @@ export const createConfig = (
    * https://github.com/i18next/next-i18next/pull/851#discussion_r503113620
    */
   if (lng === 'cimode') {
-    return combinedConfig as InternalConfig
+    return combinedConfig as unknown as InternalConfig
   }
 
   if (typeof combinedConfig.fallbackLng === 'undefined') {
@@ -298,5 +298,5 @@ export const createConfig = (
     }
   })
 
-  return combinedConfig as InternalConfig
+  return combinedConfig as unknown as InternalConfig
 }
