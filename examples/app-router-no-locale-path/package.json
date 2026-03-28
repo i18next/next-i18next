@@ -12,12 +12,12 @@
     "syncLocales": "locize sync --project-id=01b2e5e8-6243-47d1-b36f-963dbb8bcae3 --cdn-type pro --api-key=bd8cb856-d6b3-4c82-a456-862c729a1674 --ver=latest --path=./app/i18n/locales --dry=true"
   },
   "dependencies": {
-    "i18next": "^25.10.10",
+    "i18next": "^26.0.1",
     "next": "16.2.1",
     "next-i18next": "^16.0.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "react-i18next": "16.6.0"
+    "react-i18next": "^17.0.1"
   },
   "devDependencies": {
     "locize-cli": "12.0.9"

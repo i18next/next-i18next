@@ -15,12 +15,12 @@
     "ts": "next build && tsc --noEmit && rm tsconfig.tsbuildinfo"
   },
   "dependencies": {
-    "i18next": "^25.10.10",
+    "i18next": "^26.0.1",
     "next": "16.2.1",
     "next-i18next": "^16.0.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "react-i18next": "16.6.0"
+    "react-i18next": "^17.0.1"
   },
   "devDependencies": {
     "@types/node": "25.5.0",
