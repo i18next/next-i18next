@@ -1,3 +1,7 @@
+## 16.0.5
+
+- **Pages Router: export missing types from `next-i18next/pages`** — `TFunction`, `I18n`, `WithTranslation`, `WithTranslationHocType`, and `UseTranslation` types are now properly re-exported, matching the v15 API surface [#2339](https://github.com/i18next/next-i18next/issues/2339)
+
 ## 16.0.4
 
 - **TypeScript compatibility with i18next v26** — fixed type error in Pages Router `createConfig` where i18next v26's readonly `preload` type was incompatible with the internal config type

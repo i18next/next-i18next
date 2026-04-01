@@ -676,7 +676,8 @@ If you were using i18next and react-i18next directly (as recommended in v15):
 
 1. Update imports from `next-i18next` to `next-i18next/pages`
 2. Update `serverSideTranslations` import to `next-i18next/pages/serverSideTranslations`
-3. Everything else works the same
+3. Update type imports: `import type { TFunction, WithTranslation, I18n } from 'next-i18next/pages'`
+4. Everything else works the same
 
 ---
 

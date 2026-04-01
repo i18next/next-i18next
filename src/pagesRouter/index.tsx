@@ -11,4 +11,12 @@ export {
   globalI18n as i18n,
 } from './appWithTranslation'
 
-export type { UserConfig, SSRConfig } from './types'
+export type {
+  UserConfig,
+  SSRConfig,
+  TFunction,
+  I18n,
+  WithTranslation,
+  WithTranslationHocType,
+  UseTranslation,
+} from './types'
