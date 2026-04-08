@@ -101,6 +101,26 @@ const Homepage = (
             </a>
           </div>
         </div>
+
+        <div className="featured-card" style={{ marginTop: 15 }}>
+          <h3 className="card-title">
+            {t('blog.mcp.question')}
+          </h3>
+          <p className="card-text">
+            <Trans i18nKey="blog.mcp.answer">
+              Check out
+              <a href={t('blog.mcp.link')}>this blog post</a> to learn more.
+            </Trans>
+          </p>
+          <a href={t('blog.mcp.link')}>
+            <img
+              className="card-img"
+              src="https://www.locize.com/img/blog/mcp-server/title.jpg"
+              alt="Locize MCP server"
+            />
+          </a>
+        </div>
+
         <hr style={{ marginTop: 20, width: '90%' }} />
         <div>
           <Link href="/" locale={changeTo}>

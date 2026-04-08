@@ -17,5 +17,8 @@
   "blog.optimized.link": "https://www.locize.com/blog/next-i18next",
   "blog.ssg.question": "Möchtest du SSG (next export) verwenden?",
   "blog.ssg.answer": "Dann schaue dir vielleicht <1>diesen Blogbeitrag</1> an.",
-  "blog.ssg.link": "https://www.locize.com/blog/next-i18n-static"
+  "blog.ssg.link": "https://www.locize.com/blog/next-i18n-static",
+  "blog.mcp.question": "Verwendest du KI-Coding-Assistenten wie Claude oder Cursor?",
+  "blog.mcp.answer": "Schau dir <1>diesen Blogbeitrag</1> an, um mehr zu erfahren.",
+  "blog.mcp.link": "https://www.locize.com/blog/mcp-server"
 }
