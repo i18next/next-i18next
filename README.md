@@ -298,13 +298,12 @@ export function LanguageSwitcher() {
 }
 ```
 
-The root layout reads the language from `i18n.resolvedLanguage` instead of URL params:
+The root layout reads the language from `getT()` instead of URL params:
 
 ```tsx
 // app/layout.tsx (no [lng] segment)
 export default async function RootLayout({ children }) {
-  const { i18n } = await getT()
-  const lng = i18n.resolvedLanguage
+  const { i18n, lng } = await getT()
   const resources = getResources(i18n)
 
   return (
