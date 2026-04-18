@@ -33,3 +33,10 @@ package-lock.json
 
 # typescript
 tsconfig.tsbuildinfo
+
+# Secrets & credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
