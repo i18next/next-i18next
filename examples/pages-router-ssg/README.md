@@ -2,7 +2,7 @@
 
 ## What is this?
 
-This is a simple example of how to use [next-i18next](https://github.com/i18next/next-i18next) with [Next.js](https://github.com/zeit/next.js) for a complete static website and optional use of [Locize](https://www.locize.com) to get translations up and running quickly and easily.
+This is a simple example of how to use [next-i18next](https://github.com/i18next/next-i18next) with [Next.js](https://github.com/zeit/next.js) for a complete static website and optional use of [Locize](https://www.locize.com?utm_source=next_i18next_pages_router_ssg_readme&utm_medium=github&utm_campaign=examples_pages_router_ssg_readme) to get translations up and running quickly and easily.
 
 ## For more info...
 
@@ -12,9 +12,9 @@ You may have arrived here from the [Next.js](https://github.com/zeit/next.js) re
 - **Next.js**, please visit the [website](https://nextjs.org/)
 - **Locize** in combination with Next.js, please visit the [main README](https://github.com/locize/next-i18next-locize)
 
-**A step by step guide can be found in [this tutorial](https://www.locize.com/blog/next-i18n-static/).**
+**A step by step guide can be found in [this tutorial](https://www.locize.com/blog/next-i18n-static/?utm_source=next_i18next_pages_router_ssg_readme&utm_medium=github&utm_campaign=examples_pages_router_ssg_readme).**
 
-## optional [Locize](https://www.locize.com) usage (not mandatory)
+## optional [Locize](https://www.locize.com?utm_source=next_i18next_pages_router_ssg_readme&utm_medium=github&utm_campaign=examples_pages_router_ssg_readme) usage (not mandatory)
 
 Before "deploying" your app, you can run the [downloadLocales script](https://github.com/i18next/next-language-detector/blob/main/examples/basic/package.json#L15) (or similar), which will use the [cli](https://github.com/locize/locize-cli) to download the translations from locize into the appropriate folder next-i18next is looking in to (i.e. ./public/locales).
 

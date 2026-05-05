@@ -473,7 +473,7 @@ See [`examples/pages-router-simple`](examples/pages-router-simple), [`examples/p
 
 ## Custom i18next Backends
 
-next-i18next supports any i18next backend plugin for loading translations from an API, CDN, or services like [Locize](https://www.locize.com).
+next-i18next supports any i18next backend plugin for loading translations from an API, CDN, or services like [Locize](https://www.locize.com?utm_source=next_i18next_readme&utm_medium=github&utm_campaign=readme).
 
 When a custom backend is provided via `use`, next-i18next will **not** add its default resource loader, giving you full control.
 
@@ -699,7 +699,7 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
       <td align="center" valign="top" width="14.28%"><a href="https://isaachinman.com/"><img src="https://avatars.githubusercontent.com/u/10575782?v=4?s=100" width="100px;" alt="Isaac Hinman"/><br /><sub><b>Isaac Hinman</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=isaachinman" title="Code">💻</a> <a href="https://github.com/i18next/next-i18next/commits?author=isaachinman" title="Documentation">📖</a> <a href="#ideas-isaachinman" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-isaachinman" title="Maintenance">🚧</a></td>
     </tr>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://locize.com/"><img src="https://avatars.githubusercontent.com/u/1086194?v=4?s=100" width="100px;" alt="Adriano Raiano"/><br /><sub><b>Adriano Raiano</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=adrai" title="Code">💻</a> <a href="https://github.com/i18next/next-i18next/commits?author=adrai" title="Documentation">📖</a> <a href="#ideas-adrai" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-adrai" title="Maintenance">🚧</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.locize.com/?utm_source=next_i18next_readme&utm_medium=github&utm_campaign=readme"><img src="https://avatars.githubusercontent.com/u/1086194?v=4?s=100" width="100px;" alt="Adriano Raiano"/><br /><sub><b>Adriano Raiano</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=adrai" title="Code">💻</a> <a href="https://github.com/i18next/next-i18next/commits?author=adrai" title="Documentation">📖</a> <a href="#ideas-adrai" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-adrai" title="Maintenance">🚧</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/felixmosh"><img src="https://avatars.githubusercontent.com/u/9304194?v=4?s=100" width="100px;" alt="Felix Mosheev"/><br /><sub><b>Felix Mosheev</b></sub></a><br /><a href="#question-felixmosh" title="Answering Questions">💬</a> <a href="https://github.com/i18next/next-i18next/commits?author=felixmosh" title="Code">💻</a> <a href="https://github.com/i18next/next-i18next/commits?author=felixmosh" title="Tests">⚠️</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://soluble.io/pro"><img src="https://avatars.githubusercontent.com/u/259798?v=4?s=100" width="100px;" alt="Sébastien Vanvelthem"/><br /><sub><b>Sébastien Vanvelthem</b></sub></a><br /><a href="https://github.com/i18next/next-i18next/commits?author=belgattitude" title="Code">💻</a> <a href="https://github.com/i18next/next-i18next/commits?author=belgattitude" title="Documentation">📖</a></td>
     </tr>
@@ -718,21 +718,21 @@ This project follows the [all-contributors](https://github.com/kentcdodds/all-co
 <h3 align="center">Gold Sponsors</h3>
 
 <p align="center">
-  <a href="https://locize.com/" target="_blank">
+  <a href="https://www.locize.com/?utm_source=next_i18next_readme&utm_medium=github&utm_campaign=readme" target="_blank">
     <img src="https://raw.githubusercontent.com/i18next/i18next/master/assets/locize_sponsor_240.gif" width="240px">
   </a>
 </p>
 
 ---
 
-**localization as a service - [Locize](https://www.locize.com)**
+**localization as a service - [Locize](https://www.locize.com?utm_source=next_i18next_readme&utm_medium=github&utm_campaign=readme)**
 
 Needing a translation management? Want to edit your translations with an InContext Editor? Use the original provided to you by the maintainers of i18next!
 
-**Now with a [Free plan](https://www.locize.com/pricing) for small projects!** Perfect for hobbyists or getting started.
+**Now with a [Free plan](https://www.locize.com/pricing?utm_source=next_i18next_readme&utm_medium=github&utm_campaign=readme) for small projects!** Perfect for hobbyists or getting started.
 
 ![Locize](https://www.locize.com/img/ads/github_locize.png)
 
-By using [Locize](http://www.locize.com/?utm_source=next_i18next_readme&utm_medium=github) you directly support the future of i18next and next-i18next.
+By using [Locize](https://www.locize.com/?utm_source=next_i18next_readme&utm_medium=github&utm_campaign=readme) you directly support the future of i18next and next-i18next.
 
 ---

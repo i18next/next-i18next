@@ -19,6 +19,6 @@ npm run dev
 
 ## Blog post
 
-There's also a [blog post](https://www.locize.com/blog/i18n-next-app-router) describing the i18n approach in more detail.
+There's also a [blog post](https://www.locize.com/blog/i18n-next-app-router?utm_source=next_i18next_app_router_simple_readme&utm_medium=github&utm_campaign=examples_app_router_simple_readme) describing the i18n approach in more detail.
 
-[![](https://www.locize.com/img/blog/i18n-next-app-router/i18n-next-app-router.jpg)](https://www.locize.com/blog/i18n-next-app-router)
+[![](https://www.locize.com/img/blog/i18n-next-app-router/i18n-next-app-router.jpg)](https://www.locize.com/blog/i18n-next-app-router?utm_source=next_i18next_app_router_simple_readme&utm_medium=github&utm_campaign=examples_app_router_simple_readme)
