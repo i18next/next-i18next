@@ -1,3 +1,8 @@
+## 16.0.6
+
+- **Pages Router: `reloadOnPrerender` now actually reloads** — the option was previously calling `reloadResources()` on the browser-side i18next instance returned by `appWithTranslation` (which has no FS backend and is often `null` during `getStaticProps`/`getServerSideProps`). It now reloads on the disk-backed node-side instance, scoped to exactly the locales × namespaces being shipped, so edits to locale files appear without restarting `next dev`. Gated behind `NODE_ENV !== 'production'` to keep custom HTTP/locize/chained backends from being refetched on every prerender call. [#2123](https://github.com/i18next/next-i18next/issues/2123)
+- **App Router: `reloadOnPrerender` is now wired up** — previously declared in the config types but never consumed. Same dev-only semantics as Pages Router: refetches translations from the configured backend (default FS or `use`-provided custom backend) before each render in development, deduplicated across `getT` calls within a single render via React's `cache()`. No effect in production builds. Note: when using a dynamic `import()`-based `resourceLoader`, hot-reload is bundler-dependent and may stall after the first edit because Turbopack/Webpack cache resolved JSON modules across HMR cycles — see the README "Dev tip" for the dev/prod-split pattern that gives full hot-reload.
+
 ## 16.0.5
 
 - **Pages Router: export missing types from `next-i18next/pages`** — `TFunction`, `I18n`, `WithTranslation`, `WithTranslationHocType`, and `UseTranslation` types are now properly re-exported, matching the v15 API surface [#2339](https://github.com/i18next/next-i18next/issues/2339)

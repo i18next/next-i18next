@@ -14,6 +14,7 @@ const mockUse = jest.fn().mockReturnThis()
 const mockGetFixedT = jest.fn(() => jest.fn((key: string) => key))
 const mockLoadNamespaces = jest.fn().mockResolvedValue(undefined)
 const mockHasLoadedNamespace = jest.fn().mockReturnValue(true)
+const mockReloadResources = jest.fn().mockResolvedValue(undefined)
 
 const mockInstance = {
   use: mockUse,
@@ -21,8 +22,10 @@ const mockInstance = {
   getFixedT: mockGetFixedT,
   loadNamespaces: mockLoadNamespaces,
   hasLoadedNamespace: mockHasLoadedNamespace,
+  reloadResources: mockReloadResources,
   language: 'en',
   isInitialized: false, // start uninitialized, init sets it to true
+  options: { ns: ['common', 'home'] },
   store: {
     data: {
       en: { common: { hello: 'Hello' }, home: { title: 'Home' } },
@@ -98,6 +101,7 @@ function resetModuleState() {
   mockGetFixedT.mockClear()
   mockLoadNamespaces.mockClear()
   mockHasLoadedNamespace.mockClear()
+  mockReloadResources.mockClear()
   mockInstance.isInitialized = false
 
   // Make init set isInitialized to true
@@ -239,6 +243,61 @@ describe('server', () => {
 
       await getT('common')
       expect(mockLoadNamespaces).not.toHaveBeenCalled()
+    })
+
+    it('calls reloadResources when reloadOnPrerender is true (dev)', async () => {
+      const prevEnv = process.env.NODE_ENV
+      ;(process.env as any).NODE_ENV = 'development'
+
+      try {
+        initServerI18next({
+          supportedLngs: ['en', 'de'],
+          fallbackLng: 'en',
+          reloadOnPrerender: true,
+        })
+
+        await getT('common')
+        expect(mockReloadResources).toHaveBeenCalledTimes(1)
+        expect(mockReloadResources).toHaveBeenCalledWith(['en'], ['common', 'home'])
+      } finally {
+        ;(process.env as any).NODE_ENV = prevEnv
+      }
+    })
+
+    it('does not call reloadResources when reloadOnPrerender is false', async () => {
+      const prevEnv = process.env.NODE_ENV
+      ;(process.env as any).NODE_ENV = 'development'
+
+      try {
+        initServerI18next({
+          supportedLngs: ['en', 'de'],
+          fallbackLng: 'en',
+          reloadOnPrerender: false,
+        })
+
+        await getT('common')
+        expect(mockReloadResources).not.toHaveBeenCalled()
+      } finally {
+        ;(process.env as any).NODE_ENV = prevEnv
+      }
+    })
+
+    it('does not call reloadResources in production even when reloadOnPrerender is true', async () => {
+      const prevEnv = process.env.NODE_ENV
+      ;(process.env as any).NODE_ENV = 'production'
+
+      try {
+        initServerI18next({
+          supportedLngs: ['en', 'de'],
+          fallbackLng: 'en',
+          reloadOnPrerender: true,
+        })
+
+        await getT('common')
+        expect(mockReloadResources).not.toHaveBeenCalled()
+      } finally {
+        ;(process.env as any).NODE_ENV = prevEnv
+      }
     })
 
     it('does not add default backend when custom backend is provided', async () => {

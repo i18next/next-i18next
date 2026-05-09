@@ -125,6 +125,18 @@ async function getSharedInstance(config: NormalizedConfig): Promise<I18NextClien
   return _sharedInstancePromise
 }
 
+// Dev-only hot-reload: refetch resources for the requested language so edits
+// to locale files appear without restarting `next dev`. Wrapped in `cache()`
+// so multiple `getT` calls within the same render dedupe to a single reload.
+// Gated on `NODE_ENV !== 'production'` at the call site so HTTP/locize/chained
+// backends are never refetched per-request in prod.
+const reloadResourcesForRender = cache(
+  async (i18n: I18NextClient, lng: string): Promise<void> => {
+    const ns = (i18n.options.ns as string[] | undefined) ?? []
+    await i18n.reloadResources([lng], ns)
+  }
+)
+
 // Per-request language detection, deduplicated within a single React render
 const detectLanguage = cache(async (config: NormalizedConfig): Promise<string> => {
   const headerList = await headers()
@@ -178,6 +190,10 @@ export async function getT<
 
   const lng = options.lng || await detectLanguage(config)
   const i18nInstance = await getSharedInstance(config)
+
+  if (config.reloadOnPrerender && process.env.NODE_ENV !== 'production') {
+    await reloadResourcesForRender(i18nInstance, lng)
+  }
 
   // Load additional namespaces on demand if not already loaded
   const nsArray: string[] = ns

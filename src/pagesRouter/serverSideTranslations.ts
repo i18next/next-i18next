@@ -5,8 +5,6 @@ import { createRequire } from 'module'
 import { createConfig } from './config/createConfig'
 import createClient from './createClient/node'
 
-import { globalI18n } from './appWithTranslation'
-
 import { UserConfig, SSRConfig } from './types'
 import { getFallbackForLng, unique } from './utils'
 import { Module, Namespace } from 'i18next'
@@ -68,10 +66,6 @@ export const serverSideTranslations = async (
     reloadOnPrerender,
   } = config
 
-  if (reloadOnPrerender) {
-    await globalI18n?.reloadResources()
-  }
-
   const { i18n, initPromise } = createClient({
     ...config,
     lng: initialLocale,
@@ -119,6 +113,17 @@ export const serverSideTranslations = async (
       .flat()
 
     namespacesRequired = unique(namespacesByLocale)
+  }
+
+  // Dev-only hot-reload: every backend (resources-to-backend, http, locize,
+  // chained) refetches unconditionally with no dedup, so doing this in
+  // production would hammer the source on every prerender call. Scope to
+  // exactly the locales × namespaces this call will ship.
+  if (reloadOnPrerender && process.env.NODE_ENV !== 'production') {
+    await i18n.reloadResources(
+      Object.keys(initialI18nStore),
+      namespacesRequired as string[]
+    )
   }
 
   namespacesRequired.forEach(ns => {

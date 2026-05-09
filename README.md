@@ -87,6 +87,25 @@ The `resourceLoader` uses dynamic `import()` which the bundler can trace, ensuri
 
 > **Tip**: Import `I18nConfig` from `next-i18next/proxy` (not from `next-i18next`) to keep the config file Edge-safe.
 
+> **Dev tip — hot-reloading translations**: set `reloadOnPrerender: process.env.NODE_ENV === 'development'` in your config to refetch translations on every render in dev so edits to locale files appear without restarting `next dev`. The flag is automatically a no-op in production, so it is safe to keep in your committed config — custom backends (HTTP, locize, chained) won't be hit per-request in production builds.
+>
+> **Caveat with `import()`-based `resourceLoader`**: dynamic `import()` of JSON is cached at the bundler level and is not reliably re-invalidated by Turbopack/Webpack HMR after the first edit, so hot-reload can stall after one change. For full hot-reload during development, gate your loader so dev uses `fs.readFile` and production keeps bundler-traceable `import()`:
+> ```ts
+> const resourceLoader: I18nConfig['resourceLoader'] =
+>   process.env.NODE_ENV === 'development'
+>     ? async (lng, ns) => {
+>         const fs = await import('fs/promises')
+>         const path = await import('path')
+>         const content = await fs.readFile(
+>           path.resolve(process.cwd(), `app/i18n/locales/${lng}/${ns}.json`),
+>           'utf-8'
+>         )
+>         return JSON.parse(content)
+>       }
+>     : (lng, ns) => import(`./app/i18n/locales/${lng}/${ns}.json`)
+> ```
+> Pages Router and the App Router default backend already use `fs` and are unaffected.
+
 ### 4. Proxy
 
 Create `proxy.ts` at your project root (Next.js 16+ replaces `middleware.ts` with `proxy.ts`):

@@ -65,7 +65,11 @@ export interface I18nConfig {
   }
   /** @deprecated Use i18nextOptions instead */
   serializeConfig?: boolean
-  /** @deprecated Pages Router only */
+  /**
+   * Dev-only: when true (and `NODE_ENV !== 'production'`), reload translation
+   * resources from the backend before each render so edits to locale files
+   * appear without restarting `next dev`. No effect in production builds.
+   */
   reloadOnPrerender?: boolean
   /** Support non-explicit language codes like 'en' matching 'en-US' */
   nonExplicitSupportedLngs?: boolean

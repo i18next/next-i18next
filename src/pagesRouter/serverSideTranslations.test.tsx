@@ -2,41 +2,16 @@
  * @jest-environment node
  */
 
-import React from 'react'
 import fs from 'fs'
-import { SSRConfig, UserConfig } from './types'
+import i18next from 'i18next'
+import { UserConfig } from './types'
 import { serverSideTranslations } from './serverSideTranslations'
-import { globalI18n } from './appWithTranslation'
-import { renderToString } from 'react-dom/server'
-import { appWithTranslation } from './appWithTranslation'
 
 jest.mock('fs', () => ({
   existsSync: jest.fn(),
   readdirSync: jest.fn(),
   statSync: jest.fn(),
 }))
-
-const DummyApp = appWithTranslation(() => <div>Hello world</div>)
-
-const props = {
-  pageProps: {
-    _nextI18Next: {
-      initialLocale: 'en-US',
-      userConfig: {
-        i18n: {
-          defaultLocale: 'en',
-          locales: ['en', 'fr'],
-        },
-      },
-    },
-  } as SSRConfig,
-  router: {
-    locale: 'en',
-  },
-} as any
-
-const renderDummyComponent = () =>
-  renderToString(<DummyApp {...props} />)
 
 describe('serverSideTranslations', () => {
   beforeAll(() => {
@@ -545,40 +520,72 @@ describe('serverSideTranslations', () => {
     })
   })
 
-  it('calls reloadResources when reloadOnPrerender option is true', async () => {
-    renderDummyComponent()
+  it('calls reloadResources on the node-side instance when reloadOnPrerender option is true (dev)', async () => {
+    const prevEnv = process.env.NODE_ENV
+    ;(process.env as any).NODE_ENV = 'development'
+    const reloadSpy = jest
+      .spyOn(Object.getPrototypeOf(i18next), 'reloadResources')
+      .mockImplementation(() => Promise.resolve())
 
-    if (globalI18n) {
-      globalI18n.reloadResources = jest.fn()
+    try {
+      await serverSideTranslations('en-US', ['common'], {
+        i18n: {
+          defaultLocale: 'en-US',
+          locales: ['en-US', 'fr-CA'],
+        },
+        reloadOnPrerender: true,
+      } as UserConfig)
+
+      expect(reloadSpy).toHaveBeenCalledTimes(1)
+      // Scoped to the locale(s) we ship and the namespaces requested
+      expect(reloadSpy).toHaveBeenCalledWith(['en-US'], ['common'])
+    } finally {
+      reloadSpy.mockRestore()
+      ;(process.env as any).NODE_ENV = prevEnv
     }
-
-    await serverSideTranslations('en-US', [], {
-      i18n: {
-        defaultLocale: 'en-US',
-        locales: ['en-US', 'fr-CA'],
-      },
-      reloadOnPrerender: true,
-    } as UserConfig)
-
-    expect(globalI18n?.reloadResources).toHaveBeenCalledTimes(1)
   })
 
   it('does not call reloadResources when reloadOnPrerender option is false', async () => {
-    renderDummyComponent()
+    const reloadSpy = jest
+      .spyOn(Object.getPrototypeOf(i18next), 'reloadResources')
+      .mockImplementation(() => Promise.resolve())
 
-    if (globalI18n) {
-      globalI18n.reloadResources = jest.fn()
+    try {
+      await serverSideTranslations('en-US', ['common'], {
+        i18n: {
+          defaultLocale: 'en-US',
+          locales: ['en-US', 'fr-CA'],
+        },
+        reloadOnPrerender: false,
+      } as UserConfig)
+
+      expect(reloadSpy).toHaveBeenCalledTimes(0)
+    } finally {
+      reloadSpy.mockRestore()
     }
+  })
 
-    await serverSideTranslations('en-US', [], {
-      i18n: {
-        defaultLocale: 'en-US',
-        locales: ['en-US', 'fr-CA'],
-      },
-      reloadOnPrerender: false,
-    } as UserConfig)
+  it('does not call reloadResources in production even when reloadOnPrerender is true', async () => {
+    const prevEnv = process.env.NODE_ENV
+    ;(process.env as any).NODE_ENV = 'production'
+    const reloadSpy = jest
+      .spyOn(Object.getPrototypeOf(i18next), 'reloadResources')
+      .mockImplementation(() => Promise.resolve())
 
-    expect(globalI18n?.reloadResources).toHaveBeenCalledTimes(0)
+    try {
+      await serverSideTranslations('en-US', ['common'], {
+        i18n: {
+          defaultLocale: 'en-US',
+          locales: ['en-US', 'fr-CA'],
+        },
+        reloadOnPrerender: true,
+      } as UserConfig)
+
+      expect(reloadSpy).toHaveBeenCalledTimes(0)
+    } finally {
+      reloadSpy.mockRestore()
+      ;(process.env as any).NODE_ENV = prevEnv
+    }
   })
 
   it('throws if a function is used for localePath and namespaces are not provided', async () => {
