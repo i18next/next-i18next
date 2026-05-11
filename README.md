@@ -18,6 +18,10 @@ If you already know i18next: next-i18next v16 is a thin layer on top of [i18next
 - **Edge-safe Proxy**: Zero Node.js dependencies in the proxy/middleware path
 - **Pages Router**: Existing `appWithTranslation` / `serverSideTranslations` API preserved under `next-i18next/pages`
 
+## Advice:
+
+If you don't like to manage your translation files manually or are simply looking for a [better management solution](https://www.locize.com?utm_source=next_i18next_readme&utm_medium=github&utm_campaign=readme), take a look at [i18next-locize-backend](https://github.com/locize/i18next-locize-backend). The i18next [backend plugin](https://www.i18next.com/overview/plugins-and-utils#backends) for 🌐 [Locize](https://www.locize.com?utm_source=next_i18next_readme&utm_medium=github&utm_campaign=readme) ☁️ — built by the same team behind next-i18next, with CDN delivery (works great on Vercel/serverless), AI translation, and no redeploys for copy changes.
+
 ---
 
 ## Table of Contents
