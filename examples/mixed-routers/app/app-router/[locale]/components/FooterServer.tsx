@@ -12,7 +12,7 @@ export async function FooterServer({ locale }: { locale: string }) {
       <p style={{ fontSize: 'smaller', fontStyle: 'italic', marginTop: 20 }}>
         <Trans i18nKey="helpLocize" t={t} i18n={i18n}>
           With using
-          <a href="https://www.locize.com" target="_new">locize</a>
+          <a href="https://www.locize.com/i18next" target="_new">locize</a>
           you directly support the future of
           <a href="https://www.i18next.com" target="_new">i18next</a>.
         </Trans>

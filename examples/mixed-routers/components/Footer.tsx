@@ -12,7 +12,7 @@ export const Footer: FC = () => {
       <p style={{ fontSize: 'smaller', fontStyle: 'italic', marginTop: 20 }}>
         <Trans i18nKey="helpLocize" t={t}>
           With using
-          <a href="https://www.locize.com" target="_new">locize</a>
+          <a href="https://www.locize.com/i18next" target="_new">locize</a>
           you directly support the future of
           <a href="https://www.i18next.com" target="_new">i18next</a>.
         </Trans>
