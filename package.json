@@ -72,12 +72,24 @@
       }
     },
     "./pages": {
-      "types": "./dist/pagesRouter/index.d.cts",
-      "default": "./dist/pagesRouter/index.cjs"
+      "import": {
+        "types": "./dist/pagesRouter/index.d.mts",
+        "default": "./dist/pagesRouter/index.mjs"
+      },
+      "require": {
+        "types": "./dist/pagesRouter/index.d.cts",
+        "default": "./dist/pagesRouter/index.cjs"
+      }
     },
     "./pages/serverSideTranslations": {
-      "types": "./dist/pagesRouter/serverSideTranslations.d.cts",
-      "default": "./dist/pagesRouter/serverSideTranslations.cjs"
+      "import": {
+        "types": "./dist/pagesRouter/serverSideTranslations.d.mts",
+        "default": "./dist/pagesRouter/serverSideTranslations.mjs"
+      },
+      "require": {
+        "types": "./dist/pagesRouter/serverSideTranslations.d.cts",
+        "default": "./dist/pagesRouter/serverSideTranslations.cjs"
+      }
     },
     "./package.json": "./package.json"
   },

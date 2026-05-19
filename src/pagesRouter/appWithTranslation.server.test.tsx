@@ -78,7 +78,11 @@ describe('appWithTranslation', () => {
     expect(args[0].i18n.language).toBe('en')
     expect(args[0].i18n.isInitialized).toBe(true)
 
-    expect(fs.existsSync).toHaveBeenCalledTimes(3)
-    expect(fs.readdirSync).toHaveBeenCalledTimes(1)
+    // appWithTranslation no longer triggers the server-side filesystem branch
+    // during SSR — that work is done up-front in serverSideTranslations so that
+    // createConfig (which appWithTranslation pulls into the client bundle)
+    // stays free of `fs`/`path` imports.
+    expect(fs.existsSync).not.toHaveBeenCalled()
+    expect(fs.readdirSync).not.toHaveBeenCalled()
   })
 })

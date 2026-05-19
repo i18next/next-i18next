@@ -1,8 +1,15 @@
 import fs from 'fs'
 import path from 'path'
 
-import { createConfig } from './createConfig'
+import { createConfig as createConfigBase } from './createConfig'
+import { applyServerSideConfig } from './serverSideConfig'
 import { UserConfig } from '../types'
+
+// Server-side validation/preload logic now lives in serverSideConfig and is
+// injected by serverSideTranslations. These tests exercise the combined
+// behavior, so wire the hook in here as well.
+const createConfig = (userConfig: UserConfig) =>
+  createConfigBase(userConfig, { applyServerSideConfig })
 
 jest.mock('fs', () => ({
   existsSync: jest.fn(),

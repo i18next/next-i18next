@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsdown'
 
 const appRouterCommon = {
-  format: ['esm', 'cjs'] as const,
+  format: ['esm', 'cjs'] as ('esm' | 'cjs')[],
   dts: true,
   sourcemap: true,
   clean: false,
@@ -13,7 +13,7 @@ export default defineConfig([
   // ── App Router: main entry ──
   {
     ...appRouterCommon,
-    entry: { 'index': 'src/appRouter/index.ts' },
+    entry: { index: 'src/appRouter/index.ts' },
     deps: {
       neverBundle: [
         'next',
@@ -34,7 +34,7 @@ export default defineConfig([
   // ── App Router: server ──
   {
     ...appRouterCommon,
-    entry: { 'server': 'src/appRouter/server.ts' },
+    entry: { server: 'src/appRouter/server.ts' },
     deps: {
       neverBundle: [
         'react', 'next', 'next/headers',
@@ -47,7 +47,7 @@ export default defineConfig([
   // ── App Router: client ──
   {
     ...appRouterCommon,
-    entry: { 'client': 'src/appRouter/client.tsx' },
+    entry: { client: 'src/appRouter/client.tsx' },
     banner: {
       js: "'use client';",
     },
@@ -67,7 +67,7 @@ export default defineConfig([
       '!src/pagesRouter/**/*.test.*',
     ],
     unbundle: true,
-    format: ['cjs'],
+    format: ['cjs', 'esm'],
     dts: true,
     outDir: 'dist/pagesRouter',
     target: 'es2020',

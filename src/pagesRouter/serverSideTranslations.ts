@@ -3,6 +3,7 @@ import path from 'path'
 import { createRequire } from 'module'
 
 import { createConfig } from './config/createConfig'
+import { applyServerSideConfig } from './config/serverSideConfig'
 import createClient from './createClient/node'
 
 import { UserConfig, SSRConfig } from './types'
@@ -43,8 +44,10 @@ export const serverSideTranslations = async (
   const configPath = path.resolve(DEFAULT_CONFIG_PATH)
 
   if (!userConfig && fs.existsSync(configPath)) {
-    // Use createRequire to prevent Turbopack/webpack from tracing this dynamic require
-    const nodeRequire = createRequire(__filename)
+    // Use createRequire to prevent Turbopack/webpack from tracing this dynamic require.
+    // Pass the absolute configPath itself as the base — works identically under CJS
+    // and ESM output and avoids referencing __filename / import.meta.url.
+    const nodeRequire = createRequire(configPath)
     userConfig = nodeRequire(configPath)
   }
 
@@ -54,10 +57,13 @@ export const serverSideTranslations = async (
     )
   }
 
-  const config = createConfig({
-    ...userConfig,
-    lng: initialLocale,
-  })
+  const config = createConfig(
+    {
+      ...userConfig,
+      lng: initialLocale,
+    },
+    { applyServerSideConfig }
+  )
 
   const {
     localeExtension,

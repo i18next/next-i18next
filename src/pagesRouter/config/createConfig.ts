@@ -1,6 +1,6 @@
 import { defaultConfig } from './defaultConfig'
 import { InternalConfig, UserConfig } from '../types'
-import { getFallbackForLng, unique } from '../utils'
+import { unique } from '../utils'
 import { FallbackLngObjList, Module } from 'i18next'
 
 const deepMergeObjects = ['backend', 'detection'] as (keyof Pick<
@@ -8,8 +8,20 @@ const deepMergeObjects = ['backend', 'detection'] as (keyof Pick<
   'backend' | 'detection'
 >)[]
 
+type CreateConfigOptions = {
+  // Hook called only on the server side. Kept as an injected dependency so
+  // `createConfig` itself never references Node built-ins (`fs`, `path`,
+  // `module`) and stays safe to bundle for the browser. Wired up by
+  // `serverSideTranslations`, which is server-only.
+  applyServerSideConfig?: (
+    combinedConfig: any,
+    userConfig: UserConfig
+  ) => void
+}
+
 export const createConfig = (
-  userConfig: UserConfig
+  userConfig: UserConfig,
+  options: CreateConfigOptions = {}
 ): InternalConfig => {
   if (typeof userConfig?.lng !== 'string') {
     throw new Error('config.lng was not passed into createConfig')
@@ -102,161 +114,8 @@ export const createConfig = (
     (b: Module) => b.type === 'backend'
   )
   if (!process.browser && typeof window === 'undefined') {
-    combinedConfig.preload = locales
-
-    if (!hasCustomBackend) {
-      const fs = require('fs')
-      const path = require('path')
-
-      //
-      // Validate defaultNS
-      // https://github.com/i18next/next-i18next/issues/358
-      //
-      if (
-        typeof defaultNS === 'string' &&
-        typeof lng !== 'undefined'
-      ) {
-        if (typeof localePath === 'string') {
-          const defaultLocaleStructure = localeStructure
-            .replace(`${prefix}lng${suffix}`, lng)
-            .replace(`${prefix}ns${suffix}`, defaultNS)
-          const defaultFile = `/${defaultLocaleStructure}.${localeExtension}`
-          const defaultNSPath = path.join(localePath, defaultFile)
-          const defaultNSExists = fs.existsSync(defaultNSPath)
-          const fallback = getFallbackForLng(
-            lng,
-            combinedConfig.fallbackLng
-          )
-          const defaultFallbackNSExists = fallback.some(f => {
-            const fallbackFile = defaultFile.replace(lng, f)
-            const defaultNSPath = path.join(localePath, fallbackFile)
-            return fs.existsSync(defaultNSPath)
-          })
-          if (
-            !defaultNSExists &&
-            !defaultFallbackNSExists &&
-            process.env.NODE_ENV !== 'production'
-          ) {
-            throw new Error(
-              `Default namespace not found at ${defaultNSPath}`
-            )
-          }
-        } else if (typeof localePath === 'function') {
-          const defaultNSPath = localePath(lng, defaultNS, false)
-          const defaultNSExists = fs.existsSync(defaultNSPath)
-          const fallback = getFallbackForLng(
-            lng,
-            combinedConfig.fallbackLng
-          )
-          const defaultFallbackNSExists = fallback.some(f => {
-            const defaultNSPath = localePath(f, defaultNS, false)
-            return fs.existsSync(defaultNSPath)
-          })
-          if (
-            !defaultNSExists &&
-            !defaultFallbackNSExists &&
-            process.env.NODE_ENV !== 'production'
-          ) {
-            throw new Error(
-              `Default namespace not found at ${defaultNSPath}`
-            )
-          }
-        }
-      }
-
-      //
-      // Set server side backend
-      //
-      if (typeof localePath === 'string') {
-        combinedConfig.backend = {
-          addPath: path.resolve(
-            process.cwd(),
-            `${localePath}/${localeStructure}.missing.${localeExtension}`
-          ),
-          loadPath: path.resolve(
-            process.cwd(),
-            `${localePath}/${localeStructure}.${localeExtension}`
-          ),
-        }
-      } else if (typeof localePath === 'function') {
-        combinedConfig.backend = {
-          addPath: (locale: string, namespace: string) =>
-            localePath(locale, namespace, true),
-          loadPath: (locale: string, namespace: string) =>
-            localePath(locale, namespace, false),
-        }
-      } else if (localePath) {
-        throw new Error(
-          `Unsupported localePath type: ${typeof localePath}`
-        )
-      }
-
-      //
-      // Set server side preload (namespaces)
-      //
-      if (!combinedConfig.ns && typeof lng !== 'undefined') {
-        if (typeof localePath === 'function') {
-          throw new Error(
-            'Must provide all namespaces in ns option if using a function as localePath'
-          )
-        }
-
-        const getNamespaces = (locales: string[]): string[] => {
-          const getLocaleNamespaces = (p: string) => {
-            let ret: string[] = []
-
-            if (!fs.existsSync(p)) return ret
-
-            fs.readdirSync(p).forEach((file: string) => {
-              const joinedP = path.join(p, file)
-              if (fs.statSync(joinedP).isDirectory()) {
-                const subRet = getLocaleNamespaces(joinedP).map(
-                  n => `${file}/${n}`
-                )
-                ret = ret.concat(subRet)
-                return
-              }
-              ret.push(file.replace(`.${localeExtension}`, ''))
-            })
-            return ret
-          }
-
-          let namespacesByLocale
-          const r = combinedConfig.resources
-          if (!localePath && r) {
-            namespacesByLocale = locales.map(locale => Object.keys(r[locale]))
-          } else {
-            namespacesByLocale = locales.map(locale =>
-              getLocaleNamespaces(
-                path.resolve(process.cwd(), `${localePath}/${locale}`)
-              )
-            )
-          }
-
-          const allNamespaces = []
-          for (const localNamespaces of namespacesByLocale) {
-            allNamespaces.push(...localNamespaces)
-          }
-
-          return unique(allNamespaces)
-        }
-
-        if (
-          localeStructure.indexOf(`${prefix}lng${suffix}`) >
-          localeStructure.indexOf(`${prefix}ns${suffix}`)
-        ) {
-          throw new Error(
-            'Must provide all namespaces in ns option if using a localeStructure that is not namespace-listable like lng/ns'
-          )
-        }
-
-        combinedConfig.ns = getNamespaces(
-          unique([
-            lng,
-            ...getFallbackForLng(lng, combinedConfig.fallbackLng),
-          ])
-        )
-      }
+    if (options.applyServerSideConfig) {
+      options.applyServerSideConfig(combinedConfig, userConfig)
     }
   } else {
     //
