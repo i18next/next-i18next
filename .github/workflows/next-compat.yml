@@ -1,0 +1,65 @@
+name: Next.js compatibility (latest + canary)
+
+# Catches upstream Next.js regressions (like the 13.5.4 bundling breakage, #2214)
+# within days instead of via user reports: builds and e2e-tests the example apps
+# against next@latest and next@canary on a weekly schedule.
+
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Mondays 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  examples:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        next-version: [latest, canary]
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Use Node.js 24.x
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.x
+
+      - name: 📥 Install
+        run: npm install
+
+      - name: Install Examples
+        run: npm run install:examples
+
+      - name: Override next with ${{ matrix.next-version }} (root + examples)
+        run: |
+          npm install --no-save "next@${{ matrix.next-version }}"
+          for dir in examples/*/; do
+            (cd "$dir" && npm install --no-save --no-audit --no-fund "next@${{ matrix.next-version }}")
+          done
+          echo "Resolved versions:"
+          node -p "require('next/package.json').version"
+          for dir in examples/*/; do
+            node -p "'$dir: ' + require('./' + '$dir' + 'node_modules/next/package.json').version"
+          done
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build next-i18next
+        run: npm run build
+
+      - name: Replace examples install with repo build
+        run: npm run move-build-to-examples
+
+      - name: Build examples
+        run: npm run build:examples
+
+      - name: E2E tests
+        run: npm run test:e2e

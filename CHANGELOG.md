@@ -1,3 +1,8 @@
+## 16.0.8
+
+- **Pages Router: self-diagnosing `serverSideTranslations` error** — the "Initial locale argument was not passed into serverSideTranslations" error now names its two common causes (missing `i18n` section in `next.config.js`; pages rendered outside Next.js locale routing such as custom 404/500 or `output: 'export'`) and shows the explicit-locale fix inline.
+- **CI: weekly Next.js compatibility workflow** — builds and e2e-tests all example apps against `next@latest` and `next@canary` on a weekly schedule (plus manual dispatch), so upstream Next.js regressions like the 13.5.4 bundling breakage ([#2214](https://github.com/i18next/next-i18next/issues/2214)) surface within days instead of via user reports.
+
 ## 16.0.7
 
 - **Pages Router: fix duplicate `i18next` in client bundles** — v16 shipped the Pages Router as CJS-only, which forced bundlers to load `i18next` via its `require` condition (`i18next/dist/cjs`) while user code loaded it via the `import` condition (`i18next/dist/esm`), producing two copies of i18next in the same bundle. The Pages Router now builds dual ESM + CJS outputs, and the `./pages` and `./pages/serverSideTranslations` exports declare matching `import`/`require` conditions. The server-only filesystem branch of `createConfig` has been extracted into a separate `serverSideConfig` module (injected via hook by `serverSideTranslations`) so `createConfig` no longer pulls Node built-ins into client bundles. Note: `appWithTranslation` no longer re-runs the server-side validation/preload during SSR — that work happens once, up-front, inside `serverSideTranslations` (in practice a no-op since `appWithTranslation` uses the browser client with pre-loaded resources). [#2342](https://github.com/i18next/next-i18next/issues/2342)

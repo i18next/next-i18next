@@ -36,7 +36,10 @@ export const serverSideTranslations = async (
 ): Promise<SSRConfig> => {
   if (typeof initialLocale !== 'string') {
     throw new Error(
-      'Initial locale argument was not passed into serverSideTranslations'
+      'Initial locale argument was not passed into serverSideTranslations. ' +
+        'Common causes: the i18n section is missing in next.config.js, or this page renders outside ' +
+        "Next.js locale routing (custom 404/500, output: 'export'). In that case pass a locale explicitly, " +
+        'e.g. serverSideTranslations(locale ?? nextI18NextConfig.i18n.defaultLocale, [...]).'
     )
   }
 
