@@ -1,3 +1,7 @@
+## 16.0.9
+
+- **Pages Router: no more `missingKeyHandler` false positives on locale change** — `appWithTranslation` reuses one i18next instance, so a client-side locale change renders at least once with the destination's resources loaded but the previous language still active (the `changeLanguage` call runs in a layout effect). With `saveMissing: true`, keys absent from the previous language were reported as missing during that transitional render even though they exist in the destination locale. `saveMissing` is now suspended while the language handoff is pending and restored once `changeLanguage` completes. [#2344](https://github.com/i18next/next-i18next/issues/2344)
+
 ## 16.0.8
 
 - **Pages Router: self-diagnosing `serverSideTranslations` error** — the "Initial locale argument was not passed into serverSideTranslations" error now names its two common causes (missing `i18n` section in `next.config.js`; pages rendered outside Next.js locale routing such as custom 404/500 or `output: 'export'`) and shows the explicit-locale fix inline.

@@ -4,7 +4,7 @@
 
 import React from 'react'
 import fs from 'fs'
-import { screen, render } from '@testing-library/react'
+import { screen, render, act } from '@testing-library/react'
 import { I18nextProvider } from 'react-i18next'
 import createClient from './createClient'
 
@@ -293,6 +293,62 @@ describe('appWithTranslation', () => {
     newProps.router.locale = 'de'
     rerender(<DummyApp {...newProps} />)
     expect(createClient).toHaveBeenCalledTimes(1)
+  })
+
+  it('suspends saveMissing during the locale-transition render (#2344)', async () => {
+    const missingKeyHandler = jest.fn()
+    let capturedI18n: any
+    ;(I18nextProvider as jest.Mock).mockImplementation(
+      ({ i18n, children }: any) => {
+        capturedI18n = i18n
+        return <>{children}</>
+      }
+    )
+    const App = appWithTranslation(() => {
+      capturedI18n.t('key', { ns: 'extra' })
+      return <div>ok</div>
+    })
+
+    const makeProps = (locale: string, initialI18nStore: any) =>
+      ({
+        pageProps: {
+          _nextI18Next: {
+            initialLocale: locale,
+            initialI18nStore,
+            userConfig: {
+              i18n: { defaultLocale: 'en', locales: ['en', 'de'] },
+              saveMissing: true,
+              missingKeyHandler,
+            },
+          },
+        },
+        router: { locale, route: '/' },
+      }) as any
+
+    const { rerender } = render(
+      <App {...makeProps('en', { en: { common: { hello: 'hello' } } })} />
+    )
+    // 'extra' is genuinely missing in en on the initial render
+    missingKeyHandler.mockClear()
+
+    rerender(
+      <App
+        {...makeProps('de', {
+          de: { common: { hello: 'hallo' }, extra: { key: 'wert' } },
+        })}
+      />
+    )
+
+    // the transitional render resolved against 'en' but must not report
+    expect(missingKeyHandler).not.toHaveBeenCalled()
+
+    // let changeLanguage settle and restore saveMissing
+    await act(async () => {})
+    expect(capturedI18n.language).toBe('de')
+    expect(capturedI18n.options.saveMissing).toBe(true)
+
+    capturedI18n.t('really-missing', { ns: 'extra' })
+    expect(missingKeyHandler).toHaveBeenCalled()
   })
 
   it('assures locale key is set to the right value', () => {

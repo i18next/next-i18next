@@ -49,6 +49,7 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
     const ns = _nextI18Next?.ns
 
     const instanceRef = useRef<I18NextClient | null>(null)
+    const saveMissingSuspendedRef = useRef(false)
 
     /**
      * Memoize i18n instance and reuse it rather than creating new instance.
@@ -86,6 +87,18 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
       let instance = instanceRef.current
       if (instance) {
         addResourcesToI18next(instance, resources)
+
+        /**
+         * A locale change renders at least once with the destination's
+         * resources loaded but the previous language still active (the
+         * changeLanguage call below runs in a layout effect). Suspend
+         * saveMissing for that window so missingKeyHandler / backend
+         * create do not receive false positives, see #2344.
+         */
+        if (instance.options.saveMissing && locale && instance.language !== locale) {
+          instance.options.saveMissing = false
+          saveMissingSuspendedRef.current = true
+        }
       } else {
         instance = createClient({
           ...createConfig({
@@ -112,7 +125,12 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
      */
     useIsomorphicLayoutEffect(() => {
       if (!i18n || !locale) return
-      i18n.changeLanguage(locale)
+      i18n.changeLanguage(locale).then(() => {
+        if (saveMissingSuspendedRef.current) {
+          saveMissingSuspendedRef.current = false
+          i18n.options.saveMissing = true
+        }
+      })
     }, [i18n, locale])
 
     return i18n !== null
