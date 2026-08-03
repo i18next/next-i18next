@@ -125,7 +125,7 @@ export const appWithTranslation = <Props extends NextJsAppProps>(
      */
     useIsomorphicLayoutEffect(() => {
       if (!i18n || !locale) return
-      i18n.changeLanguage(locale).then(() => {
+      i18n.changeLanguage(locale).finally(() => {
         if (saveMissingSuspendedRef.current) {
           saveMissingSuspendedRef.current = false
           i18n.options.saveMissing = true
