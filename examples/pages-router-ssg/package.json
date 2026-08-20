@@ -9,26 +9,26 @@
     "postbuild": "npm run 404",
     "server": "next start",
     "start": "npm run dev",
-    "lint": "next lint",
+    "lint": "eslint .",
     "test": "npm run lint",
     "serve": "http-server out -p 8080",
     "downloadLocales": "locize download --project-id=0842ada9-1d1d-4d48-ab27-08f6a132f558 --cdn-type pro --ver=latest --clean=true --path=./public/locales",
     "clean": "rimraf .next out"
   },
   "dependencies": {
-    "i18next": "^26.0.1",
-    "next": "16.2.1",
+    "i18next": "^26.4.0",
+    "next": "^16.3.1",
     "next-i18next": "^16.0.10",
     "next-language-detector": "^1.1.1",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "react-i18next": "^17.0.1"
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-i18next": "^17.0.12"
   },
   "devDependencies": {
-    "eslint": "10.1.0",
-    "eslint-config-next": "16.2.1",
-    "http-server": "14.1.1",
-    "locize-cli": "12.0.9",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.1",
+    "http-server": "^14.1.1",
+    "locize-cli": "^12.5.1",
     "rimraf": "^6.1.3"
   }
 }

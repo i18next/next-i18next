@@ -4,13 +4,13 @@ import languageDetector from './languageDetector'
 
 export const useRedirect = to => {
   const router = useRouter()
-  to = to || router.asPath
+  const target = to || router.asPath
 
   // language detection
   useEffect(() => {
     const detectedLng = languageDetector.detect()
     if (
-      to.startsWith('/' + detectedLng) &&
+      target.startsWith('/' + detectedLng) &&
       router.route === '/404'
     ) {
       // prevent endless loop
@@ -19,7 +19,7 @@ export const useRedirect = to => {
     }
 
     languageDetector.cache(detectedLng)
-    router.replace('/' + detectedLng + to)
+    router.replace('/' + detectedLng + target)
     // eslint-disable-next-line no-undef
     document.documentElement.lang = detectedLng
   })
