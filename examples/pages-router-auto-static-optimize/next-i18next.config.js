@@ -1,7 +1,10 @@
 // @ts-check
 
 const HttpBackend = require('i18next-http-backend/cjs')
-const ChainedBackend = require('i18next-chained-backend').default
+// i18next-chained-backend v5 ships an exports map whose `require` condition is a
+// plain CJS build (module.exports = Backend, no `.default`) - use the /cjs subpath,
+// like i18next-http-backend above, so bundler and node resolve the same class.
+const ChainedBackend = require('i18next-chained-backend/cjs')
 const LocalStorageBackend =
   require('i18next-localstorage-backend').default
 
