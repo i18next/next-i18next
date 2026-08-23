@@ -545,6 +545,18 @@ describe('server', () => {
       })
     })
 
+    it('filters by language when specified', () => {
+      const resources = getResources(mockInstance as any, undefined, ['de'])
+      expect(resources).toEqual({
+        de: { common: { hello: 'Hallo' }, home: { title: 'Startseite' } },
+      })
+    })
+
+    it('filters by namespace and language together', () => {
+      const resources = getResources(mockInstance as any, ['common'], ['en'])
+      expect(resources).toEqual({ en: { common: { hello: 'Hello' } } })
+    })
+
     it('returns empty object when store is empty', () => {
       const mockI18n = { store: { data: {} } } as any
       const resources = getResources(mockI18n)

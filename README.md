@@ -580,6 +580,8 @@ For the client-side `I18nProvider`, pass custom backend plugins via the `use` pr
 </I18nProvider>
 ```
 
+Backends passed here are **browser-only**. `I18nProvider` is a Client Component, but the App Router also renders it on the server, once per request, so a backend attached there would run in Node on every render: fetching per render, and, for backends that refresh on a timer (`i18next-locize-backend` defaults `reloadInterval` to 1 hour whenever `window` is undefined), leaving a live timer behind on each one. next-i18next therefore skips backend plugins during the server pass and renders from `resources`; the browser instance keeps the backend and does the fetching. Non-backend plugins (detectors, post-processors) are applied in both passes.
+
 ### Server-side caching
 
 On the server, next-i18next uses a **module-level singleton** i18next instance:
@@ -618,7 +620,7 @@ In **serverless environments** (Lambda, Vercel Serverless, etc.), the cache only
 |---|---|
 | `initServerI18next(config)` | Initialize server config (call once at module scope) |
 | `getT(ns?, options?)` | Get `{ t, i18n }` for Server Components. Options: `{ lng?, keyPrefix? }` |
-| `getResources(i18n, namespaces?)` | Extract loaded resources for client hydration |
+| `getResources(i18n, namespaces?, languages?)` | Extract loaded resources for client hydration. The shared instance holds every supported language, so pass `languages` (e.g. `[lng, fallbackLng]`) to keep the serialized payload small. Include the fallback language, or keys missing from the current one have nothing to fall back to on the client |
 | `generateI18nStaticParams()` | Returns `[{ lng: 'en' }, { lng: 'de' }, ...]` for `generateStaticParams` |
 
 ### `next-i18next/client`

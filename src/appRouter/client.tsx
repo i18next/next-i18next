@@ -88,7 +88,19 @@ export function I18nProvider({
     const inst = createInstance()
     inst.use(initReactI18next)
 
-    const userHasBackend = use.some((b: Module) => b.type === 'backend')
+    // This is a Client Component, but the App Router still renders it on the
+    // server, once per request, so this initializer runs in Node on every
+    // render, producing a throwaway instance that is never reused.
+    // Backends must therefore stay browser-only: attaching one here would make
+    // each render fetch (or worse, register a refresh timer: i18next-locize-backend
+    // defaults `reloadInterval` to 1h whenever `window` is undefined, and that
+    // timer keeps the whole throwaway instance alive, so every render permanently
+    // adds background traffic until the process restarts).
+    // The server pass renders from `resources`; the browser instance fetches.
+    const isBrowser = typeof window !== 'undefined'
+    const plugins = isBrowser ? use : use.filter((p: Module) => p.type !== 'backend')
+
+    const userHasBackend = plugins.some((b: Module) => b.type === 'backend')
 
     // Track which namespaces are bundled in the server-provided resources
     // so the default fetch backend can skip them
@@ -99,8 +111,9 @@ export function I18nProvider({
 
     // Only add the default fetch-based backend if user hasn't provided one.
     // This allows using i18next-http-backend, i18next-locize-backend,
-    // i18next-chained-backend, etc.
-    if (!userHasBackend) {
+    // i18next-chained-backend, etc. Browser-only for the same reason, and its
+    // relative `localePath` cannot be resolved by `fetch` in Node anyway.
+    if (isBrowser && !userHasBackend) {
       inst.use(resourcesToBackend((lng: string, ns: string) => {
         // Skip fetching for namespaces already provided via server resources
         if (bundledNsSet.has(ns)) return {}
@@ -112,9 +125,9 @@ export function I18nProvider({
     }
 
     // Apply user-provided plugins
-    use.forEach((plugin: any) => inst.use(plugin))
+    plugins.forEach((plugin: any) => inst.use(plugin))
 
-    const hasAnyBackend = userHasBackend || !resources
+    const hasAnyBackend = isBrowser && (userHasBackend || !resources)
 
     inst.init({
       lng: language,

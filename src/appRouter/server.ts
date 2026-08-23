@@ -218,22 +218,32 @@ export async function getT<
 /**
  * Extract loaded resources from the server i18next instance for passing to I18nProvider.
  *
+ * The shared instance preloads every supported language, so by default this
+ * returns all of them and they are all serialized into the HTML. On projects
+ * with more than a handful of languages that payload dominates the page, so pass
+ * `languages` to ship only what the client actually renders. Include your
+ * fallback language there as well, otherwise keys missing from the current
+ * language have nothing to fall back to on the client.
+ *
  * @example
  * ```tsx
- * const { i18n } = await getT()
- * const resources = getResources(i18n, ['common', 'footer'])
- * return <I18nProvider language={i18n.language} resources={resources}>{children}</I18nProvider>
+ * const { i18n, lng } = await getT()
+ * const resources = getResources(i18n, ['common', 'footer'], [lng, 'en'])
+ * return <I18nProvider language={lng} resources={resources}>{children}</I18nProvider>
  * ```
  */
 export function getResources(
   i18n: I18NextClient,
   namespaces?: string[],
+  languages?: string[],
 ): Resource {
   const resources: Resource = {}
   const store = i18n.store?.data || {}
   const nsFilter = namespaces ? new Set(namespaces) : null
+  const lngFilter = languages ? new Set(languages) : null
 
   for (const lng of Object.keys(store)) {
+    if (lngFilter && !lngFilter.has(lng)) continue
     resources[lng] = {}
     for (const ns of Object.keys(store[lng])) {
       if (!nsFilter || nsFilter.has(ns)) {
