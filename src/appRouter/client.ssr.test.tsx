@@ -102,4 +102,26 @@ describe('I18nProvider on the server', () => {
       expect.objectContaining({ resources, partialBundledLanguages: false }),
     )
   })
+
+  it('applies a custom backend during SSR when ssrBackend is set', () => {
+    const customBackend = { type: 'backend' as const, init: jest.fn(), read: jest.fn() }
+
+    renderSSR({ use: [customBackend], ssrBackend: true })
+
+    expect(mockUse).toHaveBeenCalledWith(customBackend)
+    expect(mockInit).toHaveBeenCalledWith(
+      expect.objectContaining({ resources, partialBundledLanguages: true }),
+    )
+  })
+
+  it('ssrBackend never adds the default fetch backend during SSR', () => {
+    const resourcesToBackend = require('i18next-resources-to-backend').default
+
+    renderSSR({ ssrBackend: true })
+
+    expect(resourcesToBackend).not.toHaveBeenCalled()
+    expect(mockInit).toHaveBeenCalledWith(
+      expect.objectContaining({ partialBundledLanguages: false }),
+    )
+  })
 })

@@ -42,6 +42,13 @@ export interface I18nProviderProps {
   use?: any[]
   /** Additional i18next init options */
   i18nextOptions?: Record<string, any>
+  /** Also apply the backends from `use` during the server render pass (default false).
+   *  Lets Client Components load namespaces that are not in `resources` on the server, so
+   *  with `i18nextOptions: { react: { useSuspense: true } }` a missing namespace suspends
+   *  into the nearest `<Suspense>` boundary and streams in instead of rendering keys.
+   *  Only for backends without timers or relative URLs (e.g. `i18next-resources-to-backend`
+   *  with dynamic imports); http/locize backends must stay browser-only. */
+  ssrBackend?: boolean
 }
 
 /**
@@ -83,6 +90,7 @@ export function I18nProvider({
   localeExtension = 'json',
   use = [],
   i18nextOptions = {},
+  ssrBackend = false,
 }: I18nProviderProps) {
   const [instance] = useState<I18NextClient>(() => {
     const inst = createInstance()
@@ -97,8 +105,10 @@ export function I18nProvider({
     // timer keeps the whole throwaway instance alive, so every render permanently
     // adds background traffic until the process restarts).
     // The server pass renders from `resources`; the browser instance fetches.
+    // `ssrBackend` opts a timer-free backend back in for the server pass.
     const isBrowser = typeof window !== 'undefined'
-    const plugins = isBrowser ? use : use.filter((p: Module) => p.type !== 'backend')
+    const applyBackends = isBrowser || ssrBackend
+    const plugins = applyBackends ? use : use.filter((p: Module) => p.type !== 'backend')
 
     const userHasBackend = plugins.some((b: Module) => b.type === 'backend')
 
@@ -127,7 +137,7 @@ export function I18nProvider({
     // Apply user-provided plugins
     plugins.forEach((plugin: any) => inst.use(plugin))
 
-    const hasAnyBackend = isBrowser && (userHasBackend || !resources)
+    const hasAnyBackend = applyBackends && (userHasBackend || !resources)
 
     inst.init({
       lng: language,

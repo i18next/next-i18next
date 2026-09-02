@@ -41,8 +41,11 @@ jest.mock('next/server', () => {
     }
   }
 
+  // Real NextURL so Next's basePath handling (stripped from pathname, re-added by toString) is exercised
+  const { NextURL } = jest.requireActual('next/dist/server/web/next-url')
+
   class MockNextRequest {
-    nextUrl: { pathname: string; search: string }
+    nextUrl: any
     url: string
     cookies: {
       get: jest.Mock
@@ -50,9 +53,8 @@ jest.mock('next/server', () => {
 
     headers: Headers
 
-    constructor(url: string, opts: { headers?: Record<string, string>; cookies?: Record<string, string> } = {}) {
-      const parsed = new URL(url)
-      this.nextUrl = { pathname: parsed.pathname, search: parsed.search }
+    constructor(url: string, opts: { headers?: Record<string, string>; cookies?: Record<string, string>; basePath?: string } = {}) {
+      this.nextUrl = new NextURL(url, { nextConfig: opts.basePath ? { basePath: opts.basePath } : undefined })
       this.url = url
       this.headers = new Headers(opts.headers)
       this.cookies = {
@@ -495,6 +497,55 @@ describe('createProxy', () => {
       expect(mockRewrite).not.toHaveBeenCalled()
       expect(mockRedirect).not.toHaveBeenCalled()
       expect(mockNext).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('Next.js basePath (next.config)', () => {
+    const cfg = { supportedLngs: ['en', 'de'], fallbackLng: 'en' }
+
+    it('keeps the base path in the locale redirect', () => {
+      const middleware = createProxy(cfg)
+      const req = new NextRequest('http://localhost/nxt/about?tab=1', {
+        basePath: '/nxt',
+        cookies: { i18next: 'de' },
+      })
+      middleware(req)
+
+      expect(mockRedirect).toHaveBeenCalledTimes(1)
+      expect(String(mockRedirect.mock.calls[0][0])).toBe('http://localhost/nxt/de/about?tab=1')
+    })
+
+    it("keeps the base path in the 'internal' rewrite", () => {
+      const middleware = createProxy({ ...cfg, localeInPath: 'internal' as const })
+      const req = new NextRequest('http://localhost/nxt/about', {
+        basePath: '/nxt',
+        cookies: { i18next: 'de' },
+      })
+      middleware(req)
+
+      expect(mockRewrite).toHaveBeenCalledTimes(1)
+      expect(String(mockRewrite.mock.calls[0][0])).toBe('http://localhost/nxt/de/about')
+    })
+
+    it('keeps the base path in the hideDefaultLocale rewrite and redirect', () => {
+      const middleware = createProxy({ ...cfg, hideDefaultLocale: true })
+      middleware(new NextRequest('http://localhost/nxt/about', { basePath: '/nxt' }))
+      expect(String(mockRewrite.mock.calls[0][0])).toBe('http://localhost/nxt/en/about')
+
+      middleware(new NextRequest('http://localhost/nxt/en/about', { basePath: '/nxt' }))
+      expect(String(mockRedirect.mock.calls[0][0])).toBe('http://localhost/nxt/about')
+    })
+
+    it('strips the base path from the referer before persisting its locale', () => {
+      const middleware = createProxy(cfg)
+      const req = new NextRequest('http://localhost/nxt/de/about', {
+        basePath: '/nxt',
+        headers: { referer: 'http://localhost/nxt/de/' },
+      })
+      const response = middleware(req)
+
+      expect(mockNext).toHaveBeenCalledTimes(1)
+      expect(response.cookies.set).toHaveBeenCalledWith('i18next', 'de', expect.anything())
     })
   })
 

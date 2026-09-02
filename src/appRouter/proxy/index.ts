@@ -27,7 +27,10 @@ export function createProxy(userConfig: I18nConfig) {
     : undefined
 
   return function middleware(req: NextRequest): NextResponse {
-    const { pathname, search } = req.nextUrl
+    // nextUrl.pathname has Next's own basePath (next.config) stripped; String(nextUrl)
+    // adds it back. Redirect/rewrite targets are therefore built from nextUrl.clone(),
+    // never from `new URL(path, req.url)`, which would drop that basePath (and trailingSlash).
+    const { pathname } = req.nextUrl
 
     // When basePath is set, only handle requests under that prefix
     if (basePath) {
@@ -82,7 +85,8 @@ export function createProxy(userConfig: I18nConfig) {
       // hideDefaultLocale: redirect explicit default-locale paths to the clean URL
       if (!internal && config.hideDefaultLocale && lngInPath === config.fallbackLng) {
         const pathWithoutLocale = pathAfterBase.replace(/^\/[^/]+/, '') || '/'
-        const redirectUrl = new URL(`${prefix}${pathWithoutLocale}${search}`, req.url)
+        const redirectUrl = req.nextUrl.clone()
+        redirectUrl.pathname = `${prefix}${pathWithoutLocale}`
         const response = NextResponse.redirect(redirectUrl)
         response.cookies.set(config.cookieName, config.fallbackLng, {
           path: '/',
@@ -102,7 +106,8 @@ export function createProxy(userConfig: I18nConfig) {
           // Rewrite internally to the locale path, keeping the clean URL:
           // the detected language in internal mode, the default locale for hideDefaultLocale
           const rewriteLng = internal ? lng : config.fallbackLng
-          const rewriteUrl = new URL(`${prefix}/${rewriteLng}${pathAfterBase}${search}`, req.url)
+          const rewriteUrl = req.nextUrl.clone()
+          rewriteUrl.pathname = `${prefix}/${rewriteLng}${pathAfterBase}`
           headers.set(config.headerName, rewriteLng)
           const response = NextResponse.rewrite(rewriteUrl, { request: { headers } })
           response.cookies.set(config.cookieName, rewriteLng, {
@@ -113,7 +118,8 @@ export function createProxy(userConfig: I18nConfig) {
           return response
         }
 
-        const redirectUrl = new URL(`${prefix}/${lng}${pathAfterBase}${search}`, req.url)
+        const redirectUrl = req.nextUrl.clone()
+        redirectUrl.pathname = `${prefix}/${lng}${pathAfterBase}`
         const response = NextResponse.redirect(redirectUrl)
         response.cookies.set(config.cookieName, lng, {
           path: '/',
@@ -127,9 +133,14 @@ export function createProxy(userConfig: I18nConfig) {
       const response = NextResponse.next({ request: { headers } })
       if (req.headers.has('referer')) {
         const refererUrl = new URL(req.headers.get('referer')!)
-        const refererPathForLocale = basePath
-          ? refererUrl.pathname.slice(basePath.length) || '/'
+        // The referer still carries Next's basePath, unlike nextUrl.pathname
+        const nextBasePath = req.nextUrl.basePath
+        const refererPath = nextBasePath && refererUrl.pathname.startsWith(nextBasePath)
+          ? refererUrl.pathname.slice(nextBasePath.length) || '/'
           : refererUrl.pathname
+        const refererPathForLocale = basePath
+          ? refererPath.slice(basePath.length) || '/'
+          : refererPath
         const lngInReferer = findLocaleInPath(refererPathForLocale, config.supportedLngs, nonExplicit)
         if (lngInReferer) {
           response.cookies.set(config.cookieName, lngInReferer, {

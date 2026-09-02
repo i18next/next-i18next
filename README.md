@@ -623,6 +623,33 @@ For the client-side `I18nProvider`, pass custom backend plugins via the `use` pr
 
 Backends passed here are **browser-only**. `I18nProvider` is a Client Component, but the App Router also renders it on the server, once per request, so a backend attached there would run in Node on every render: fetching per render, and, for backends that refresh on a timer (`i18next-locize-backend` defaults `reloadInterval` to 1 hour whenever `window` is undefined), leaving a live timer behind on each one. next-i18next therefore skips backend plugins during the server pass and renders from `resources`; the browser instance keeps the backend and does the fetching. Non-backend plugins (detectors, post-processors) are applied in both passes.
 
+If you want Client Components to load namespaces that are **not** in `resources` on the server as well, so only the namespaces a route renders end up in the HTML and the rest load on demand, opt in with `ssrBackend`. It applies the backends from `use` during the server pass too. Combine it with `react.useSuspense: true`, so a missing namespace suspends into the nearest `<Suspense>` boundary instead of rendering keys, and both passes render the same text:
+
+```tsx
+'use client'
+import { Suspense } from 'react'
+import { I18nProvider } from 'next-i18next/client'
+import resourcesToBackend from 'i18next-resources-to-backend'
+
+const backend = resourcesToBackend((lng, ns) => import(`../i18n/locales/${lng}/${ns}.json`))
+
+export function Providers({ children, language, resources }) {
+  return (
+    <I18nProvider
+      language={language}
+      resources={resources} // app-shell namespaces only, e.g. getResources(i18n, ['common'], [lng])
+      use={[backend]}
+      ssrBackend
+      i18nextOptions={{ react: { useSuspense: true } }}
+    >
+      <Suspense fallback={<Skeleton />}>{children}</Suspense>
+    </I18nProvider>
+  )
+}
+```
+
+Use `ssrBackend` only with backends that have no timers and no relative URLs, such as `i18next-resources-to-backend` with dynamic imports. HTTP and locize backends must stay browser-only for the reason above.
+
 ### Server-side caching
 
 On the server, next-i18next uses a **module-level singleton** i18next instance:
@@ -703,7 +730,7 @@ In **serverless environments** (Lambda, Vercel Serverless, etc.), the cache only
 | `localeExtension` | `'json'` | Locale file extension |
 | `resources` | — | Pre-loaded resources (skips dynamic loading) |
 | `resourceLoader` | — | Custom async loader `(lng, ns) => Promise<object>` |
-| `basePath` | — | URL prefix for proxy/middleware scoping (e.g., `'/app-router'`) |
+| `basePath` | — | Route-folder prefix the proxy handles, e.g. `'/app-router'` for `app/app-router/[lng]/…` in mixed-router setups. Not needed for Next's own `basePath` from `next.config`, which the proxy handles automatically |
 | `cookieName` | `'i18next'` | Cookie name for language persistence |
 | `headerName` | `'x-i18next-current-language'` | Header name for server-side language passing |
 | `cookieMaxAge` | `31536000` (1 year) | Cookie max age in seconds |
