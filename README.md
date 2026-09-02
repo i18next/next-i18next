@@ -193,6 +193,8 @@ export async function generateMetadata() {
 }
 ```
 
+On Next.js 16.3+ `getT()` resolves the language from the `[lng]` root param (via `next/root-params`) before falling back to the proxy header and cookie. Reading a root param does not opt the route out of static prerendering, so `getT()` is safe in prerendered routes (including with `cacheComponents: true`). Route Handlers and Server Actions have no root params — pass `{ lng }` explicitly there.
+
 For the `Trans` component in Server Components, use `react-i18next/TransWithoutContext` and pass both `t` and `i18n`:
 
 ```tsx
@@ -342,6 +344,45 @@ export default async function RootLayout({ children }) {
 ```
 
 See [`examples/app-router-no-locale-path`](examples/app-router-no-locale-path) for a complete example.
+
+---
+
+## Internal Locale Mode (clean URLs + static prerendering)
+
+`localeInPath: false` gives clean URLs, but the language then comes from `headers()`/`cookies()`, which makes every route dynamic. If you need clean URLs **and** static prerendering per locale (e.g. with Next.js Cache Components, `cacheComponents: true`), set `localeInPath: 'internal'`:
+
+```ts
+const i18nConfig: I18nConfig = {
+  supportedLngs: ['en', 'de'],
+  fallbackLng: 'en',
+  localeInPath: 'internal',
+  localeParamName: 'locale', // only if your segment is app/[locale] instead of app/[lng]
+}
+```
+
+In this mode:
+- Routes live under `app/[lng]/` exactly like the default mode, so `generateI18nStaticParams()` prerenders every locale
+- The proxy detects the language (cookie > Accept-Language > fallback) and **rewrites** `/about` to `/de/about` internally — the public URL never shows a locale
+- Explicit locale paths (`/de/about`) are served as-is, like in the default mode — the proxy never redirects them, so `<Link>` prefetches cannot flip the language cookie. Your own links should be clean (`/about`)
+- `getT()` reads the language from the `[lng]` root param (Next.js 16.3+), so it does not opt the route out of prerendering
+- Use `useChangeLanguage()` for language switching, as in no-locale-path mode
+- `hideDefaultLocale` has no effect here
+
+---
+
+## Loading Languages On Demand
+
+By default the shared server instance preloads every supported language at startup, so `getResources(i18n)` can serialize any of them. With many locales and namespaces that is a lot of resident memory. Pass `i18nextOptions: { preload: [] }` to load each language on its first request instead:
+
+```ts
+const i18nConfig: I18nConfig = {
+  supportedLngs: ['en', 'de', 'fr', 'it'],
+  fallbackLng: 'en',
+  i18nextOptions: { preload: [] },
+}
+```
+
+The store then only holds languages that have been requested so far, so pass `[lng, fallbackLng]` to `getResources` rather than relying on everything being present.
 
 ---
 
@@ -620,8 +661,8 @@ In **serverless environments** (Lambda, Vercel Serverless, etc.), the cache only
 |---|---|
 | `initServerI18next(config)` | Initialize server config (call once at module scope) |
 | `getT(ns?, options?)` | Get `{ t, i18n }` for Server Components. Options: `{ lng?, keyPrefix? }` |
-| `getResources(i18n, namespaces?, languages?)` | Extract loaded resources for client hydration. The shared instance holds every supported language, so pass `languages` (e.g. `[lng, fallbackLng]`) to keep the serialized payload small. Include the fallback language, or keys missing from the current one have nothing to fall back to on the client |
-| `generateI18nStaticParams()` | Returns `[{ lng: 'en' }, { lng: 'de' }, ...]` for `generateStaticParams` |
+| `getResources(i18n, namespaces?, languages?)` | Extract loaded resources for client hydration. The shared instance preloads every supported language by default, so pass `languages` (e.g. `[lng, fallbackLng]`) to keep the serialized payload small. Include the fallback language, or keys missing from the current one have nothing to fall back to on the client |
+| `generateI18nStaticParams()` | Returns `[{ lng: 'en' }, { lng: 'de' }, ...]` for `generateStaticParams`, keyed by `localeParamName` (`generateI18nStaticParams<'locale'>()` narrows the type) |
 
 ### `next-i18next/client`
 
@@ -654,7 +695,8 @@ In **serverless environments** (Lambda, Vercel Serverless, etc.), the cache only
 | `fallbackLng` | *required* | Default language |
 | `defaultNS` | `'common'` | Default namespace |
 | `ns` | `[defaultNS]` | All known namespaces |
-| `localeInPath` | `true` | Include locale in URL path |
+| `localeInPath` | `true` | `true`: locale prefix in the URL. `false`: clean URLs, language from cookie/header (routes are dynamic). `'internal'`: clean URLs, locale segment only in the internal rewrite (routes stay prerenderable) |
+| `localeParamName` | `'lng'` | Name of the locale route segment (`app/[lng]`). Used by `generateI18nStaticParams` and root-param language detection |
 | `hideDefaultLocale` | `false` | When `true` (with `localeInPath: true`), the default language has no URL prefix |
 | `localePath` | `'/locales'` | Path to locale files relative to `/public` |
 | `localeStructure` | `'{{lng}}/{{ns}}'` | Locale file directory structure |

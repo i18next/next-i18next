@@ -25,8 +25,15 @@ export interface I18nConfig {
   resourceLoader?: ResourceLoader
 
   // Routing
-  /** Whether to include locale in URL path (defaults to true) */
-  localeInPath?: boolean
+  /** Whether to include locale in URL path (defaults to true).
+   *  `'internal'`: the `[lng]` segment exists only internally — the proxy rewrites
+   *  clean URLs (`/about`) to `/{lng}/about`, so routes stay statically prerenderable
+   *  per locale while the public URL never shows one. Explicit locale paths
+   *  (`/de/about`) are served as-is; switch languages with `useChangeLanguage()`. */
+  localeInPath?: boolean | 'internal'
+  /** Name of the locale route segment, e.g. `'locale'` for `app/[locale]` (defaults to 'lng').
+   *  Used by generateI18nStaticParams and by root-param language detection in getT. */
+  localeParamName?: string
   /** When true (and localeInPath is true), the default language has no URL prefix.
    *  e.g. `/about` serves the default language, `/de/about` serves German.
    *  Requests to the explicit default prefix (`/en/about`) are redirected to `/about`. */
@@ -80,7 +87,8 @@ export interface NormalizedConfig {
   fallbackLng: string
   defaultNS: string
   ns: string[]
-  localeInPath: boolean
+  localeInPath: boolean | 'internal'
+  localeParamName: string
   hideDefaultLocale: boolean
   localePath: string
   localeStructure: string

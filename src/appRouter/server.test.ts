@@ -13,6 +13,7 @@ const mockInit = jest.fn().mockResolvedValue(undefined)
 const mockUse = jest.fn().mockReturnThis()
 const mockGetFixedT = jest.fn(() => jest.fn((key: string) => key))
 const mockLoadNamespaces = jest.fn().mockResolvedValue(undefined)
+const mockLoadLanguages = jest.fn().mockResolvedValue(undefined)
 const mockHasLoadedNamespace = jest.fn().mockReturnValue(true)
 const mockReloadResources = jest.fn().mockResolvedValue(undefined)
 
@@ -21,6 +22,7 @@ const mockInstance = {
   init: mockInit,
   getFixedT: mockGetFixedT,
   loadNamespaces: mockLoadNamespaces,
+  loadLanguages: mockLoadLanguages,
   hasLoadedNamespace: mockHasLoadedNamespace,
   reloadResources: mockReloadResources,
   language: 'en',
@@ -64,7 +66,12 @@ jest.mock('next/headers', () => ({
   })),
 }))
 
-function resetModuleState() {
+// `next/root-params` is compiler-generated: one accessor per root param. Default to none.
+jest.mock('next/root-params', () => ({}))
+
+let mockHeaders: jest.Mock
+
+function resetModuleState(opts: { rootParams?: Record<string, () => Promise<unknown>> } = {}) {
   // Reset the module to clear the module-level singleton
   jest.resetModules()
 
@@ -83,23 +90,26 @@ function resetModuleState() {
   jest.doMock('react', () => ({
     cache: jest.fn((fn: any) => fn),
   }))
+  mockHeaders = jest.fn(async () => ({
+    get: jest.fn((name: string) => {
+      if (name === 'x-i18next-current-language') return 'en'
+      return null
+    }),
+  }))
   jest.doMock('next/headers', () => ({
-    headers: jest.fn(async () => ({
-      get: jest.fn((name: string) => {
-        if (name === 'x-i18next-current-language') return 'en'
-        return null
-      }),
-    })),
+    headers: mockHeaders,
     cookies: jest.fn(async () => ({
       get: jest.fn(() => undefined),
     })),
   }))
+  jest.doMock('next/root-params', () => opts.rootParams ?? {})
 
   // Reset mock state
   mockInit.mockClear()
   mockUse.mockClear()
   mockGetFixedT.mockClear()
   mockLoadNamespaces.mockClear()
+  mockLoadLanguages.mockClear()
   mockHasLoadedNamespace.mockClear()
   mockReloadResources.mockClear()
   mockInstance.isInitialized = false
@@ -243,6 +253,17 @@ describe('server', () => {
 
       await getT('common')
       expect(mockLoadNamespaces).not.toHaveBeenCalled()
+    })
+
+    it('loads the requested language on demand and checks namespaces for that language', async () => {
+      initServerI18next({
+        supportedLngs: ['en', 'de'],
+        fallbackLng: 'en',
+      })
+
+      await getT('common', { lng: 'de' })
+      expect(mockLoadLanguages).toHaveBeenCalledWith('de')
+      expect(mockHasLoadedNamespace).toHaveBeenCalledWith('common', { lng: 'de' })
     })
 
     it('calls reloadResources when reloadOnPrerender is true (dev)', async () => {
@@ -528,6 +549,74 @@ describe('server', () => {
     })
   })
 
+  describe('root params (next/root-params)', () => {
+    const config = { supportedLngs: ['en', 'de'], fallbackLng: 'en' }
+
+    it('prefers the root param over the header and never touches headers()', async () => {
+      resetModuleState({ rootParams: { lng: async () => 'de' } })
+      initServerI18next(config)
+
+      await getT()
+      expect(mockGetFixedT).toHaveBeenCalledWith('de', 'common', undefined)
+      expect(mockHeaders).not.toHaveBeenCalled()
+    })
+
+    it('reads the accessor named by localeParamName', async () => {
+      resetModuleState({ rootParams: { locale: async () => 'de' } })
+      initServerI18next({ ...config, localeParamName: 'locale' })
+
+      await getT()
+      expect(mockGetFixedT).toHaveBeenCalledWith('de', 'common', undefined)
+    })
+
+    it('falls back to the header when there is no matching accessor', async () => {
+      resetModuleState({ rootParams: { locale: async () => 'de' } })
+      initServerI18next(config) // localeParamName defaults to 'lng'
+
+      await getT()
+      expect(mockGetFixedT).toHaveBeenCalledWith('en', 'common', undefined)
+      expect(mockHeaders).toHaveBeenCalled()
+    })
+
+    it('falls back to the header when the root param is not a supported language', async () => {
+      resetModuleState({ rootParams: { lng: async () => 'xx' } })
+      initServerI18next(config)
+
+      await getT()
+      expect(mockGetFixedT).toHaveBeenCalledWith('en', 'common', undefined)
+    })
+
+    it('falls back to the header when the accessor throws (Route Handler / Server Action)', async () => {
+      resetModuleState({
+        rootParams: { lng: async () => { throw new Error('used inside a Server Action') } },
+      })
+      initServerI18next(config)
+
+      await getT()
+      expect(mockGetFixedT).toHaveBeenCalledWith('en', 'common', undefined)
+    })
+
+    it('resolves a non-explicit root param against supportedLngs', async () => {
+      resetModuleState({ rootParams: { lng: async () => 'de' } })
+      initServerI18next({
+        supportedLngs: ['en-US', 'de-DE'],
+        fallbackLng: 'en-US',
+        nonExplicitSupportedLngs: true,
+      })
+
+      await getT()
+      expect(mockGetFixedT).toHaveBeenCalledWith('de-DE', 'common', undefined)
+    })
+
+    it('explicit lng option still wins over the root param', async () => {
+      resetModuleState({ rootParams: { lng: async () => 'de' } })
+      initServerI18next(config)
+
+      await getT('common', { lng: 'en' })
+      expect(mockGetFixedT).toHaveBeenCalledWith('en', 'common', undefined)
+    })
+  })
+
   describe('getResources', () => {
     it('extracts all resources from store', () => {
       const resources = getResources(mockInstance as any)
@@ -576,6 +665,19 @@ describe('server', () => {
         { lng: 'en' },
         { lng: 'de' },
         { lng: 'fr' },
+      ])
+    })
+
+    it('keys params by localeParamName', () => {
+      initServerI18next({
+        supportedLngs: ['en', 'de'],
+        fallbackLng: 'en',
+        localeParamName: 'locale',
+      })
+
+      expect(generateI18nStaticParams()).toEqual([
+        { locale: 'en' },
+        { locale: 'de' },
       ])
     })
   })

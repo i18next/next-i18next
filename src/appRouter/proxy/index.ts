@@ -73,9 +73,14 @@ export function createProxy(userConfig: I18nConfig) {
     if (config.localeInPath) {
       const prefix = basePath ?? ''
       const pathAfterBase = basePath ? pathname.slice(basePath.length) : pathname
+      // 'internal': the proxy never puts a locale into the public URL — clean URLs are
+      // rewritten to the detected language. Explicit locale paths are served as-is:
+      // redirecting them (and setting the cookie) would let <Link> prefetches flip
+      // the language, since the browser stores Set-Cookie from prefetch redirects too.
+      const internal = config.localeInPath === 'internal'
 
       // hideDefaultLocale: redirect explicit default-locale paths to the clean URL
-      if (config.hideDefaultLocale && lngInPath === config.fallbackLng) {
+      if (!internal && config.hideDefaultLocale && lngInPath === config.fallbackLng) {
         const pathWithoutLocale = pathAfterBase.replace(/^\/[^/]+/, '') || '/'
         const redirectUrl = new URL(`${prefix}${pathWithoutLocale}${search}`, req.url)
         const response = NextResponse.redirect(redirectUrl)
@@ -93,12 +98,14 @@ export function createProxy(userConfig: I18nConfig) {
 
       // Redirect if no locale in path
       if (!lngInPath) {
-        if (config.hideDefaultLocale) {
-          // Rewrite internally to the default-locale path, keeping the clean URL
-          const rewriteUrl = new URL(`${prefix}/${config.fallbackLng}${pathAfterBase}${search}`, req.url)
-          headers.set(config.headerName, config.fallbackLng)
+        if (internal || config.hideDefaultLocale) {
+          // Rewrite internally to the locale path, keeping the clean URL:
+          // the detected language in internal mode, the default locale for hideDefaultLocale
+          const rewriteLng = internal ? lng : config.fallbackLng
+          const rewriteUrl = new URL(`${prefix}/${rewriteLng}${pathAfterBase}${search}`, req.url)
+          headers.set(config.headerName, rewriteLng)
           const response = NextResponse.rewrite(rewriteUrl, { request: { headers } })
-          response.cookies.set(config.cookieName, config.fallbackLng, {
+          response.cookies.set(config.cookieName, rewriteLng, {
             path: '/',
             maxAge: config.cookieMaxAge,
             sameSite: 'lax',

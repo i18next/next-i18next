@@ -37,7 +37,7 @@ export default defineConfig([
     entry: { server: 'src/appRouter/server.ts' },
     deps: {
       neverBundle: [
-        'react', 'next', 'next/headers',
+        'react', 'next', 'next/headers', 'next/root-params',
         'i18next',
         'i18next-resources-to-backend',
         'fs/promises', 'path',

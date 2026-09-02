@@ -23,6 +23,7 @@ describe('normalizeConfig', () => {
     expect(result.defaultNS).toBe('common')
     expect(result.ns).toEqual(['common'])
     expect(result.localeInPath).toBe(true)
+    expect(result.localeParamName).toBe('lng')
     expect(result.localePath).toBe('/locales')
     expect(result.localeStructure).toBe('{{lng}}/{{ns}}')
     expect(result.localeExtension).toBe('json')
@@ -133,5 +134,18 @@ describe('normalizeConfig', () => {
       fallbackLng: 'en',
     })
     expect(result.basePath).toBeUndefined()
+  })
+})
+
+describe('normalizeConfig routing options', () => {
+  it("accepts localeInPath: 'internal' and a custom localeParamName", () => {
+    const result = normalizeConfig({
+      supportedLngs: ['en', 'de'],
+      fallbackLng: 'en',
+      localeInPath: 'internal',
+      localeParamName: 'locale',
+    })
+    expect(result.localeInPath).toBe('internal')
+    expect(result.localeParamName).toBe('locale')
   })
 })
