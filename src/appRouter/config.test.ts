@@ -30,6 +30,8 @@ describe('normalizeConfig', () => {
     expect(result.cookieName).toBe('i18next')
     expect(result.headerName).toBe('x-i18next-current-language')
     expect(result.cookieMaxAge).toBe(365 * 24 * 60 * 60)
+    expect(result.persistCookie).toBe(true)
+    expect(result.cookieOptions).toEqual({})
     expect(result.ignoredPaths).toEqual(['/api', '/_next', '/static'])
     expect(result.use).toEqual([])
     expect(result.i18nextOptions).toEqual({})

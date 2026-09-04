@@ -417,7 +417,7 @@ describe('createProxy', () => {
       localeInPath: 'internal' as const,
     }
 
-    it('rewrites a clean URL to the cookie language, sets header and cookie', () => {
+    it('rewrites a clean URL to the cookie language and sets the header (cookie unchanged, so not rewritten)', () => {
       const middleware = createProxy(internalConfig)
       const req = new NextRequest('http://localhost/about?tab=1', {
         cookies: { i18next: 'de' },
@@ -432,7 +432,7 @@ describe('createProxy', () => {
       expect(rewriteUrl.search).toBe('?tab=1')
       const headers = mockRewrite.mock.calls[0][1]?.request?.headers as Headers
       expect(headers.get('x-i18next-current-language')).toBe('de')
-      expect(response.cookies.set).toHaveBeenCalledWith('i18next', 'de', expect.objectContaining({ path: '/' }))
+      expect(response.cookies.set).not.toHaveBeenCalled()
     })
 
     it('rewrites to the Accept-Language match when there is no cookie', () => {
@@ -546,6 +546,88 @@ describe('createProxy', () => {
 
       expect(mockNext).toHaveBeenCalledTimes(1)
       expect(response.cookies.set).toHaveBeenCalledWith('i18next', 'de', expect.anything())
+    })
+  })
+
+  describe('language cookie persistence', () => {
+    const cfg = { supportedLngs: ['en', 'de', 'fr'], fallbackLng: 'en' }
+    const internal = { ...cfg, localeInPath: 'internal' as const }
+
+    it('writes the cookie when the language was detected without one', () => {
+      const middleware = createProxy(internal)
+      const response = middleware(new NextRequest('http://localhost/about', {
+        headers: { 'Accept-Language': 'de' },
+      }))
+
+      expect(response.cookies.set).toHaveBeenCalledWith(
+        'i18next', 'de', { path: '/', maxAge: 365 * 24 * 60 * 60, sameSite: 'lax' },
+      )
+    })
+
+    it('skips the rewrite write when the cookie already holds the resolved language', () => {
+      const middleware = createProxy(internal)
+      const response = middleware(new NextRequest('http://localhost/about', {
+        cookies: { i18next: 'de' },
+      }))
+
+      expect(mockRewrite).toHaveBeenCalledTimes(1)
+      expect(response.cookies.set).not.toHaveBeenCalled()
+    })
+
+    it('skips the redirect write when the cookie already matches', () => {
+      const middleware = createProxy(cfg)
+      const response = middleware(new NextRequest('http://localhost/about', {
+        cookies: { i18next: 'de' },
+      }))
+
+      expect(mockRedirect).toHaveBeenCalledTimes(1)
+      expect(response.cookies.set).not.toHaveBeenCalled()
+    })
+
+    it('skips the referer write when the cookie already matches (Server Action POSTs carry a referer)', () => {
+      const middleware = createProxy(cfg)
+      const response = middleware(new NextRequest('http://localhost/de/about', {
+        cookies: { i18next: 'de' },
+        headers: { referer: 'http://localhost/de/' },
+      }))
+
+      expect(mockNext).toHaveBeenCalledTimes(1)
+      expect(response.cookies.set).not.toHaveBeenCalled()
+    })
+
+    it('still writes when the cookie holds a different language', () => {
+      const middleware = createProxy(internal)
+      const response = middleware(new NextRequest('http://localhost/de/about', {
+        cookies: { i18next: 'en' },
+        headers: { referer: 'http://localhost/de/' },
+      }))
+
+      expect(response.cookies.set).toHaveBeenCalledWith('i18next', 'de', expect.anything())
+    })
+
+    it('never writes with persistCookie: false but still reads the cookie', () => {
+      const middleware = createProxy({ ...internal, persistCookie: false })
+
+      const withCookie = middleware(new NextRequest('http://localhost/about', { cookies: { i18next: 'fr' } }))
+      expect(String(mockRewrite.mock.calls[0][0])).toBe('http://localhost/fr/about')
+      expect(withCookie.cookies.set).not.toHaveBeenCalled()
+
+      const detected = middleware(new NextRequest('http://localhost/about', { headers: { 'Accept-Language': 'de' } }))
+      expect(detected.cookies.set).not.toHaveBeenCalled()
+    })
+
+    it('applies cookieOptions on top of the defaults', () => {
+      const middleware = createProxy({
+        ...cfg,
+        cookieOptions: { domain: '.example.com', secure: true, sameSite: 'none' },
+      })
+      const response = middleware(new NextRequest('http://localhost/about', {
+        headers: { 'Accept-Language': 'de' },
+      }))
+
+      expect(response.cookies.set).toHaveBeenCalledWith('i18next', 'de', {
+        path: '/', maxAge: 365 * 24 * 60 * 60, sameSite: 'none', domain: '.example.com', secure: true,
+      })
     })
   })
 

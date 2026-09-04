@@ -36,6 +36,8 @@ export function normalizeConfig(userConfig: I18nConfig): NormalizedConfig {
     cookieName: userConfig.cookieName ?? 'i18next',
     headerName: userConfig.headerName ?? 'x-i18next-current-language',
     cookieMaxAge: userConfig.cookieMaxAge ?? 365 * 24 * 60 * 60,
+    persistCookie: userConfig.persistCookie ?? true,
+    cookieOptions: userConfig.cookieOptions ?? {},
     ignoredPaths: userConfig.ignoredPaths ?? ['/api', '/_next', '/static'],
     basePath: userConfig.basePath,
     resources: userConfig.resources,

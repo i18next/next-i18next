@@ -381,8 +381,8 @@ describe('useChangeLanguage', () => {
     })
   })
 
-  function LanguageSwitcher({ cookieName }: { cookieName?: string }) {
-    const changeLanguage = useChangeLanguage(cookieName)
+  function LanguageSwitcher({ cookieName, cookieOptions }: { cookieName?: string; cookieOptions?: any }) {
+    const changeLanguage = useChangeLanguage(cookieName, cookieOptions)
     return (
       <button
         data-testid='switch'
@@ -423,6 +423,20 @@ describe('useChangeLanguage', () => {
     })
 
     expect(document.cookie).toContain('my_lang=de')
+  })
+
+  it('applies cookieOptions (domain, secure, sameSite, path, maxAge)', async () => {
+    render(
+      <I18nProvider language='en' resources={{ en: { common: {} } }}>
+        <LanguageSwitcher cookieOptions={{ domain: '.example.com', secure: true, sameSite: 'strict', path: '/app', maxAge: 60 }} />
+      </I18nProvider>,
+    )
+
+    await act(async () => {
+      screen.getByTestId('switch').click()
+    })
+
+    expect(document.cookie).toBe('i18next=de;path=/app;max-age=60;SameSite=Strict;domain=.example.com;Secure')
   })
 })
 

@@ -2,6 +2,18 @@ import type { InitOptions, i18n as I18NextClient, TFunction, Resource, FlatNames
 
 export type ResourceLoader = (language: string, namespace: string) => Promise<any>
 
+/** Attributes for the language cookie, shared by the proxy and `useChangeLanguage` */
+export interface CookieOptions {
+  /** e.g. '.example.com' to share the cookie across subdomains (host-only when unset) */
+  domain?: string
+  secure?: boolean
+  sameSite?: 'lax' | 'strict' | 'none'
+  /** defaults to '/' */
+  path?: string
+  /** seconds; the proxy defaults to `cookieMaxAge`, the hook to one year */
+  maxAge?: number
+}
+
 export interface I18nConfig {
   /** Supported languages, e.g. ['en', 'de', 'it'] */
   supportedLngs: string[]
@@ -46,6 +58,12 @@ export interface I18nConfig {
   headerName?: string
   /** Cookie max age in seconds (defaults to 365 * 24 * 60 * 60) */
   cookieMaxAge?: number
+  /** Write the detected language to the cookie (defaults to true). Set to false when another
+   *  system owns that cookie: the proxy keeps reading it but never writes it. */
+  persistCookie?: boolean
+  /** Extra attributes for the cookie the proxy writes (domain, secure, sameSite, path, maxAge),
+   *  applied on top of `{ path: '/', maxAge: cookieMaxAge, sameSite: 'lax' }`. */
+  cookieOptions?: CookieOptions
   /** URL path prefixes to ignore in middleware (defaults to ['/api', '/_next', '/static']) */
   ignoredPaths?: string[]
   /** Base path prefix for middleware to handle (e.g., '/app-router'). When set, the middleware only processes requests under this prefix and locale segments are placed after it. Useful for mixed App Router + Pages Router setups. */
@@ -96,6 +114,8 @@ export interface NormalizedConfig {
   cookieName: string
   headerName: string
   cookieMaxAge: number
+  persistCookie: boolean
+  cookieOptions: CookieOptions
   ignoredPaths: string[]
   basePath?: string
   resources?: Resource

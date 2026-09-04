@@ -13,6 +13,7 @@ import {
 import { initReactI18next } from 'react-i18next/initReactI18next'
 import resourcesToBackend from 'i18next-resources-to-backend'
 import { useParams, useRouter } from 'next/navigation'
+import type { CookieOptions } from './types'
 
 type $Tuple<T> = readonly [T?, ...T[]]
 
@@ -222,8 +223,10 @@ export function useT<
 // ---------------------------------------------------------------------------
 
 /**
- * Hook for changing the language without URL navigation (no-locale-path mode).
+ * Hook for changing the language without URL navigation (no-locale-path and internal mode).
  * Updates cookie + i18next instance + triggers server re-render via router.refresh().
+ * `cookieOptions` takes the same attributes as the proxy's `cookieOptions` (domain, secure,
+ * sameSite, path, maxAge) so both writers agree on the cookie's scope.
  *
  * @example
  * ```tsx
@@ -236,15 +239,19 @@ export function useT<
  * }
  * ```
  */
-export function useChangeLanguage(cookieName = 'i18next') {
+export function useChangeLanguage(cookieName = 'i18next', cookieOptions: CookieOptions = {}) {
   const { i18n } = useTranslation()
   const router = useRouter()
+  const { domain, secure, sameSite = 'lax', path = '/', maxAge = 365 * 24 * 60 * 60 } = cookieOptions
 
   return useCallback(async (newLng: string) => {
-    document.cookie = `${cookieName}=${newLng};path=/;max-age=${365 * 24 * 60 * 60};SameSite=Lax`
+    let cookie = `${cookieName}=${newLng};path=${path};max-age=${maxAge};SameSite=${sameSite[0].toUpperCase()}${sameSite.slice(1)}`
+    if (domain) cookie += `;domain=${domain}`
+    if (secure) cookie += ';Secure'
+    document.cookie = cookie
     await i18n.changeLanguage(newLng)
     router.refresh()
-  }, [i18n, router, cookieName])
+  }, [i18n, router, cookieName, domain, secure, sameSite, path, maxAge])
 }
 
 // Re-export useful react-i18next utilities for convenience

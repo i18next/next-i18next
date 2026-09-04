@@ -5,4 +5,5 @@ export type {
   NormalizedConfig,
   GetTResult,
   ResourceLoader,
+  CookieOptions,
 } from './types'

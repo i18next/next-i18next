@@ -5,7 +5,7 @@ import { parseAcceptLanguage, matchLanguage, findSupportedMatch } from './langua
 
 // Re-export config utilities for Edge-safe usage (no react-i18next dependency)
 export { defineConfig, normalizeConfig } from '../config'
-export type { I18nConfig, NormalizedConfig, ResourceLoader } from '../types'
+export type { I18nConfig, NormalizedConfig, ResourceLoader, CookieOptions } from '../types'
 
 function findLocaleInPath(
   pathname: string,
@@ -25,6 +25,21 @@ export function createProxy(userConfig: I18nConfig) {
   const basePath = config.basePath
     ? ('/' + config.basePath.replace(/^\/+/, '').replace(/\/+$/, ''))
     : undefined
+
+  // Persist the language in the cookie, but only when it actually changed. Next merges a
+  // cookie set here into the request's mutable cookies and treats any modified cookie as a
+  // revalidation, so an unconditional write made every Server Action (its POST carries the
+  // page as referer) refetch the whole page. Trade-off: maxAge is only refreshed on change.
+  const persistLanguage = (req: NextRequest, response: NextResponse, lng: string) => {
+    if (!config.persistCookie) return
+    if (req.cookies.get(config.cookieName)?.value === lng) return
+    response.cookies.set(config.cookieName, lng, {
+      path: '/',
+      maxAge: config.cookieMaxAge,
+      sameSite: 'lax',
+      ...config.cookieOptions,
+    })
+  }
 
   return function middleware(req: NextRequest): NextResponse {
     // nextUrl.pathname has Next's own basePath (next.config) stripped; String(nextUrl)
@@ -88,11 +103,7 @@ export function createProxy(userConfig: I18nConfig) {
         const redirectUrl = req.nextUrl.clone()
         redirectUrl.pathname = `${prefix}${pathWithoutLocale}`
         const response = NextResponse.redirect(redirectUrl)
-        response.cookies.set(config.cookieName, config.fallbackLng, {
-          path: '/',
-          maxAge: config.cookieMaxAge,
-          sameSite: 'lax',
-        })
+        persistLanguage(req, response, config.fallbackLng)
         return response
       }
 
@@ -110,22 +121,14 @@ export function createProxy(userConfig: I18nConfig) {
           rewriteUrl.pathname = `${prefix}/${rewriteLng}${pathAfterBase}`
           headers.set(config.headerName, rewriteLng)
           const response = NextResponse.rewrite(rewriteUrl, { request: { headers } })
-          response.cookies.set(config.cookieName, rewriteLng, {
-            path: '/',
-            maxAge: config.cookieMaxAge,
-            sameSite: 'lax',
-          })
+          persistLanguage(req, response, rewriteLng)
           return response
         }
 
         const redirectUrl = req.nextUrl.clone()
         redirectUrl.pathname = `${prefix}/${lng}${pathAfterBase}`
         const response = NextResponse.redirect(redirectUrl)
-        response.cookies.set(config.cookieName, lng, {
-          path: '/',
-          maxAge: config.cookieMaxAge,
-          sameSite: 'lax',
-        })
+        persistLanguage(req, response, lng)
         return response
       }
 
@@ -143,11 +146,7 @@ export function createProxy(userConfig: I18nConfig) {
           : refererPath
         const lngInReferer = findLocaleInPath(refererPathForLocale, config.supportedLngs, nonExplicit)
         if (lngInReferer) {
-          response.cookies.set(config.cookieName, lngInReferer, {
-            path: '/',
-            maxAge: config.cookieMaxAge,
-            sameSite: 'lax',
-          })
+          persistLanguage(req, response, lngInReferer)
         }
       }
 

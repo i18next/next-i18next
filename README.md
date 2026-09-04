@@ -133,6 +133,7 @@ The proxy:
 - Detects language from cookie > Accept-Language header > fallback
 - Redirects bare URLs to locale-prefixed paths (e.g., `/about` -> `/en/about`)
 - Sets a custom header (`x-i18next-current-language`) for Server Components
+- Persists the language in a cookie, but only when it changed: a cookie written by the proxy counts as a modified cookie for Next, and a modified cookie makes every Server Action revalidate and refetch the page. Set `persistCookie: false` if another system owns that cookie, and `cookieOptions` to scope it (e.g. `{ domain: '.example.com', secure: true }`)
 
 ### 5. Root Layout
 
@@ -697,7 +698,7 @@ In **serverless environments** (Lambda, Vercel Serverless, etc.), the cache only
 |---|---|
 | `I18nProvider` | Client-side provider wrapping `I18nextProvider` |
 | `useT(ns?, options?)` | Translation hook for Client Components (works in all modes) |
-| `useChangeLanguage(cookieName?)` | Language switcher hook for no-locale-path mode |
+| `useChangeLanguage(cookieName?, cookieOptions?)` | Language switcher hook for no-locale-path and internal mode; `cookieOptions` takes the same attributes as the config option |
 | `Trans` | Re-exported from `react-i18next` |
 
 ### `next-i18next/pages`
@@ -734,6 +735,8 @@ In **serverless environments** (Lambda, Vercel Serverless, etc.), the cache only
 | `cookieName` | `'i18next'` | Cookie name for language persistence |
 | `headerName` | `'x-i18next-current-language'` | Header name for server-side language passing |
 | `cookieMaxAge` | `31536000` (1 year) | Cookie max age in seconds |
+| `persistCookie` | `true` | Whether the proxy writes the language cookie. `false` reads it but never writes it, for apps where another system owns the cookie |
+| `cookieOptions` | `{}` | Extra cookie attributes (`domain`, `secure`, `sameSite`, `path`, `maxAge`) applied on top of `{ path: '/', maxAge: cookieMaxAge, sameSite: 'lax' }` |
 | `ignoredPaths` | `['/api', '/_next', '/static']` | Paths the proxy/middleware should skip |
 | `use` | `[]` | Extra i18next plugins |
 | `i18nextOptions` | `{}` | Additional i18next init options |
