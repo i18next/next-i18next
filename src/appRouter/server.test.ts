@@ -71,9 +71,15 @@ jest.mock('next/root-params', () => ({}))
 
 let mockHeaders: jest.Mock
 
-function resetModuleState(opts: { rootParams?: Record<string, () => Promise<unknown>> } = {}) {
+function clearGlobalState() {
+  // The default server state is keyed on globalThis and survives jest.resetModules()
+  delete (globalThis as any)[Symbol.for('next-i18next.server')]
+}
+
+function resetModuleState(opts: { rootParams?: Record<string, () => Promise<unknown>>; keepGlobal?: boolean } = {}) {
   // Reset the module to clear the module-level singleton
   jest.resetModules()
+  if (!opts.keepGlobal) clearGlobalState()
 
   // Re-mock after resetModules
   jest.doMock('i18next', () => ({
@@ -147,7 +153,7 @@ describe('server', () => {
     it('throws when initServerI18next has not been called', async () => {
       // Do NOT call initServerI18next
       await expect(getT()).rejects.toThrow(
-        'next-i18next: Server module not initialized. Call initServerI18next(config) in your root layout.'
+        'next-i18next: server i18n is not initialized. Call initServerI18next(config) before the first getT() in this process'
       )
     })
 
@@ -349,6 +355,7 @@ describe('server', () => {
     it('detects language from cookie when header is not set', async () => {
       // Re-setup with no header but a valid cookie
       jest.resetModules()
+      clearGlobalState()
       jest.doMock('i18next', () => ({
         createInstance: jest.fn(() => mockInstance),
       }))
@@ -393,6 +400,7 @@ describe('server', () => {
 
     it('falls back to fallbackLng when no header and no valid cookie', async () => {
       jest.resetModules()
+      clearGlobalState()
       jest.doMock('i18next', () => ({
         createInstance: jest.fn(() => mockInstance),
       }))
@@ -434,6 +442,7 @@ describe('server', () => {
 
     it('ignores cookie value that is not in supported languages', async () => {
       jest.resetModules()
+      clearGlobalState()
       jest.doMock('i18next', () => ({
         createInstance: jest.fn(() => mockInstance),
       }))
@@ -479,6 +488,7 @@ describe('server', () => {
 
     it('detects language from cookie with nonExplicitSupportedLngs (en -> en-US)', async () => {
       jest.resetModules()
+      clearGlobalState()
       jest.doMock('i18next', () => ({
         createInstance: jest.fn(() => mockInstance),
       }))
@@ -546,6 +556,74 @@ describe('server', () => {
 
       await getT('common', { keyPrefix: 'nested' })
       expect(mockGetFixedT).toHaveBeenCalledWith('en', 'common', 'nested')
+    })
+  })
+
+  describe('initServerI18next state', () => {
+    const cfg = { supportedLngs: ['en', 'de'], fallbackLng: 'en' }
+
+    it('is shared with a second copy of the module in the same process', () => {
+      initServerI18next(cfg)
+
+      resetModuleState({ keepGlobal: true }) // a fresh module instance, same globalThis
+      expect(() => generateI18nStaticParams()).not.toThrow()
+      expect(generateI18nStaticParams()).toEqual([{ lng: 'en' }, { lng: 'de' }])
+    })
+
+    it('re-initializing replaces the config but keeps the i18next instance', async () => {
+      initServerI18next(cfg)
+      await getT()
+      initServerI18next({ ...cfg, supportedLngs: ['en', 'fr'] })
+      await getT()
+
+      expect(i18next.createInstance).toHaveBeenCalledTimes(1)
+      expect(generateI18nStaticParams()).toEqual([{ lng: 'en' }, { lng: 'fr' }])
+    })
+
+    it('names both ways to initialize in the error', async () => {
+      await expect(getT()).rejects.toThrow(/initServerI18next\(config\) before the first getT\(\).*createServerI18next\(config\)/)
+    })
+  })
+
+  describe('createServerI18next', () => {
+    const cfg = { supportedLngs: ['en', 'de'], fallbackLng: 'en' }
+
+    it('works without initServerI18next', async () => {
+      const { createServerI18next } = require('./server')
+      const server = createServerI18next(cfg)
+
+      const result = await server.getT('common', { lng: 'de' })
+      expect(result.lng).toBe('de')
+      expect(mockGetFixedT).toHaveBeenCalledWith('de', 'common', undefined)
+      await expect(getT()).rejects.toThrow('not initialized') // the module-level one stays uninitialized
+    })
+
+    it('owns its own i18next instance, separate from the default one', async () => {
+      const mod = require('./server')
+      const server = mod.createServerI18next(cfg)
+      await server.getT()
+      mod.initServerI18next(cfg)
+      await mod.getT()
+
+      expect(i18next.createInstance).toHaveBeenCalledTimes(2)
+    })
+
+    it('reuses its instance across calls', async () => {
+      const { createServerI18next } = require('./server')
+      const server = createServerI18next(cfg)
+      await server.getT()
+      await server.getT('home')
+
+      expect(i18next.createInstance).toHaveBeenCalledTimes(1)
+      expect(mockInit).toHaveBeenCalledTimes(1)
+    })
+
+    it('keys generateI18nStaticParams by localeParamName and exposes getResources', () => {
+      const { createServerI18next } = require('./server')
+      const server = createServerI18next({ ...cfg, localeParamName: 'locale' })
+
+      expect(server.generateI18nStaticParams()).toEqual([{ locale: 'en' }, { locale: 'de' }])
+      expect(server.getResources).toBe(getResources)
     })
   })
 

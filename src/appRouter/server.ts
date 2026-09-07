@@ -8,31 +8,51 @@ import type { I18nConfig, NormalizedConfig, GetTResult } from './types'
 import { normalizeConfig } from './config'
 import { findSupportedMatch } from './proxy/languageDetector'
 
-let _config: NormalizedConfig | null = null
+// Everything getT needs: the config plus the shared i18next instance. The instance
+// persists across requests within the same server process, which is critical for
+// custom backends (i18next-http-backend, i18next-locize-backend) to avoid re-fetching
+// translations on every request. In serverless environments it lives as long as the
+// warm function instance — backends with reloadInterval refresh automatically.
+interface ServerState {
+  config: NormalizedConfig
+  instance: I18NextClient | null
+  instancePromise: Promise<I18NextClient> | null
+}
 
-// Module-level singleton: persists across requests within the same server process.
-// This is critical for custom backends (i18next-http-backend, i18next-locize-backend)
-// to avoid re-fetching translations on every request.
-// In serverless environments (Lambda, Cloud Functions, etc.), this lives as long as
-// the warm function instance — backends with reloadInterval will refresh automatically.
-let _sharedInstance: I18NextClient | null = null
-let _sharedInstancePromise: Promise<I18NextClient> | null = null
+function createState(userConfig: I18nConfig): ServerState {
+  return { config: normalizeConfig(userConfig), instance: null, instancePromise: null }
+}
 
-function getConfig(): NormalizedConfig {
-  if (!_config) {
+// The default state (initServerI18next + module-level getT) is keyed on globalThis, so a
+// second copy of this module in the same process — another bundling layer such as a
+// Route Handler, or the CJS build next to the ESM one — sees the same initialization.
+const GLOBAL_KEY = Symbol.for('next-i18next.server')
+const shared: { state: ServerState | null } = ((globalThis as any)[GLOBAL_KEY] ??= { state: null })
+
+function getState(): ServerState {
+  if (!shared.state) {
     throw new Error(
-      'next-i18next: Server module not initialized. Call initServerI18next(config) in your root layout.'
+      'next-i18next: server i18n is not initialized. Call initServerI18next(config) before the first ' +
+      'getT() in this process, or use createServerI18next(config) and import getT from its result, ' +
+      'which needs no initialization.'
     )
   }
-  return _config
+  return shared.state
 }
 
 /**
- * Initialize the server-side i18next configuration.
- * Call this once in your root layout or a shared setup file.
+ * Initialize the server-side i18next configuration for the module-level `getT`.
+ * Call it once at module scope, before the first `getT()` in the process (the root
+ * layout works in practice). Calling it again only replaces the config; the shared
+ * i18next instance is kept. Prefer `createServerI18next` when you would rather not
+ * depend on module evaluation order.
  */
 export function initServerI18next(userConfig: I18nConfig): void {
-  _config = normalizeConfig(userConfig)
+  if (shared.state) {
+    shared.state.config = normalizeConfig(userConfig)
+  } else {
+    shared.state = createState(userConfig)
+  }
 }
 
 function hasCustomBackend(plugins: any[]): boolean {
@@ -85,13 +105,14 @@ function createResourceBackend(config: NormalizedConfig) {
  * on its first request instead (see getT). Additional namespaces are loaded on
  * demand and cached in the instance store.
  */
-async function getSharedInstance(config: NormalizedConfig): Promise<I18NextClient> {
-  if (_sharedInstance?.isInitialized) return _sharedInstance
+async function getSharedInstance(state: ServerState): Promise<I18NextClient> {
+  const { config } = state
+  if (state.instance?.isInitialized) return state.instance
 
   // Deduplicate concurrent init calls (multiple requests arriving while first init is in flight)
-  if (_sharedInstancePromise) return _sharedInstancePromise
+  if (state.instancePromise) return state.instancePromise
 
-  _sharedInstancePromise = (async () => {
+  state.instancePromise = (async () => {
     const i18nInstance = createInstance()
 
     // Add a backend when needed:
@@ -121,11 +142,11 @@ async function getSharedInstance(config: NormalizedConfig): Promise<I18NextClien
       ...config.i18nextOptions,
     })
 
-    _sharedInstance = i18nInstance
+    state.instance = i18nInstance
     return i18nInstance
   })()
 
-  return _sharedInstancePromise
+  return state.instancePromise
 }
 
 // Dev-only hot-reload: refetch resources for the requested language so edits
@@ -208,12 +229,25 @@ export async function getT<
   KPrefix extends KeyPrefix<Ns> = undefined,
 >(
   ns?: Ns | Ns[],
-  options: { keyPrefix?: KPrefix; lng?: string } = {},
+  options: GetTOptions<KPrefix> = {},
 ): Promise<GetTResult<Ns, KPrefix>> {
-  const config = getConfig()
+  return getTWith<Ns, KPrefix>(getState(), ns, options)
+}
+
+type GetTOptions<KPrefix> = { keyPrefix?: KPrefix; lng?: string }
+
+async function getTWith<
+  Ns extends FlatNamespace = FlatNamespace,
+  KPrefix extends KeyPrefix<Ns> = undefined,
+>(
+  state: ServerState,
+  ns?: Ns | Ns[],
+  options: GetTOptions<KPrefix> = {},
+): Promise<GetTResult<Ns, KPrefix>> {
+  const { config } = state
 
   const lng = options.lng || await detectLanguage(config)
-  const i18nInstance = await getSharedInstance(config)
+  const i18nInstance = await getSharedInstance(state)
 
   if (config.reloadOnPrerender && process.env.NODE_ENV !== 'production') {
     await reloadResourcesForRender(i18nInstance, lng)
@@ -300,6 +334,38 @@ export function getResources(
  * ```
  */
 export function generateI18nStaticParams<K extends string = 'lng'>(): Record<K, string>[] {
-  const { supportedLngs, localeParamName } = getConfig()
+  return staticParamsFor<K>(getState().config)
+}
+
+function staticParamsFor<K extends string>({ supportedLngs, localeParamName }: NormalizedConfig): Record<K, string>[] {
   return supportedLngs.map(lng => ({ [localeParamName]: lng }) as Record<K, string>)
+}
+
+export interface ServerI18next {
+  getT: typeof getT
+  getResources: typeof getResources
+  generateI18nStaticParams: typeof generateI18nStaticParams
+}
+
+/**
+ * Bind the server API to a config, without `initServerI18next` and without depending on
+ * module evaluation order: every caller imports the module that holds the config.
+ * Call it once at module scope — each call owns its own shared i18next instance.
+ *
+ * @example
+ * ```ts
+ * // i18n.server.ts
+ * import { createServerI18next } from 'next-i18next/server'
+ * import i18nConfig from './i18n.config'
+ *
+ * export const { getT, getResources, generateI18nStaticParams } = createServerI18next(i18nConfig)
+ * ```
+ */
+export function createServerI18next(userConfig: I18nConfig): ServerI18next {
+  const state = createState(userConfig)
+  return {
+    getT: (ns, options) => getTWith(state, ns, options),
+    getResources,
+    generateI18nStaticParams: () => staticParamsFor(state.config),
+  }
 }

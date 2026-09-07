@@ -177,6 +177,25 @@ Key points:
 - `getResources(i18n)` — serializes loaded translations for client hydration
 - `I18nProvider` — wraps children so client components can use `useT()`
 
+#### Initialization without ordering assumptions
+
+`initServerI18next(config)` is a side effect: it has to run in the process before the first `getT()`. Module scope of the root layout works because Next loads the root layout before anything below it, but nothing enforces it if a second copy of `next-i18next/server` calls `getT()` first, for example from a Route Handler, which is bundled in its own layer. If you would rather not depend on evaluation order at all, bind the config once and import from that module everywhere:
+
+```ts
+// i18n.server.ts
+import { createServerI18next } from 'next-i18next/server'
+import i18nConfig from './i18n.config'
+
+export const { getT, getResources, generateI18nStaticParams } = createServerI18next(i18nConfig)
+```
+
+```tsx
+// any Server Component, layout or generateMetadata
+import { getT } from '@/i18n.server'
+```
+
+Every caller then imports the module that holds the config, so there is no initialization step and no order to get right. Call `createServerI18next` once at module scope: each call owns its own shared i18next instance.
+
 ### 6. Server Components
 
 ```tsx
@@ -687,7 +706,8 @@ In **serverless environments** (Lambda, Vercel Serverless, etc.), the cache only
 
 | Export | Description |
 |---|---|
-| `initServerI18next(config)` | Initialize server config (call once at module scope) |
+| `initServerI18next(config)` | Initialize server config (call once at module scope, before the first `getT()`) |
+| `createServerI18next(config)` | Returns `{ getT, getResources, generateI18nStaticParams }` bound to `config`. No `initServerI18next` and no evaluation order to get right; see [Initialization without ordering assumptions](#initialization-without-ordering-assumptions) |
 | `getT(ns?, options?)` | Get `{ t, i18n }` for Server Components. Options: `{ lng?, keyPrefix? }` |
 | `getResources(i18n, namespaces?, languages?)` | Extract loaded resources for client hydration. The shared instance preloads every supported language by default, so pass `languages` (e.g. `[lng, fallbackLng]`) to keep the serialized payload small. Include the fallback language, or keys missing from the current one have nothing to fall back to on the client |
 | `generateI18nStaticParams()` | Returns `[{ lng: 'en' }, { lng: 'de' }, ...]` for `generateStaticParams`, keyed by `localeParamName` (`generateI18nStaticParams<'locale'>()` narrows the type) |
