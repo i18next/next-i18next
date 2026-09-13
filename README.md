@@ -404,6 +404,8 @@ const i18nConfig: I18nConfig = {
 
 The store then only holds languages that have been requested so far, so pass `[lng, fallbackLng]` to `getResources` rather than relying on everything being present.
 
+On the client the language then changes in two steps: `useChangeLanguage` writes the cookie and calls `router.refresh()`, and `I18nProvider` switches as soon as that re-render delivers the new language's resources. Client Components keep working without any extra setup — pass `supportedLngs` to `I18nProvider` only if you want to restrict which languages it accepts (unset, it accepts any language the server sends).
+
 ---
 
 ## Mixed Router Setup (App Router + Pages Router)

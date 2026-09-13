@@ -20,7 +20,7 @@ export default async function RootLayout({ children }) {
   const resources = getResources(i18n)
 
   return (
-    <I18nProvider language={lng} resources={resources}>
+    <I18nProvider language={lng} resources={resources} supportedLngs={i18nConfig.supportedLngs}>
       <html lang={lng} dir={dir(lng)}>
         <head />
         <body>

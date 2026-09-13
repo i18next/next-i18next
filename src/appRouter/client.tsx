@@ -147,7 +147,10 @@ export function I18nProvider({
       partialBundledLanguages: hasAnyBackend,
       defaultNS,
       fallbackLng: fallbackLng ?? language,
-      supportedLngs: supportedLngs ?? (resources ? Object.keys(resources) : [language]),
+      // Not derived from `resources`: with `i18nextOptions: { preload: [] }` the server
+      // ships one language at a time, and pinning supportedLngs to what happens to be
+      // bundled makes i18next resolve every later language back to the fallback.
+      supportedLngs,
       fallbackNS: defaultNS,
       interpolation: { escapeValue: false },
       react: { useSuspense: false },
@@ -157,12 +160,24 @@ export function I18nProvider({
     return inst
   })
 
-  // Sync language when the prop changes (e.g., after navigation)
+  // Sync resources and language when the props change (navigation, or the
+  // router.refresh() in useChangeLanguage). The server may send a language that
+  // was not in the initial payload — `i18nextOptions: { preload: [] }` loads each
+  // one on first request — so merge the bundles in before switching, and switch
+  // again when they only just arrived: i18next had resolved the language to the
+  // fallback while its store was still empty for it.
   useEffect(() => {
-    if (instance.language !== language) {
+    let added = false
+    for (const [lng, namespaces] of Object.entries(resources ?? {})) {
+      for (const [ns, bundle] of Object.entries(namespaces as Record<string, unknown>)) {
+        if (!instance.hasResourceBundle(lng, ns)) added = true
+        instance.addResourceBundle(lng, ns, bundle, true, true)
+      }
+    }
+    if (added || instance.language !== language) {
       instance.changeLanguage(language)
     }
-  }, [instance, language])
+  }, [instance, language, resources])
 
   return (
     <I18nextProvider i18n={instance}>
@@ -249,7 +264,12 @@ export function useChangeLanguage(cookieName = 'i18next', cookieOptions: CookieO
     if (domain) cookie += `;domain=${domain}`
     if (secure) cookie += ';Secure'
     document.cookie = cookie
-    await i18n.changeLanguage(newLng)
+    // Switching now would resolve to the fallback when the store has nothing for the new
+    // language yet (`i18nextOptions: { preload: [] }`), and react-i18next only refreshes
+    // the i18n object it hands to components when `language` changes — so components would
+    // keep reading that fallback as the current language. I18nProvider switches instead,
+    // once router.refresh() has delivered the resources.
+    if (i18n.getDataByLanguage(newLng)) await i18n.changeLanguage(newLng)
     router.refresh()
   }, [i18n, router, cookieName, domain, secure, sameSite, path, maxAge])
 }

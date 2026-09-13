@@ -9,7 +9,7 @@ export const FooterBase = ({ t, i18n, lng: lngProp }) => {
       <Trans i18nKey="languageSwitcher" t={t} i18n={i18n}>
         Switch from <strong>{{lng}}</strong> to:{' '}
       </Trans>
-      <LangSelect currentLanguage={lng} />
+      <LangSelect currentLanguage={lng} languages={i18n.options.supportedLngs} />
       <p>{t('description')}</p>
       <p
         style={{

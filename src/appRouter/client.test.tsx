@@ -28,6 +28,9 @@ jest.mock('i18next', () => {
     options: {},
     hasLoadedNamespace: jest.fn().mockReturnValue(true),
     loadNamespaces: jest.fn().mockResolvedValue(undefined),
+    hasResourceBundle: jest.fn().mockReturnValue(true),
+    getDataByLanguage: jest.fn().mockReturnValue({ common: {} }),
+    addResourceBundle: jest.fn(),
   }
   return {
     createInstance: jest.fn(() => instance),
@@ -226,29 +229,17 @@ describe('I18nProvider', () => {
     )
   })
 
-  it('derives supportedLngs from resources keys when supportedLngs is not provided', () => {
+  it('leaves supportedLngs unrestricted when it is not provided', () => {
+    // Pinning it to the bundled languages breaks `i18nextOptions: { preload: [] }`,
+    // where the server ships one language at a time (issue #2348).
     renderProvider({
-      resources: { en: { common: {} }, de: { common: {} } },
+      resources: { en: { common: {} } },
       supportedLngs: undefined,
     })
 
     expect(mockInit).toHaveBeenCalledWith(
       expect.objectContaining({
-        supportedLngs: ['en', 'de'],
-      }),
-    )
-  })
-
-  it('falls back to [language] when no resources and no supportedLngs provided', () => {
-    renderProvider({
-      resources: undefined,
-      supportedLngs: undefined,
-      language: 'ja',
-    })
-
-    expect(mockInit).toHaveBeenCalledWith(
-      expect.objectContaining({
-        supportedLngs: ['ja'],
+        supportedLngs: undefined,
       }),
     )
   })
