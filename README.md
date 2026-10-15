@@ -243,7 +243,7 @@ export default function Counter() {
 }
 ```
 
-`useT` works in both locale-in-path (`/en/about`) and no-locale-path modes. It accepts `[lng]` or `[locale]` as the dynamic route param name.
+`useT` works in both locale-in-path (`/en/about`) and no-locale-path modes. `I18nProvider` follows the `[lng]` or `[locale]` route param when there is one; `useT` itself does not subscribe to the URL, so rewriting it (`history.replaceState`, `?page=`) does not re-render its callers.
 
 For the `Trans` component in Client Components:
 

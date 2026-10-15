@@ -280,6 +280,12 @@ describe('useT', () => {
     expect(useTranslation).toHaveBeenCalledWith('home', undefined)
   })
 
+  it('does not subscribe to route params, so URL changes do not re-render it', () => {
+    const { useParams } = require('next/navigation')
+    render(<TestComponent />)
+    expect(useParams).not.toHaveBeenCalled()
+  })
+
   it('syncs language from URL params when different from resolved', async () => {
     const inst = getMockInstance()
     mockParams.lng = 'de'

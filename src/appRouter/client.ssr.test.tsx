@@ -114,6 +114,16 @@ describe('I18nProvider on the server', () => {
     )
   })
 
+  // In a prerender with fallback params (cacheComponents, PPR) useParams() suspends,
+  // and from the provider that would hold back the whole app.
+  it('does not read route params during SSR', () => {
+    const { useParams } = require('next/navigation')
+
+    renderSSR()
+
+    expect(useParams).not.toHaveBeenCalled()
+  })
+
   it('ssrBackend never adds the default fetch backend during SSR', () => {
     const resourcesToBackend = require('i18next-resources-to-backend').default
 

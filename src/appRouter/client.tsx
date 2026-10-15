@@ -182,8 +182,33 @@ export function I18nProvider({
   return (
     <I18nextProvider i18n={instance}>
       {children}
+      {typeof window !== 'undefined' && <RouteLanguageSync i18n={instance} />}
     </I18nextProvider>
   )
+}
+
+// Syncs the language from a `[lng]` or `[locale]` route param (locale-in-path mode).
+// Its own null-rendering leaf because useParams() re-renders its caller on every URL
+// change, replaceState included: only this component pays for that, not every useT
+// caller. Browser-only: in a prerender with fallback params (cacheComponents, PPR)
+// useParams() suspends on the server, which from here would hold back the whole app,
+// and the effect never runs there anyway.
+function RouteLanguageSync({ i18n }: { i18n: I18NextClient }) {
+  const params = useParams()
+  // Support both [lng] and [locale] param names
+  const lngFromParams = typeof params?.lng === 'string'
+    ? params.lng
+    : typeof params?.locale === 'string'
+      ? params.locale
+      : undefined
+
+  useEffect(() => {
+    if (lngFromParams && i18n.resolvedLanguage !== lngFromParams) {
+      i18n.changeLanguage(lngFromParams)
+    }
+  }, [lngFromParams, i18n])
+
+  return null
 }
 
 // ---------------------------------------------------------------------------
@@ -192,9 +217,9 @@ export function I18nProvider({
 
 /**
  * Translation hook for Client Components in App Router.
- * Works in both locale-in-path and no-locale-path modes:
- * - Locale-in-path: reads language from URL params (`[lng]` or `[locale]`) and syncs
- * - No-locale-path: uses the language set by I18nProvider (from server detection)
+ * Works in every mode: the language comes from I18nProvider, which follows the
+ * `[lng]` / `[locale]` route param when there is one. It does not subscribe to the
+ * URL itself, so rewriting the URL does not re-render its callers.
  *
  * @example
  * ```tsx
@@ -214,23 +239,7 @@ export function useT<
   ns?: Ns,
   options?: UseTranslationOptions<KPrefix>,
 ): UseTranslationResponse<FallbackNs<Ns>, KPrefix> {
-  const params = useParams()
-  // Support both [lng] and [locale] param names
-  const lngFromParams = typeof params?.lng === 'string'
-    ? params.lng
-    : typeof params?.locale === 'string'
-      ? params.locale
-      : undefined
-  const ret = useTranslation(ns, options)
-
-  // Sync language from URL params (locale-in-path mode)
-  useEffect(() => {
-    if (lngFromParams && ret.i18n.resolvedLanguage !== lngFromParams) {
-      ret.i18n.changeLanguage(lngFromParams)
-    }
-  }, [lngFromParams, ret.i18n])
-
-  return ret
+  return useTranslation(ns, options)
 }
 
 // ---------------------------------------------------------------------------
