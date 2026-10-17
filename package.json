@@ -74,6 +74,26 @@
         "default": "./dist/appRouter/client.cjs"
       }
     },
+    "./icu": {
+      "import": {
+        "types": "./dist/appRouter/icu.d.mts",
+        "default": "./dist/appRouter/icu.mjs"
+      },
+      "require": {
+        "types": "./dist/appRouter/icu.d.cts",
+        "default": "./dist/appRouter/icu.cjs"
+      }
+    },
+    "./mf2": {
+      "import": {
+        "types": "./dist/appRouter/mf2.d.mts",
+        "default": "./dist/appRouter/mf2.mjs"
+      },
+      "require": {
+        "types": "./dist/appRouter/mf2.d.cts",
+        "default": "./dist/appRouter/mf2.cjs"
+      }
+    },
     "./pages": {
       "import": {
         "types": "./dist/pagesRouter/index.d.mts",
@@ -120,7 +140,7 @@
   "scripts": {
     "prettier": "prettier --ignore-path .gitignore --write .",
     "lint": "eslint src",
-    "clean": "rm -rf ./examples/pages-router-simple/.next ./examples/pages-router-ssg/.next ./examples/pages-router-auto-static-optimize/.next ./examples/app-router-simple/.next ./examples/app-router-no-locale-path/.next ./examples/mixed-routers/.next ./dist && mkdir dist",
+    "clean": "rm -rf ./examples/pages-router-simple/.next ./examples/pages-router-ssg/.next ./examples/pages-router-auto-static-optimize/.next ./examples/app-router-simple/.next ./examples/app-router-no-locale-path/.next ./examples/mixed-routers/.next ./examples/app-router-icu/.next ./dist && mkdir dist",
     "build": "npm run clean && tsdown",
     "build:examples": "for d in examples/*/; do (cd \"$d\" && npm run build) || exit 1; done",
     "build:example:pages-router-simple": "cd examples/pages-router-simple && npm run build",
@@ -129,6 +149,7 @@
     "build:example:app-router-simple": "cd examples/app-router-simple && npm run build",
     "build:example:app-router-no-locale-path": "cd examples/app-router-no-locale-path && npm run build",
     "build:example:mixed-routers": "cd examples/mixed-routers && npm run build",
+    "build:example:app-router-icu": "cd examples/app-router-icu && npm run build",
     "typecheck": "tsc --project ./tsconfig.pagesRouter.json --noEmit && tsc --project ./tsconfig.appRouter.json --noEmit",
     "typecheck:example:pages-router-simple": "cd examples/pages-router-simple && npm run typecheck",
     "test": "npm run lint && NODE_ENV=test jest --maxWorkers=1 --silent",
@@ -139,8 +160,9 @@
     "install:example:app-router-simple": "cd examples/app-router-simple && npm install",
     "install:example:app-router-no-locale-path": "cd examples/app-router-no-locale-path && npm install",
     "install:example:mixed-routers": "cd examples/mixed-routers && npm install",
+    "install:example:app-router-icu": "cd examples/app-router-icu && npm install",
     "copy-build-to-example": "rimraf $EXAMPLE/node_modules/next-i18next && mkdir -p $EXAMPLE/node_modules/next-i18next && cp -r dist package.json $EXAMPLE/node_modules/next-i18next",
-    "move-build-to-examples": "EXAMPLE=examples/pages-router-simple npm run copy-build-to-example && EXAMPLE=examples/pages-router-ssg npm run copy-build-to-example && EXAMPLE=examples/pages-router-auto-static-optimize npm run copy-build-to-example && EXAMPLE=examples/app-router-simple npm run copy-build-to-example && EXAMPLE=examples/app-router-no-locale-path npm run copy-build-to-example && EXAMPLE=examples/mixed-routers npm run copy-build-to-example",
+    "move-build-to-examples": "EXAMPLE=examples/pages-router-simple npm run copy-build-to-example && EXAMPLE=examples/pages-router-ssg npm run copy-build-to-example && EXAMPLE=examples/pages-router-auto-static-optimize npm run copy-build-to-example && EXAMPLE=examples/app-router-simple npm run copy-build-to-example && EXAMPLE=examples/app-router-no-locale-path npm run copy-build-to-example && EXAMPLE=examples/mixed-routers npm run copy-build-to-example && EXAMPLE=examples/app-router-icu npm run copy-build-to-example",
     "test:e2e": "start-server-and-test 'cd examples/pages-router-simple && npm run start' http://127.0.0.1:3000 cy:run",
     "cy:run": "cypress run",
     "example": "npm run build && EXAMPLE=examples/mixed-routers npm run copy-build-to-example && cd examples/mixed-routers && npm run dev",
@@ -155,6 +177,8 @@
     "example:app-router-simple:prod": "npm run build && EXAMPLE=examples/app-router-simple npm run copy-build-to-example && cd examples/app-router-simple && npm run build && npm run start",
     "example:app-router-no-locale-path": "npm run build && EXAMPLE=examples/app-router-no-locale-path npm run copy-build-to-example && cd examples/app-router-no-locale-path && npm run dev",
     "example:app-router-no-locale-path:prod": "npm run build && EXAMPLE=examples/app-router-no-locale-path npm run copy-build-to-example && cd examples/app-router-no-locale-path && npm run build && npm run start",
+    "example:app-router-icu": "npm run build && EXAMPLE=examples/app-router-icu npm run copy-build-to-example && cd examples/app-router-icu && npm run dev",
+    "example:app-router-icu:prod": "npm run build && EXAMPLE=examples/app-router-icu npm run copy-build-to-example && cd examples/app-router-icu && npm run build && npm run start",
     "prepublishOnly": "npm run build",
     "preversion": "npm run test && npm run build && git push",
     "postversion": "git push && git push --tags && npm run release",
@@ -182,6 +206,9 @@
     "globals": "17.11.0",
     "husky": "^9.1.7",
     "i18next": "^26.4.0",
+    "i18next-icu": "2.6.0",
+    "i18next-mf2": "2.1.0",
+    "intl-messageformat": "12.1.3",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
     "neostandard": "^0.13.0",
@@ -202,8 +229,18 @@
   },
   "peerDependencies": {
     "i18next": ">= 23.7.13",
+    "i18next-icu": ">= 2.0.0",
+    "i18next-mf2": ">= 1.0.0",
     "next": ">= 14.1.0",
     "react": ">= 18.0.0",
     "react-i18next": ">= 14.0.0"
+  },
+  "peerDependenciesMeta": {
+    "i18next-icu": {
+      "optional": true
+    },
+    "i18next-mf2": {
+      "optional": true
+    }
   }
 }

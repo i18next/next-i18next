@@ -44,10 +44,14 @@ export default defineConfig([
       ],
     },
   },
-  // ── App Router: client ──
+  // ── App Router: client (icu/mf2 import client.mjs, so the provider exists once) ──
   {
     ...appRouterCommon,
-    entry: { client: 'src/appRouter/client.tsx' },
+    entry: {
+      client: 'src/appRouter/client.tsx',
+      icu: 'src/appRouter/icu.tsx',
+      mf2: 'src/appRouter/mf2.tsx',
+    },
     banner: {
       js: "'use client';",
     },
@@ -56,6 +60,7 @@ export default defineConfig([
         'react', 'react-dom', 'next', 'next/navigation',
         'i18next', 'react-i18next', 'react-i18next/initReactI18next',
         'i18next-resources-to-backend',
+        'i18next-icu', 'i18next-mf2',
       ],
     },
   },

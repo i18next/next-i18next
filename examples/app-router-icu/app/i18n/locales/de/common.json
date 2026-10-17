@@ -1,0 +1,11 @@
+{
+  "title": "next-i18next mit ICU MessageFormat",
+  "photos": "Du hast {count, plural, =0 {keine Fotos} one {# Foto} other {# Fotos}}.",
+  "order": "{status, select, pending {Deine Bestellung wird vorbereitet.} shipped {Deine Bestellung ist unterwegs.} other {Der Status deiner Bestellung ist unbekannt.}}",
+  "welcome": "Willkommen zurück, <0>{name}</0>!",
+  "cart": "{count, plural, =0 {Dein Warenkorb ist leer} one {# Artikel im Warenkorb} other {# Artikel im Warenkorb}}",
+  "add": "Artikel hinzufügen",
+  "remove": "Artikel entfernen",
+  "rendered": "Gerendert von einer <0>{where}</0> Component.",
+  "switch": "Sprache wechseln:"
+}

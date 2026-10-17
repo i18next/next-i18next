@@ -30,6 +30,7 @@ Starting from a Next.js app with hardcoded strings? Run `npx i18next-cli localiz
 
 - [App Router Setup](#app-router-setup)
 - [No-Locale-Path Mode](#no-locale-path-mode)
+- [ICU and MF2 with the App Router](#icu-and-mf2-with-the-app-router)
 - [Mixed Router Setup](#mixed-router-setup-app-router--pages-router)
 - [Pages Router Setup](#pages-router-setup)
 - [Custom i18next Backends](#custom-i18next-backends)
@@ -408,6 +409,198 @@ On the client the language then changes in two steps: `useChangeLanguage` writes
 
 ---
 
+## ICU and MF2 with the App Router
+
+To write your translations in ICU MessageFormat ([i18next-icu](https://github.com/i18next/i18next-icu)) or in Unicode MessageFormat 2 ([i18next-mf2](https://github.com/i18next/i18next-mf2)) instead of the i18next JSON format, register the plugin in the server config and import `I18nProvider` from `next-i18next/icu` (or `next-i18next/mf2`). Both plugins replace i18next's own plurals, context keys and `{{interpolation}}`; [Using ICU or MF2](https://www.i18next.com/how-to/using-icu-or-mf2) lists what keeps working and what does not.
+
+### Install
+
+```bash
+npm install i18next-icu intl-messageformat
+# or, for MF2
+npm install i18next-mf2
+```
+
+Both are optional peer dependencies of next-i18next. Apps that never import `next-i18next/icu` or `next-i18next/mf2` do not resolve or bundle them.
+
+### Configuration
+
+Add the plugin to `use`, so `getT()` formats the messages on the server:
+
+```ts
+// i18n.config.ts
+import type { I18nConfig } from 'next-i18next/proxy'
+import ICU from 'i18next-icu'
+
+const i18nConfig: I18nConfig = {
+  supportedLngs: ['en', 'de'],
+  fallbackLng: 'en',
+  resourceLoader: (language, namespace) =>
+    import(`./app/i18n/locales/${language}/${namespace}.json`),
+  use: [ICU],
+}
+
+export default i18nConfig
+```
+
+`app/i18n/locales/en/common.json`:
+
+```json
+{
+  "photos": "You have {count, plural, =0 {no photos} one {# photo} other {# photos}}.",
+  "order": "{status, select, pending {Your order is being prepared.} shipped {Your order is on its way.} other {Your order status is unknown.}}",
+  "welcome": "Welcome back, <0>{name}</0>!"
+}
+```
+
+In the root layout, import `I18nProvider` from `next-i18next/icu` instead of `next-i18next/client`. It takes the same props and registers i18next-icu on the client instance:
+
+```tsx
+// app/[lng]/layout.tsx
+import { initServerI18next, getT, getResources, generateI18nStaticParams } from 'next-i18next/server'
+import { I18nProvider } from 'next-i18next/icu' // or 'next-i18next/mf2'
+import i18nConfig from '../../i18n.config'
+
+initServerI18next(i18nConfig)
+
+export async function generateStaticParams() {
+  return generateI18nStaticParams()
+}
+
+export default async function RootLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode
+  params: Promise<{ lng: string }>
+}) {
+  const { lng } = await params
+  const { i18n } = await getT()
+
+  return (
+    <html lang={lng}>
+      <body>
+        <I18nProvider language={lng} resources={getResources(i18n)}>
+          {children}
+        </I18nProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+A Server Component can not pass a plugin class to a Client Component as a prop: `<I18nProvider use={[ICU]}>` in a layout fails the build with "Functions cannot be passed directly to Client Components". `next-i18next/icu` is a Client module that imports the plugin itself, so no `'use client'` wrapper of your own is needed. `useT`, `useChangeLanguage` and `Trans` still come from `next-i18next/client`.
+
+Notes:
+- The client instance does not read the server config. Plugin options in `i18nextOptions.i18nFormat` (for example `bidiIsolation: 'none'` for MF2) have to be passed to `I18nProvider` as well, via its `i18nextOptions` prop, or the server and client render different text.
+- The proxy imports the same config, so the plugin ends up in the proxy bundle too (about 40 KB for i18next-icu). To keep it out, leave `use` out of the shared config and add it where the server is initialized: `initServerI18next({ ...i18nConfig, use: [ICU] })`.
+- For MF2, put `MF2` from `i18next-mf2` into `use` and import `I18nProvider` from `next-i18next/mf2`. Messages are written in MF2 syntax, e.g. `.input {$count :number} .match $count one {{You have {$count} photo.}} * {{You have {$count} photos.}}`.
+
+### Server Components
+
+```tsx
+// app/[lng]/page.tsx
+import { getT } from 'next-i18next/server'
+import { IcuTransWithoutContext } from 'react-i18next/IcuTransWithoutContext'
+
+export default async function Page() {
+  const { t, i18n } = await getT()
+  return (
+    <main>
+      <p>{t('photos', { count: 5 })}</p>
+      <p>{t('order', { status: 'shipped' })}</p>
+      <p>
+        <IcuTransWithoutContext
+          i18nKey='welcome'
+          defaultTranslation='Welcome back, <0>{name}</0>!'
+          content={[{ type: 'strong' }]}
+          values={{ name: 'Ada' }}
+          t={t}
+          i18n={i18n}
+        />
+      </p>
+    </main>
+  )
+}
+```
+
+`IcuTransWithoutContext` (react-i18next 17.0.21 or later) uses no React context, so it renders in Server Components. Pass the `t` from `getT()`, it is bound to the request's language. `Trans` from `react-i18next/TransWithoutContext` works as well, with `values` and `components`:
+
+```tsx
+<Trans t={t} i18n={i18n} i18nKey='welcome' values={{ name: 'Ada' }} components={[<strong key='0' />]} />
+```
+
+In Server Components, import both from these entry points rather than from the `react-i18next` root, which also loads React context.
+
+### Client Components
+
+```tsx
+'use client'
+import { useState } from 'react'
+import { IcuTrans } from 'react-i18next'
+import { useT } from 'next-i18next/client'
+
+export function Photos() {
+  const { t } = useT()
+  const [count, setCount] = useState(0)
+  return (
+    <>
+      <p>{t('photos', { count })}</p>
+      <button onClick={() => setCount(count + 1)}>+1</button>
+      <IcuTrans
+        i18nKey='welcome'
+        defaultTranslation='Welcome back, <0>{name}</0>!'
+        content={[{ type: 'strong' }]}
+        values={{ name: 'Ada' }}
+      />
+    </>
+  )
+}
+```
+
+### TypeScript
+
+The type-safe `t` function reads `{{variables}}` out of your translations to type the values you pass. ICU arguments nested in a plural (`one {{count} row}`) and MF2 variants (`* {{You have {$count} photos.}}`) contain double braces that are not i18next variables, so these `t` calls do not compile. Turn that parsing off with `parseInterpolation: false` (i18next 26.2.0 or later):
+
+```ts
+// @types/i18next.d.ts
+import 'i18next'
+import type common from '../app/i18n/locales/en/common.json'
+
+declare module 'i18next' {
+  interface CustomTypeOptions {
+    defaultNS: 'common'
+    resources: { common: typeof common }
+    parseInterpolation: false
+  }
+}
+```
+
+Keys are still checked, the values you pass to `t` are not.
+
+### i18next-cli
+
+[i18next-cli](https://github.com/i18next/i18next-cli) 1.76.0 or later knows both formats. Set `extract.messageFormat` to `'icu'` or `'mf2'` in your `i18next.config.ts`:
+
+```ts
+import { defineConfig } from 'i18next-cli'
+
+export default defineConfig({
+  locales: ['en', 'de'],
+  extract: {
+    input: ['app/**/*.{ts,tsx}'],
+    output: 'app/i18n/locales/{{language}}/{{namespace}}.json',
+    messageFormat: 'icu', // or 'mf2'
+  },
+})
+```
+
+`extract` then writes one key per message instead of `_one`/`_other` suffix keys and extracts `IcuTrans` and `IcuTransWithoutContext`, `lint` checks the syntax, the argument names and the plural categories of every language, and `types` writes `parseInterpolation: false` into a newly generated `i18next.d.ts`.
+
+See [`examples/app-router-icu`](examples/app-router-icu) for a complete app with plurals, a select and rich text in Server and Client Components.
+
+---
+
 ## Mixed Router Setup (App Router + Pages Router)
 
 For projects that use both routers, next-i18next supports a `basePath` option that scopes the App Router middleware to a specific URL prefix while the Pages Router uses Next.js built-in i18n routing for everything else.
@@ -723,6 +916,12 @@ In **serverless environments** (Lambda, Vercel Serverless, etc.), the cache only
 | `useChangeLanguage(cookieName?, cookieOptions?)` | Language switcher hook for no-locale-path and internal mode; `cookieOptions` takes the same attributes as the config option |
 | `Trans` | Re-exported from `react-i18next` |
 
+### `next-i18next/icu` and `next-i18next/mf2`
+
+| Export | Description |
+|---|---|
+| `I18nProvider` | `I18nProvider` from `next-i18next/client` with i18next-icu (`/icu`) or i18next-mf2 (`/mf2`) registered on the client instance. Same props. See [ICU and MF2 with the App Router](#icu-and-mf2-with-the-app-router) |
+
 ### `next-i18next/pages`
 
 | Export | Description |
@@ -772,6 +971,7 @@ In **serverless environments** (Lambda, Vercel Serverless, etc.), the cache only
 |---|---|
 | [`app-router-simple`](examples/app-router-simple) | App Router with locale-in-path (`/en/...`) |
 | [`app-router-no-locale-path`](examples/app-router-no-locale-path) | App Router with cookie-based language (no locale in URL) |
+| [`app-router-icu`](examples/app-router-icu) | App Router with ICU MessageFormat: plurals, select and rich text in Server and Client Components |
 | [`mixed-routers`](examples/mixed-routers) | App Router + Pages Router in the same project |
 | [`pages-router-simple`](examples/pages-router-simple) | Pages Router with `getStaticProps` / `getServerSideProps` |
 | [`pages-router-ssg`](examples/pages-router-ssg) | Pages Router with static export (`output: 'export'`) |

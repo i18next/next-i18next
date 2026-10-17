@@ -7,6 +7,10 @@ module.exports = {
     createClient: '<rootDir>/src/pagesRouter/createClient/browser.ts',
   },
   rootDir: '.',
+  // ESM-only dependencies of i18next-icu and i18next-mf2
+  transformIgnorePatterns: [
+    '/node_modules/(?!(intl-messageformat|@formatjs|messageformat)/)',
+  ],
   testPathIgnorePatterns: [
     '<rootDir>/.next/',
     '<rootDir>/dist/',
