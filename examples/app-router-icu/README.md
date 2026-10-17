@@ -7,7 +7,7 @@ It demonstrates:
 - `I18nProvider` from `next-i18next/icu` in the root layout, so `useT()` formats them in Client Components, without a `'use client'` wrapper of your own
 - a plural with an exact `=0` case and a `select`, on the server and on the client
 - rich text with `IcuTransWithoutContext` from `react-i18next/IcuTransWithoutContext` in a Server Component, and `IcuTrans` in a Client Component
-- `parseInterpolation: false` in `@types/i18next.d.ts`, so typed keys work with ICU messages
+- `parseInterpolation: 'icu'` in `@types/i18next.d.ts` (i18next 26.5.0 or later), so `t()` options and `IcuTrans` values are type-checked against the ICU arguments of each message; `@types/resources.d.ts` holds the messages as literal types and is generated with `npx i18next-cli types` from `i18next.config.ts`
 
 For MF2, install `i18next-mf2` instead, put `MF2` into `use` and import `I18nProvider` from `next-i18next/mf2`.
 
