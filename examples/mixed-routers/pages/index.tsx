@@ -35,7 +35,9 @@ const Homepage = (
         <div className="featured-card" style={{ marginTop: 15 }}>
           <h3 className="card-title">{t('icu.question')}</h3>
           <p className="card-text">{t('icu.answer')}</p>
-          <a href={t('icu.link')}>{t('icu.cta')}</a>
+          <a href={t('icu.link')}>
+            <button type="button">{t('icu.cta')}</button>
+          </a>
         </div>
 
         <div className="featured-card" style={{ marginTop: 15 }}>
