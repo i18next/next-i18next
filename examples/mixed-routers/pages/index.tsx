@@ -24,9 +24,21 @@ const Homepage = (
       <main>
         <Header heading={t('h1')} title={t('title')} />
         <p className="subtitle">{t('description')}</p>
-        <p className="router-badge">Pages Router</p>
-
         <div className="featured-card">
+          <h3 className="card-title">{t('routers.title')}</h3>
+          <p className="card-text">{t('routers.text')}</p>
+          <a href={`/app-router/${router.locale}`}>
+            <button type="button">{t('to-app-router')}</button>
+          </a>
+        </div>
+
+        <div className="featured-card" style={{ marginTop: 15 }}>
+          <h3 className="card-title">{t('icu.question')}</h3>
+          <p className="card-text">{t('icu.answer')}</p>
+          <a href={t('icu.link')}>{t('icu.cta')}</a>
+        </div>
+
+        <div className="featured-card" style={{ marginTop: 15 }}>
           <h3 className="card-title">
             {t('blog.v16.question')}
           </h3>
