@@ -1,3 +1,7 @@
+## 16.4.2
+
+- **Pages Router: translations load on the server again with a custom `interpolation.prefix` / `suffix`** - `localeStructure` and the server `loadPath` are built from the configured prefix and suffix (e.g. `{lng}/{ns}`), but the file loader that replaced i18next-fs-backend in 16.0.0 only replaced `{{lng}}` and `{{ns}}`. It tried to read a literal `public/locales/{lng}/{ns}.json`, the error only showed with `debug: true`, and `serverSideTranslations` returned empty namespaces, so pages rendered the raw keys. The loader now uses the same prefix and suffix as the config. The default config and a function `localePath` are unchanged. Thanks @nk-batman21 ([#2350](https://github.com/i18next/next-i18next/pull/2350))
+
 ## 16.4.1
 
 - **Docs: typed ICU and MF2 arguments** - the README section "ICU and MF2 with the App Router" now describes `parseInterpolation: 'icu'` / `'mf2'` (i18next 26.5.0): the options of `t` from `getT` and `useT` and the `values` of `IcuTrans` and `IcuTransWithoutContext` (react-i18next 17.1.0) are type-checked against the message's arguments, with the resources file from `npx i18next-cli types` for literal message types. `parseInterpolation: false` stays the setting for i18next 26.2.0 to 26.4.x. No code changes: `getT` and `useT` return i18next's `TFunction`, so they get the checks as is.
