@@ -2,6 +2,10 @@
  * @jest-environment node
  */
 
+import fs from 'fs'
+import os from 'os'
+import path from 'path'
+
 import createClientNode from './node'
 
 let onPreInitI18nextCalled: any
@@ -58,5 +62,43 @@ describe('createClientNode', () => {
       )
       expect(onPreInitI18nextCalled).toBeNull()
     })
+  })
+})
+
+describe('createClientNode with a custom interpolation prefix/suffix', () => {
+  let localesDir: string
+
+  beforeAll(() => {
+    localesDir = fs.mkdtempSync(path.join(os.tmpdir(), 'next-i18next-'))
+    fs.mkdirSync(path.join(localesDir, 'de'))
+    fs.writeFileSync(
+      path.join(localesDir, 'de', 'common.json'),
+      '{ "greeting": "Hallo {name}" }'
+    )
+  })
+
+  afterAll(() => {
+    fs.rmSync(localesDir, { recursive: true, force: true })
+  })
+
+  it('loads the file from a loadPath that uses the same prefix/suffix', async () => {
+    // Fresh module, so the default backend is created from this config
+    let createFreshClient = createClientNode
+    jest.isolateModules(() => {
+      createFreshClient = require('./node').default
+    })
+
+    const { i18n, initPromise } = createFreshClient({
+      backend: {
+        loadPath: path.join(localesDir, '{lng}', '{ns}.json'),
+      },
+      interpolation: { prefix: '{', suffix: '}' },
+      lng: 'de',
+      ns: ['common'],
+      use: [],
+    } as any)
+    await initPromise
+
+    expect(i18n.t('common:greeting', { name: 'Anna' })).toBe('Hallo Anna')
   })
 })
