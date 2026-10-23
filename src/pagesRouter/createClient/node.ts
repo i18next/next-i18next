@@ -16,9 +16,11 @@ function createFSBackend(config: InternalConfig) {
     if (typeof backend?.loadPath === 'function') {
       filePath = backend.loadPath(lng, ns)
     } else if (typeof backend?.loadPath === 'string') {
+      const prefix = config.interpolation?.prefix ?? '{{'
+      const suffix = config.interpolation?.suffix ?? '}}'
       filePath = backend.loadPath
-        .replace('{{lng}}', lng)
-        .replace('{{ns}}', ns)
+        .replace(`${prefix}lng${suffix}`, lng)
+        .replace(`${prefix}ns${suffix}`, ns)
     } else {
       filePath = `./public/locales/${lng}/${ns}.json`
     }
