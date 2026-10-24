@@ -224,6 +224,18 @@ describe('createProxy', () => {
     expect(response.cookies.set).not.toHaveBeenCalled()
   })
 
+  it('ignores a referer that is not a valid URL', () => {
+    const middleware = createProxy(config)
+    const req = new NextRequest('http://localhost/de/about', {
+      headers: { referer: 'not a url' },
+    })
+
+    const response = middleware(req)
+
+    expect(mockNext).toHaveBeenCalledTimes(1)
+    expect(response.cookies.set).not.toHaveBeenCalled()
+  })
+
   it('falls back to default language when cookie has unsupported value', () => {
     const middleware = createProxy(config)
     const req = new NextRequest('http://localhost/about', {
