@@ -134,8 +134,13 @@ export function createProxy(userConfig: I18nConfig) {
 
       // Persist language from referer URL into cookie
       const response = NextResponse.next({ request: { headers } })
-      if (req.headers.has('referer')) {
-        const refererUrl = new URL(req.headers.get('referer')!)
+      // The referer is a client-supplied header; a value that isn't a URL is ignored
+      // instead of failing the whole request
+      let refererUrl: URL | undefined
+      try {
+        if (req.headers.has('referer')) refererUrl = new URL(req.headers.get('referer')!)
+      } catch {}
+      if (refererUrl) {
         // The referer still carries Next's basePath, unlike nextUrl.pathname
         const nextBasePath = req.nextUrl.basePath
         const refererPath = nextBasePath && refererUrl.pathname.startsWith(nextBasePath)
