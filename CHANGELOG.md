@@ -1,3 +1,7 @@
+## 16.4.3
+
+- **App Router: a malformed `Referer` header no longer fails the request** - in `localeInPath` mode the proxy reads the `Referer` of a request to a locale path to persist the previous page's language, and passed the header straight to `new URL()`. A value that isn't an absolute URL (`Referer: not a url`, or a relative referer) threw `TypeError: Invalid URL` inside the middleware and the page failed with a 500. Browsers always send an absolute URL, but crawlers, proxies and hand-written clients don't have to. The proxy now ignores a referer it can't parse and serves the page as usual; a valid referer is handled as before. Thanks @Pharex38 ([#2351](https://github.com/i18next/next-i18next/pull/2351))
+
 ## 16.4.2
 
 - **Pages Router: translations load on the server again with a custom `interpolation.prefix` / `suffix`** - `localeStructure` and the server `loadPath` are built from the configured prefix and suffix (e.g. `{lng}/{ns}`), but the file loader that replaced i18next-fs-backend in 16.0.0 only replaced `{{lng}}` and `{{ns}}`. It tried to read a literal `public/locales/{lng}/{ns}.json`, the error only showed with `debug: true`, and `serverSideTranslations` returned empty namespaces, so pages rendered the raw keys. The loader now uses the same prefix and suffix as the config. The default config and a function `localePath` are unchanged. Thanks @nk-batman21 ([#2350](https://github.com/i18next/next-i18next/pull/2350))
