@@ -95,7 +95,7 @@ The `resourceLoader` uses dynamic `import()` which the bundler can trace, ensuri
 
 > **Tip**: Import `I18nConfig` from `next-i18next/proxy` (not from `next-i18next`) to keep the config file Edge-safe.
 
-> **Dev tip — hot-reloading translations**: set `reloadOnPrerender: process.env.NODE_ENV === 'development'` in your config to refetch translations on every render in dev so edits to locale files appear without restarting `next dev`. The flag is automatically a no-op in production, so it is safe to keep in your committed config — custom backends (HTTP, locize, chained) won't be hit per-request in production builds.
+> **Dev tip — hot-reloading translations**: set `reloadOnPrerender: process.env.NODE_ENV === 'development'` in your config to refetch translations on every render in dev so edits to locale files appear without restarting `next dev`. The flag is automatically a no-op in production, so it is safe to keep in your committed config — custom backends (HTTP, locize, chained) won't be hit per-request in production builds. Leave it off with `cacheComponents: true`: re-reading the files on every render is uncached I/O, so `next dev` reports "uncached data" at the `getT()` call on every request.
 >
 > **Caveat with `import()`-based `resourceLoader`**: dynamic `import()` of JSON is cached at the bundler level and is not reliably re-invalidated by Turbopack/Webpack HMR after the first edit, so hot-reload can stall after one change. For full hot-reload during development, gate your loader so dev uses `fs.readFile` and production keeps bundler-traceable `import()`:
 > ```ts
@@ -216,6 +216,8 @@ export async function generateMetadata() {
 ```
 
 On Next.js 16.3+ `getT()` resolves the language from the `[lng]` root param (via `next/root-params`) before falling back to the proxy header and cookie. Reading a root param does not opt the route out of static prerendering, so `getT()` is safe in prerendered routes (including with `cacheComponents: true`). Route Handlers and Server Actions have no root params — pass `{ lng }` explicitly there.
+
+With `cacheComponents: true`, `next dev` can still report "uncached data" at a `getT()` call when translations load during that render: once after the dev server starts, or on each language's first request with an `fs`-based `resourceLoader`. That is file I/O in the dev render, not a dynamic route. `next build` is the check to trust: it prerenders every locale without it.
 
 For the `Trans` component in Server Components, use `react-i18next/TransWithoutContext` and pass both `t` and `i18n`:
 
