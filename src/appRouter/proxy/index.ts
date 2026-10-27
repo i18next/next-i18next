@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import type { I18nConfig } from '../types'
 import { normalizeConfig } from '../config'
-import { parseAcceptLanguage, matchLanguage, findSupportedMatch } from './languageDetector'
+import { parseAcceptLanguage, matchLanguage } from './languageDetector'
 
 // Re-export config utilities for Edge-safe usage (no react-i18next dependency)
 export { defineConfig, normalizeConfig } from '../config'
@@ -10,12 +10,14 @@ export type { I18nConfig, NormalizedConfig, ResourceLoader, CookieOptions } from
 function findLocaleInPath(
   pathname: string,
   supportedLngs: readonly string[],
-  nonExplicitSupportedLngs: boolean,
 ): string | undefined {
-  // Extract the first path segment
+  // Only an exact (case-insensitive) supported language counts: the prefix matching used
+  // for Accept-Language would read routes like /it-jobs or /en-gb/... as a locale path,
+  // which then skips the redirect even though [lng] has no such value.
   const match = pathname.match(/^\/([^/]+)/)
   if (!match) return undefined
-  return findSupportedMatch(match[1], supportedLngs, nonExplicitSupportedLngs)
+  const segment = match[1].toLowerCase()
+  return supportedLngs.find(l => l.toLowerCase() === segment)
 }
 
 export function createProxy(userConfig: I18nConfig) {
@@ -86,7 +88,7 @@ export function createProxy(userConfig: I18nConfig) {
 
     // For locale-in-path detection, strip basePath prefix so we look at the right segment
     const pathForLocale = basePath ? pathname.slice(basePath.length) || '/' : pathname
-    const lngInPath = findLocaleInPath(pathForLocale, config.supportedLngs, nonExplicit)
+    const lngInPath = findLocaleInPath(pathForLocale, config.supportedLngs)
 
     if (config.localeInPath) {
       const prefix = basePath ?? ''
@@ -149,7 +151,7 @@ export function createProxy(userConfig: I18nConfig) {
         const refererPathForLocale = basePath
           ? refererPath.slice(basePath.length) || '/'
           : refererPath
-        const lngInReferer = findLocaleInPath(refererPathForLocale, config.supportedLngs, nonExplicit)
+        const lngInReferer = findLocaleInPath(refererPathForLocale, config.supportedLngs)
         if (lngInReferer) {
           persistLanguage(req, response, lngInReferer)
         }

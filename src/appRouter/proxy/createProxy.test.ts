@@ -248,6 +248,16 @@ describe('createProxy', () => {
     expect(redirectUrl.pathname).toBe('/en/about')
   })
 
+  it('does not read a route that starts with a language code as a locale path', () => {
+    const middleware = createProxy({ ...config, supportedLngs: ['en', 'it'] })
+    middleware(new NextRequest('http://localhost/it-jobs'))
+    middleware(new NextRequest('http://localhost/en-gb/about'))
+
+    expect(mockRedirect).toHaveBeenCalledTimes(2)
+    expect((mockRedirect.mock.calls[0][0] as URL).pathname).toBe('/en/it-jobs')
+    expect((mockRedirect.mock.calls[1][0] as URL).pathname).toBe('/en/en-gb/about')
+  })
+
   describe('nonExplicitSupportedLngs', () => {
     const regionalConfig = {
       supportedLngs: ['en-US', 'en-GB', 'de-DE'],
