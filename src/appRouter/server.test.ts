@@ -208,6 +208,35 @@ describe('server', () => {
       )
     })
 
+    it('inits synchronously so no timer runs in the render (cacheComponents)', async () => {
+      initServerI18next({
+        supportedLngs: ['en', 'de'],
+        fallbackLng: 'en',
+      })
+
+      await getT()
+      expect(mockInit).toHaveBeenCalledWith(
+        expect.objectContaining({
+          initAsync: false,
+        })
+      )
+    })
+
+    it('lets i18nextOptions override initAsync', async () => {
+      initServerI18next({
+        supportedLngs: ['en', 'de'],
+        fallbackLng: 'en',
+        i18nextOptions: { initAsync: true },
+      })
+
+      await getT()
+      expect(mockInit).toHaveBeenCalledWith(
+        expect.objectContaining({
+          initAsync: true,
+        })
+      )
+    })
+
     it('passes nonExplicitSupportedLngs to i18next init', async () => {
       initServerI18next({
         supportedLngs: ['en-US', 'de-DE'],

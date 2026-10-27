@@ -137,6 +137,9 @@ async function getSharedInstance(state: ServerState): Promise<I18NextClient> {
       nonExplicitSupportedLngs: config.nonExplicitSupportedLngs,
       fallbackNS: config.defaultNS,
       preload: config.supportedLngs, // preload ALL languages upfront (override via i18nextOptions.preload)
+      // Start loading right away instead of in a setTimeout: with cacheComponents,
+      // Next.js counts a timer in the render as uncached data ("blocking route").
+      initAsync: false,
       interpolation: { escapeValue: false },
       ...(config.resources ? { resources: config.resources } : {}),
       ...config.i18nextOptions,

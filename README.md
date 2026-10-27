@@ -217,7 +217,7 @@ export async function generateMetadata() {
 
 On Next.js 16.3+ `getT()` resolves the language from the `[lng]` root param (via `next/root-params`) before falling back to the proxy header and cookie. Reading a root param does not opt the route out of static prerendering, so `getT()` is safe in prerendered routes (including with `cacheComponents: true`). Route Handlers and Server Actions have no root params — pass `{ lng }` explicitly there.
 
-With `cacheComponents: true`, `next dev` can still report "uncached data" at a `getT()` call when translations load during that render: once after the dev server starts, or on each language's first request with an `fs`-based `resourceLoader`. That is file I/O in the dev render, not a dynamic route. `next build` is the check to trust: it prerenders every locale without it.
+With `cacheComponents: true`, `next dev` reports "uncached data" at a `getT()` call when that render reads translations from disk with `fs`, once per language: with an `fs`-based `resourceLoader` (like the dev branch in the caveat above), or without a `resourceLoader`, where locale files are read from `public/locales`. An `import()`-based `resourceLoader` does not trigger it. Either way it is file I/O in the dev render, not a dynamic route: `next build` is the check to trust, and it prerenders every locale.
 
 For the `Trans` component in Server Components, use `react-i18next/TransWithoutContext` and pass both `t` and `i18n`:
 
