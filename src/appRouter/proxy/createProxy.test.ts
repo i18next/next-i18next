@@ -248,14 +248,70 @@ describe('createProxy', () => {
     expect(redirectUrl.pathname).toBe('/en/about')
   })
 
-  it('does not read a route that starts with a language code as a locale path', () => {
-    const middleware = createProxy({ ...config, supportedLngs: ['en', 'it'] })
-    middleware(new NextRequest('http://localhost/it-jobs'))
-    middleware(new NextRequest('http://localhost/en-gb/about'))
+  describe('language-shaped path segments', () => {
+    const lastRedirect = () => mockRedirect.mock.calls[mockRedirect.mock.calls.length - 1][0] as URL
 
-    expect(mockRedirect).toHaveBeenCalledTimes(2)
-    expect((mockRedirect.mock.calls[0][0] as URL).pathname).toBe('/en/it-jobs')
-    expect((mockRedirect.mock.calls[1][0] as URL).pathname).toBe('/en/en-gb/about')
+    it('treats a route that only starts with a language code as a route', () => {
+      const middleware = createProxy({ ...config, supportedLngs: ['en', 'it'] })
+      for (const path of ['/it-jobs', '/my-account', '/en-jobs', '/zh-Hant/x']) {
+        middleware(new NextRequest(`http://localhost${path}`))
+        expect(lastRedirect().pathname).toBe(`/en${path}`)
+      }
+    })
+
+    it('redirects a language tag to its supported code, keeping the query', () => {
+      const middleware = createProxy({ ...config, supportedLngs: ['en', 'zh'] })
+      middleware(new NextRequest('http://localhost/en-gb/about'))
+      expect(lastRedirect().pathname).toBe('/en/about')
+
+      middleware(new NextRequest('http://localhost/en-US/pricing?plan=pro'))
+      expect(lastRedirect().pathname).toBe('/en/pricing')
+      expect(lastRedirect().search).toBe('?plan=pro')
+
+      middleware(new NextRequest('http://localhost/es-419'))
+      expect(mockRedirect).toHaveBeenCalledTimes(3) // es is not supported: a route
+      expect(lastRedirect().pathname).toBe('/en/es-419')
+
+      middleware(new NextRequest('http://localhost/zh-Hant-TW/x'))
+      expect(lastRedirect().pathname).toBe('/zh/x')
+    })
+
+    it('maps a bare language to a regional code with nonExplicitSupportedLngs', () => {
+      const middleware = createProxy({ supportedLngs: ['en-US', 'en-GB', 'de-DE'], fallbackLng: 'en-US', nonExplicitSupportedLngs: true })
+      middleware(new NextRequest('http://localhost/en/about'))
+      expect(lastRedirect().pathname).toBe('/en-US/about')
+    })
+
+    it('follows hideDefaultLocale', () => {
+      const middleware = createProxy({ ...config, hideDefaultLocale: true })
+      middleware(new NextRequest('http://localhost/en-gb/about'))
+      expect(lastRedirect().pathname).toBe('/about')
+
+      middleware(new NextRequest('http://localhost/de-AT/x'))
+      expect(lastRedirect().pathname).toBe('/de/x')
+    })
+
+    it('rewrites instead of redirecting in internal mode', () => {
+      const middleware = createProxy({ ...config, localeInPath: 'internal' as const })
+      const response = middleware(new NextRequest('http://localhost/de-AT/x'))
+      expect(mockRedirect).not.toHaveBeenCalled()
+      expect((mockRewrite.mock.calls[0][0] as URL).pathname).toBe('/de/x')
+      expect(response.cookies.set).not.toHaveBeenCalled()
+    })
+
+    it('keeps the basePath', () => {
+      const middleware = createProxy({ ...config, basePath: '/app' })
+      middleware(new NextRequest('http://localhost/app/de-AT/x'))
+      expect(lastRedirect().pathname).toBe('/app/de/x')
+    })
+
+    it('persists a language-tag referer as its supported code', () => {
+      const middleware = createProxy(config)
+      const response = middleware(new NextRequest('http://localhost/en/about', {
+        headers: { referer: 'http://localhost/de-AT/home' },
+      }))
+      expect(response.cookies.set).toHaveBeenCalledWith('i18next', 'de', expect.anything())
+    })
   })
 
   describe('nonExplicitSupportedLngs', () => {
