@@ -2,6 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/next-i18next.svg?style=flat-square)](https://www.npmjs.com/package/next-i18next)
 ![npm](https://img.shields.io/npm/dw/next-i18next)
+[![Socket Badge](https://badge.socket.dev/npm/package/next-i18next)](https://socket.dev/npm/package/next-i18next)
 
 **The easiest way to translate your Next.js apps.**
 
