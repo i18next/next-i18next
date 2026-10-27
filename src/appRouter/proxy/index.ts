@@ -7,15 +7,31 @@ import { parseAcceptLanguage, matchLanguage, findSupportedMatch } from './langua
 export { defineConfig, normalizeConfig } from '../config'
 export type { I18nConfig, NormalizedConfig, ResourceLoader, CookieOptions } from '../types'
 
+// A language tag: a 2-3 letter language with an optional region (2 letters or 3 digits).
+// A script subtag only counts with a region after it (zh-Hant-TW), as "jobs" has the
+// shape of a script too.
+const LANGUAGE_TAG = /^[a-z]{2,3}(?:-[a-z]{4}-(?:[a-z]{2}|\d{3})|-(?:[a-z]{2}|\d{3}))?$/i
+
+/**
+ * The locale in the first path segment. An exact supported code (case-insensitive) is
+ * served as-is. A segment shaped like a language tag that resolves to a supported code
+ * (en-gb -> en, or en -> en-US with nonExplicitSupportedLngs) is returned with
+ * `exact: false`, so the caller can move it to that code. Anything else (/it-jobs,
+ * /my-account) is a route, not a locale.
+ */
 function findLocaleInPath(
   pathname: string,
   supportedLngs: readonly string[],
   nonExplicitSupportedLngs: boolean,
-): string | undefined {
-  // Extract the first path segment
+): { lng: string, exact: boolean } | undefined {
   const match = pathname.match(/^\/([^/]+)/)
   if (!match) return undefined
-  return findSupportedMatch(match[1], supportedLngs, nonExplicitSupportedLngs)
+  const segment = match[1]
+  const exact = supportedLngs.find(l => l.toLowerCase() === segment.toLowerCase())
+  if (exact) return { lng: exact, exact: true }
+  if (!LANGUAGE_TAG.test(segment)) return undefined
+  const lng = findSupportedMatch(segment, supportedLngs, nonExplicitSupportedLngs)
+  return lng ? { lng, exact: false } : undefined
 }
 
 export function createProxy(userConfig: I18nConfig) {
@@ -86,7 +102,8 @@ export function createProxy(userConfig: I18nConfig) {
 
     // For locale-in-path detection, strip basePath prefix so we look at the right segment
     const pathForLocale = basePath ? pathname.slice(basePath.length) || '/' : pathname
-    const lngInPath = findLocaleInPath(pathForLocale, config.supportedLngs, nonExplicit)
+    const localeInPath = findLocaleInPath(pathForLocale, config.supportedLngs, nonExplicit)
+    const lngInPath = localeInPath?.lng
 
     if (config.localeInPath) {
       const prefix = basePath ?? ''
@@ -110,6 +127,16 @@ export function createProxy(userConfig: I18nConfig) {
       // Set custom header for server components to read
       const headers = new Headers(req.headers)
       headers.set(config.headerName, lngInPath || lng)
+
+      // A non-canonical locale segment (/en-gb/about with supportedLngs ['en']) is moved
+      // to its supported code. 'internal' rewrites instead, as it never redirects explicit
+      // locale paths, and no cookie is set for the same prefetch reason.
+      if (localeInPath && !localeInPath.exact) {
+        const url = req.nextUrl.clone()
+        url.pathname = `${prefix}/${localeInPath.lng}${pathAfterBase.replace(/^\/[^/]+/, '')}`
+        if (internal) return NextResponse.rewrite(url, { request: { headers } })
+        return NextResponse.redirect(url)
+      }
 
       // Redirect if no locale in path
       if (!lngInPath) {
@@ -151,7 +178,7 @@ export function createProxy(userConfig: I18nConfig) {
           : refererPath
         const lngInReferer = findLocaleInPath(refererPathForLocale, config.supportedLngs, nonExplicit)
         if (lngInReferer) {
-          persistLanguage(req, response, lngInReferer)
+          persistLanguage(req, response, lngInReferer.lng)
         }
       }
 
