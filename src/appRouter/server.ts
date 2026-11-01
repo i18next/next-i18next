@@ -140,9 +140,10 @@ async function getSharedInstance(state: ServerState): Promise<I18NextClient> {
       // Start loading right away instead of in a setTimeout: with cacheComponents,
       // Next.js counts a timer in the render as uncached data ("blocking route").
       initAsync: false,
-      interpolation: { escapeValue: false },
       ...(config.resources ? { resources: config.resources } : {}),
       ...config.i18nextOptions,
+      // Merged after the spread so other interpolation options keep escapeValue: false
+      interpolation: { escapeValue: false, ...config.i18nextOptions?.interpolation },
     })
 
     state.instance = i18nInstance

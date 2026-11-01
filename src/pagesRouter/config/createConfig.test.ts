@@ -554,6 +554,32 @@ describe('createConfig', () => {
       )
     })
 
+    it('keeps escapeValue: false when other interpolation options are set', () => {
+      const config = createConfig({
+        interpolation: {
+          prefix: '{',
+          suffix: '}',
+        },
+        lng: 'en',
+        localeStructure: '{lng}/{ns}',
+      } as UserConfig)
+      expect(config.interpolation).toEqual({
+        escapeValue: false,
+        prefix: '{',
+        suffix: '}',
+      })
+    })
+
+    it('lets the user turn escapeValue on', () => {
+      const config = createConfig({
+        interpolation: {
+          escapeValue: true,
+        },
+        lng: 'en',
+      } as UserConfig)
+      expect(config.interpolation?.escapeValue).toBe(true)
+    })
+
     it('returns ns as [defaultNS]', () => {
       const config = createConfig({
         defaultNS: 'core',

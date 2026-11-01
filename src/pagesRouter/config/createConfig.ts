@@ -36,6 +36,10 @@ export const createConfig = (
   const combinedConfig = {
     ...defaultConfigStripped,
     ...userConfigStripped,
+    interpolation: {
+      ...defaultConfigStripped.interpolation,
+      ...userConfigStripped.interpolation,
+    },
     ...defaultI18n,
     ...userI18n,
   }
