@@ -237,6 +237,36 @@ describe('server', () => {
       )
     })
 
+    it('keeps escapeValue: false when i18nextOptions sets other interpolation options', async () => {
+      initServerI18next({
+        supportedLngs: ['en', 'de'],
+        fallbackLng: 'en',
+        i18nextOptions: { interpolation: { defaultVariables: { brand: 'Acme' } } },
+      })
+
+      await getT()
+      expect(mockInit).toHaveBeenCalledWith(
+        expect.objectContaining({
+          interpolation: { escapeValue: false, defaultVariables: { brand: 'Acme' } },
+        })
+      )
+    })
+
+    it('lets i18nextOptions turn escapeValue on', async () => {
+      initServerI18next({
+        supportedLngs: ['en', 'de'],
+        fallbackLng: 'en',
+        i18nextOptions: { interpolation: { escapeValue: true } },
+      })
+
+      await getT()
+      expect(mockInit).toHaveBeenCalledWith(
+        expect.objectContaining({
+          interpolation: { escapeValue: true },
+        })
+      )
+    })
+
     it('passes nonExplicitSupportedLngs to i18next init', async () => {
       initServerI18next({
         supportedLngs: ['en-US', 'de-DE'],

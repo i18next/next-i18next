@@ -229,6 +229,30 @@ describe('I18nProvider', () => {
     )
   })
 
+  it('keeps escapeValue: false when i18nextOptions sets other interpolation options', () => {
+    renderProvider({
+      i18nextOptions: { interpolation: { prefix: '{', suffix: '}' } },
+    })
+
+    expect(mockInit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        interpolation: { escapeValue: false, prefix: '{', suffix: '}' },
+      }),
+    )
+  })
+
+  it('lets i18nextOptions turn escapeValue on', () => {
+    renderProvider({
+      i18nextOptions: { interpolation: { escapeValue: true } },
+    })
+
+    expect(mockInit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        interpolation: { escapeValue: true },
+      }),
+    )
+  })
+
   it('leaves supportedLngs unrestricted when it is not provided', () => {
     // Pinning it to the bundled languages breaks `i18nextOptions: { preload: [] }`,
     // where the server ships one language at a time (issue #2348).

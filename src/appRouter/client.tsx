@@ -152,9 +152,10 @@ export function I18nProvider({
       // bundled makes i18next resolve every later language back to the fallback.
       supportedLngs,
       fallbackNS: defaultNS,
-      interpolation: { escapeValue: false },
       react: { useSuspense: false },
       ...i18nextOptions,
+      // Merged after the spread so other interpolation options keep escapeValue: false
+      interpolation: { escapeValue: false, ...i18nextOptions.interpolation },
     })
 
     return inst
