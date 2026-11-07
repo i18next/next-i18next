@@ -235,6 +235,8 @@ export default async function Page() {
 }
 ```
 
+With react-i18next 18, `import { Trans } from 'react-i18next'` works here too: in Server Components its `react-server` export condition resolves to the same component without context. Pass `t` and `i18n` the same way.
+
 ### 7. Client Components
 
 ```tsx
@@ -533,7 +535,7 @@ export default async function Page() {
 <Trans t={t} i18n={i18n} i18nKey='welcome' values={{ name: 'Ada' }} components={[<strong key='0' />]} />
 ```
 
-In Server Components, import both from these entry points rather than from the `react-i18next` root, which also loads React context.
+With react-i18next 17, import both from these entry points in Server Components: the `react-i18next` root also loads React context. react-i18next 18 resolves the root to them in Server Components (its `react-server` export condition), so `import { Trans, IcuTrans } from 'react-i18next'` works there as well.
 
 ### Client Components
 
