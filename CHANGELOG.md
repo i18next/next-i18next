@@ -1,3 +1,7 @@
+## 16.4.8
+
+- **Types: `@types/react` is an optional peer dependency** - the type declarations import from `react`, and with pnpm's global virtual store (`virtualStoreType: global`) TypeScript resolved that to the untyped `react/index.js`, so the React types in them became `any`. Under the default pnpm layout it only worked through pnpm's hidden hoisting. The range is `*`, so projects without TypeScript install nothing extra and an older `@types/react` does not make npm fail. The same fix as react-i18next 18.0.1 ([react-i18next#1948](https://github.com/i18next/react-i18next/issues/1948))
+
 ## 16.4.7
 
 - **Works with i18next 27 and react-i18next 18** - the peer ranges already allowed them; the test suite, the type checks and all seven examples now run on i18next 27 and react-i18next 18, and the examples depend on them. next-i18next itself does not change: it always sets `fallbackLng`, so i18next 27's new default (`false` instead of `'dev'`) does not apply, and the Pages Router works with i18next 27 as before. One i18next 27 change shows in apps: an empty translation falls back like a missing one; set `returnEmptyString: true` in your i18next options to keep empty strings. The [i18next migration guide](https://www.i18next.com/misc/migration-guide#v26.x.x-to-v27.0.0) and the [react-i18next migration guide](https://react.i18next.com/latest/migrating-v17-to-v18) list everything else.
