@@ -1,6 +1,7 @@
 ## 16.4.8
 
 - **Types: `@types/react` is an optional peer dependency** - the type declarations import from `react`, and with pnpm's global virtual store (`virtualStoreType: global`) TypeScript resolved that to the untyped `react/index.js`, so the React types in them became `any`. Under the default pnpm layout it only worked through pnpm's hidden hoisting. The range is `*`, so projects without TypeScript install nothing extra and an older `@types/react` does not make npm fail. The same fix as react-i18next 18.0.1 ([react-i18next#1948](https://github.com/i18next/react-i18next/issues/1948))
+- **Tested with i18next 27.0.1 and react-i18next 18.0.1** - the dev dependencies and all examples use them. The peer ranges are unchanged.
 
 ## 16.4.7
 
