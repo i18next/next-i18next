@@ -228,6 +228,7 @@
     "i18next-resources-to-backend": "^1.2.3"
   },
   "peerDependencies": {
+    "@types/react": "*",
     "i18next": ">= 23.7.13",
     "i18next-icu": ">= 2.0.0",
     "i18next-mf2": ">= 1.0.0",
@@ -236,6 +237,9 @@
     "react-i18next": ">= 14.0.0"
   },
   "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    },
     "i18next-icu": {
       "optional": true
     },
