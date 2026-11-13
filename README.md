@@ -25,6 +25,14 @@ If you don't like to manage your translation files manually or are simply lookin
 
 Starting from a Next.js app with hardcoded strings? Run `npx i18next-cli localize` — one command that wraps strings in `t()`, extracts keys, connects to [Locize](https://www.locize.com?from=next-i18next_readme__localize) and AI-translates your app (review the diff for server components). See the [launch post](https://www.locize.com/blog/i18next-cli-localize?from=next-i18next_readme__localize).
 
+Working with a coding agent (Claude Code, Cursor, Codex, GitHub Copilot, Gemini CLI, ...)? Paste this prompt; the CLI prints the steps for its installed version, you review the diff, and the translation files stay in your repository unless you choose otherwise ([what the prompt tells your agent](https://www.i18next.com/how-to/ai-coding-agents)):
+
+```text
+Localize this app with i18next.
+Run `npx i18next-cli localize --print-agent-prompt` and follow
+the steps it prints, in order, checking each one before the next.
+```
+
 ---
 
 ## Table of Contents

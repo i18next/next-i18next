@@ -118,6 +118,21 @@ h3 {
   border-radius: 0;
 }
 
+/* Copyable prompt: one click selects all of it, no script needed */
+.featured-card .agent-prompt {
+  user-select: all;
+  white-space: pre-wrap;
+  text-align: left;
+  margin: 0 20px 16px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
 /* Regular card grid */
 .mainBox {
   display: grid;

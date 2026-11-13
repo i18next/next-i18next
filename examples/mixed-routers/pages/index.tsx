@@ -33,6 +33,15 @@ const Homepage = (
         </div>
 
         <div className="featured-card" style={{ marginTop: 15 }}>
+          <h3 className="card-title">{t('agent.title')}</h3>
+          <p className="card-text">{t('agent.text')}</p>
+          <pre className="agent-prompt">{t('agent.prompt')}</pre>
+          <a href={t('agent.link')}>
+            <button type="button">{t('agent.cta')}</button>
+          </a>
+        </div>
+
+        <div className="featured-card" style={{ marginTop: 15 }}>
           <h3 className="card-title">{t('icu.question')}</h3>
           <p className="card-text">{t('icu.answer')}</p>
           <a href={t('icu.link')}>

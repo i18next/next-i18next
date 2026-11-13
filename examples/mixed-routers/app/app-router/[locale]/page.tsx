@@ -27,6 +27,15 @@ export default async function AppRouterHome({
         </a>
 
         <div className="featured-card">
+          <h3 className="card-title">{t('agent.title')}</h3>
+          <p className="card-text">{t('agent.text')}</p>
+          <pre className="agent-prompt">{t('agent.prompt')}</pre>
+          <a href={t('agent.link')}>
+            <button type="button">{t('agent.cta')}</button>
+          </a>
+        </div>
+
+        <div className="featured-card" style={{ marginTop: 15 }}>
           <h3 className="card-title">
             {t('blog.v16.question')}
           </h3>
