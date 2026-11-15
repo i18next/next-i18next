@@ -404,6 +404,35 @@ In this mode:
 
 ---
 
+## Static Export (`output: 'export'`)
+
+The App Router setup above also works as a static site without a server, in the default locale-in-path mode:
+
+- Set `output: 'export'` in `next.config.js` and delete `proxy.ts`: a static export has no server, so the proxy can not run.
+- Keep `generateI18nStaticParams()` in `app/[lng]/layout.tsx`. `next build` writes one page per language and route (`out/en.html`, `out/de/about.html`, ...).
+- `getT()` reads the language from the `[lng]` root param on Next.js 16.3+. On older versions, pass it from `params`: `getT('home', { lng })`.
+- `hideDefaultLocale`, `localeInPath: false` and `localeInPath: 'internal'` depend on the proxy and do not work here.
+- Nothing redirects bare paths or writes the language cookie: link to locale paths (`/de/about`), and `/` follows the browser languages on every visit.
+
+The proxy normally redirects `/`, so the export has no page there. Add a `public/index.html`; the build copies it to `out/index.html`, and it sends visitors to the first supported language in their browser settings, or to the fallback language:
+
+```html
+<!doctype html>
+<meta charset="utf-8">
+<script>
+  const supportedLngs = ['en', 'de']
+  const lng = navigator.languages
+    .map((l) => l.split('-')[0])
+    .find((l) => supportedLngs.includes(l))
+  location.replace('/' + (lng || 'en'))
+</script>
+<noscript><meta http-equiv="refresh" content="0; url=/en"></noscript>
+```
+
+Or use a redirect rule on your static host instead (for example `/` to `/en`).
+
+---
+
 ## Loading Languages On Demand
 
 By default the shared server instance preloads every supported language at startup, so `getResources(i18n)` can serialize any of them. With many locales and namespaces that is a lot of resident memory. Pass `i18nextOptions: { preload: [] }` to load each language on its first request instead:
