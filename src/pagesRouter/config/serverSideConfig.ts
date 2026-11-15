@@ -52,7 +52,10 @@ export const applyServerSideConfig = (
       const defaultNSExists = fs.existsSync(defaultNSPath)
       const fallback = getFallbackForLng(lng, fallbackLng)
       const defaultFallbackNSExists = fallback.some(f => {
-        const fallbackFile = defaultFile.replace(lng, f)
+        const fallbackLocaleStructure = localeStructure
+          .replace(`${prefix}lng${suffix}`, f)
+          .replace(`${prefix}ns${suffix}`, defaultNS)
+        const fallbackFile = `/${fallbackLocaleStructure}.${localeExtension}`
         return fs.existsSync(path.join(localePath, fallbackFile))
       })
       if (
