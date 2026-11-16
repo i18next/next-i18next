@@ -23,10 +23,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Use Node.js 24.x
+      - name: Use Node.js 26.x
         uses: actions/setup-node@v6
         with:
-          node-version: 24.x
+          node-version: 26.x
 
       - name: 📥 Install
         run: npm install
