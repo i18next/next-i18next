@@ -186,6 +186,39 @@ describe('createConfig', () => {
         )
       })
 
+      it.each([
+        ['{{ns}}/{{lng}}', undefined],
+        ['[[ns]]/[[lng]]', { prefix: '[[', suffix: ']]' }],
+      ])(
+        'preserves namespace text in fallback paths for %s',
+        (localeStructure, interpolation) => {
+          ;(fs.existsSync as jest.Mock).mockReset()
+          ;(fs.existsSync as jest.Mock).mockImplementation(
+            file =>
+              file ===
+              path.join('public/locales', 'en-common/fr.json')
+          )
+
+          expect(() =>
+            createConfig({
+              lng: 'en',
+              fallbackLng: 'fr',
+              defaultNS: 'en-common',
+              ns: ['en-common'],
+              localeStructure,
+              interpolation,
+              i18n: {
+                defaultLocale: 'en',
+                locales: ['en', 'fr'],
+              },
+            } as UserConfig)
+          ).not.toThrow()
+          expect(fs.existsSync).toHaveBeenCalledWith(
+            path.join('public/locales', 'en-common/fr.json')
+          )
+        }
+      )
+
       it('does not throw an error if fallback exists', () => {
         ;(fs.existsSync as jest.Mock).mockReset()
         ;(fs.existsSync as jest.Mock)
