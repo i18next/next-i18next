@@ -1,3 +1,7 @@
+## Unreleased
+
+- **Pages Router: no false "Default namespace not found" error when the path contains the language code elsewhere** - the development check built the fallback path by replacing the language code in the already interpolated path, so with `localeStructure: '{{ns}}/{{lng}}'` it looked for `fr-common/en.json` instead of `en-common/fr.json` (`frfault/de.json` for `default` and `de`) and threw although the fallback file existed. The fallback path is now built from `localeStructure` like the main one. Production and what loads are unchanged. Thanks @pcbeingused333 ([#2355](https://github.com/i18next/next-i18next/pull/2355))
+
 ## 16.4.8
 
 - **Types: `@types/react` is an optional peer dependency** - the type declarations import from `react`, and with pnpm's global virtual store (`virtualStoreType: global`) TypeScript resolved that to the untyped `react/index.js`, so the React types in them became `any`. Under the default pnpm layout it only worked through pnpm's hidden hoisting. The range is `*`, so projects without TypeScript install nothing extra and an older `@types/react` does not make npm fail. The same fix as react-i18next 18.0.1 ([react-i18next#1948](https://github.com/i18next/react-i18next/issues/1948))
