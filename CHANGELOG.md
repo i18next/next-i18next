@@ -1,4 +1,4 @@
-## Unreleased
+## 16.4.9
 
 - **Pages Router: no false "Default namespace not found" error when the path contains the language code elsewhere** - the development check built the fallback path by replacing the language code in the already interpolated path, so with `localeStructure: '{{ns}}/{{lng}}'` it looked for `fr-common/en.json` instead of `en-common/fr.json` (`frfault/de.json` for `default` and `de`) and threw although the fallback file existed. The fallback path is now built from `localeStructure` like the main one. Production and what loads are unchanged. Thanks @pcbeingused333 ([#2355](https://github.com/i18next/next-i18next/pull/2355))
 
