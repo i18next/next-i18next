@@ -43,6 +43,10 @@ export const serverSideTranslations = async (
     )
   }
 
+  if (typeof namespacesRequired === 'string') {
+    namespacesRequired = [namespacesRequired]
+  }
+
   let userConfig = configOverride
   const configPath = path.resolve(DEFAULT_CONFIG_PATH)
 

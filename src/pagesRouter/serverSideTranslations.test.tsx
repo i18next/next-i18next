@@ -588,6 +588,25 @@ describe('serverSideTranslations', () => {
     }
   })
 
+  it.each(['public/locales', (locale: string, namespace: string) =>
+    `${namespace}/${locale}.json`])(
+    'accepts a string namespace with localePath %s',
+    async localePath => {
+      const props = await serverSideTranslations('en', 'common', {
+        i18n: { defaultLocale: 'en', locales: ['en'] },
+        localePath,
+        ns: ['common'],
+        resources: { en: { common: { greeting: 'Hello' } } },
+      })
+
+      expect(props._nextI18Next?.ns).toEqual(['common'])
+      expect(props._nextI18Next?.initialI18nStore).toEqual({
+        en: { common: { greeting: 'Hello' } },
+      })
+      expect(fs.readdirSync).not.toHaveBeenCalled()
+    }
+  )
+
   it('throws if a function is used for localePath and namespaces are not provided', async () => {
     const localePathFn: UserConfig['localePath'] = (
       locale: string,
