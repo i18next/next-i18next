@@ -24,7 +24,8 @@ export function parseAcceptLanguage(header: string | null | undefined): string[]
  *
  * Matching order (mirrors i18next's LanguageUtils.getBestMatchFromCodes):
  * 1. Exact match (case-insensitive)
- * 2. Preferred prefix → supported base (e.g. preferred 'en-US' matches supported 'en')
+ * 2. Preferred prefix → supported base: script first (e.g. preferred 'zh-Hant-TW' matches
+ *    supported 'zh-Hant'), then language (e.g. preferred 'en-US' matches supported 'en')
  * 3. If nonExplicitSupportedLngs: preferred base → supported region
  *    (e.g. preferred 'en' matches supported 'en-US')
  */
@@ -39,9 +40,13 @@ export function findSupportedMatch(
   const exact = supportedLanguages.find(l => l.toLowerCase() === lower)
   if (exact) return exact
 
-  // 2. Preferred prefix → supported base (e.g. 'en-US' → 'en')
-  const prefix = lower.split('-')[0]
-  const partial = supportedLanguages.find(l => l.toLowerCase() === prefix)
+  // 2. Preferred prefix → supported base (e.g. 'zh-Hant-TW' → 'zh-Hant', 'en-US' → 'en')
+  const parts = lower.split('-')
+  const prefix = parts[0]
+  const scriptPart = parts.length > 2 ? parts.slice(0, -1).join('-') : undefined
+  const partial =
+    supportedLanguages.find(l => l.toLowerCase() === scriptPart) ??
+    supportedLanguages.find(l => l.toLowerCase() === prefix)
   if (partial) return partial
 
   // 3. Reverse match: preferred base → supported region (e.g. 'en' → 'en-US')

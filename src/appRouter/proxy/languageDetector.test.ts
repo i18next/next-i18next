@@ -74,6 +74,11 @@ describe('findSupportedMatch', () => {
     expect(findSupportedMatch('en-US', ['en', 'de'], false)).toBe('en')
   })
 
+  it('prefers the script part over the language part (zh-Hant-TW -> zh-Hant)', () => {
+    expect(findSupportedMatch('zh-Hant-TW', ['zh', 'zh-Hans', 'zh-Hant'], false)).toBe('zh-Hant')
+    expect(findSupportedMatch('sr-Latn-RS', ['en', 'sr-Latn'], false)).toBe('sr-Latn')
+  })
+
   it('does not reverse match without nonExplicitSupportedLngs', () => {
     expect(findSupportedMatch('en', ['en-US', 'en-GB'], false)).toBeUndefined()
   })
