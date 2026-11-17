@@ -1,3 +1,8 @@
+## 16.4.11
+
+- **App Router: a language tag with script and region matches a supported script code** - the proxy went from the full code straight to the bare language, so with `supportedLngs: ['en', 'zh-Hans', 'zh-Hant']` a browser sending `zh-Hant-TW` got `en`, `/zh-Hant-TW/x` redirected to `/en/zh-Hant-TW/x`, and with `nonExplicitSupportedLngs` both ended up on `zh-Hans`. With `zh` also supported it got `zh`. The script part (`zh-Hant`) is now tried before the language part, as in i18next. Thanks @SudeepGowda55 ([#2357](https://github.com/i18next/next-i18next/pull/2357))
+- **App Router: the cookie fallback in `getT()` matches like the proxy** - when the proxy did not run (no `x-i18next-current-language` header), the language cookie only counted if it was in `supportedLngs` exactly, or with `nonExplicitSupportedLngs` by its language part. Now it goes through the proxy's matching: case-insensitive, `zh-Hant-TW` to `zh-Hant` and `de-AT` to `de`.
+
 ## 16.4.10
 
 - **Pages Router: a namespace passed as a string to `serverSideTranslations` is used** - the types accept `serverSideTranslations(locale, 'common')`, but only an array counted as the namespaces to load. A string was treated like no argument: with a folder `localePath` (the default `public/locales`) the page got every namespace in the locale folder instead of the one it asked for, and with a function `localePath` it threw `Must provide namespacesRequired`. A string now means that one namespace. Pages that pass a string and use other namespaces too should list them in an array. Thanks @pcbeingused333 ([#2356](https://github.com/i18next/next-i18next/pull/2356))
