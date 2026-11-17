@@ -592,6 +592,49 @@ describe('server', () => {
       expect(mockGetFixedT).toHaveBeenCalledWith('en-US', 'common', undefined)
     })
 
+    it.each([
+      ['zh-Hant-TW', ['en', 'zh-Hans', 'zh-Hant'], 'zh-Hant'],
+      ['DE', ['en', 'de'], 'de'],
+      ['de-AT', ['en', 'de'], 'de'],
+    ])('matches the cookie %s like the proxy does', async (cookieValue, supportedLngs, expected) => {
+      jest.resetModules()
+      clearGlobalState()
+      jest.doMock('i18next', () => ({
+        createInstance: jest.fn(() => mockInstance),
+      }))
+      jest.doMock('react-i18next/initReactI18next', () => ({
+        initReactI18next: { type: '3rdParty', init: jest.fn() },
+      }))
+      jest.doMock('i18next-resources-to-backend', () => ({
+        __esModule: true,
+        default: jest.fn((fn: any) => ({ type: 'backend', read: fn })),
+      }))
+      jest.doMock('react', () => ({
+        cache: jest.fn((fn: any) => fn),
+      }))
+      jest.doMock('next/headers', () => ({
+        headers: jest.fn(async () => ({
+          get: jest.fn(() => null), // no header
+        })),
+        cookies: jest.fn(async () => ({
+          get: jest.fn((name: string) => (name === 'i18next' ? { value: cookieValue } : undefined)),
+        })),
+      }))
+
+      mockInit.mockClear()
+      mockGetFixedT.mockClear()
+      mockInstance.isInitialized = false
+      mockInit.mockImplementation(async () => {
+        mockInstance.isInitialized = true
+      })
+
+      const mod = require('./server')
+      mod.initServerI18next({ supportedLngs, fallbackLng: 'en' })
+
+      await mod.getT()
+      expect(mockGetFixedT).toHaveBeenCalledWith(expected, 'common', undefined)
+    })
+
     it('uses custom resourceLoader when provided', async () => {
       const resourcesToBackend = require('i18next-resources-to-backend').default
       resourcesToBackend.mockClear()

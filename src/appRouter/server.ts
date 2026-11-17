@@ -195,17 +195,10 @@ const detectLanguage = cache(async (config: NormalizedConfig): Promise<string> =
   const cookieStore = await cookies()
   const cookieValue = cookieStore.get(config.cookieName)?.value
   if (cookieValue) {
-    if (config.supportedLngs.includes(cookieValue)) {
-      return cookieValue
-    }
-    // nonExplicitSupportedLngs: e.g. cookie 'en' matches supported 'en-US'
-    if (config.nonExplicitSupportedLngs) {
-      const prefix = cookieValue.toLowerCase().split('-')[0]
-      const match = config.supportedLngs.find(
-        l => l.toLowerCase() === prefix || l.toLowerCase().split('-')[0] === prefix
-      )
-      if (match) return match
-    }
+    // the same matching as the proxy: case-insensitive, 'zh-Hant-TW' → 'zh-Hant', 'en-US' → 'en'
+    // and, with nonExplicitSupportedLngs, 'en' → 'en-US'
+    const match = findSupportedMatch(cookieValue, config.supportedLngs, config.nonExplicitSupportedLngs)
+    if (match) return match
   }
 
   return config.fallbackLng
