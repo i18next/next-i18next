@@ -1,3 +1,7 @@
+## 16.4.12
+
+- **App Router: an unsupported language cookie no longer hides `Accept-Language`** - the proxy matched the cookie with a fallback to `fallbackLng`, so the `Accept-Language` step never ran: a cookie holding a language not in `supportedLngs` (removed from the list, or set by another app on the domain) sent the visitor to the default language even when the browser asked for a supported one, and the proxy then stored the default in the cookie. Detection now goes cookie, `Accept-Language`, `fallbackLng`, as documented. Thanks @pcbeingused333 ([#2358](https://github.com/i18next/next-i18next/pull/2358))
+
 ## 16.4.11
 
 - **App Router: a language tag with script and region matches a supported script code** - the proxy went from the full code straight to the bare language, so with `supportedLngs: ['en', 'zh-Hans', 'zh-Hant']` a browser sending `zh-Hant-TW` got `en`, `/zh-Hant-TW/x` redirected to `/en/zh-Hant-TW/x`, and with `nonExplicitSupportedLngs` both ended up on `zh-Hans`. With `zh` also supported it got `zh`. The script part (`zh-Hant`) is now tried before the language part, as in i18next. Thanks @SudeepGowda55 ([#2357](https://github.com/i18next/next-i18next/pull/2357))
