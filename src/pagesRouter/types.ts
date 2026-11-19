@@ -53,6 +53,7 @@ export type UserConfig = {
   onPreInitI18next?: (i18n: I18n) => void
   reloadOnPrerender?: boolean
   serializeConfig?: boolean
+  serverInstanceKey?: string
   use?: any[]
 } & InitOptions
 

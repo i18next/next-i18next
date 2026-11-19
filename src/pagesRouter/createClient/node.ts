@@ -29,16 +29,20 @@ function createFSBackend(config: InternalConfig) {
   })
 }
 
-let globalInstance: I18n
+// One shared instance per serverInstanceKey (e.g. a tenant), `undefined` being the default.
+// Each keeps its store and backend (and the backend's reload timer) for the life of the
+// process, so keys must come from a known, bounded set.
+const rootInstances = new Map<string | undefined, I18n>()
 
 export default (config: InternalConfig): CreateClientReturn => {
   if (config.ns === undefined) config.ns = []
   let instance: I18n
-  if (!globalInstance) {
-    globalInstance = i18n.createInstance(config) as I18n
-    instance = globalInstance
+  const rootInstance = rootInstances.get(config.serverInstanceKey)
+  if (!rootInstance) {
+    instance = i18n.createInstance(config) as I18n
+    rootInstances.set(config.serverInstanceKey, instance)
   } else {
-    instance = globalInstance.cloneInstance({
+    instance = rootInstance.cloneInstance({
       ...config,
 
       // @ts-ignore

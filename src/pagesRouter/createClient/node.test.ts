@@ -65,6 +65,58 @@ describe('createClientNode', () => {
   })
 })
 
+describe('createClientNode with serverInstanceKey', () => {
+  let backendInits = 0
+
+  class TenantBackend {
+    static type = 'backend'
+
+    type = 'backend'
+
+    options: any
+
+    init(_services: any, options: any) {
+      backendInits++
+      this.options = options
+    }
+
+    read(_lng: string, ns: string, callback: any) {
+      callback(null, { hello: `${ns} of ${this.options.tenant}` })
+    }
+  }
+
+  const tenantConfig = (key: string, tenant = key) =>
+    ({
+      backend: { tenant },
+      lng: 'en',
+      ns: ['common'],
+      serverInstanceKey: key,
+      use: [TenantBackend],
+    }) as any
+
+  it('keeps one instance per key, each with the backend options of its first call', async () => {
+    const shared = createClientNode(config) // the default instance exists, as in a running server
+
+    const tenant1 = createClientNode(tenantConfig('tenant1'))
+    await tenant1.initPromise
+    const tenant2 = createClientNode(tenantConfig('tenant2'))
+    await tenant2.initPromise
+    const tenant1Again = createClientNode(tenantConfig('tenant1', 'ignored'))
+    await tenant1Again.initPromise
+
+    expect((tenant1.i18n.options as any).isClone).not.toBe(true)
+    expect((tenant2.i18n.options as any).isClone).not.toBe(true)
+    expect((tenant1Again.i18n.options as any).isClone).toBe(true)
+    expect(tenant1Again.i18n.store).toBe(tenant1.i18n.store)
+    expect(tenant2.i18n.store).not.toBe(tenant1.i18n.store)
+    expect(shared.i18n.store).not.toBe(tenant1.i18n.store)
+    expect(tenant1.i18n.t('common:hello')).toBe('common of tenant1')
+    expect(tenant2.i18n.t('common:hello')).toBe('common of tenant2')
+    expect(tenant1Again.i18n.t('common:hello')).toBe('common of tenant1')
+    expect(backendInits).toBe(2)
+  })
+})
+
 describe('createClientNode with a custom interpolation prefix/suffix', () => {
   let localesDir: string
 
