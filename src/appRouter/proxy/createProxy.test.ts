@@ -248,6 +248,19 @@ describe('createProxy', () => {
     expect(redirectUrl.pathname).toBe('/en/about')
   })
 
+  it('uses Accept-Language when the cookie has an unsupported value', () => {
+    const middleware = createProxy(config)
+    const req = new NextRequest('http://localhost/about', {
+      cookies: { i18next: 'xx' }, // unsupported
+      headers: { 'Accept-Language': 'de' },
+    })
+    middleware(req)
+
+    expect(mockRedirect).toHaveBeenCalledTimes(1)
+    const redirectUrl = mockRedirect.mock.calls[0][0] as URL
+    expect(redirectUrl.pathname).toBe('/de/about')
+  })
+
   describe('language-shaped path segments', () => {
     const lastRedirect = () => mockRedirect.mock.calls[mockRedirect.mock.calls.length - 1][0] as URL
 
