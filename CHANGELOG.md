@@ -1,3 +1,7 @@
+## 16.5.1
+
+- **App Router: `/robots.txt`, web manifests and AVIF images are no longer redirected** - the proxy skipped static files by extension (`png`, `css`, `js`, ...), but not `.webmanifest` or `.avif`, and not `/robots.txt`. With `localeInPath`, a `public/robots.txt` or `app/robots.ts` was redirected to `/en/robots.txt` (rewritten in `'internal'` mode and with `hideDefaultLocale`) and returned 404. They are now served as they are. Other `.xml` and `.txt` paths still go through the proxy like pages, since a sitemap or feed can be a localized route (`app/[lng]/sitemap.ts`). Thanks @pcbeingused333 ([#2359](https://github.com/i18next/next-i18next/pull/2359))
+
 ## 16.5.0
 
 - **App Router: translated paths** - new `pathnames` option: with `localeInPath: true`, `{ '/contact': { de: '/kontakt' } }` serves `/de/kontakt` from `app/[lng]/contact`, redirects `/de/contact` to `/de/kontakt`, and redirects a path without locale straight to the translated path of the detected language. `[param]` and `[...param]` segments are supported (static routes match first, and `createProxy` throws when the two sides of an entry use different params), encoded paths and `trailingSlash` work, and with `hideDefaultLocale` the default language's translated paths work without prefix. New helpers `getLocalizedPath` and `getInternalPath` from `next-i18next` build links, the language switcher and hreflang alternates. New README section "Translated Paths". ([#1381](https://github.com/i18next/next-i18next/discussions/1381))
