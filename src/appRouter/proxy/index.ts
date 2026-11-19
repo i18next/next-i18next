@@ -89,8 +89,8 @@ export function createProxy(userConfig: I18nConfig) {
       }
     }
 
-    // Skip common static file extensions
-    if (/\.(ico|png|jpg|jpeg|svg|gif|webp|css|js|map|woff2?|ttf|eot)$/.test(pathname)) {
+    // Skip common static file extensions (including robots.txt, sitemap.xml, manifest)
+    if (/\.(ico|png|jpg|jpeg|svg|gif|webp|css|js|map|txt|xml|webmanifest|avif|woff2?|ttf|eot)$/.test(pathname)) {
       return NextResponse.next()
     }
 

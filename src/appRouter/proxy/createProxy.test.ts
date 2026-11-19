@@ -152,6 +152,25 @@ describe('createProxy', () => {
     expect(mockNext).toHaveBeenCalledTimes(1)
   })
 
+  it.each([
+    '/robots.txt',
+    '/sitemap.xml',
+    '/manifest.webmanifest',
+    '/hero.avif',
+  ])('skips %s', (path) => {
+    for (const localeInPath of [true, 'internal' as const]) {
+      mockRedirect.mockClear()
+      mockRewrite.mockClear()
+      mockNext.mockClear()
+      const middleware = createProxy({ ...config, localeInPath })
+      middleware(new NextRequest(`http://localhost${path}`))
+
+      expect(mockRedirect).not.toHaveBeenCalled()
+      expect(mockRewrite).not.toHaveBeenCalled()
+      expect(mockNext).toHaveBeenCalledTimes(1)
+    }
+  })
+
   it('sets custom header with detected language', () => {
     const middleware = createProxy(config)
     const req = new NextRequest('http://localhost/en/about')
