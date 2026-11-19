@@ -86,7 +86,7 @@ export function createProxy(userConfig: I18nConfig) {
     let lng: string | undefined
     const cookieValue = req.cookies.get(config.cookieName)?.value
     if (cookieValue) {
-      lng = matchLanguage([cookieValue], config.supportedLngs, config.fallbackLng, nonExplicit)
+      lng = findSupportedMatch(cookieValue, config.supportedLngs, nonExplicit)
     }
     if (!lng) {
       lng = matchLanguage(
