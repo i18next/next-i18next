@@ -154,7 +154,6 @@ describe('createProxy', () => {
 
   it.each([
     '/robots.txt',
-    '/sitemap.xml',
     '/manifest.webmanifest',
     '/hero.avif',
   ])('skips %s', (path) => {
@@ -169,6 +168,22 @@ describe('createProxy', () => {
       expect(mockRewrite).not.toHaveBeenCalled()
       expect(mockNext).toHaveBeenCalledTimes(1)
     }
+  })
+
+  // app/[lng]/sitemap.ts or app/[lng]/rss.xml/route.ts are localized routes like pages
+  it('handles .xml and .txt paths other than /robots.txt like pages', () => {
+    const headers = { 'Accept-Language': 'de' }
+
+    createProxy(config)(new NextRequest('http://localhost/feed.xml', { headers }))
+    expect((mockRedirect.mock.calls[0][0] as URL).pathname).toBe('/de/feed.xml')
+
+    createProxy({ ...config, localeInPath: 'internal' as const })(
+      new NextRequest('http://localhost/sitemap.xml', { headers }),
+    )
+    expect((mockRewrite.mock.calls[0][0] as URL).pathname).toBe('/de/sitemap.xml')
+
+    createProxy({ ...config, hideDefaultLocale: true })(new NextRequest('http://localhost/llms.txt'))
+    expect((mockRewrite.mock.calls[1][0] as URL).pathname).toBe('/en/llms.txt')
   })
 
   it('sets custom header with detected language', () => {

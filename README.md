@@ -135,9 +135,11 @@ import i18nConfig from './i18n.config'
 export const proxy = createProxy(i18nConfig)
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|site.webmanifest).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|site.webmanifest|manifest.webmanifest|robots.txt|sitemap.xml).*)'],
 }
 ```
+
+The matcher leaves out the root metadata files (`app/robots.ts`, `app/sitemap.ts`, `app/manifest.ts`). If your sitemap is a localized route instead (`app/[lng]/sitemap.ts`), take `sitemap.xml` out of the matcher, so the proxy still sends `/sitemap.xml` to a language.
 
 > **Note**: `createMiddleware` from `next-i18next/middleware` is still available for projects on Next.js < 16.
 

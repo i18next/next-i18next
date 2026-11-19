@@ -4,5 +4,5 @@ import i18nConfig from './i18n.config'
 export const proxy = createProxy(i18nConfig)
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|site.webmanifest).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|site.webmanifest|manifest.webmanifest|robots.txt|sitemap.xml).*)'],
 }

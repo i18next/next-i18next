@@ -89,8 +89,13 @@ export function createProxy(userConfig: I18nConfig) {
       }
     }
 
-    // Skip common static file extensions (including robots.txt, sitemap.xml, manifest)
-    if (/\.(ico|png|jpg|jpeg|svg|gif|webp|css|js|map|txt|xml|webmanifest|avif|woff2?|ttf|eot)$/.test(pathname)) {
+    // Skip common static file extensions and /robots.txt, which only exists at the root.
+    // Not .txt or .xml in general: a sitemap or feed can be a localized route (app/[lng]/sitemap.ts,
+    // app/[lng]/rss.xml/route.ts) that needs the redirect or rewrite like a page.
+    if (
+      pathname === '/robots.txt' ||
+      /\.(ico|png|jpg|jpeg|svg|gif|webp|avif|webmanifest|css|js|map|woff2?|ttf|eot)$/.test(pathname)
+    ) {
       return NextResponse.next()
     }
 
