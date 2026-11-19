@@ -3,6 +3,8 @@
  */
 
 import fs from 'fs'
+import os from 'os'
+import path from 'path'
 import i18next from 'i18next'
 import { UserConfig } from './types'
 import { serverSideTranslations } from './serverSideTranslations'
@@ -493,6 +495,31 @@ describe('serverSideTranslations', () => {
         'If nonExplicitSupportedLngs is true, no functions are allowed for fallbackLng'
       )
     })
+  })
+
+  it('uses the default export of a config file written as an ES module', async () => {
+    const realFs = jest.requireActual('fs')
+    const dir = realFs.mkdtempSync(path.join(os.tmpdir(), 'next-i18next-esm-'))
+    const configPath = path.join(dir, 'next-i18next.config.js')
+    // what require() returns for `export default { ... }`
+    realFs.writeFileSync(
+      configPath,
+      "module.exports = { __esModule: true, default: { i18n: { defaultLocale: 'de', locales: ['de', 'en'] } } }"
+    )
+    process.env.I18NEXT_DEFAULT_CONFIG_PATH = configPath
+    try {
+      let fresh = serverSideTranslations
+      jest.isolateModules(() => {
+        fresh = require('./serverSideTranslations').serverSideTranslations
+      })
+      const props = await fresh('de', [])
+      expect(props._nextI18Next.userConfig).toEqual({
+        i18n: { defaultLocale: 'de', locales: ['de', 'en'] },
+      })
+    } finally {
+      delete process.env.I18NEXT_DEFAULT_CONFIG_PATH
+      realFs.rmSync(dir, { recursive: true, force: true })
+    }
   })
 
   it('returns props', async () => {

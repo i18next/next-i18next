@@ -55,7 +55,9 @@ export const serverSideTranslations = async (
     // Pass the absolute configPath itself as the base — works identically under CJS
     // and ESM output and avoids referencing __filename / import.meta.url.
     const nodeRequire = createRequire(configPath)
-    userConfig = nodeRequire(configPath)
+    const loaded = nodeRequire(configPath)
+    // a config written with `export default` comes back as its module namespace
+    userConfig = loaded?.__esModule && 'default' in loaded ? loaded.default : loaded
   }
 
   if (userConfig === null) {
