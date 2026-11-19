@@ -881,4 +881,139 @@ describe('createProxy', () => {
       )
     })
   })
+
+  describe('pathnames', () => {
+    const pathConfig = {
+      supportedLngs: ['en', 'de', 'it'],
+      fallbackLng: 'en',
+      pathnames: {
+        '/contact': { de: '/kontakt', it: '/contatti' },
+        '/blog/[slug]': { de: '/artikel/[slug]' },
+        '/docs/[...path]': { de: '/doku/[...path]' },
+      },
+    }
+
+    it('rewrites a translated path to the internal route', () => {
+      createProxy(pathConfig)(new NextRequest('http://localhost/de/kontakt?x=1'))
+      expect(mockRedirect).not.toHaveBeenCalled()
+      const url = mockRewrite.mock.calls[0][0] as URL
+      expect(url.pathname).toBe('/de/contact')
+      expect(url.search).toBe('?x=1')
+      expect(mockRewrite.mock.calls[0][1].request.headers.get('x-i18next-current-language')).toBe('de')
+    })
+
+    it('rewrites dynamic and catch-all segments', () => {
+      const middleware = createProxy(pathConfig)
+      middleware(new NextRequest('http://localhost/de/artikel/hallo-welt'))
+      middleware(new NextRequest('http://localhost/de/doku/a/b'))
+      expect((mockRewrite.mock.calls[0][0] as URL).pathname).toBe('/de/blog/hallo-welt')
+      expect((mockRewrite.mock.calls[1][0] as URL).pathname).toBe('/de/docs/a/b')
+    })
+
+    it('redirects the internal route to the translated path', () => {
+      createProxy(pathConfig)(new NextRequest('http://localhost/de/blog/hallo-welt'))
+      expect((mockRedirect.mock.calls[0][0] as URL).pathname).toBe('/de/artikel/hallo-welt')
+    })
+
+    it('serves a language without a translation as is', () => {
+      createProxy(pathConfig)(new NextRequest('http://localhost/en/contact'))
+      expect(mockRedirect).not.toHaveBeenCalled()
+      expect(mockRewrite).not.toHaveBeenCalled()
+      expect(mockNext).toHaveBeenCalledTimes(1)
+    })
+
+    it('redirects a path without locale straight to the translated path', () => {
+      const req = new NextRequest('http://localhost/contact', { cookies: { i18next: 'it' } })
+      createProxy(pathConfig)(req)
+      expect((mockRedirect.mock.calls[0][0] as URL).pathname).toBe('/it/contatti')
+    })
+
+    it('with hideDefaultLocale, serves the translated path of the default language without prefix', () => {
+      const hide = {
+        ...pathConfig,
+        hideDefaultLocale: true,
+        pathnames: { '/contact': { en: '/contact-us', de: '/kontakt' } },
+      }
+      const middleware = createProxy(hide)
+      middleware(new NextRequest('http://localhost/contact-us'))
+      expect((mockRewrite.mock.calls[0][0] as URL).pathname).toBe('/en/contact')
+      middleware(new NextRequest('http://localhost/contact'))
+      expect((mockRedirect.mock.calls[0][0] as URL).pathname).toBe('/contact-us')
+      middleware(new NextRequest('http://localhost/en/contact'))
+      expect((mockRedirect.mock.calls[1][0] as URL).pathname).toBe('/contact-us')
+    })
+
+    it('keeps the basePath', () => {
+      createProxy({ ...pathConfig, basePath: '/app' })(new NextRequest('http://localhost/app/de/kontakt'))
+      expect((mockRewrite.mock.calls[0][0] as URL).pathname).toBe('/app/de/contact')
+    })
+
+    it('matches percent-encoded and trailing-slash paths', () => {
+      const middleware = createProxy({ ...pathConfig, pathnames: { '/about': { de: '/über-uns' } } })
+      middleware(new NextRequest('http://localhost/de/%C3%BCber-uns'))
+      expect((mockRewrite.mock.calls[0][0] as URL).pathname).toBe('/de/about')
+      middleware(new NextRequest('http://localhost/de/about'))
+      expect((mockRedirect.mock.calls[0][0] as URL).pathname).toBe('/de/%C3%BCber-uns')
+      createProxy(pathConfig)(new NextRequest('http://localhost/de/kontakt/'))
+      expect((mockRewrite.mock.calls[1][0] as URL).pathname).toBe('/de/contact')
+    })
+
+    it('prefers static routes over [param] routes, whatever the config order', () => {
+      const middleware = createProxy({
+        ...pathConfig,
+        pathnames: { '/blog/[slug]': { de: '/artikel/[slug]' }, '/blog/new': { de: '/artikel/neu' } },
+      })
+      middleware(new NextRequest('http://localhost/de/artikel/neu'))
+      expect((mockRewrite.mock.calls[0][0] as URL).pathname).toBe('/de/blog/new')
+      middleware(new NextRequest('http://localhost/de/blog/new'))
+      expect((mockRedirect.mock.calls[0][0] as URL).pathname).toBe('/de/artikel/neu')
+    })
+
+    it('throws for translations with other params than their route', () => {
+      expect(() => createProxy({ ...pathConfig, pathnames: { '/blog/[slug]': { de: '/artikel/[id]' } } })).toThrow('same params')
+      expect(() => createProxy({ ...pathConfig, pathnames: { '/[...p]': { de: '/x/[p]' } } })).toThrow('same params')
+      expect(() => createProxy({ ...pathConfig, pathnames: { '/docs/[[...p]]': { de: '/doku/[[...p]]' } } })).toThrow('optional catch-all')
+    })
+
+    it('redirects a path without locale to the translated path under basePath', () => {
+      createProxy({ ...pathConfig, basePath: '/app' })(new NextRequest('http://localhost/app/contact', { cookies: { i18next: 'de' } }))
+      expect((mockRedirect.mock.calls[0][0] as URL).pathname).toBe('/app/de/kontakt')
+    })
+
+    it("is not applied with localeInPath: 'internal'", () => {
+      createProxy({ ...pathConfig, localeInPath: 'internal' })(new NextRequest('http://localhost/de/kontakt'))
+      expect(mockRedirect).not.toHaveBeenCalled()
+      expect(mockRewrite).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('the target of its own rewrite', () => {
+    // Next.js 16.3 runs the proxy again for the rewrite target, with the rewrite's request headers
+    it('serves it as is, so hideDefaultLocale does not redirect / -> /en -> / in a loop', () => {
+      const middleware = createProxy({ supportedLngs: ['en', 'de'], fallbackLng: 'en', hideDefaultLocale: true })
+      middleware(new NextRequest('http://localhost/about'))
+      const rewriteHeaders = mockRewrite.mock.calls[0][1].request.headers as Headers
+      expect(rewriteHeaders.get('x-i18next-rewritten')).toBe('1')
+
+      const second = new NextRequest('http://localhost/en/about', {
+        headers: Object.fromEntries(rewriteHeaders.entries()),
+      })
+      middleware(second)
+      expect(mockRedirect).not.toHaveBeenCalled()
+      expect(mockNext).toHaveBeenCalledTimes(1)
+    })
+
+    it('serves the internal route of a translated path as is', () => {
+      const middleware = createProxy({
+        supportedLngs: ['en', 'de'],
+        fallbackLng: 'en',
+        pathnames: { '/contact': { de: '/kontakt' } },
+      })
+      middleware(new NextRequest('http://localhost/de/kontakt'))
+      const rewriteHeaders = mockRewrite.mock.calls[0][1].request.headers as Headers
+      middleware(new NextRequest('http://localhost/de/contact', { headers: Object.fromEntries(rewriteHeaders.entries()) }))
+      expect(mockRedirect).not.toHaveBeenCalled()
+      expect(mockNext).toHaveBeenCalledTimes(1)
+    })
+  })
 })

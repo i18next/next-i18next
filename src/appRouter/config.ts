@@ -40,6 +40,7 @@ export function normalizeConfig(userConfig: I18nConfig): NormalizedConfig {
     cookieOptions: userConfig.cookieOptions ?? {},
     ignoredPaths: userConfig.ignoredPaths ?? ['/api', '/_next', '/static'],
     basePath: userConfig.basePath,
+    pathnames: userConfig.pathnames,
     resources: userConfig.resources,
     resourceLoader: userConfig.resourceLoader,
     use: userConfig.use ?? [],

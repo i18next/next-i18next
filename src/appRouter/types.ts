@@ -14,6 +14,13 @@ export interface CookieOptions {
   maxAge?: number
 }
 
+/**
+ * Translated URL paths: internal route -> public path per language, e.g.
+ * `{ '/contact': { de: '/kontakt' }, '/blog/[slug]': { de: '/artikel/[slug]' } }`.
+ * `[param]` matches one segment, `[...param]` the rest of the path.
+ */
+export type Pathnames = Record<string, Record<string, string>>
+
 export interface I18nConfig {
   /** Supported languages, e.g. ['en', 'de', 'it'] */
   supportedLngs: string[]
@@ -50,6 +57,10 @@ export interface I18nConfig {
    *  e.g. `/about` serves the default language, `/de/about` serves German.
    *  Requests to the explicit default prefix (`/en/about`) are redirected to `/about`. */
   hideDefaultLocale?: boolean
+  /** Translated URL paths per language, with `localeInPath: true`: `/de/kontakt` serves
+   *  `app/[lng]/contact`, and `/de/contact` redirects to `/de/kontakt`. Build links with
+   *  `getLocalizedPath` from `next-i18next`. */
+  pathnames?: Pathnames
 
   // Middleware behavior
   /** Cookie name for storing selected language (defaults to 'i18next') */
@@ -118,6 +129,7 @@ export interface NormalizedConfig {
   cookieOptions: CookieOptions
   ignoredPaths: string[]
   basePath?: string
+  pathnames?: Pathnames
   resources?: Resource
   resourceLoader?: ResourceLoader
   use: any[]

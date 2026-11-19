@@ -2,10 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import type { I18nConfig } from '../types'
 import { normalizeConfig } from '../config'
 import { parseAcceptLanguage, matchLanguage, findSupportedMatch } from './languageDetector'
+import { toInternalPath, toLocalizedPath, validatePathnames } from '../pathnames'
 
 // Re-export config utilities for Edge-safe usage (no react-i18next dependency)
 export { defineConfig, normalizeConfig } from '../config'
-export type { I18nConfig, NormalizedConfig, ResourceLoader, CookieOptions } from '../types'
+export type { I18nConfig, NormalizedConfig, ResourceLoader, CookieOptions, Pathnames } from '../types'
 
 // A language tag: a 2-3 letter language with an optional region (2 letters or 3 digits).
 // A script subtag only counts with a region after it (zh-Hant-TW), as "jobs" has the
@@ -19,6 +20,11 @@ const LANGUAGE_TAG = /^[a-z]{2,3}(?:-[a-z]{4}-(?:[a-z]{2}|\d{3})|-(?:[a-z]{2}|\d
  * `exact: false`, so the caller can move it to that code. Anything else (/it-jobs,
  * /my-account) is a route, not a locale.
  */
+// Set on the request of every rewrite. Next.js (16.3) runs the proxy again for the
+// rewrite target, with the headers the rewrite set; that run must serve it as is,
+// or hideDefaultLocale (/ -> /en -> /) and translated paths redirect back in a loop.
+const REWRITTEN_HEADER = 'x-i18next-rewritten'
+
 function findLocaleInPath(
   pathname: string,
   supportedLngs: readonly string[],
@@ -41,6 +47,12 @@ export function createProxy(userConfig: I18nConfig) {
   const basePath = config.basePath
     ? ('/' + config.basePath.replace(/^\/+/, '').replace(/\/+$/, ''))
     : undefined
+  // translated paths need the locale in the public URL to know the language of a path
+  const pathnames = config.localeInPath === true ? config.pathnames : undefined
+  if (pathnames) validatePathnames(pathnames)
+  // a path in `lng` (translated or the internal route) -> its translated public form
+  const localize = (path: string, lng: string) =>
+    toLocalizedPath(toInternalPath(path, lng, pathnames) ?? path, lng, pathnames)
 
   // Persist the language in the cookie, but only when it actually changed. Next merges a
   // cookie set here into the request's mutable cookies and treats any modified cookie as a
@@ -82,6 +94,11 @@ export function createProxy(userConfig: I18nConfig) {
       return NextResponse.next()
     }
 
+    // The target of one of our own rewrites
+    if (req.headers.has(REWRITTEN_HEADER)) {
+      return NextResponse.next()
+    }
+
     // Detect language from cookie, then Accept-Language header, then default
     let lng: string | undefined
     const cookieValue = req.cookies.get(config.cookieName)?.value
@@ -118,7 +135,7 @@ export function createProxy(userConfig: I18nConfig) {
       if (!internal && config.hideDefaultLocale && lngInPath === config.fallbackLng) {
         const pathWithoutLocale = pathAfterBase.replace(/^\/[^/]+/, '') || '/'
         const redirectUrl = req.nextUrl.clone()
-        redirectUrl.pathname = `${prefix}${pathWithoutLocale}`
+        redirectUrl.pathname = `${prefix}${localize(pathWithoutLocale, config.fallbackLng)}`
         const response = NextResponse.redirect(redirectUrl)
         persistLanguage(req, response, config.fallbackLng)
         return response
@@ -134,7 +151,10 @@ export function createProxy(userConfig: I18nConfig) {
       if (localeInPath && !localeInPath.exact) {
         const url = req.nextUrl.clone()
         url.pathname = `${prefix}/${localeInPath.lng}${pathAfterBase.replace(/^\/[^/]+/, '')}`
-        if (internal) return NextResponse.rewrite(url, { request: { headers } })
+        if (internal) {
+          headers.set(REWRITTEN_HEADER, '1')
+          return NextResponse.rewrite(url, { request: { headers } })
+        }
         return NextResponse.redirect(url)
       }
 
@@ -144,23 +164,55 @@ export function createProxy(userConfig: I18nConfig) {
           // Rewrite internally to the locale path, keeping the clean URL:
           // the detected language in internal mode, the default locale for hideDefaultLocale
           const rewriteLng = internal ? lng : config.fallbackLng
+          let rewritePath = pathAfterBase
+          if (pathnames) {
+            // hideDefaultLocale: clean paths are in the default language
+            const internalPath = toInternalPath(pathAfterBase, rewriteLng, pathnames)
+            const localized = toLocalizedPath(pathAfterBase, rewriteLng, pathnames)
+            if (internalPath) rewritePath = internalPath
+            else if (localized !== pathAfterBase) {
+              const redirectUrl = req.nextUrl.clone()
+              redirectUrl.pathname = `${prefix}${localized}`
+              return NextResponse.redirect(redirectUrl)
+            }
+          }
           const rewriteUrl = req.nextUrl.clone()
-          rewriteUrl.pathname = `${prefix}/${rewriteLng}${pathAfterBase}`
+          rewriteUrl.pathname = `${prefix}/${rewriteLng}${rewritePath}`
           headers.set(config.headerName, rewriteLng)
+          headers.set(REWRITTEN_HEADER, '1')
           const response = NextResponse.rewrite(rewriteUrl, { request: { headers } })
           persistLanguage(req, response, rewriteLng)
           return response
         }
 
         const redirectUrl = req.nextUrl.clone()
-        redirectUrl.pathname = `${prefix}/${lng}${pathAfterBase}`
+        redirectUrl.pathname = `${prefix}/${lng}${localize(pathAfterBase, lng)}`
         const response = NextResponse.redirect(redirectUrl)
         persistLanguage(req, response, lng)
         return response
       }
 
+      let response: NextResponse | undefined
+      if (pathnames && lngInPath) {
+        // /de/kontakt serves /de/contact; /de/contact redirects to /de/kontakt
+        const rest = pathAfterBase.replace(/^\/[^/]+/, '') || '/'
+        const internalPath = toInternalPath(rest, lngInPath, pathnames)
+        const url = req.nextUrl.clone()
+        if (internalPath !== undefined && internalPath !== rest) {
+          url.pathname = `${prefix}/${lngInPath}${internalPath}`
+          headers.set(REWRITTEN_HEADER, '1')
+          response = NextResponse.rewrite(url, { request: { headers } })
+        } else if (internalPath === undefined) {
+          const localized = toLocalizedPath(rest, lngInPath, pathnames)
+          if (localized !== rest) {
+            url.pathname = `${prefix}/${lngInPath}${localized}`
+            return NextResponse.redirect(url)
+          }
+        }
+      }
+
       // Persist language from referer URL into cookie
-      const response = NextResponse.next({ request: { headers } })
+      response ??= NextResponse.next({ request: { headers } })
       // The referer is a client-supplied header; a value that isn't a URL is ignored
       // instead of failing the whole request
       let refererUrl: URL | undefined
