@@ -38,10 +38,12 @@ the steps it prints, in order, checking each one before the next.
 ## Table of Contents
 
 - [App Router Setup](#app-router-setup)
+- [Translated Paths](#translated-paths)
 - [No-Locale-Path Mode](#no-locale-path-mode)
 - [ICU and MF2 with the App Router](#icu-and-mf2-with-the-app-router)
 - [Mixed Router Setup](#mixed-router-setup-app-router--pages-router)
 - [Pages Router Setup](#pages-router-setup)
+- [Multi-tenant Setups](#multi-tenant-setups)
 - [Custom i18next Backends](#custom-i18next-backends)
 - [API Reference](#api-reference)
 - [Examples](#examples)
@@ -299,7 +301,7 @@ export function LanguageSwitcher({ supportedLngs }: { supportedLngs: string[] })
 }
 ```
 
-For the no-locale-path mode (cookie-based), see `useChangeLanguage` [below](#no-locale-path-mode).
+With [translated paths](#translated-paths), use `getInternalPath` and `getLocalizedPath` instead of replacing the first segment. For the no-locale-path mode (cookie-based), see `useChangeLanguage` [below](#no-locale-path-mode).
 
 ---
 
@@ -320,6 +322,92 @@ In this mode:
 - `/de/about` serves German — non-default locales keep their prefix
 - `/en/about` automatically redirects to `/about` (canonical clean URL)
 - The `[lng]` folder structure stays the same — the proxy rewrites internally
+
+---
+
+## Translated Paths
+
+With `localeInPath: true`, the path after the locale can be translated per language. The keys of `pathnames` are the internal routes (the folders in `app/[lng]`), the values the public path per language; a language without an entry keeps the internal path. `[param]` matches one segment, `[...param]` the rest of the path, and both sides of an entry must use the same params (`createProxy` throws otherwise). Static routes are matched before routes with params, as in Next.js.
+
+Keep the languages and paths in a module of their own, so Client Components such as a language switcher can import them without your `resourceLoader`:
+
+```ts
+// i18n.routing.ts
+import type { I18nConfig } from 'next-i18next/proxy'
+
+export const routing = {
+  supportedLngs: ['en', 'de', 'it'],
+  fallbackLng: 'en',
+  pathnames: {
+    '/contact': { de: '/kontakt', it: '/contatti' },
+    '/blog/[slug]': { de: '/artikel/[slug]' },
+  },
+} satisfies I18nConfig
+```
+
+```ts
+// i18n.config.ts
+import type { I18nConfig } from 'next-i18next/proxy'
+import { routing } from './i18n.routing'
+
+const i18nConfig: I18nConfig = {
+  ...routing,
+  defaultNS: 'common',
+  resourceLoader: (language, namespace) =>
+    import(`./app/i18n/locales/${language}/${namespace}.json`),
+}
+
+export default i18nConfig
+```
+
+The proxy then:
+
+- serves `/de/kontakt` from `app/[lng]/contact`, with a rewrite, so the URL stays translated
+- redirects `/de/contact` to `/de/kontakt`, so each page has one URL per language
+- redirects `/contact` straight to the translated path in the detected language
+
+With `hideDefaultLocale`, a translated path of the default language works without the prefix (`{ en: '/contact-us' }` serves `/contact-us`). Translated paths need the locale in the URL to know the language of a path, so they are not used with `localeInPath: false` or `'internal'`.
+
+Build links and the language switcher with the helpers from `next-i18next`, which work in Server and Client Components:
+
+```tsx
+import Link from 'next/link'
+import { getLocalizedPath } from 'next-i18next'
+import { routing } from '../i18n.routing'
+
+<Link href={getLocalizedPath('/contact', lng, routing)}>{t('contact')}</Link> // /de/kontakt
+```
+
+```tsx
+'use client'
+import { usePathname, useRouter } from 'next/navigation'
+import { getInternalPath, getLocalizedPath } from 'next-i18next'
+import { routing } from '../i18n.routing'
+
+export function LanguageSwitcher() {
+  const pathname = usePathname()
+  const router = useRouter()
+  // the same page in another language: /de/kontakt -> /contact -> /it/contatti
+  const { path } = getInternalPath(pathname, routing)
+  return (
+    <div>
+      {routing.supportedLngs.map((lng) => (
+        <button key={lng} onClick={() => router.push(getLocalizedPath(path, lng, routing))}>{lng}</button>
+      ))}
+    </div>
+  )
+}
+```
+
+For hreflang alternates, call `getLocalizedPath` for every language in `generateMetadata`:
+
+```ts
+alternates: {
+  languages: Object.fromEntries(
+    routing.supportedLngs.map((lng) => [lng, getLocalizedPath('/contact', lng, routing)])
+  ),
+},
+```
 
 ---
 
@@ -800,6 +888,238 @@ export default function Home() {
 
 See [`examples/pages-router-simple`](examples/pages-router-simple), [`examples/pages-router-ssg`](examples/pages-router-ssg), and [`examples/pages-router-auto-static-optimize`](examples/pages-router-auto-static-optimize) for more.
 
+### Fallback locales
+
+By default the `defaultLocale` is the fallback language. To change that, set [`fallbackLng`](https://www.i18next.com/principles/fallback) to a string, an array, an object or a function, as in i18next.
+
+With `nonExplicitSupportedLngs: true`, every regional variant falls back to its language (`de-CH` to `de`) without a file per variant. The variants still have to be in `locales` for Next.js routing, and `fallbackLng` can't be a function then.
+
+```js
+module.exports = {
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'fr', 'de-AT', 'de-DE', 'de-CH'],
+  },
+  fallbackLng: {
+    default: ['en'],
+    'de-CH': ['fr', 'en'],
+  },
+  nonExplicitSupportedLngs: true,
+  // de-CH falls back to de, fr and en (an own entry replaces `default`)
+}
+```
+
+`serverSideTranslations` adds the fallback languages to the page props, so each one makes the page bigger. With `fallbackLng: false` only the current language is shipped.
+
+### Unserializable configs
+
+`serverSideTranslations` puts your config into the page props, so `appWithTranslation` can use it in the browser. Plugins in `use`, a function `localePath` and other functions can't be serialized, and Next.js fails with an error like:
+
+```
+Error: Error serializing `._nextI18Next.userConfig.use[0].process` returned from `getStaticProps` in "/my-page".
+Reason: `function` cannot be serialized as JSON. Please only return JSON serializable data types.
+```
+
+Set `serializeConfig: false` and pass the config to `appWithTranslation` and `serverSideTranslations` yourself:
+
+```tsx
+// pages/_app.tsx
+import { appWithTranslation } from 'next-i18next/pages'
+import nextI18NextConfig from '../next-i18next.config'
+
+const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />
+
+export default appWithTranslation(MyApp, nextI18NextConfig)
+```
+
+```tsx
+// pages/index.tsx
+import { serverSideTranslations } from 'next-i18next/pages/serverSideTranslations'
+import nextI18NextConfig from '../next-i18next.config'
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ['common', 'footer'], nextI18NextConfig)),
+  },
+})
+```
+
+### Usage with fallback SSG pages
+
+With [`getStaticPaths`](https://nextjs.org/docs/pages/api-reference/functions/get-static-paths) and `fallback: true`, Next.js renders the fallback page first without props. Without `_nextI18Next` in the props, `appWithTranslation` has no i18n instance yet and renders your app without the `I18nextProvider`; once the props arrive, the provider is added and React mounts your app again (effects run twice). Pass the config to `appWithTranslation` (as above) so there is an instance from the first render on.
+
+The fallback render still has no translations, so don't render translated text while `router.isFallback` is `true`: the keys would show, and the server and client HTML would not match.
+
+### Client side loading of translations via HTTP
+
+Pages without `serverSideTranslations` (for example pages Next.js optimizes as static because they have no `getStaticProps`), or namespaces you only need later, can load their translations in the browser. Add a backend for the browser only, and `partialBundledLanguages` so the namespaces from `serverSideTranslations` and the ones loaded later go together:
+
+```js
+// next-i18next.config.js
+const HttpBackend = require('i18next-http-backend/cjs')
+
+const isBrowser = typeof window !== 'undefined'
+
+module.exports = {
+  i18n: { defaultLocale: 'en', locales: ['en', 'de'] },
+  partialBundledLanguages: isBrowser,
+  serializeConfig: false,
+  use: isBrowser ? [HttpBackend] : [],
+}
+```
+
+i18next-http-backend loads `/locales/{{lng}}/{{ns}}.json` by default, which is your `public/locales` folder. Pass the config to `appWithTranslation` (see [Unserializable configs](#unserializable-configs)). [`examples/pages-router-auto-static-optimize`](examples/pages-router-auto-static-optimize) has the full setup, with a local storage cache through i18next-chained-backend.
+
+### Reloading Resources in Development
+
+Translations are loaded once per server process, so changes to your JSON files show up only after a restart. With `reloadOnPrerender: true`, `serverSideTranslations` reloads the languages and namespaces it ships on every call. It only does that while `NODE_ENV` is not `production`, so it never reloads per request in production.
+
+### Missing keys (`saveMissing`)
+
+The Pages Router's built-in loader only reads the locale files, so `saveMissing: true` on its own saves nothing. To collect missing keys, add a backend that can save them, in the browser:
+
+- [i18next-http-backend](https://github.com/i18next/i18next-http-backend) with an `addPath` pointing to an API route of yours that stores the keys it receives
+- [i18next-locize-backend](https://github.com/locize/i18next-locize-backend), which adds missing keys to your Locize project, where they can be translated (Locize is built by the i18next maintainers; using it funds i18next's development). That needs `apiKey` and `referenceLng`; only put the `apiKey` into development builds, never into production.
+
+```js
+// next-i18next.config.js
+const HttpBackend = require('i18next-http-backend/cjs')
+
+const isBrowser = typeof window !== 'undefined'
+
+module.exports = {
+  i18n: { defaultLocale: 'en', locales: ['en', 'de'] },
+  saveMissing: process.env.NODE_ENV === 'development',
+  serializeConfig: false,
+  use: isBrowser ? [HttpBackend] : [],
+  backend: isBrowser ? { addPath: '/api/missing/{{lng}}/{{ns}}' } : undefined,
+}
+```
+
+With `serializeConfig: false`, pass the config to `appWithTranslation(MyApp, nextI18NextConfig)` and `serverSideTranslations(locale, ns, nextI18NextConfig)`. On the server the built-in loader keeps reading the files.
+
+### Pages Router options
+
+| Option | Default | Description |
+|---|---|---|
+| `defaultNS` | `'common'` | Default namespace |
+| `localePath` | `'./public/locales'` | Folder with the locale files. Can be a function `(locale, namespace, missing) => path` that returns the path of one file (then also list all namespaces in `ns`; `missing` is always `false`), or `null` when you pass `resources` yourself |
+| `localeStructure` | `'{{lng}}/{{ns}}'` | File layout inside `localePath`. Follows a custom `interpolation.prefix`/`suffix` (e.g. `'{lng}/{ns}'`) unless you set it. Ignored when `localePath` is a function |
+| `localeExtension` | `'json'` | Ignored when `localePath` is a function |
+| `reloadOnPrerender` | `false` | Reload translations on every `serverSideTranslations` call, in development only, see [Reloading Resources in Development](#reloading-resources-in-development) |
+| `serializeConfig` | `true` | Put the config into the page props for `appWithTranslation`, see [Unserializable configs](#unserializable-configs) |
+| `serverInstanceKey` | `undefined` | Keep one server-side i18next instance per key, see [Multi-tenant Setups](#multi-tenant-setups) |
+| `use` | `[]` | i18next plugins |
+| `onPreInitI18next` | `undefined` | Called with the i18next instance before `init`, e.g. `(i18n) => i18n.on('failedLoading', handleFailedLoading)` |
+
+All other [i18next options](https://www.i18next.com/overview/configuration-options) and [react-i18next options](https://react.i18next.com/latest/i18next-instance) go into the same config.
+
+`serverSideTranslations` reads the config from `./next-i18next.config.js` unless you pass it. For another location, for example an app inside a monorepo, set the environment variable `I18NEXT_DEFAULT_CONFIG_PATH`, e.g. in `next.config.js`:
+
+```js
+process.env.I18NEXT_DEFAULT_CONFIG_PATH = `${__dirname}/next-i18next.config.js`
+```
+
+### Vercel and Netlify
+
+`serverSideTranslations` reads the locale files at runtime. Some serverless hosts can't find them under the default relative path; if you get file system errors, set `localePath` with `path.resolve`:
+
+```js
+// next-i18next.config.js
+module.exports = {
+  i18n: { defaultLocale: 'en', locales: ['en', 'de'] },
+  localePath:
+    typeof window === 'undefined' ? require('path').resolve('./public/locales') : '/locales',
+}
+```
+
+### Docker
+
+Copy `next-i18next.config.js` into the image next to `next.config.js` (for example `COPY --from=builder /app/next-i18next.config.js ./next-i18next.config.js` with the [Dockerfile from the Next.js docs](https://nextjs.org/docs/app/getting-started/deploying#docker)), because `serverSideTranslations` reads it at runtime.
+
+---
+
+## Multi-tenant Setups
+
+On the server, next-i18next keeps one i18next instance per process (see [Server-side caching](#server-side-caching)): translations are loaded once and reused for every request. When they depend on the request (a tenant per host, a header your translation API needs), each tenant needs its own instance.
+
+### App Router
+
+Create one server i18next per tenant with `createServerI18next` and keep it for later requests. Only accept tenants you know: the `Host` header comes from the client, and a new instance per unknown value would grow without end.
+
+```ts
+// i18n.server.ts
+import { headers } from 'next/headers'
+import { createServerI18next } from 'next-i18next/server'
+import { i18nConfig } from './i18n.config'
+
+const tenants = new Set(['a.example.com', 'b.example.com'])
+const servers = new Map<string, ReturnType<typeof createServerI18next>>()
+
+export async function getTenantI18n() {
+  const host = (await headers()).get('host') ?? ''
+  const tenant = tenants.has(host) ? host : 'a.example.com'
+  let server = servers.get(tenant)
+  if (!server) {
+    server = createServerI18next({
+      ...i18nConfig,
+      resourceLoader: (lng, ns) =>
+        fetch(`https://api.example.com/translations/${tenant}/${lng}/${ns}`).then((res) => res.json()),
+    })
+    servers.set(tenant, server)
+  }
+  return server
+}
+```
+
+```tsx
+// app/[lng]/page.tsx
+import { getTenantI18n } from '../../i18n.server'
+
+export default async function Page() {
+  const { getT } = await getTenantI18n()
+  const { t } = await getT('common')
+  return <h1>{t('title')}</h1>
+}
+```
+
+Pass the tenant's resources to `I18nProvider` the same way, with `getResources` from the same `getTenantI18n()` result. Each tenant's translations are loaded once per process; when a tenant edits them at runtime, call `i18n.reloadResources()` on that tenant's instance (`const { i18n } = await getT()`).
+
+### Pages Router
+
+The first `serverSideTranslations` call creates the shared instance with that call's backend options; later calls reuse those options and every namespace loaded so far, even when you pass a different config. Pass `serverInstanceKey` (the tenant, for example) in the config instead: next-i18next then keeps one instance per key, created by the first call with that key and reused by the later ones.
+
+```js
+// lib/tenantTranslations.js
+import { serverSideTranslations } from 'next-i18next/pages/serverSideTranslations'
+import i18nextConfig from '../next-i18next.config'
+
+const tenants = new Set(['a.example.com', 'b.example.com'])
+
+export function tenantTranslations(locale, namespaces, req) {
+  const tenant = tenants.has(req.headers.host) ? req.headers.host : 'a.example.com'
+  return serverSideTranslations(locale, namespaces, {
+    ...i18nextConfig,
+    serverInstanceKey: tenant,
+    backend: {
+      ...i18nextConfig.backend,
+      customHeaders: { 'X-Tenant': tenant },
+    },
+  })
+}
+```
+
+```js
+// pages/index.js
+export const getServerSideProps = async ({ locale, req }) => ({
+  props: {
+    ...(await tenantTranslations(locale, ['common'], req)),
+  },
+})
+```
+
+Only use keys from a known set: each key keeps its instance, and its backend's reload timer, until the server stops, so a key taken straight from a request header would let anyone add instances. Build a new config object per call instead of changing the imported one, which all requests share, and pass the backend in `use` as a class (`use: [HttpBackend]`), not as an instance, so each tenant gets its own. A class can't be sent in the page props, so set `serializeConfig: false` (see [Unserializable configs](#unserializable-configs)); that also keeps the tenant's headers out of the page. Each tenant's translations are loaded once per process; backends with a `reloadInterval` (i18next-http-backend and i18next-locize-backend refresh every hour on the server by default) pick up a tenant's edits without a restart.
+
 ---
 
 ## Custom i18next Backends
@@ -923,6 +1243,8 @@ On the server, next-i18next uses a **module-level singleton** i18next instance:
 - Custom backends benefit from this — no re-fetching per request
 - Additional namespaces are loaded on demand and cached
 
+With the Pages Router, `serverInstanceKey` keeps one such instance per key (a tenant, for example), see [Multi-tenant Setups](#multi-tenant-setups).
+
 In **serverless environments** (Lambda, Vercel Serverless, etc.), the cache only lives as long as the warm function instance. For serverless, prefer:
 1. Bundling translations at build time via `resources` or `resourceLoader` with dynamic imports
 2. Downloading translations in CI/CD via [Locize CLI](https://github.com/locize/locize-cli)
@@ -936,6 +1258,8 @@ In **serverless environments** (Lambda, Vercel Serverless, etc.), the cache only
 | Export | Description |
 |---|---|
 | `defineConfig(config)` | Type-safe config helper (identity function) |
+| `getLocalizedPath(path, lng, config)` | Public path of an internal route in a language, with locale prefix and [translated paths](#translated-paths): `'/contact'` -> `'/de/kontakt'` |
+| `getInternalPath(pathname, config)` | Language and internal route of a public path: `'/de/kontakt'` -> `{ lng: 'de', path: '/contact' }` |
 | `normalizeConfig(config)` | Fill in defaults and validate config |
 | `I18nConfig` | Config type |
 
@@ -1012,6 +1336,7 @@ In **serverless environments** (Lambda, Vercel Serverless, etc.), the cache only
 | `use` | `[]` | Extra i18next plugins |
 | `i18nextOptions` | `{}` | Additional i18next init options |
 | `nonExplicitSupportedLngs` | `false` | Match `'en'` to `'en-US'` etc. |
+| `pathnames` | `undefined` | Translated paths per language, e.g. `{ '/contact': { de: '/kontakt' } }`, see [Translated Paths](#translated-paths) |
 
 ---
 
