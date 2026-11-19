@@ -128,13 +128,10 @@ export const createConfig = (
     if (!hasCustomBackend) {
       if (typeof localePath === 'string') {
         combinedConfig.backend = {
-          addPath: `${localePath}/${localeStructure}.missing.${localeExtension}`,
           loadPath: `${localePath}/${localeStructure}.${localeExtension}`,
         }
       } else if (typeof localePath === 'function') {
         combinedConfig.backend = {
-          addPath: (locale: string, namespace: string) =>
-            localePath(locale, namespace, true),
           loadPath: (locale: string, namespace: string) =>
             localePath(locale, namespace, false),
         }

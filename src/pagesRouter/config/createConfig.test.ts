@@ -48,9 +48,7 @@ describe('createConfig', () => {
       it('returns a valid config when only lng is provided', () => {
         const config = createConfig({ lng: 'en' } as UserConfig)
 
-        expect((config.backend as any).addPath).toMatch(
-          '/public/locales/{{lng}}/{{ns}}.missing.json'
-        )
+        expect((config.backend as any).addPath).toBeUndefined()
         expect((config.backend as any).loadPath).toMatch(
           '/public/locales/{{lng}}/{{ns}}.json'
         )
@@ -416,9 +414,7 @@ describe('createConfig', () => {
         expect(
           (config.backend as any).loadPath('en', 'common')
         ).toBe('false/common/en.json')
-        expect((config.backend as any).addPath('en', 'common')).toBe(
-          'true/common/en.json'
-        )
+        expect((config.backend as any).addPath).toBeUndefined()
       })
 
       it('when filesystem is missing defaultNS throws an error', () => {
@@ -498,9 +494,7 @@ describe('createConfig', () => {
       it('returns a valid config', () => {
         const config = createConfig({ lng: 'en' } as UserConfig)
 
-        expect((config.backend as any).addPath).toMatch(
-          '/public/locales/{{lng}}/{{ns}}.missing.json'
-        )
+        expect((config.backend as any).addPath).toBeUndefined()
         expect((config.backend as any).loadPath).toMatch(
           '/public/locales/{{lng}}/{{ns}}.json'
         )
@@ -547,9 +541,7 @@ describe('createConfig', () => {
     it('returns a valid config when only lng is provided', () => {
       const config = createConfig({ lng: 'en' } as UserConfig)
 
-      expect((config.backend as any).addPath).toMatch(
-        '/locales/{{lng}}/{{ns}}.missing.json'
-      )
+      expect((config.backend as any).addPath).toBeUndefined()
       expect((config.backend as any).loadPath).toMatch(
         '/locales/{{lng}}/{{ns}}.json'
       )
@@ -679,9 +671,7 @@ describe('createConfig', () => {
         expect(
           (config.backend as any).loadPath('en', 'common')
         ).toBe('false/common/en.json')
-        expect((config.backend as any).addPath('en', 'common')).toBe(
-          'true/common/en.json'
-        )
+        expect((config.backend as any).addPath).toBeUndefined()
       })
     })
   })

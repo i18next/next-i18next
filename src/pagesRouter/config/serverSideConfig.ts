@@ -88,10 +88,6 @@ export const applyServerSideConfig = (
   //
   if (typeof localePath === 'string') {
     combinedConfig.backend = {
-      addPath: path.resolve(
-        process.cwd(),
-        `${localePath}/${localeStructure}.missing.${localeExtension}`
-      ),
       loadPath: path.resolve(
         process.cwd(),
         `${localePath}/${localeStructure}.${localeExtension}`
@@ -99,8 +95,6 @@ export const applyServerSideConfig = (
     }
   } else if (typeof localePath === 'function') {
     combinedConfig.backend = {
-      addPath: (locale: string, namespace: string) =>
-        localePath(locale, namespace, true),
       loadPath: (locale: string, namespace: string) =>
         localePath(locale, namespace, false),
     }
