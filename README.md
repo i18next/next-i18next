@@ -1279,7 +1279,7 @@ In **serverless environments** (Lambda, Vercel Serverless, etc.), the cache only
 |---|---|
 | `initServerI18next(config)` | Initialize server config (call once at module scope, before the first `getT()`) |
 | `createServerI18next(config)` | Returns `{ getT, getResources, generateI18nStaticParams }` bound to `config`. No `initServerI18next` and no evaluation order to get right; see [Initialization without ordering assumptions](#initialization-without-ordering-assumptions) |
-| `getT(ns?, options?)` | Get `{ t, i18n }` for Server Components. Options: `{ lng?, keyPrefix? }` |
+| `getT(ns?, options?)` | Get `{ t, i18n, lng }` for Server Components. Options: `{ lng?, keyPrefix? }` |
 | `getResources(i18n, namespaces?, languages?)` | Extract loaded resources for client hydration. The shared instance preloads every supported language by default, so pass `languages` (e.g. `[lng, fallbackLng]`) to keep the serialized payload small. Include the fallback language, or keys missing from the current one have nothing to fall back to on the client |
 | `generateI18nStaticParams()` | Returns `[{ lng: 'en' }, { lng: 'de' }, ...]` for `generateStaticParams`, keyed by `localeParamName` (`generateI18nStaticParams<'locale'>()` narrows the type) |
 
