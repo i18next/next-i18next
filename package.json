@@ -124,6 +124,7 @@
     "node": ">=20"
   },
   "description": "The easiest way to translate your NextJs apps.",
+  "homepage": "https://www.i18next.com/next",
   "keywords": [
     "react",
     "i18next",
