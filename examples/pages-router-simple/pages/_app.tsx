@@ -6,5 +6,5 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
   <Component {...pageProps} />
 )
 
-// https://github.com/i18next/next-i18next#unserializable-configs
+// https://www.i18next.com/next/pages-router/setup#unserializable-configs
 export default appWithTranslation(MyApp /*, nextI18NextConfig */)

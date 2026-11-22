@@ -11,7 +11,7 @@ It demonstrates:
 
 For MF2, install `i18next-mf2` instead, put `MF2` into `use` and import `I18nProvider` from `next-i18next/mf2`.
 
-See [ICU and MF2 with the App Router](https://github.com/i18next/next-i18next#icu-and-mf2-with-the-app-router) and [Using ICU or MF2](https://www.i18next.com/how-to/using-icu-or-mf2) for details.
+See [ICU and MF2 with the App Router](https://www.i18next.com/next/app-router/icu-and-mf2) and [Using ICU or MF2](https://www.i18next.com/how-to/using-icu-or-mf2) for details.
 
 ## Getting started
 

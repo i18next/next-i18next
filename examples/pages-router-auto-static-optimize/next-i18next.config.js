@@ -40,7 +40,7 @@ module.exports = {
   reloadOnPrerender: process.env.NODE_ENV === 'development',
   use: isBrowser ? [ChainedBackend] : [],
   /**
-   * @link https://github.com/i18next/next-i18next#pages-router-options
+   * @link https://www.i18next.com/next/reference/configuration#pages-router-options
    */
   // saveMissing: false,
   // serializeConfig: false,
