@@ -25,6 +25,14 @@ const Homepage = (
         <Header heading={t('h1')} title={t('title')} />
         <p className="subtitle">{t('description')}</p>
         <div className="featured-card">
+          <h3 className="card-title">{t('docs.title')}</h3>
+          <p className="card-text">{t('docs.text')}</p>
+          <a href={t('docs.link')}>
+            <button type="button">{t('docs.cta')}</button>
+          </a>
+        </div>
+
+        <div className="featured-card" style={{ marginTop: 15 }}>
           <h3 className="card-title">{t('routers.title')}</h3>
           <p className="card-text">{t('routers.text')}</p>
           <a href={`/app-router/${router.locale}`}>

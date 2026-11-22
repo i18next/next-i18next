@@ -1,6 +1,10 @@
 {
   "h1": "next-i18next",
   "description": "Der einfachste Weg, deine Next.js Apps zu übersetzen.",
+  "docs.title": "Dokumentation",
+  "docs.text": "Die Dokumentation von next-i18next findest du jetzt auf www.i18next.com: das Setup für den App Router und den Pages Router, die Sprache in der Adresse, Backends und die API.",
+  "docs.cta": "Zur Dokumentation",
+  "docs.link": "https://www.i18next.com/next",
   "change-locale": "Sprache wechseln zu \"{{changeTo}}\"",
   "to-second-page": "Zur zweiten Seite",
   "to-app-router": "Zum App Router Bereich",
