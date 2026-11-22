@@ -1,9 +1,6 @@
-import { initServerI18next, getT, getResources, generateI18nStaticParams } from 'next-i18next/server'
 // Same props as I18nProvider from next-i18next/client, with i18next-icu registered
 import { I18nProvider } from 'next-i18next/icu'
-import i18nConfig from '../../i18n.config'
-
-initServerI18next(i18nConfig)
+import { getT, getResources, generateI18nStaticParams } from '@/i18n.server'
 
 export async function generateStaticParams() {
   return generateI18nStaticParams()

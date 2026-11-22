@@ -3,7 +3,7 @@
 This example shows how to write translations in ICU MessageFormat with [next-i18next](https://github.com/i18next/next-i18next) and the Next.js App Router, using [i18next-icu](https://github.com/i18next/i18next-icu).
 
 It demonstrates:
-- `use: [ICU]` in `i18n.config.ts`, so `getT()` formats ICU messages in Server Components
+- `use: [ICU]` in `i18n.config.ts`, so `getT()` from the server module `i18n.server.ts` formats ICU messages in Server Components
 - `I18nProvider` from `next-i18next/icu` in the root layout, so `useT()` formats them in Client Components, without a `'use client'` wrapper of your own
 - a plural with an exact `=0` case and a `select`, on the server and on the client
 - rich text with `IcuTransWithoutContext` from `react-i18next/IcuTransWithoutContext` in a Server Component, and `IcuTrans` in a Client Component

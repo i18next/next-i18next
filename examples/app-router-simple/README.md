@@ -3,7 +3,7 @@
 This example shows how to use [next-i18next](https://github.com/i18next/next-i18next) v16 with the Next.js App Router and locale-in-path routing (`/en/about`, `/de/about`).
 
 It demonstrates:
-- Server Components using `getT()` from `next-i18next/server`
+- Server Components using `getT()` from `i18n.server.ts`, the server module made with `createServerI18next()`
 - Client Components using `useT()` from `next-i18next/client`
 - Language detection and routing via `createProxy()` in `proxy.ts`
 - `I18nProvider` for client-side hydration

@@ -5,7 +5,7 @@ This example shows how to use [next-i18next](https://github.com/i18next/next-i18
 URLs stay clean (`/about` instead of `/en/about`), and language switching is handled via `useChangeLanguage()`.
 
 It demonstrates:
-- Server Components using `getT()` from `next-i18next/server`
+- Server Components using `getT()` from `i18n.server.js`, the server module made with `createServerI18next()`
 - Client Components using `useT()` from `next-i18next/client`
 - Cookie-based language detection via `createProxy()` in `proxy.js` (no URL redirects)
 - `useChangeLanguage()` hook for switching languages

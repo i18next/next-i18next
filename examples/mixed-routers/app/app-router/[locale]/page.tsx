@@ -1,5 +1,5 @@
 import { Trans } from 'react-i18next/TransWithoutContext'
-import { getT } from 'next-i18next/server'
+import { getT } from '@/i18n.server'
 import Link from 'next/link'
 import { FooterServer } from './components/FooterServer'
 

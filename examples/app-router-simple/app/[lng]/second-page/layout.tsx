@@ -1,4 +1,4 @@
-import { getT, generateI18nStaticParams } from 'next-i18next/server'
+import { getT, generateI18nStaticParams } from '@/i18n.server'
 
 export async function generateStaticParams() {
   return generateI18nStaticParams()

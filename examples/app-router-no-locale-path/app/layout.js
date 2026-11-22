@@ -1,11 +1,9 @@
 import './global.css'
 
 import { dir } from 'i18next'
-import { initServerI18next, getT, getResources } from 'next-i18next/server'
 import { I18nProvider } from 'next-i18next/client'
+import { getT, getResources } from '@/i18n.server'
 import i18nConfig from '../i18n.config'
-
-initServerI18next(i18nConfig)
 
 export async function generateMetadata() {
   const { t } = await getT()

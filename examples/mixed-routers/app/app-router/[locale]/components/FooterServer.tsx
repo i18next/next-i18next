@@ -1,4 +1,4 @@
-import { getT } from 'next-i18next/server'
+import { getT } from '@/i18n.server'
 import { Trans } from 'react-i18next/TransWithoutContext'
 import pkg from 'next-i18next/package.json'
 

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
-import { getT } from 'next-i18next/server'
+import { getT } from '@/i18n.server'
 
 export default async function Page() {
   const { t } = await getT('second-page')

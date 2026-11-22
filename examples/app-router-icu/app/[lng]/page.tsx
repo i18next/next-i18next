@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getT } from 'next-i18next/server'
+import { getT } from '@/i18n.server'
 import { IcuTransWithoutContext } from 'react-i18next/IcuTransWithoutContext'
 import i18nConfig from '../../i18n.config'
 import { Cart } from './components/Cart'

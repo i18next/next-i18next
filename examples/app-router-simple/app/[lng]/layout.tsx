@@ -1,11 +1,8 @@
 import './global.css'
 
 import { dir } from 'i18next'
-import { initServerI18next, getT, getResources, generateI18nStaticParams } from 'next-i18next/server'
 import { I18nProvider } from 'next-i18next/client'
-import i18nConfig from '../../i18n.config'
-
-initServerI18next(i18nConfig)
+import { getT, getResources, generateI18nStaticParams } from '@/i18n.server'
 
 export async function generateStaticParams() {
   return generateI18nStaticParams()

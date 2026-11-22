@@ -149,15 +149,27 @@ The proxy:
 - Sets a custom header (`x-i18next-current-language`) for Server Components
 - Persists the language in a cookie, but only when it changed: a cookie written by the proxy counts as a modified cookie for Next, and a modified cookie makes every Server Action revalidate and refetch the page. Set `persistCookie: false` if another system owns that cookie, and `cookieOptions` to scope it (e.g. `{ domain: '.example.com', secure: true }`)
 
-### 5. Root Layout
+### 5. Server module
+
+Bind the config once, in a module of its own, and import `getT` from it everywhere on the server (next-i18next 16.3 and later):
+
+```ts
+// i18n.server.ts
+import { createServerI18next } from 'next-i18next/server'
+import i18nConfig from './i18n.config'
+
+export const { getT, getResources, generateI18nStaticParams } =
+  createServerI18next(i18nConfig)
+```
+
+Layouts, pages, `generateMetadata` and Route Handlers import from this module, so there is no initialization step and no order to get right. Next.js's own [internationalization guide](https://nextjs.org/docs/app/guides/internationalization) works the same way: pages import their translations from one module. Call `createServerI18next` once, at module scope: each call creates its own i18next instance. The examples import it as `@/i18n.server`, with the `@/` alias that create-next-app sets up.
+
+### 6. Root Layout
 
 ```tsx
 // app/[lng]/layout.tsx
-import { initServerI18next, getT, getResources, generateI18nStaticParams } from 'next-i18next/server'
 import { I18nProvider } from 'next-i18next/client'
-import i18nConfig from '../../i18n.config'
-
-initServerI18next(i18nConfig)
+import { getT, getResources, generateI18nStaticParams } from '@/i18n.server'
 
 export async function generateStaticParams() {
   return generateI18nStaticParams()
@@ -187,34 +199,28 @@ export default async function RootLayout({
 ```
 
 Key points:
-- `initServerI18next(config)` — call once at module scope in the root layout
-- `getResources(i18n)` — serializes loaded translations for client hydration
-- `I18nProvider` — wraps children so client components can use `useT()`
+- `getResources(i18n)`: serializes loaded translations for client hydration
+- `I18nProvider`: wraps children so client components can use `useT()`
 
-#### Initialization without ordering assumptions
+#### With initServerI18next instead
 
-`initServerI18next(config)` is a side effect: it has to run in the process before the first `getT()`. Module scope of the root layout works because Next loads the root layout before anything below it, but nothing enforces it if a second copy of `next-i18next/server` calls `getT()` first, for example from a Route Handler, which is bundled in its own layer. If you would rather not depend on evaluation order at all, bind the config once and import from that module everywhere:
-
-```ts
-// i18n.server.ts
-import { createServerI18next } from 'next-i18next/server'
-import i18nConfig from './i18n.config'
-
-export const { getT, getResources, generateI18nStaticParams } = createServerI18next(i18nConfig)
-```
+`initServerI18next(config)` at module scope in the root layout sets the config for `getT` from `next-i18next/server`, without a module of your own:
 
 ```tsx
-// any Server Component, layout or generateMetadata
-import { getT } from '@/i18n.server'
+// app/[lng]/layout.tsx
+import { initServerI18next, getT, getResources, generateI18nStaticParams } from 'next-i18next/server'
+import i18nConfig from '../../i18n.config'
+
+initServerI18next(i18nConfig)
 ```
 
-Every caller then imports the module that holds the config, so there is no initialization step and no order to get right. Call `createServerI18next` once at module scope: each call owns its own shared i18next instance.
+It is a side effect: it has to run in the process before the first `getT()`. Module scope of the root layout works because Next loads the root layout before anything below it, but nothing enforces it if a second copy of `next-i18next/server` calls `getT()` first, for example from a Route Handler, which is bundled in its own layer. The server module above has no such order.
 
-### 6. Server Components
+### 7. Server Components
 
 ```tsx
 // app/[lng]/page.tsx
-import { getT } from 'next-i18next/server'
+import { getT } from '@/i18n.server'
 
 export default async function Home() {
   const { t } = await getT('home')
@@ -235,7 +241,7 @@ For the `Trans` component in Server Components, use `react-i18next/TransWithoutC
 
 ```tsx
 import { Trans } from 'react-i18next/TransWithoutContext'
-import { getT } from 'next-i18next/server'
+import { getT } from '@/i18n.server'
 
 export default async function Page() {
   const { t, i18n } = await getT()
@@ -249,7 +255,7 @@ export default async function Page() {
 
 With react-i18next 18, `import { Trans } from 'react-i18next'` works here too: in Server Components its `react-server` export condition resolves to the same component without context. Pass `t` and `i18n` the same way.
 
-### 7. Client Components
+### 8. Client Components
 
 ```tsx
 'use client'
@@ -275,7 +281,7 @@ export default function Greeting() {
 }
 ```
 
-### 8. Language Switching (locale-in-path)
+### 9. Language Switching (locale-in-path)
 
 When the locale is part of the URL path (e.g., `/en/about` → `/de/about`), switch languages by navigating to the new locale prefix:
 
@@ -589,11 +595,8 @@ In the root layout, import `I18nProvider` from `next-i18next/icu` instead of `ne
 
 ```tsx
 // app/[lng]/layout.tsx
-import { initServerI18next, getT, getResources, generateI18nStaticParams } from 'next-i18next/server'
 import { I18nProvider } from 'next-i18next/icu' // or 'next-i18next/mf2'
-import i18nConfig from '../../i18n.config'
-
-initServerI18next(i18nConfig)
+import { getT, getResources, generateI18nStaticParams } from '@/i18n.server'
 
 export async function generateStaticParams() {
   return generateI18nStaticParams()
@@ -625,14 +628,14 @@ A Server Component can not pass a plugin class to a Client Component as a prop: 
 
 Notes:
 - The client instance does not read the server config. Plugin options in `i18nextOptions.i18nFormat` (for example `bidiIsolation: 'none'` for MF2) have to be passed to `I18nProvider` as well, via its `i18nextOptions` prop, or the server and client render different text.
-- The proxy imports the same config, so the plugin ends up in the proxy bundle too (about 40 KB for i18next-icu). To keep it out, leave `use` out of the shared config and add it where the server is initialized: `initServerI18next({ ...i18nConfig, use: [ICU] })`.
+- The proxy imports the same config, so the plugin ends up in the proxy bundle too (about 40 KB for i18next-icu). To keep it out, leave `use` out of the shared config and add it in the [server module](#5-server-module): `createServerI18next({ ...i18nConfig, use: [ICU] })`.
 - For MF2, put `MF2` from `i18next-mf2` into `use` and import `I18nProvider` from `next-i18next/mf2`. Messages are written in MF2 syntax, e.g. `.input {$count :number} .match $count one {{You have {$count} photo.}} * {{You have {$count} photos.}}`.
 
 ### Server Components
 
 ```tsx
 // app/[lng]/page.tsx
-import { getT } from 'next-i18next/server'
+import { getT } from '@/i18n.server'
 import { IcuTransWithoutContext } from 'react-i18next/IcuTransWithoutContext'
 
 export default async function Page() {
@@ -836,7 +839,7 @@ pages/index.tsx                        -- Pages Router pages
 public/locales/en/common.json         -- shared translation files
 ```
 
-App Router pages import from `next-i18next/server` and `next-i18next/client`.
+App Router pages import `getT` from your [server module](#5-server-module) and the rest from `next-i18next/client`.
 Pages Router pages import from `next-i18next/pages` and `next-i18next/pages/serverSideTranslations`.
 
 See [`examples/mixed-routers`](examples/mixed-routers) for a complete example.
@@ -1277,8 +1280,8 @@ In **serverless environments** (Lambda, Vercel Serverless, etc.), the cache only
 
 | Export | Description |
 |---|---|
-| `initServerI18next(config)` | Initialize server config (call once at module scope, before the first `getT()`) |
-| `createServerI18next(config)` | Returns `{ getT, getResources, generateI18nStaticParams }` bound to `config`. No `initServerI18next` and no evaluation order to get right; see [Initialization without ordering assumptions](#initialization-without-ordering-assumptions) |
+| `initServerI18next(config)` | Initialize server config for `getT` from `next-i18next/server` (call once at module scope, before the first `getT()`); the alternative to `createServerI18next` |
+| `createServerI18next(config)` | Returns `{ getT, getResources, generateI18nStaticParams }` bound to `config`. No `initServerI18next` and no evaluation order to get right; see [Server module](#5-server-module) |
 | `getT(ns?, options?)` | Get `{ t, i18n, lng }` for Server Components. Options: `{ lng?, keyPrefix? }` |
 | `getResources(i18n, namespaces?, languages?)` | Extract loaded resources for client hydration. The shared instance preloads every supported language by default, so pass `languages` (e.g. `[lng, fallbackLng]`) to keep the serialized payload small. Include the fallback language, or keys missing from the current one have nothing to fall back to on the client |
 | `generateI18nStaticParams()` | Returns `[{ lng: 'en' }, { lng: 'de' }, ...]` for `generateStaticParams`, keyed by `localeParamName` (`generateI18nStaticParams<'locale'>()` narrows the type) |
@@ -1365,7 +1368,7 @@ If you were using i18next and react-i18next directly (as recommended in v15):
 1. `npm install next-i18next@16`
 2. Create an `i18n.config.ts` with your languages and namespaces
 3. Replace your custom proxy/middleware with `createProxy(config)` in `proxy.ts`
-4. Replace your custom `getT` / translation init with `initServerI18next` + `getT` from `next-i18next/server`
+4. Replace your custom `getT` / translation init with a [server module](#5-server-module): `createServerI18next(config)` and the `getT` it returns
 5. Replace your custom `I18nProvider` with the one from `next-i18next/client`
 6. Replace `useTranslation` with `useT` from `next-i18next/client` in client components
 

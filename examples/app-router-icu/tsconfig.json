@@ -18,6 +18,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
+    "paths": { "@/*": ["./*"] },
     "plugins": [
       {
         "name": "next"

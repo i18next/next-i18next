@@ -1,5 +1,5 @@
 import { FooterBase } from './FooterBase'
-import { getT } from 'next-i18next/server'
+import { getT } from '@/i18n.server'
 
 export const Footer = async ({ path }) => {
   const { t, i18n, lng } = await getT('footer')

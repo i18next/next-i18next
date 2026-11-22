@@ -1,4 +1,4 @@
-import { getT } from 'next-i18next/server'
+import { getT } from '@/i18n.server'
 
 export async function generateMetadata() {
   const { t } = await getT('client-page')
