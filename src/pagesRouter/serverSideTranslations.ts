@@ -3,7 +3,10 @@ import path from 'path'
 import { createRequire } from 'module'
 
 import { createConfig } from './config/createConfig'
-import { applyServerSideConfig } from './config/serverSideConfig'
+import {
+  applyServerSideConfig,
+  getLocaleNamespaces,
+} from './config/serverSideConfig'
 import createClient from './createClient/node'
 
 import { UserConfig, SSRConfig } from './types'
@@ -112,17 +115,11 @@ export const serverSideTranslations = async (
       )
     }
 
-    const getLocaleNamespaces = (path: string) =>
-      fs.existsSync(path)
-        ? fs
-          .readdirSync(path)
-          .map(file => file.replace(`.${localeExtension}`, ''))
-        : []
-
     const namespacesByLocale = Object.keys(initialI18nStore)
       .map(locale =>
         getLocaleNamespaces(
-          path.resolve(process.cwd(), `${localePath}/${locale}`)
+          path.resolve(process.cwd(), `${localePath}/${locale}`),
+          localeExtension
         )
       )
       .flat()

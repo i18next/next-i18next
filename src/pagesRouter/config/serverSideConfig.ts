@@ -5,6 +5,24 @@ import { InternalConfig, UserConfig } from '../types'
 import { getFallbackForLng, unique } from '../utils'
 import { Module } from 'i18next'
 
+export const getLocaleNamespaces = (
+  directory: string,
+  localeExtension?: string
+): string[] => {
+  if (!fs.existsSync(directory)) return []
+
+  return fs.readdirSync(directory).flatMap(file => {
+    const entry = path.join(directory, file)
+    if (fs.statSync(entry).isDirectory()) {
+      return getLocaleNamespaces(entry, localeExtension).map(
+        namespace => `${file}/${namespace}`
+      )
+    }
+
+    return file.replace(`.${localeExtension}`, '')
+  })
+}
+
 // Server-only logic extracted from createConfig so that the bundler never
 // traces `fs`/`path` from the client side. createConfig invokes this via the
 // `applyServerSideConfig` hook, which is wired up only by callers that are
@@ -113,23 +131,6 @@ export const applyServerSideConfig = (
     }
 
     const getNamespaces = (loc: string[]): string[] => {
-      const getLocaleNamespaces = (p: string): string[] => {
-        let ret: string[] = []
-        if (!fs.existsSync(p)) return ret
-        fs.readdirSync(p).forEach((file: string) => {
-          const joinedP = path.join(p, file)
-          if (fs.statSync(joinedP).isDirectory()) {
-            const subRet = getLocaleNamespaces(joinedP).map(
-              n => `${file}/${n}`
-            )
-            ret = ret.concat(subRet)
-            return
-          }
-          ret.push(file.replace(`.${localeExtension}`, ''))
-        })
-        return ret
-      }
-
       let namespacesByLocale: string[][]
       const r = combinedConfig.resources
       if (!localePath && r) {
@@ -137,7 +138,8 @@ export const applyServerSideConfig = (
       } else {
         namespacesByLocale = loc.map(locale =>
           getLocaleNamespaces(
-            path.resolve(process.cwd(), `${localePath}/${locale}`)
+            path.resolve(process.cwd(), `${localePath}/${locale}`),
+            localeExtension
           )
         )
       }
