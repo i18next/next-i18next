@@ -1,3 +1,7 @@
+## 16.5.2
+
+- **Pages Router: namespaces in sub-folders are included when `serverSideTranslations` gets no namespaces** - without `namespacesRequired`, only the top level of the locale folder was scanned, so for `en/checkout/cart.json` the page got an empty `checkout` namespace and not the `checkout/cart` translations the server had loaded. Sub-folders are now scanned like the server's own namespace list does. Thanks @pcbeingused333 ([#2360](https://github.com/i18next/next-i18next/pull/2360))
+
 ## 16.5.1
 
 - **App Router: `/robots.txt`, web manifests and AVIF images are no longer redirected** - the proxy skipped static files by extension (`png`, `css`, `js`, ...), but not `.webmanifest` or `.avif`, and not `/robots.txt`. With `localeInPath`, a `public/robots.txt` or `app/robots.ts` was redirected to `/en/robots.txt` (rewritten in `'internal'` mode and with `hideDefaultLocale`) and returned 404. They are now served as they are. Other `.xml` and `.txt` paths still go through the proxy like pages, since a sitemap or feed can be a localized route (`app/[lng]/sitemap.ts`). Thanks @pcbeingused333 ([#2359](https://github.com/i18next/next-i18next/pull/2359))
