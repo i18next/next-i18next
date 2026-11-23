@@ -78,6 +78,29 @@ describe('serverSideTranslations', () => {
       ])
     })
 
+    it('includes translations from nested namespaces', async () => {
+      ;(fs.readdirSync as jest.Mock).mockImplementation(directory =>
+        path.basename(directory) === 'checkout'
+          ? ['cart.json']
+          : ['checkout', 'common.json']
+      )
+      ;(fs.statSync as jest.Mock).mockImplementation(entry => ({
+        isDirectory: () => path.basename(entry) === 'checkout',
+      }))
+
+      const props = await serverSideTranslations('en', undefined, {
+        i18n: { defaultLocale: 'en', locales: ['en'] },
+        resources: {
+          en: { common: { greeting: 'Hello' }, 'checkout/cart': { pay: 'Pay' } },
+        },
+      })
+
+      expect(props._nextI18Next?.initialI18nStore).toEqual({
+        en: { common: { greeting: 'Hello' }, 'checkout/cart': { pay: 'Pay' } },
+      })
+      expect(props._nextI18Next?.ns).toEqual(['checkout/cart', 'common'])
+    })
+
     it('returns all namespaces with fallbackLng (as string)', async () => {
       const props = await serverSideTranslations(
         'en-US',
