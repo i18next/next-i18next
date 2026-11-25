@@ -1,5 +1,7 @@
 # Contributing
 
+What we merge and how we release: [CONTRIBUTING.md of the i18next organisation](https://github.com/i18next/.github/blob/master/CONTRIBUTING.md). This page is about working on next-i18next itself.
+
 ## Setup local dev environment
 
 1. Clone the repo
